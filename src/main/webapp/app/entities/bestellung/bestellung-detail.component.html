@@ -1,0 +1,77 @@
+
+<div *ngIf="bestellung">
+    <h2><span jhiTranslate="aimyApp.bestellung.detail.title">Bestellung</span> {{bestellung.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="aimyApp.bestellung.periode">Periode</span></dt>
+        <dd>
+            <span>{{bestellung.periode}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.bestellung.nummer">Nummer</span></dt>
+        <dd>
+            <span>{{bestellung.nummer}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.bestellung.lieferfrist">Lieferfrist</span></dt>
+        <dd>
+            <span>{{bestellung.lieferfrist}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.bestellung.lieferzeit">Lieferzeit</span></dt>
+        <dd>
+            <span>{{bestellung.lieferzeit}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.bestellung.kaufmenge">Kaufmenge</span></dt>
+        <dd>
+            <span>{{bestellung.kaufmenge}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.bestellung.diskontmenge">Diskontmenge</span></dt>
+        <dd>
+            <span>{{bestellung.diskontmenge}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.bestellung.materialkosten">Materialkosten</span></dt>
+        <dd>
+            <span>{{bestellung.materialkosten}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.bestellung.bestellkosten">Bestellkosten</span></dt>
+        <dd>
+            <span>{{bestellung.bestellkosten}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.bestellung.gesamtkosten">Gesamtkosten</span></dt>
+        <dd>
+            <span>{{bestellung.gesamtkosten}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.bestellung.stueckkosten">Stueckkosten</span></dt>
+        <dd>
+            <span>{{bestellung.stueckkosten}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.bestellung.bestellstatus">Bestellstatus</span></dt>
+        <dd>
+            <span jhiTranslate="{{'aimyApp.Bestellstatus.' + bestellung.bestellstatus}}">{{bestellung.bestellstatus}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.bestellung.modus">Modus</span></dt>
+        <dd>
+            <div *ngIf="bestellung.modus">
+                <a [routerLink]="['/modus', bestellung.modus?.id]">{{bestellung.modus?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.bestellung.kaufteil">Kaufteil</span></dt>
+        <dd>
+            <div *ngIf="bestellung.kaufteil">
+                <a [routerLink]="['/teil', bestellung.kaufteil?.id]">{{bestellung.kaufteil?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'bestellung/'+ bestellung.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

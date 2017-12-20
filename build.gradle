@@ -208,7 +208,7 @@ dependencies {
         exclude module: 'mapstruct'
     }
     compile "io.springfox:springfox-bean-validators:${springfox_version}"
-    compile "org.postgresql:postgresql"
+    compile "org.mariadb.jdbc:mariadb-java-client"
     compile "com.h2database:h2"
     compile "org.mapstruct:mapstruct-jdk8:${mapstruct_version}"
     testCompile "org.awaitility:awaitility:${awaitility_version}"

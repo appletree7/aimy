@@ -1,0 +1,84 @@
+<div>
+    <h2>
+        <span jhiTranslate="aimyApp.teil.home.title">Teils</span>
+        <button class="btn btn-primary float-right jh-create-entity create-teil" [routerLink]="['/', { outlets: { popup: ['teil-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="aimyApp.teil.home.createLabel">
+            Create new Teil
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="teils">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="aimyApp.teil.teiltyp">Teiltyp</span></th>
+            <th><span jhiTranslate="aimyApp.teil.nummer">Nummer</span></th>
+            <th><span jhiTranslate="aimyApp.teil.istmenge">Istmenge</span></th>
+            <th><span jhiTranslate="aimyApp.teil.startmenge">Startmenge</span></th>
+            <th><span jhiTranslate="aimyApp.teil.prozentsatz">Prozentsatz</span></th>
+            <th><span jhiTranslate="aimyApp.teil.lagerpreis">Lagerpreis</span></th>
+            <th><span jhiTranslate="aimyApp.teil.lagerwert">Lagerwert</span></th>
+            <th><span jhiTranslate="aimyApp.teil.sicherheitsbestand">Sicherheitsbestand</span></th>
+            <th><span jhiTranslate="aimyApp.teil.vertriebswunsch">Vertriebswunsch</span></th>
+            <th><span jhiTranslate="aimyApp.teil.subkomponente">Subkomponente</span></th>
+            <th><span jhiTranslate="aimyApp.teil.arbeitsplatz">Arbeitsplatz</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let teil of teils ;trackBy: trackId">
+                <td><a [routerLink]="['../teil', teil.id ]">{{teil.id}}</a></td>
+                <td jhiTranslate="{{'aimyApp.Teiltyp.' + teil.teiltyp}}">{{teil.teiltyp}}</td>
+                <td>{{teil.nummer}}</td>
+                <td>{{teil.istmenge}}</td>
+                <td>{{teil.startmenge}}</td>
+                <td>{{teil.prozentsatz}}</td>
+                <td>{{teil.lagerpreis}}</td>
+                <td>{{teil.lagerwert}}</td>
+                <td>{{teil.sicherheitsbestand}}</td>
+                <td>{{teil.vertriebswunsch}}</td>
+                <td>
+                    <div *ngIf="teil.subkomponente">
+                        <a [routerLink]="['../teil', teil.subkomponente?.id ]" >{{teil.subkomponente?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="teil.arbeitsplatz">
+                        <a [routerLink]="['../arbeitsplatz', teil.arbeitsplatz?.id ]" >{{teil.arbeitsplatz?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../teil', teil.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'teil/'+ teil.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'teil/'+ teil.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

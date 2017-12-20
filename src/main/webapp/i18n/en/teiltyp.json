@@ -1,0 +1,10 @@
+{
+    "aimyApp": {
+        "Teiltyp" : {
+            "null": "",
+            "PRODUKT": "PRODUKT",
+            "ERZEUGNIS": "ERZEUGNIS",
+            "KAUFTEIL": "KAUFTEIL"
+        }
+    }
+}

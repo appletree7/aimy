@@ -1,0 +1,32 @@
+{
+    "aimyApp": {
+        "fertigungsauftrag" : {
+            "home": {
+                "title": "Fertigungsauftrags",
+                "createLabel": "Fertigungsauftrag erstellen",
+                "createOrEditLabel": "Fertigungsauftrag erstellen oder bearbeiten"
+            },
+            "created": "Fertigungsauftrag erstellt mit ID {{ param }}",
+            "updated": "Fertigungsauftrag aktualisiert mit ID {{ param }}",
+            "deleted": "Fertigungsauftrag gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Fertigungsauftrag {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Fertigungsauftrag"
+            },
+            "periode": "Periode",
+            "auftragsmenge": "Auftragsmenge",
+            "durchlaufzeit": "Durchlaufzeit",
+            "kostenprolos": "Kostenprolos",
+            "durchschnittlichestueckkosten": "Durchschnittlichestueckkosten",
+            "auftragsstatus": "Auftragsstatus",
+            "begonnen": "Begonnen",
+            "beendet": "Beendet",
+            "dlzminimal": "Dlzminimal",
+            "dlzFaktor": "Dlz Faktor",
+            "los": "Los",
+            "herstellteil": "Herstellteil"
+        }
+    }
+}

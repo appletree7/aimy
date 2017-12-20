@@ -1,0 +1,24 @@
+{
+    "aimyApp": {
+        "los" : {
+            "home": {
+                "title": "Los",
+                "createLabel": "Genera un nuovo Los",
+                "createOrEditLabel": "Genera o modifica un Los"
+            },
+            "created": "&Egrave; stato generato un nuovo Los con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato Los identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato Los con identificatore {{ param }}",
+            "delete": {
+                "question": "Sei sicuro di volere eliminare Los {{ id }}?"
+            },
+            "detail": {
+                "title": "Los"
+            },
+            "periode": "Periode",
+            "menge": "Menge",
+            "durchlaufzeit": "Durchlaufzeit",
+            "kosten": "Kosten"
+        }
+    }
+}

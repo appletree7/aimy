@@ -1,0 +1,87 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myTeilLabel" jhiTranslate="aimyApp.teil.home.createOrEditLabel">Create or edit a Teil</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!teil.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="teil.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.teiltyp" for="field_teiltyp">Teiltyp</label>
+            <select class="form-control" name="teiltyp" [(ngModel)]="teil.teiltyp" id="field_teiltyp" >
+                <option value="PRODUKT">{{'aimyApp.Teiltyp.PRODUKT' | translate}}</option>
+                <option value="ERZEUGNIS">{{'aimyApp.Teiltyp.ERZEUGNIS' | translate}}</option>
+                <option value="KAUFTEIL">{{'aimyApp.Teiltyp.KAUFTEIL' | translate}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.nummer" for="field_nummer">Nummer</label>
+            <input type="text" class="form-control" name="nummer" id="field_nummer"
+                [(ngModel)]="teil.nummer"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.istmenge" for="field_istmenge">Istmenge</label>
+            <input type="number" class="form-control" name="istmenge" id="field_istmenge"
+                [(ngModel)]="teil.istmenge"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.startmenge" for="field_startmenge">Startmenge</label>
+            <input type="number" class="form-control" name="startmenge" id="field_startmenge"
+                [(ngModel)]="teil.startmenge"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.prozentsatz" for="field_prozentsatz">Prozentsatz</label>
+            <input type="number" class="form-control" name="prozentsatz" id="field_prozentsatz"
+                [(ngModel)]="teil.prozentsatz"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.lagerpreis" for="field_lagerpreis">Lagerpreis</label>
+            <input type="number" class="form-control" name="lagerpreis" id="field_lagerpreis"
+                [(ngModel)]="teil.lagerpreis"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.lagerwert" for="field_lagerwert">Lagerwert</label>
+            <input type="number" class="form-control" name="lagerwert" id="field_lagerwert"
+                [(ngModel)]="teil.lagerwert"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.sicherheitsbestand" for="field_sicherheitsbestand">Sicherheitsbestand</label>
+            <input type="number" class="form-control" name="sicherheitsbestand" id="field_sicherheitsbestand"
+                [(ngModel)]="teil.sicherheitsbestand"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.vertriebswunsch" for="field_vertriebswunsch">Vertriebswunsch</label>
+            <input type="number" class="form-control" name="vertriebswunsch" id="field_vertriebswunsch"
+                [(ngModel)]="teil.vertriebswunsch"  />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.subkomponente" for="field_subkomponente">Subkomponente</label>
+            <select class="form-control" id="field_subkomponente" name="subkomponente" [(ngModel)]="teil.subkomponente" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="teilOption.id === teil.subkomponente?.id ? teil.subkomponente : teilOption" *ngFor="let teilOption of teils; trackBy: trackTeilById">{{teilOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.arbeitsplatz" for="field_arbeitsplatz">Arbeitsplatz</label>
+            <select class="form-control" id="field_arbeitsplatz" name="arbeitsplatz" [(ngModel)]="teil.arbeitsplatz" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="arbeitsplatzOption.id === teil.arbeitsplatz?.id ? teil.arbeitsplatz : arbeitsplatzOption" *ngFor="let arbeitsplatzOption of arbeitsplatzs; trackBy: trackArbeitsplatzById">{{arbeitsplatzOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

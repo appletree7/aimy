@@ -1,0 +1,92 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myFertigungsauftragLabel" jhiTranslate="aimyApp.fertigungsauftrag.home.createOrEditLabel">Create or edit a Fertigungsauftrag</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!fertigungsauftrag.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="fertigungsauftrag.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.periode" for="field_periode">Periode</label>
+            <input type="number" class="form-control" name="periode" id="field_periode"
+                [(ngModel)]="fertigungsauftrag.periode"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.auftragsmenge" for="field_auftragsmenge">Auftragsmenge</label>
+            <input type="number" class="form-control" name="auftragsmenge" id="field_auftragsmenge"
+                [(ngModel)]="fertigungsauftrag.auftragsmenge"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.durchlaufzeit" for="field_durchlaufzeit">Durchlaufzeit</label>
+            <input type="number" class="form-control" name="durchlaufzeit" id="field_durchlaufzeit"
+                [(ngModel)]="fertigungsauftrag.durchlaufzeit"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.kostenprolos" for="field_kostenprolos">Kostenprolos</label>
+            <input type="number" class="form-control" name="kostenprolos" id="field_kostenprolos"
+                [(ngModel)]="fertigungsauftrag.kostenprolos"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.durchschnittlichestueckkosten" for="field_durchschnittlichestueckkosten">Durchschnittlichestueckkosten</label>
+            <input type="number" class="form-control" name="durchschnittlichestueckkosten" id="field_durchschnittlichestueckkosten"
+                [(ngModel)]="fertigungsauftrag.durchschnittlichestueckkosten"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.auftragsstatus" for="field_auftragsstatus">Auftragsstatus</label>
+            <select class="form-control" name="auftragsstatus" [(ngModel)]="fertigungsauftrag.auftragsstatus" id="field_auftragsstatus" >
+                <option value="ANGEFANGEN">{{'aimyApp.Auftragstatus.ANGEFANGEN' | translate}}</option>
+                <option value="WARTEND">{{'aimyApp.Auftragstatus.WARTEND' | translate}}</option>
+                <option value="BEENDET">{{'aimyApp.Auftragstatus.BEENDET' | translate}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.begonnen" for="field_begonnen">Begonnen</label>
+            <input type="text" class="form-control" name="begonnen" id="field_begonnen"
+                [(ngModel)]="fertigungsauftrag.begonnen"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.beendet" for="field_beendet">Beendet</label>
+            <input type="text" class="form-control" name="beendet" id="field_beendet"
+                [(ngModel)]="fertigungsauftrag.beendet"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.dlzminimal" for="field_dlzminimal">Dlzminimal</label>
+            <input type="number" class="form-control" name="dlzminimal" id="field_dlzminimal"
+                [(ngModel)]="fertigungsauftrag.dlzminimal"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.dlzFaktor" for="field_dlzFaktor">Dlz Faktor</label>
+            <input type="number" class="form-control" name="dlzFaktor" id="field_dlzFaktor"
+                [(ngModel)]="fertigungsauftrag.dlzFaktor"  />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.los" for="field_los">Los</label>
+            <select class="form-control" id="field_los" name="los" [(ngModel)]="fertigungsauftrag.los" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="losOption.id === fertigungsauftrag.los?.id ? fertigungsauftrag.los : losOption" *ngFor="let losOption of los; trackBy: trackLosById">{{losOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.herstellteil" for="field_herstellteil">Herstellteil</label>
+            <select class="form-control" id="field_herstellteil" name="herstellteil" [(ngModel)]="fertigungsauftrag.herstellteil" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="teilOption.id === fertigungsauftrag.herstellteil?.id ? fertigungsauftrag.herstellteil : teilOption" *ngFor="let teilOption of teils; trackBy: trackTeilById">{{teilOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

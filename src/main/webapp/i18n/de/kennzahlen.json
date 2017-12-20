@@ -1,0 +1,25 @@
+{
+    "aimyApp": {
+        "kennzahlen" : {
+            "home": {
+                "title": "Kennzahlens",
+                "createLabel": "Kennzahlen erstellen",
+                "createOrEditLabel": "Kennzahlen erstellen oder bearbeiten"
+            },
+            "created": "Kennzahlen erstellt mit ID {{ param }}",
+            "updated": "Kennzahlen aktualisiert mit ID {{ param }}",
+            "deleted": "Kennzahlen gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Kennzahlen {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Kennzahlen"
+            },
+            "periode": "Periode",
+            "name": "Name",
+            "aktuell": "Aktuell",
+            "durchschnitt": "Durchschnitt",
+            "gesamt": "Gesamt"
+        }
+    }
+}

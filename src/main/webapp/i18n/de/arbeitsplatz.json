@@ -1,0 +1,29 @@
+{
+    "aimyApp": {
+        "arbeitsplatz" : {
+            "home": {
+                "title": "Arbeitsplatzs",
+                "createLabel": "Arbeitsplatz erstellen",
+                "createOrEditLabel": "Arbeitsplatz erstellen oder bearbeiten"
+            },
+            "created": "Arbeitsplatz erstellt mit ID {{ param }}",
+            "updated": "Arbeitsplatz aktualisiert mit ID {{ param }}",
+            "deleted": "Arbeitsplatz gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Arbeitsplatz {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Arbeitsplatz"
+            },
+            "periode": "Periode",
+            "nummer": "Nummer",
+            "restzeitbedarf": "Restzeitbedarf",
+            "ruestvorgaenge": "Ruestvorgaenge",
+            "leerzeit": "Leerzeit",
+            "lohnleerkosten": "Lohnleerkosten",
+            "lohnkosten": "Lohnkosten",
+            "maschinenstillstandkosten": "Maschinenstillstandkosten",
+            "teil": "Teil"
+        }
+    }
+}

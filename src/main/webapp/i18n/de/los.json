@@ -1,0 +1,24 @@
+{
+    "aimyApp": {
+        "los" : {
+            "home": {
+                "title": "Los",
+                "createLabel": "Los erstellen",
+                "createOrEditLabel": "Los erstellen oder bearbeiten"
+            },
+            "created": "Los erstellt mit ID {{ param }}",
+            "updated": "Los aktualisiert mit ID {{ param }}",
+            "deleted": "Los gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Los {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Los"
+            },
+            "periode": "Periode",
+            "menge": "Menge",
+            "durchlaufzeit": "Durchlaufzeit",
+            "kosten": "Kosten"
+        }
+    }
+}

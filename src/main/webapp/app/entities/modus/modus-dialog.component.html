@@ -1,0 +1,75 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myModusLabel" jhiTranslate="aimyApp.modus.home.createOrEditLabel">Create or edit a Modus</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!modus.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="modus.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.modus.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="modus.name"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.modus.bearbeitungsfaktor" for="field_bearbeitungsfaktor">Bearbeitungsfaktor</label>
+            <input type="number" class="form-control" name="bearbeitungsfaktor" id="field_bearbeitungsfaktor"
+                [(ngModel)]="modus.bearbeitungsfaktor"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.modus.bearbeitungsabweichung" for="field_bearbeitungsabweichung">Bearbeitungsabweichung</label>
+            <input type="number" class="form-control" name="bearbeitungsabweichung" id="field_bearbeitungsabweichung"
+                [(ngModel)]="modus.bearbeitungsabweichung"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.modus.lieferfaktor" for="field_lieferfaktor">Lieferfaktor</label>
+            <input type="number" class="form-control" name="lieferfaktor" id="field_lieferfaktor"
+                [(ngModel)]="modus.lieferfaktor"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.modus.lieferabweichung" for="field_lieferabweichung">Lieferabweichung</label>
+            <input type="number" class="form-control" name="lieferabweichung" id="field_lieferabweichung"
+                [(ngModel)]="modus.lieferabweichung"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.modus.mengenfakor" for="field_mengenfakor">Mengenfakor</label>
+            <input type="number" class="form-control" name="mengenfakor" id="field_mengenfakor"
+                [(ngModel)]="modus.mengenfakor"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.modus.mengenabweichung" for="field_mengenabweichung">Mengenabweichung</label>
+            <input type="number" class="form-control" name="mengenabweichung" id="field_mengenabweichung"
+                [(ngModel)]="modus.mengenabweichung"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.modus.preisfaktor" for="field_preisfaktor">Preisfaktor</label>
+            <input type="number" class="form-control" name="preisfaktor" id="field_preisfaktor"
+                [(ngModel)]="modus.preisfaktor"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.modus.diskontfaktor" for="field_diskontfaktor">Diskontfaktor</label>
+            <input type="number" class="form-control" name="diskontfaktor" id="field_diskontfaktor"
+                [(ngModel)]="modus.diskontfaktor"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.modus.bestellkostenfaktor" for="field_bestellkostenfaktor">Bestellkostenfaktor</label>
+            <input type="number" class="form-control" name="bestellkostenfaktor" id="field_bestellkostenfaktor"
+                [(ngModel)]="modus.bestellkostenfaktor"  />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

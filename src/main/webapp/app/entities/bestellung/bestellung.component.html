@@ -1,0 +1,88 @@
+<div>
+    <h2>
+        <span jhiTranslate="aimyApp.bestellung.home.title">Bestellungs</span>
+        <button class="btn btn-primary float-right jh-create-entity create-bestellung" [routerLink]="['/', { outlets: { popup: ['bestellung-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="aimyApp.bestellung.home.createLabel">
+            Create new Bestellung
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="bestellungs">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="aimyApp.bestellung.periode">Periode</span></th>
+            <th><span jhiTranslate="aimyApp.bestellung.nummer">Nummer</span></th>
+            <th><span jhiTranslate="aimyApp.bestellung.lieferfrist">Lieferfrist</span></th>
+            <th><span jhiTranslate="aimyApp.bestellung.lieferzeit">Lieferzeit</span></th>
+            <th><span jhiTranslate="aimyApp.bestellung.kaufmenge">Kaufmenge</span></th>
+            <th><span jhiTranslate="aimyApp.bestellung.diskontmenge">Diskontmenge</span></th>
+            <th><span jhiTranslate="aimyApp.bestellung.materialkosten">Materialkosten</span></th>
+            <th><span jhiTranslate="aimyApp.bestellung.bestellkosten">Bestellkosten</span></th>
+            <th><span jhiTranslate="aimyApp.bestellung.gesamtkosten">Gesamtkosten</span></th>
+            <th><span jhiTranslate="aimyApp.bestellung.stueckkosten">Stueckkosten</span></th>
+            <th><span jhiTranslate="aimyApp.bestellung.bestellstatus">Bestellstatus</span></th>
+            <th><span jhiTranslate="aimyApp.bestellung.modus">Modus</span></th>
+            <th><span jhiTranslate="aimyApp.bestellung.kaufteil">Kaufteil</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let bestellung of bestellungs ;trackBy: trackId">
+                <td><a [routerLink]="['../bestellung', bestellung.id ]">{{bestellung.id}}</a></td>
+                <td>{{bestellung.periode}}</td>
+                <td>{{bestellung.nummer}}</td>
+                <td>{{bestellung.lieferfrist}}</td>
+                <td>{{bestellung.lieferzeit}}</td>
+                <td>{{bestellung.kaufmenge}}</td>
+                <td>{{bestellung.diskontmenge}}</td>
+                <td>{{bestellung.materialkosten}}</td>
+                <td>{{bestellung.bestellkosten}}</td>
+                <td>{{bestellung.gesamtkosten}}</td>
+                <td>{{bestellung.stueckkosten}}</td>
+                <td jhiTranslate="{{'aimyApp.Bestellstatus.' + bestellung.bestellstatus}}">{{bestellung.bestellstatus}}</td>
+                <td>
+                    <div *ngIf="bestellung.modus">
+                        <a [routerLink]="['../modus', bestellung.modus?.id ]" >{{bestellung.modus?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="bestellung.kaufteil">
+                        <a [routerLink]="['../teil', bestellung.kaufteil?.id ]" >{{bestellung.kaufteil?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../bestellung', bestellung.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'bestellung/'+ bestellung.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'bestellung/'+ bestellung.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

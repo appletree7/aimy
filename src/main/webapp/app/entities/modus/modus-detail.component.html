@@ -1,0 +1,61 @@
+
+<div *ngIf="modus">
+    <h2><span jhiTranslate="aimyApp.modus.detail.title">Modus</span> {{modus.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="aimyApp.modus.name">Name</span></dt>
+        <dd>
+            <span>{{modus.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.modus.bearbeitungsfaktor">Bearbeitungsfaktor</span></dt>
+        <dd>
+            <span>{{modus.bearbeitungsfaktor}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.modus.bearbeitungsabweichung">Bearbeitungsabweichung</span></dt>
+        <dd>
+            <span>{{modus.bearbeitungsabweichung}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.modus.lieferfaktor">Lieferfaktor</span></dt>
+        <dd>
+            <span>{{modus.lieferfaktor}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.modus.lieferabweichung">Lieferabweichung</span></dt>
+        <dd>
+            <span>{{modus.lieferabweichung}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.modus.mengenfakor">Mengenfakor</span></dt>
+        <dd>
+            <span>{{modus.mengenfakor}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.modus.mengenabweichung">Mengenabweichung</span></dt>
+        <dd>
+            <span>{{modus.mengenabweichung}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.modus.preisfaktor">Preisfaktor</span></dt>
+        <dd>
+            <span>{{modus.preisfaktor}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.modus.diskontfaktor">Diskontfaktor</span></dt>
+        <dd>
+            <span>{{modus.diskontfaktor}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.modus.bestellkostenfaktor">Bestellkostenfaktor</span></dt>
+        <dd>
+            <span>{{modus.bestellkostenfaktor}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'modus/'+ modus.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

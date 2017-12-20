@@ -1,0 +1,70 @@
+<div>
+    <h2>
+        <span jhiTranslate="aimyApp.arbeitsplatz.home.title">Arbeitsplatzs</span>
+        <button class="btn btn-primary float-right jh-create-entity create-arbeitsplatz" [routerLink]="['/', { outlets: { popup: ['arbeitsplatz-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="aimyApp.arbeitsplatz.home.createLabel">
+            Create new Arbeitsplatz
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="arbeitsplatzs">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="aimyApp.arbeitsplatz.periode">Periode</span></th>
+            <th><span jhiTranslate="aimyApp.arbeitsplatz.nummer">Nummer</span></th>
+            <th><span jhiTranslate="aimyApp.arbeitsplatz.restzeitbedarf">Restzeitbedarf</span></th>
+            <th><span jhiTranslate="aimyApp.arbeitsplatz.ruestvorgaenge">Ruestvorgaenge</span></th>
+            <th><span jhiTranslate="aimyApp.arbeitsplatz.leerzeit">Leerzeit</span></th>
+            <th><span jhiTranslate="aimyApp.arbeitsplatz.lohnleerkosten">Lohnleerkosten</span></th>
+            <th><span jhiTranslate="aimyApp.arbeitsplatz.lohnkosten">Lohnkosten</span></th>
+            <th><span jhiTranslate="aimyApp.arbeitsplatz.maschinenstillstandkosten">Maschinenstillstandkosten</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let arbeitsplatz of arbeitsplatzs ;trackBy: trackId">
+                <td><a [routerLink]="['../arbeitsplatz', arbeitsplatz.id ]">{{arbeitsplatz.id}}</a></td>
+                <td>{{arbeitsplatz.periode}}</td>
+                <td>{{arbeitsplatz.nummer}}</td>
+                <td>{{arbeitsplatz.restzeitbedarf}}</td>
+                <td>{{arbeitsplatz.ruestvorgaenge}}</td>
+                <td>{{arbeitsplatz.leerzeit}}</td>
+                <td>{{arbeitsplatz.lohnleerkosten}}</td>
+                <td>{{arbeitsplatz.lohnkosten}}</td>
+                <td>{{arbeitsplatz.maschinenstillstandkosten}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../arbeitsplatz', arbeitsplatz.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'arbeitsplatz/'+ arbeitsplatz.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'arbeitsplatz/'+ arbeitsplatz.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

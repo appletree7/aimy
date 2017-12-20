@@ -1,0 +1,28 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "periode",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "menge",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "durchlaufzeit",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "kosten",
+            "fieldType": "Double"
+        }
+    ],
+    "changelogDate": "20171220194419",
+    "entityTableName": "los",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false
+}

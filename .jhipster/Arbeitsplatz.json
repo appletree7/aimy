@@ -1,0 +1,52 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "teil",
+            "otherEntityName": "teil",
+            "otherEntityRelationshipName": "arbeitsplatz"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "periode",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "nummer",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "restzeitbedarf",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "ruestvorgaenge",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "leerzeit",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "lohnleerkosten",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "lohnkosten",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "maschinenstillstandkosten",
+            "fieldType": "Double"
+        }
+    ],
+    "changelogDate": "20171220194424",
+    "javadoc": "The Arbeitsplatz entity.",
+    "entityTableName": "arbeitsplatz",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false
+}

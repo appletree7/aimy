@@ -1,0 +1,33 @@
+{
+    "aimyApp": {
+        "bestellung" : {
+            "home": {
+                "title": "Bestellungs",
+                "createLabel": "Crear nuevo Bestellung",
+                "createOrEditLabel": "Crear o editar Bestellung"
+            },
+            "created": "Un nuevo Bestellung ha sido creado con el identificador {{ param }}",
+            "updated": "Un Bestellung ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Bestellung ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Bestellung {{ id }}?"
+            },
+            "detail": {
+                "title": "Bestellung"
+            },
+            "periode": "Periode",
+            "nummer": "Nummer",
+            "lieferfrist": "Lieferfrist",
+            "lieferzeit": "Lieferzeit",
+            "kaufmenge": "Kaufmenge",
+            "diskontmenge": "Diskontmenge",
+            "materialkosten": "Materialkosten",
+            "bestellkosten": "Bestellkosten",
+            "gesamtkosten": "Gesamtkosten",
+            "stueckkosten": "Stueckkosten",
+            "bestellstatus": "Bestellstatus",
+            "modus": "Modus",
+            "kaufteil": "Kaufteil"
+        }
+    }
+}

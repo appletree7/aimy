@@ -1,0 +1,61 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "bestellung",
+            "otherEntityName": "bestellung",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "modus"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "bearbeitungsfaktor",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "bearbeitungsabweichung",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "lieferfaktor",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "lieferabweichung",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "mengenfakor",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "mengenabweichung",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "preisfaktor",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "diskontfaktor",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "bestellkostenfaktor",
+            "fieldType": "Double"
+        }
+    ],
+    "changelogDate": "20171220194420",
+    "javadoc": "The Modus entity.",
+    "entityTableName": "modus",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false
+}

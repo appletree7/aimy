@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Fertigungsauftrag.
+    -->
+    <changeSet id="20171220194423-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="los_id"
+                                 baseTableName="fertigungsauftrag"
+                                 constraintName="fk_fertigungsauftrag_los_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="los"/>
+
+        <addForeignKeyConstraint baseColumnNames="herstellteil_id"
+                                 baseTableName="fertigungsauftrag"
+                                 constraintName="fk_fertigungsauftrag_herstellteil_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="teil"/>
+
+    </changeSet>
+</databaseChangeLog>

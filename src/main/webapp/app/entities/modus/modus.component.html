@@ -1,0 +1,74 @@
+<div>
+    <h2>
+        <span jhiTranslate="aimyApp.modus.home.title">Moduses</span>
+        <button class="btn btn-primary float-right jh-create-entity create-modus" [routerLink]="['/', { outlets: { popup: ['modus-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="aimyApp.modus.home.createLabel">
+            Create new Modus
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="moduses">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="aimyApp.modus.name">Name</span></th>
+            <th><span jhiTranslate="aimyApp.modus.bearbeitungsfaktor">Bearbeitungsfaktor</span></th>
+            <th><span jhiTranslate="aimyApp.modus.bearbeitungsabweichung">Bearbeitungsabweichung</span></th>
+            <th><span jhiTranslate="aimyApp.modus.lieferfaktor">Lieferfaktor</span></th>
+            <th><span jhiTranslate="aimyApp.modus.lieferabweichung">Lieferabweichung</span></th>
+            <th><span jhiTranslate="aimyApp.modus.mengenfakor">Mengenfakor</span></th>
+            <th><span jhiTranslate="aimyApp.modus.mengenabweichung">Mengenabweichung</span></th>
+            <th><span jhiTranslate="aimyApp.modus.preisfaktor">Preisfaktor</span></th>
+            <th><span jhiTranslate="aimyApp.modus.diskontfaktor">Diskontfaktor</span></th>
+            <th><span jhiTranslate="aimyApp.modus.bestellkostenfaktor">Bestellkostenfaktor</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let modus of moduses ;trackBy: trackId">
+                <td><a [routerLink]="['../modus', modus.id ]">{{modus.id}}</a></td>
+                <td>{{modus.name}}</td>
+                <td>{{modus.bearbeitungsfaktor}}</td>
+                <td>{{modus.bearbeitungsabweichung}}</td>
+                <td>{{modus.lieferfaktor}}</td>
+                <td>{{modus.lieferabweichung}}</td>
+                <td>{{modus.mengenfakor}}</td>
+                <td>{{modus.mengenabweichung}}</td>
+                <td>{{modus.preisfaktor}}</td>
+                <td>{{modus.diskontfaktor}}</td>
+                <td>{{modus.bestellkostenfaktor}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../modus', modus.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'modus/'+ modus.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'modus/'+ modus.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+{
+    "aimyApp": {
+        "kennzahlen" : {
+            "home": {
+                "title": "Kennzahlens",
+                "createLabel": "Créer un nouveau Kennzahlen",
+                "createOrEditLabel": "Créer ou éditer un Kennzahlen"
+            },
+            "created": "Un nouveau Kennzahlen a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Kennzahlen avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Kennzahlen avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Kennzahlen {{ id }} ?"
+            },
+            "detail": {
+                "title": "Kennzahlen"
+            },
+            "periode": "Periode",
+            "name": "Name",
+            "aktuell": "Aktuell",
+            "durchschnitt": "Durchschnitt",
+            "gesamt": "Gesamt"
+        }
+    }
+}

@@ -1,0 +1,73 @@
+
+<div *ngIf="fertigungsauftrag">
+    <h2><span jhiTranslate="aimyApp.fertigungsauftrag.detail.title">Fertigungsauftrag</span> {{fertigungsauftrag.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.periode">Periode</span></dt>
+        <dd>
+            <span>{{fertigungsauftrag.periode}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.auftragsmenge">Auftragsmenge</span></dt>
+        <dd>
+            <span>{{fertigungsauftrag.auftragsmenge}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.durchlaufzeit">Durchlaufzeit</span></dt>
+        <dd>
+            <span>{{fertigungsauftrag.durchlaufzeit}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.kostenprolos">Kostenprolos</span></dt>
+        <dd>
+            <span>{{fertigungsauftrag.kostenprolos}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.durchschnittlichestueckkosten">Durchschnittlichestueckkosten</span></dt>
+        <dd>
+            <span>{{fertigungsauftrag.durchschnittlichestueckkosten}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.auftragsstatus">Auftragsstatus</span></dt>
+        <dd>
+            <span jhiTranslate="{{'aimyApp.Auftragstatus.' + fertigungsauftrag.auftragsstatus}}">{{fertigungsauftrag.auftragsstatus}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.begonnen">Begonnen</span></dt>
+        <dd>
+            <span>{{fertigungsauftrag.begonnen}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.beendet">Beendet</span></dt>
+        <dd>
+            <span>{{fertigungsauftrag.beendet}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.dlzminimal">Dlzminimal</span></dt>
+        <dd>
+            <span>{{fertigungsauftrag.dlzminimal}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.dlzFaktor">Dlz Faktor</span></dt>
+        <dd>
+            <span>{{fertigungsauftrag.dlzFaktor}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.los">Los</span></dt>
+        <dd>
+            <div *ngIf="fertigungsauftrag.los">
+                <a [routerLink]="['/los', fertigungsauftrag.los?.id]">{{fertigungsauftrag.los?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.herstellteil">Herstellteil</span></dt>
+        <dd>
+            <div *ngIf="fertigungsauftrag.herstellteil">
+                <a [routerLink]="['/teil', fertigungsauftrag.herstellteil?.id]">{{fertigungsauftrag.herstellteil?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'fertigungsauftrag/'+ fertigungsauftrag.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

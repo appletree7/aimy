@@ -44,6 +44,15 @@ public class CacheConfiguration {
             cm.createCache(com.ibsys2.aimy.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.ibsys2.aimy.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.ibsys2.aimy.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(com.ibsys2.aimy.domain.Los.class.getName(), jcacheConfiguration);
+            cm.createCache(com.ibsys2.aimy.domain.Modus.class.getName(), jcacheConfiguration);
+            cm.createCache(com.ibsys2.aimy.domain.Teil.class.getName(), jcacheConfiguration);
+            cm.createCache(com.ibsys2.aimy.domain.Teil.class.getName() + ".fertigungsauftrags", jcacheConfiguration);
+            cm.createCache(com.ibsys2.aimy.domain.Bestellung.class.getName(), jcacheConfiguration);
+            cm.createCache(com.ibsys2.aimy.domain.Fertigungsauftrag.class.getName(), jcacheConfiguration);
+            cm.createCache(com.ibsys2.aimy.domain.Arbeitsplatz.class.getName(), jcacheConfiguration);
+            cm.createCache(com.ibsys2.aimy.domain.Arbeitsplatz.class.getName() + ".teils", jcacheConfiguration);
+            cm.createCache(com.ibsys2.aimy.domain.Kennzahlen.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

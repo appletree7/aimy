@@ -1,0 +1,10 @@
+{
+    "aimyApp": {
+        "Auftragstatus" : {
+            "null": "",
+            "ANGEFANGEN": "ANGEFANGEN",
+            "WARTEND": "WARTEND",
+            "BEENDET": "BEENDET"
+        }
+    }
+}

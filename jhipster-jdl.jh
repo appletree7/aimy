@@ -1,0 +1,138 @@
+entity Los
+{
+	periode Integer,
+    menge Integer,
+    durchlaufzeit Double,
+    kosten Double,
+}
+
+enum Teiltyp {
+	PRODUKT, ERZEUGNIS, KAUFTEIL
+}
+
+/**
+ * The Modus entity.
+ */
+entity Modus {
+ 	name String,
+	bearbeitungsfaktor Double,
+    bearbeitungsabweichung Double,
+	lieferfaktor Double,
+    lieferabweichung Double,
+    mengenfakor Double,
+    mengenabweichung Double,
+    preisfaktor Double,
+    diskontfaktor Double,
+    bestellkostenfaktor Double
+}
+
+/**
+ * The Herstellteil entity.
+ */
+entity Teil {
+    teiltyp Teiltyp
+    nummer String,
+	istmenge Integer,
+    startmenge Integer,
+    prozentsatz Double,
+    lagerpreis Double,
+    lagerwert Double,
+    sicherheitsbestand Integer,
+    vertriebswunsch Integer
+}
+
+enum Bestellstatus{
+	GELIEFERT, UNTERWEGS
+}
+
+/**
+ * The Bestellung entity.
+ */
+entity Bestellung {
+	periode Integer,
+	nummer Integer,
+    lieferfrist Double,
+    lieferzeit Double,
+    kaufmenge Integer,
+    diskontmenge Integer,
+    materialkosten Double,
+    bestellkosten Double,
+    gesamtkosten Double,
+    stueckkosten Double,
+    bestellstatus Bestellstatus
+}
+
+enum Auftragstatus {
+	ANGEFANGEN, WARTEND, BEENDET
+}
+
+/**
+ * The Fertigungsuftrag entity.
+ */
+entity Fertigungsauftrag {
+	periode Integer,
+    auftragsmenge Integer,
+    durchlaufzeit Double,
+    kosten_pro_los Double,
+    durchschnittliche_stueckkosten Double,
+    auftragsstatus Auftragstatus,
+    begonnen String,
+	beendet String,
+    dlz_minimal Integer,
+	dlz_Faktor Double
+}
+
+/**
+ * The Arbeitsplatz entity.
+ */
+entity Arbeitsplatz {
+	periode Integer,
+	nummer Integer,
+    //menge Integer,
+    restzeitbedarf Double,
+    ruestvorgaenge Integer,
+    leerzeit Double,
+    lohnleerkosten Double,
+    lohnkosten Double,
+    maschinenstillstandkosten Double,
+	//schicht Integer,
+	//ueberstunden Double,
+}
+
+entity Kennzahlen {
+   periode Integer,
+   name String,
+   aktuell Double,
+   durchschnitt Double,
+   gesamt Double
+}
+
+
+relationship ManyToOne {
+	Teil{subkomponente} to Teil
+}
+
+relationship OneToMany {
+	Arbeitsplatz to Teil{arbeitsplatz}
+}
+
+relationship OneToOne {
+	Bestellung{modus} to Modus{bestellung}
+}
+
+relationship OneToOne {
+	Bestellung{kaufteil} to Teil
+}
+
+relationship OneToMany {
+	Teil to Fertigungsauftrag{herstellteil}
+}
+
+relationship ManyToOne {
+	Fertigungsauftrag{los} to Los
+}
+
+
+// Set service options to all except few
+service all with serviceImpl
+

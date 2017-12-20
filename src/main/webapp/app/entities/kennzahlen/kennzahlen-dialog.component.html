@@ -1,0 +1,50 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myKennzahlenLabel" jhiTranslate="aimyApp.kennzahlen.home.createOrEditLabel">Create or edit a Kennzahlen</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!kennzahlen.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="kennzahlen.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.kennzahlen.periode" for="field_periode">Periode</label>
+            <input type="number" class="form-control" name="periode" id="field_periode"
+                [(ngModel)]="kennzahlen.periode"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.kennzahlen.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="kennzahlen.name"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.kennzahlen.aktuell" for="field_aktuell">Aktuell</label>
+            <input type="number" class="form-control" name="aktuell" id="field_aktuell"
+                [(ngModel)]="kennzahlen.aktuell"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.kennzahlen.durchschnitt" for="field_durchschnitt">Durchschnitt</label>
+            <input type="number" class="form-control" name="durchschnitt" id="field_durchschnitt"
+                [(ngModel)]="kennzahlen.durchschnitt"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.kennzahlen.gesamt" for="field_gesamt">Gesamt</label>
+            <input type="number" class="form-control" name="gesamt" id="field_gesamt"
+                [(ngModel)]="kennzahlen.gesamt"  />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

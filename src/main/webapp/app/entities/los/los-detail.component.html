@@ -1,0 +1,37 @@
+
+<div *ngIf="los">
+    <h2><span jhiTranslate="aimyApp.los.detail.title">Los</span> {{los.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="aimyApp.los.periode">Periode</span></dt>
+        <dd>
+            <span>{{los.periode}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.los.menge">Menge</span></dt>
+        <dd>
+            <span>{{los.menge}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.los.durchlaufzeit">Durchlaufzeit</span></dt>
+        <dd>
+            <span>{{los.durchlaufzeit}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.los.kosten">Kosten</span></dt>
+        <dd>
+            <span>{{los.kosten}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'los/'+ los.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

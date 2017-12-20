@@ -1,0 +1,64 @@
+<div>
+    <h2>
+        <span jhiTranslate="aimyApp.kennzahlen.home.title">Kennzahlens</span>
+        <button class="btn btn-primary float-right jh-create-entity create-kennzahlen" [routerLink]="['/', { outlets: { popup: ['kennzahlen-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="aimyApp.kennzahlen.home.createLabel">
+            Create new Kennzahlen
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="kennzahlens">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="aimyApp.kennzahlen.periode">Periode</span></th>
+            <th><span jhiTranslate="aimyApp.kennzahlen.name">Name</span></th>
+            <th><span jhiTranslate="aimyApp.kennzahlen.aktuell">Aktuell</span></th>
+            <th><span jhiTranslate="aimyApp.kennzahlen.durchschnitt">Durchschnitt</span></th>
+            <th><span jhiTranslate="aimyApp.kennzahlen.gesamt">Gesamt</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let kennzahlen of kennzahlens ;trackBy: trackId">
+                <td><a [routerLink]="['../kennzahlen', kennzahlen.id ]">{{kennzahlen.id}}</a></td>
+                <td>{{kennzahlen.periode}}</td>
+                <td>{{kennzahlen.name}}</td>
+                <td>{{kennzahlen.aktuell}}</td>
+                <td>{{kennzahlen.durchschnitt}}</td>
+                <td>{{kennzahlen.gesamt}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../kennzahlen', kennzahlen.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'kennzahlen/'+ kennzahlen.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'kennzahlen/'+ kennzahlen.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

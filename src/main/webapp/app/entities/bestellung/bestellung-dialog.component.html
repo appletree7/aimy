@@ -1,0 +1,96 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myBestellungLabel" jhiTranslate="aimyApp.bestellung.home.createOrEditLabel">Create or edit a Bestellung</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!bestellung.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="bestellung.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.bestellung.periode" for="field_periode">Periode</label>
+            <input type="number" class="form-control" name="periode" id="field_periode"
+                [(ngModel)]="bestellung.periode"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.bestellung.nummer" for="field_nummer">Nummer</label>
+            <input type="number" class="form-control" name="nummer" id="field_nummer"
+                [(ngModel)]="bestellung.nummer"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.bestellung.lieferfrist" for="field_lieferfrist">Lieferfrist</label>
+            <input type="number" class="form-control" name="lieferfrist" id="field_lieferfrist"
+                [(ngModel)]="bestellung.lieferfrist"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.bestellung.lieferzeit" for="field_lieferzeit">Lieferzeit</label>
+            <input type="number" class="form-control" name="lieferzeit" id="field_lieferzeit"
+                [(ngModel)]="bestellung.lieferzeit"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.bestellung.kaufmenge" for="field_kaufmenge">Kaufmenge</label>
+            <input type="number" class="form-control" name="kaufmenge" id="field_kaufmenge"
+                [(ngModel)]="bestellung.kaufmenge"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.bestellung.diskontmenge" for="field_diskontmenge">Diskontmenge</label>
+            <input type="number" class="form-control" name="diskontmenge" id="field_diskontmenge"
+                [(ngModel)]="bestellung.diskontmenge"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.bestellung.materialkosten" for="field_materialkosten">Materialkosten</label>
+            <input type="number" class="form-control" name="materialkosten" id="field_materialkosten"
+                [(ngModel)]="bestellung.materialkosten"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.bestellung.bestellkosten" for="field_bestellkosten">Bestellkosten</label>
+            <input type="number" class="form-control" name="bestellkosten" id="field_bestellkosten"
+                [(ngModel)]="bestellung.bestellkosten"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.bestellung.gesamtkosten" for="field_gesamtkosten">Gesamtkosten</label>
+            <input type="number" class="form-control" name="gesamtkosten" id="field_gesamtkosten"
+                [(ngModel)]="bestellung.gesamtkosten"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.bestellung.stueckkosten" for="field_stueckkosten">Stueckkosten</label>
+            <input type="number" class="form-control" name="stueckkosten" id="field_stueckkosten"
+                [(ngModel)]="bestellung.stueckkosten"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.bestellung.bestellstatus" for="field_bestellstatus">Bestellstatus</label>
+            <select class="form-control" name="bestellstatus" [(ngModel)]="bestellung.bestellstatus" id="field_bestellstatus" >
+                <option value="GELIEFERT">{{'aimyApp.Bestellstatus.GELIEFERT' | translate}}</option>
+                <option value="UNTERWEGS">{{'aimyApp.Bestellstatus.UNTERWEGS' | translate}}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.bestellung.modus" for="field_modus">Modus</label>
+            <select class="form-control" id="field_modus" name="modus" [(ngModel)]="bestellung.modus">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="modusOption.id === bestellung.modus?.id ? bestellung.modus : modusOption" *ngFor="let modusOption of moduses; trackBy: trackModusById">{{modusOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.bestellung.kaufteil" for="field_kaufteil">Kaufteil</label>
+            <select class="form-control" id="field_kaufteil" name="kaufteil" [(ngModel)]="bestellung.kaufteil">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="teilOption.id === bestellung.kaufteil?.id ? bestellung.kaufteil : teilOption" *ngFor="let teilOption of kaufteils; trackBy: trackTeilById">{{teilOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

@@ -1,0 +1,53 @@
+
+<div *ngIf="arbeitsplatz">
+    <h2><span jhiTranslate="aimyApp.arbeitsplatz.detail.title">Arbeitsplatz</span> {{arbeitsplatz.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="aimyApp.arbeitsplatz.periode">Periode</span></dt>
+        <dd>
+            <span>{{arbeitsplatz.periode}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.arbeitsplatz.nummer">Nummer</span></dt>
+        <dd>
+            <span>{{arbeitsplatz.nummer}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.arbeitsplatz.restzeitbedarf">Restzeitbedarf</span></dt>
+        <dd>
+            <span>{{arbeitsplatz.restzeitbedarf}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.arbeitsplatz.ruestvorgaenge">Ruestvorgaenge</span></dt>
+        <dd>
+            <span>{{arbeitsplatz.ruestvorgaenge}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.arbeitsplatz.leerzeit">Leerzeit</span></dt>
+        <dd>
+            <span>{{arbeitsplatz.leerzeit}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.arbeitsplatz.lohnleerkosten">Lohnleerkosten</span></dt>
+        <dd>
+            <span>{{arbeitsplatz.lohnleerkosten}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.arbeitsplatz.lohnkosten">Lohnkosten</span></dt>
+        <dd>
+            <span>{{arbeitsplatz.lohnkosten}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.arbeitsplatz.maschinenstillstandkosten">Maschinenstillstandkosten</span></dt>
+        <dd>
+            <span>{{arbeitsplatz.maschinenstillstandkosten}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'arbeitsplatz/'+ arbeitsplatz.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

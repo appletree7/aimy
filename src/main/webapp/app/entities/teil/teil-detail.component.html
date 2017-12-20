@@ -1,0 +1,69 @@
+
+<div *ngIf="teil">
+    <h2><span jhiTranslate="aimyApp.teil.detail.title">Teil</span> {{teil.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="aimyApp.teil.teiltyp">Teiltyp</span></dt>
+        <dd>
+            <span jhiTranslate="{{'aimyApp.Teiltyp.' + teil.teiltyp}}">{{teil.teiltyp}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.teil.nummer">Nummer</span></dt>
+        <dd>
+            <span>{{teil.nummer}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.teil.istmenge">Istmenge</span></dt>
+        <dd>
+            <span>{{teil.istmenge}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.teil.startmenge">Startmenge</span></dt>
+        <dd>
+            <span>{{teil.startmenge}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.teil.prozentsatz">Prozentsatz</span></dt>
+        <dd>
+            <span>{{teil.prozentsatz}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.teil.lagerpreis">Lagerpreis</span></dt>
+        <dd>
+            <span>{{teil.lagerpreis}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.teil.lagerwert">Lagerwert</span></dt>
+        <dd>
+            <span>{{teil.lagerwert}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.teil.sicherheitsbestand">Sicherheitsbestand</span></dt>
+        <dd>
+            <span>{{teil.sicherheitsbestand}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.teil.vertriebswunsch">Vertriebswunsch</span></dt>
+        <dd>
+            <span>{{teil.vertriebswunsch}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.teil.subkomponente">Subkomponente</span></dt>
+        <dd>
+            <div *ngIf="teil.subkomponente">
+                <a [routerLink]="['/teil', teil.subkomponente?.id]">{{teil.subkomponente?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.teil.arbeitsplatz">Arbeitsplatz</span></dt>
+        <dd>
+            <div *ngIf="teil.arbeitsplatz">
+                <a [routerLink]="['/arbeitsplatz', teil.arbeitsplatz?.id]">{{teil.arbeitsplatz?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'teil/'+ teil.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

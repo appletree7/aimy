@@ -1,0 +1,31 @@
+{
+    "aimyApp": {
+        "modus" : {
+            "home": {
+                "title": "Moduses",
+                "createLabel": "Genera un nuovo Modus",
+                "createOrEditLabel": "Genera o modifica un Modus"
+            },
+            "created": "&Egrave; stato generato un nuovo Modus con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato Modus identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato Modus con identificatore {{ param }}",
+            "delete": {
+                "question": "Sei sicuro di volere eliminare Modus {{ id }}?"
+            },
+            "detail": {
+                "title": "Modus"
+            },
+            "name": "Name",
+            "bearbeitungsfaktor": "Bearbeitungsfaktor",
+            "bearbeitungsabweichung": "Bearbeitungsabweichung",
+            "lieferfaktor": "Lieferfaktor",
+            "lieferabweichung": "Lieferabweichung",
+            "mengenfakor": "Mengenfakor",
+            "mengenabweichung": "Mengenabweichung",
+            "preisfaktor": "Preisfaktor",
+            "diskontfaktor": "Diskontfaktor",
+            "bestellkostenfaktor": "Bestellkostenfaktor",
+            "bestellung": "Bestellung"
+        }
+    }
+}

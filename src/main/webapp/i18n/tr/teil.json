@@ -1,0 +1,32 @@
+{
+    "aimyApp": {
+        "teil" : {
+            "home": {
+                "title": "Teils",
+                "createLabel": "Create a new Teil",
+                "createOrEditLabel": "Create or edit a Teil"
+            },
+            "created": "A new Teil is created with identifier {{ param }}",
+            "updated": "A Teil is updated with identifier {{ param }}",
+            "deleted": "A Teil is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Teil {{ id }}?"
+            },
+            "detail": {
+                "title": "Teil"
+            },
+            "teiltyp": "Teiltyp",
+            "nummer": "Nummer",
+            "istmenge": "Istmenge",
+            "startmenge": "Startmenge",
+            "prozentsatz": "Prozentsatz",
+            "lagerpreis": "Lagerpreis",
+            "lagerwert": "Lagerwert",
+            "sicherheitsbestand": "Sicherheitsbestand",
+            "vertriebswunsch": "Vertriebswunsch",
+            "fertigungsauftrag": "Fertigungsauftrag",
+            "subkomponente": "Subkomponente",
+            "arbeitsplatz": "Arbeitsplatz"
+        }
+    }
+}

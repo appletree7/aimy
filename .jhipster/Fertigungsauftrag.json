@@ -1,0 +1,67 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "los",
+            "otherEntityName": "los",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "herstellteil",
+            "otherEntityName": "teil",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "periode",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "auftragsmenge",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "durchlaufzeit",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "kostenprolos",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "durchschnittlichestueckkosten",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "auftragsstatus",
+            "fieldType": "Auftragstatus",
+            "fieldValues": "ANGEFANGEN,WARTEND,BEENDET"
+        },
+        {
+            "fieldName": "begonnen",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "beendet",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dlzminimal",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "dlzFaktor",
+            "fieldType": "Double"
+        }
+    ],
+    "changelogDate": "20171220194423",
+    "javadoc": "The Fertigungsuftrag entity.",
+    "entityTableName": "fertigungsauftrag",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false
+}

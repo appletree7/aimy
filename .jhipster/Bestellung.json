@@ -1,0 +1,75 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "modus",
+            "otherEntityName": "modus",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "bestellung"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "kaufteil",
+            "otherEntityName": "teil",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "bestellung"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "periode",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "nummer",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "lieferfrist",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "lieferzeit",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "kaufmenge",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "diskontmenge",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "materialkosten",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "bestellkosten",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "gesamtkosten",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "stueckkosten",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "bestellstatus",
+            "fieldType": "Bestellstatus",
+            "fieldValues": "GELIEFERT,UNTERWEGS"
+        }
+    ],
+    "changelogDate": "20171220194422",
+    "javadoc": "The Bestellung entity.",
+    "entityTableName": "bestellung",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false
+}

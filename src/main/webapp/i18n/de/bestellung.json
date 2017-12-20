@@ -1,0 +1,33 @@
+{
+    "aimyApp": {
+        "bestellung" : {
+            "home": {
+                "title": "Bestellungs",
+                "createLabel": "Bestellung erstellen",
+                "createOrEditLabel": "Bestellung erstellen oder bearbeiten"
+            },
+            "created": "Bestellung erstellt mit ID {{ param }}",
+            "updated": "Bestellung aktualisiert mit ID {{ param }}",
+            "deleted": "Bestellung gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Bestellung {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Bestellung"
+            },
+            "periode": "Periode",
+            "nummer": "Nummer",
+            "lieferfrist": "Lieferfrist",
+            "lieferzeit": "Lieferzeit",
+            "kaufmenge": "Kaufmenge",
+            "diskontmenge": "Diskontmenge",
+            "materialkosten": "Materialkosten",
+            "bestellkosten": "Bestellkosten",
+            "gesamtkosten": "Gesamtkosten",
+            "stueckkosten": "Stueckkosten",
+            "bestellstatus": "Bestellstatus",
+            "modus": "Modus",
+            "kaufteil": "Kaufteil"
+        }
+    }
+}

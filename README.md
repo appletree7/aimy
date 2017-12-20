@@ -80,6 +80,9 @@ For further instructions on how to develop with JHipster, have a look at [Using 
 
 You can also use [Angular CLI][] to generate some custom client code.
 
+First install angular cli with the following command: 
+    npm install -g @angular/cli
+
 For example, the following command:
 
     ng generate component my-component
@@ -89,6 +92,17 @@ will generate few files:
     create src/main/webapp/app/my-component/my-component.component.html
     create src/main/webapp/app/my-component/my-component.component.ts
     update src/main/webapp/app/app.module.ts
+
+iI you get the error message: 
+Error: Could not find an NgModule for the new component. Use the skip-import option to skip importing components in NgModule. Could not find an NgModule for the new component. Use the skip-import option to skip importing components in NgModule.
+
+you have to use the command 
+    ng generate component my-component --skip-import=true
+
+this will generate the files: 
+
+    create src/main/webapp/app/my-component/my-component.component.html
+    create src/main/webapp/app/my-component/my-component.component.ts
 
 
 ## Building for production

@@ -38,6 +38,13 @@
                 "database": "Datenbank",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
+
+            "periodplanning": {
+                "main": "Periodenplanung",
+                "purchased_part": "Kaufteiledisposition"
+            },
+             
+            
             "language": "Sprache"
         },
         "form": {

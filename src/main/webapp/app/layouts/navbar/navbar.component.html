@@ -74,6 +74,77 @@
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>
+       
+            <!--
+                        <!-- hier wird meine Funktion hinzugefügt!!!! 
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"> 
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="kaufteile-menu"> 
+                    <span> 
+                        <i class="fa fa-kaufteiledisposition" aria-hidden="true"></i> 
+                        <span jhiTranslate="global.menu.kaufteildisposition.main">Disposition</span> 
+                    </span> 
+                </a> 
+                <ul class="dropdown-menu" ngbDropdownMenu> 
+                    <li> 
+                        <a class="dropdown-item" routerLink="kaufteile" routerLinkActive="active" (click)="collapseNavbar()"> 
+                            <i class="fa fa-kaufteiledisposition-kaufteile" aria-hidden="true"></i> 
+                            <span jhiTranslate="global.menu.kaufteiledisposition.kaufteile">Kaufteile</span>                       
+                        </a> 
+                    </li> 
+                </ul> 
+            </li> 
+            -->
+   
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN','ROLE_USER'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"> 
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="purchased_part-menu"> 
+                    <span> 
+                        <i class="fa fa-periodplanning" aria-hidden="true"></i> 
+                        <span jhiTranslate="global.menu.periodplanning.main">Periodplanning</span> 
+                    </span> 
+                </a> 
+                <ul class="dropdown-menu" ngbDropdownMenu> 
+                    <li> 
+                        <a class="dropdown-item" routerLink="purchased_part" routerLinkActive="active" (click)="collapseNavbar()"> 
+                            <i class="fa fa-periodplanning-purchased_part" aria-hidden="true"></i> 
+                            <span jhiTranslate="global.menu.periodplanning.purchased_part">Purchased part</span>                       
+                        </a> 
+                    </li> 
+                </ul> 
+            </li> 
+
+ 
+            
+            
+            
+                        <!-- 
+            <li ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"> 
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="kaufteildisposition-menu"> 
+                  <span *ngIf="!getImageUrl()"> 
+                    <span jhiTranslate="global.menu.kaufteildisposition.main"> 
+                      Kaufteildisposition 
+                    </span> 
+                  </span> 
+                  <span *ngIf="getImageUrl()"> 
+                      <img [src]="getImageUrl()" class="profile-image img-circle" alt="Avatar"> 
+                  </span> 
+                </a> 
+                <ul class="dropdown-menu dropdown-menu-right ml-auto" ngbDropdownMenu> 
+                    <li *ngSwitchCase="true"> 
+                        <a class="dropdown-item" routerLink="kaufteildisposition" routerLinkActive="active" (click)="collapseNavbar()"> 
+                            <span jhiTranslate="global.menu.kaufteildisposition.kaufteile">Kaufteile</span> 
+                        </a> 
+                    </li> 
+                </ul> 
+            </li> 
+            --> 
+            
+            
+            
+            
+            
+            
+            
+            
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
                     <span>

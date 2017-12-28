@@ -1,0 +1,12 @@
+{
+    "purchased_part": {
+        "title": "Kaufteiledisposition",
+        "table": {
+            "number": "Nummer",
+            "inventory": "Bestand",
+            "ld": "Lieferdauer",
+            "need": "Bruttobedarf",
+            "delivery": "Bestellung"
+        }
+    }
+}

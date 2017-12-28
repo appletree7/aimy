@@ -9,6 +9,7 @@ import { AimyHomeModule } from './home/home.module';
 import { AimyAdminModule } from './admin/admin.module';
 import { AimyAccountModule } from './account/account.module';
 import { AimyEntityModule } from './entities/entity.module';
+import { AimyPeriodPlanningModule } from './periodplanning/periodplanning.module';
 
 import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
@@ -36,6 +37,7 @@ import {
         AimyAdminModule,
         AimyAccountModule,
         AimyEntityModule,
+        AimyPeriodPlanningModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [

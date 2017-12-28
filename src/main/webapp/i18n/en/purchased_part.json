@@ -1,0 +1,12 @@
+{
+    "purchased_part": {
+        "title": "Disposition of purchased parts",
+        "table": {
+            "number": "Number",
+            "inventory": "Inventory",
+            "ld": "delivery time",
+            "need": "need",
+            "delivery": "delivery"
+        }
+    }
+}

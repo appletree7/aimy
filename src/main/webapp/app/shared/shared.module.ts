@@ -1,5 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import {TranslateModule} from '@ngx-translate/core';
 
 import {
     AimySharedLibsModule,
@@ -41,7 +42,8 @@ import {
         AimySharedCommonModule,
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,
-        DatePipe
+        DatePipe,
+        TranslateModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

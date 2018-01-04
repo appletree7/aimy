@@ -6,7 +6,9 @@
             "inventory": "Bestand",
             "ld": "Lieferdauer",
             "need": "Bruttobedarf",
-            "delivery": "Bestellung"
+            "delivery": "Bestellung",
+            "discount": "Diskontmenge",
+            "type":"Art"
         }
     }
 }

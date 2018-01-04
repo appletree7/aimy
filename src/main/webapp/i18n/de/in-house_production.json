@@ -1,0 +1,15 @@
+{
+    "in-house_production": {
+        "title": "Disposition der Eigenfertigung",
+        "table": {
+            "number": "Nummer",
+            "sales_request": "Vertriebswunsch",
+            "safety_stock": "Sicherheitsbestand",
+            "last_period_stock": "BestandVorperiode",
+            "waiting_orders": "Aufträge in Warteliste",
+			"orders_in_progress": "Aufträge in Bearbeitung",
+            "production_orders": "Produktionsaufträge(n+1)"
+        }
+    }
+}
+

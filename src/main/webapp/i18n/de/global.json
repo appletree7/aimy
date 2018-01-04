@@ -41,7 +41,11 @@
 
             "periodplanning": {
                 "main": "Periodenplanung",
-                "purchased_part": "Kaufteiledisposition"
+                "in-house_production": "Eigenfertigung",
+                "purchased_part": "Kaufteiledisposition",
+                "purchased_part": "Kaufteiledisposition",
+                "capacity_planning": "Kapazitätsplannung"
+   
             },
              
             

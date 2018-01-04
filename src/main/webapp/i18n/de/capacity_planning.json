@@ -1,0 +1,15 @@
+{
+    "capacity_planning": {
+        "title": "Kapazitätsplanung",
+        "table": {
+            "number": "Nummer",
+            "capacity_last_period": "Kapazität Vorperiode (n-1)",
+            "set-up_time_last_period": "Rüstzeit Vorperiode (n-1)",
+            "capacity": "Kapazität (n)",
+            "set-up_time": "Rüstzeit (n)",
+            "reqiurement_of_time": "Gesamter Zeitbedarf (n+1)",
+            "shifts": "Schichten", 
+            "overtime": "Überstunden"
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "capacity_planning": {
+        "title": "Kapazitätsplanung",
+        "table": {
+            "number": "number",
+            "capacity_last_period": "capacity last period (n-1)",
+            "set-up_time_last_period": "set-up time last period (n-1)",
+            "capacity": "capacity (n)",
+            "set-up_time": "set-up time (n)",
+            "reqiurement_of_time": "reqiurement of time (n+1)",
+            "shifts": "shifts", 
+            "overtime": "overtime"
+        }
+    }
+}

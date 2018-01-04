@@ -1,0 +1,14 @@
+{
+    "in-house_production": {
+        "title": "Disposition of in-house_production",
+        "table": {
+            "number": "number",
+            "sales_request": "ales request",
+            "safety_stock": "safety stock",
+            "last_period_stock": "last period stock",
+            "waiting_orders": "waiting orders",
+            "orders_in_progress": "orders in progress",
+            "production_orders": "production orders(n+1)"
+        }
+    }
+}

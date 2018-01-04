@@ -6,7 +6,9 @@
             "inventory": "Inventory",
             "ld": "delivery time",
             "need": "need",
-            "delivery": "delivery"
+            "delivery": "delivery",
+            "discount": "discount",
+            "type":"type"
         }
     }
 }

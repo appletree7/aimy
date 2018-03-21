@@ -17,6 +17,7 @@ eureka:
     instance:
         prefer-ip-address: true
     client:
+        enabled: false
         service-url:
             defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
 
@@ -30,7 +31,7 @@ spring:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:mariadb://localhost:3306/aimy
         username: root
-        password:
+        password: taschenlampe57
         hikari:
             data-source-properties:
                 cachePrepStmts: true
@@ -73,16 +74,13 @@ liquibase:
 #
 # Then, modify the server.ssl properties so your "server" configuration looks like:
 #
-# server:
-#    port: 443
-#    ssl:
-#        key-store: keystore.p12
-#        key-store-password: <your-password>
-#        keyStoreType: PKCS12
-#        keyAlias: aimy
-# ===================================================================
 server:
-    port: 8080
+    port: 8443
+    ssl:
+        key-store: keystore.p12
+        key-store-password: tesaroller39
+        keyStoreType: PKCS12
+        keyAlias: aimy
     compression:
         enabled: true
         mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
@@ -96,7 +94,7 @@ server:
 
 jhipster:
     http:
-        version: V_1_1 # To use HTTP/2 you will need SSL support (see above the "server.ssl" configuration)
+        version: V_2_0 # To use HTTP/2 you will need SSL support (see above the "server.ssl" configuration)
         cache: # Used by the CachingHttpHeadersFilter
             timeToLiveInDays: 1461
     cache: # Cache configuration

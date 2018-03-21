@@ -41,11 +41,12 @@
             "periodplanning": {
                 "main": "Periodplanning",
                 "in-house_production": "In-house production",
-                "purchased_part": "Purchased part", 
-                "capacity_planning": "Capacity Planning"
+                "purchased_part": "Purchased part",
+                "capacity_planning": "Capacity Planning",
+                "period_start": "Start period"
             },
-                      
-            
+
+
             "language": "Language"
         },
         "form": {

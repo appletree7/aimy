@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +44,7 @@ public class TeilResource {
      */
     @PostMapping("/teils")
     @Timed
-    public ResponseEntity<Teil> createTeil(@RequestBody Teil teil) throws URISyntaxException {
+    public ResponseEntity<Teil> createTeil(@Valid @RequestBody Teil teil) throws URISyntaxException {
         log.debug("REST request to save Teil : {}", teil);
         if (teil.getId() != null) {
             throw new BadRequestAlertException("A new teil cannot already have an ID", ENTITY_NAME, "idexists");
@@ -65,7 +66,7 @@ public class TeilResource {
      */
     @PutMapping("/teils")
     @Timed
-    public ResponseEntity<Teil> updateTeil(@RequestBody Teil teil) throws URISyntaxException {
+    public ResponseEntity<Teil> updateTeil(@Valid @RequestBody Teil teil) throws URISyntaxException {
         log.debug("REST request to update Teil : {}", teil);
         if (teil.getId() == null) {
             return createTeil(teil);

@@ -6,6 +6,7 @@ import {Teil} from '../../entities/teil/teil.model';
 import {TeilService} from '../../entities/teil/teil.service';
 import {Principal, ResponseWrapper} from '../../shared';
 import {Teiltyp} from '../../entities/teil';
+import {PeriodStartComponent} from '../';
 
 @Component({
   selector: 'jhi-direktverkauf-und-normalverkauf',
@@ -29,8 +30,11 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit {
       this.principal.identity().then((account) => {
           this.currentAccount = account;
       });
-      this.teilService.query(Teiltyp.PRODUKT === 0)
-          .subscribe((res: ResponseWrapper) => {  this.teils = res.json}, (res: ResponseWrapper) => this.onError(res.json));
+      this.teilService.query()
+          .subscribe((res: ResponseWrapper) => {
+              this.teils = res.json;
+              this.teils = this.teils.filter((teil) => teil.teiltyp === Teiltyp.PRODUKT && teil.periode === parseInt(localStorage.getItem('aktuelleperiode'), 10));
+          }, (res: ResponseWrapper) => this.onError(res.json));
   }
 
     previousState() {

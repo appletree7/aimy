@@ -68,7 +68,7 @@ class ArbeitsplatzGatlingTest extends Simulation {
             .exec(http("Create new arbeitsplatz")
             .post("/api/arbeitsplatzs")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "periode":"0", "nummer":"0", "restzeitbedarf":null, "ruestvorgaenge":"0", "leerzeit":null, "lohnleerkosten":null, "lohnkosten":null, "maschinenstillstandkosten":null}""")).asJSON
+            .body(StringBody("""{"id":null, "periode":"0", "nummer":"0", "restzeitbedarf":null, "ruestvorgaenge":"0", "leerzeit":null, "lohnleerkosten":null, "lohnkosten":null, "maschinenstillstandkosten":null, "restzeitbedarf_in_bearbeitung":null, "schicht":"0", "ueberstunden":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_arbeitsplatz_url"))).exitHereIfFailed
             .pause(10)

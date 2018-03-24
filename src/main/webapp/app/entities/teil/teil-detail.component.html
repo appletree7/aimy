@@ -40,6 +40,26 @@
         <dd>
             <span>{{teil.vertriebswunsch}}</span>
         </dd>
+        <dt><span jhiTranslate="aimyApp.teil.periode">Periode</span></dt>
+        <dd>
+            <span>{{teil.periode}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.teil.gesamtproduktionsmenge">Gesamtproduktionsmenge</span></dt>
+        <dd>
+            <span>{{teil.gesamtproduktionsmenge}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.teil.direktverkaufmenge">Direktverkaufmenge</span></dt>
+        <dd>
+            <span>{{teil.direktverkaufmenge}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.teil.direktverkaufspreis">Direktverkaufspreis</span></dt>
+        <dd>
+            <span>{{teil.direktverkaufspreis}}</span>
+        </dd>
+        <dt><span jhiTranslate="aimyApp.teil.strafe">Strafe</span></dt>
+        <dd>
+            <span>{{teil.strafe}}</span>
+        </dd>
         <dt><span jhiTranslate="aimyApp.teil.subkomponente">Subkomponente</span></dt>
         <dd>
             <div *ngIf="teil.subkomponente">
@@ -49,7 +69,7 @@
         <dt><span jhiTranslate="aimyApp.teil.arbeitsplatz">Arbeitsplatz</span></dt>
         <dd>
             <div *ngIf="teil.arbeitsplatz">
-                <a [routerLink]="['/arbeitsplatz', teil.arbeitsplatz?.id]">{{teil.arbeitsplatz?.id}}</a>
+                <a [routerLink]="['/arbeitsplatz', teil.arbeitsplatz?.id]">{{teil.arbeitsplatz?.nummer}}</a>
             </div>
         </dd>
     </dl>

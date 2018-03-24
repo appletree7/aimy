@@ -17,12 +17,21 @@
         {
             "fieldName": "kosten",
             "fieldType": "Double"
+        },
+        {
+            "fieldName": "nummer",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": "1"
         }
     ],
     "changelogDate": "20171220194419",
-    "entityTableName": "los",
     "dto": "no",
-    "pagination": "no",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false
+    "entityTableName": "los",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
 }

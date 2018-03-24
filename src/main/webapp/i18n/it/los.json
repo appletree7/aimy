@@ -18,7 +18,8 @@
             "periode": "Periode",
             "menge": "Menge",
             "durchlaufzeit": "Durchlaufzeit",
-            "kosten": "Kosten"
+            "kosten": "Kosten",
+            "nummer": "Nummer"
         }
     }
 }

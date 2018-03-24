@@ -11,6 +11,9 @@ export class Arbeitsplatz implements BaseEntity {
         public lohnleerkosten?: number,
         public lohnkosten?: number,
         public maschinenstillstandkosten?: number,
+        public restzeitbedarf_in_bearbeitung?: number,
+        public schicht?: number,
+        public ueberstunden?: number,
         public teils?: BaseEntity[],
     ) {
     }

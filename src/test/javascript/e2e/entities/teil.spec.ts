@@ -52,6 +52,16 @@ describe('Teil e2e test', () => {
         expect(teilDialogPage.getSicherheitsbestandInput()).toMatch('5');
         teilDialogPage.setVertriebswunschInput('5');
         expect(teilDialogPage.getVertriebswunschInput()).toMatch('5');
+        teilDialogPage.setPeriodeInput('5');
+        expect(teilDialogPage.getPeriodeInput()).toMatch('5');
+        teilDialogPage.setGesamtproduktionsmengeInput('5');
+        expect(teilDialogPage.getGesamtproduktionsmengeInput()).toMatch('5');
+        teilDialogPage.setDirektverkaufmengeInput('5');
+        expect(teilDialogPage.getDirektverkaufmengeInput()).toMatch('5');
+        teilDialogPage.setDirektverkaufspreisInput('5');
+        expect(teilDialogPage.getDirektverkaufspreisInput()).toMatch('5');
+        teilDialogPage.setStrafeInput('5');
+        expect(teilDialogPage.getStrafeInput()).toMatch('5');
         teilDialogPage.subkomponenteSelectLastOption();
         teilDialogPage.arbeitsplatzSelectLastOption();
         teilDialogPage.save();
@@ -89,6 +99,11 @@ export class TeilDialogPage {
     lagerwertInput = element(by.css('input#field_lagerwert'));
     sicherheitsbestandInput = element(by.css('input#field_sicherheitsbestand'));
     vertriebswunschInput = element(by.css('input#field_vertriebswunsch'));
+    periodeInput = element(by.css('input#field_periode'));
+    gesamtproduktionsmengeInput = element(by.css('input#field_gesamtproduktionsmenge'));
+    direktverkaufmengeInput = element(by.css('input#field_direktverkaufmenge'));
+    direktverkaufspreisInput = element(by.css('input#field_direktverkaufspreis'));
+    strafeInput = element(by.css('input#field_strafe'));
     subkomponenteSelect = element(by.css('select#field_subkomponente'));
     arbeitsplatzSelect = element(by.css('select#field_arbeitsplatz'));
 
@@ -169,6 +184,46 @@ export class TeilDialogPage {
 
     getVertriebswunschInput = function () {
         return this.vertriebswunschInput.getAttribute('value');
+    }
+
+    setPeriodeInput = function (periode) {
+        this.periodeInput.sendKeys(periode);
+    }
+
+    getPeriodeInput = function () {
+        return this.periodeInput.getAttribute('value');
+    }
+
+    setGesamtproduktionsmengeInput = function (gesamtproduktionsmenge) {
+        this.gesamtproduktionsmengeInput.sendKeys(gesamtproduktionsmenge);
+    }
+
+    getGesamtproduktionsmengeInput = function () {
+        return this.gesamtproduktionsmengeInput.getAttribute('value');
+    }
+
+    setDirektverkaufmengeInput = function (direktverkaufmenge) {
+        this.direktverkaufmengeInput.sendKeys(direktverkaufmenge);
+    }
+
+    getDirektverkaufmengeInput = function () {
+        return this.direktverkaufmengeInput.getAttribute('value');
+    }
+
+    setDirektverkaufspreisInput = function (direktverkaufspreis) {
+        this.direktverkaufspreisInput.sendKeys(direktverkaufspreis);
+    }
+
+    getDirektverkaufspreisInput = function () {
+        return this.direktverkaufspreisInput.getAttribute('value');
+    }
+
+    setStrafeInput = function (strafe) {
+        this.strafeInput.sendKeys(strafe);
+    }
+
+    getStrafeInput = function () {
+        return this.strafeInput.getAttribute('value');
     }
 
     subkomponenteSelectLastOption = function () {

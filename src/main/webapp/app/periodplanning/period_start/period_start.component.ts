@@ -5,7 +5,7 @@ import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
 import {Principal, ResponseWrapper} from '../../shared';
 import {Arbeitsplatz} from '../../entities/arbeitsplatz/arbeitsplatz.model';
 import {TeilService} from '../../entities/teil/teil.service';
-import {Teil} from '../../entities/teil/teil.model';
+import {Teil, Teiltyp} from '../../entities/teil/teil.model';
 import {Bestellstatus, Bestellung} from '../../entities/bestellung';
 import {BestellungService} from '../../entities/bestellung/bestellung.service';
 import {ArbeitsplatzService} from '../../entities/arbeitsplatz/arbeitsplatz.service';
@@ -35,6 +35,8 @@ export class PeriodStartComponent implements OnInit {
     xml: Document;
     currentAccount: any;
     eventSubscriber: Subscription;
+    aktuelleperiode: number;
+    periode: number;
 
     constructor(
         private teilService: TeilService,
@@ -73,20 +75,26 @@ export class PeriodStartComponent implements OnInit {
     }
 
     save() {
-        this.saveTeil();
-        this.saveBestellung();
-        // this.saveArbeitsplatz();
-        // this.saveFertigungsauftrag();
-        // Kennzahlen
-      /*  for (let kennzahl of this.json.results.cycletimes.result.general) {
-            this.fertigungsauftrag = new Fertigungsauftrag(undefined, auftrag._attributes.period, auftrag._attributes.id,
-            undefined, undefined, undefined, undefined, auftrag._attributes.starttime, auftrag._attributes.finishtime,
-            auftrag._attributes.cycletimemin);
-            this.fertigungsauftragService.create(this.fertigungsauftrag).subscribe((res: Fertigungsauftrag) =>
-                console.log(this.fertigungsauftrag), (res: Response) => this.onSaveError());
-        }*/
-        this.isSaving = true;
-        this.message = 'Speicherung der Daten erfolgreich';
+        if(this.aktuelleperiode !== undefined) {
+            localStorage.setItem('aktuelleperiode', this.aktuelleperiode.toString());
+        }
+        if(this.xml !== undefined) {
+            this.periode = parseInt(this.xml.getElementsByTagName('results')[0].getAttribute('period'), 10)
+            this.saveTeil();
+            this.saveBestellung();
+            this.saveArbeitsplatz();
+            this.saveFertigungsauftrag();
+            // Kennzahlen
+            /*  for (let kennzahl of this.json.results.cycletimes.result.general) {
+                  this.fertigungsauftrag = new Fertigungsauftrag(undefined, auftrag._attributes.period, auftrag._attributes.id,
+                  undefined, undefined, undefined, undefined, auftrag._attributes.starttime, auftrag._attributes.finishtime,
+                  auftrag._attributes.cycletimemin);
+                  this.fertigungsauftragService.create(this.fertigungsauftrag).subscribe((res: Fertigungsauftrag) =>
+                      console.log(this.fertigungsauftrag), (res: Response) => this.onSaveError());
+              }*/
+            this.isSaving = true;
+            this.message = 'Speicherung der Daten erfolgreich';
+        }
     }
 
     saveTeil() {
@@ -96,22 +104,44 @@ export class PeriodStartComponent implements OnInit {
                 const teile = this.xml.getElementsByTagName('warehousestock')[0].getElementsByTagName('article');
                 let i;
                 for (i = 0; i < teile.length; i++) {
-                    if (this.teils !== undefined && this.teils.length !== 0 && this.teils[i].nummer !== undefined) {
-                        this.teil = this.teils.find((teil) => teil.nummer === teile[i].getAttribute('id'));
+                    if (this.teils !== undefined && this.teils.length !== 0 && (this.teils[i].nummer !== undefined || this.teils[i].periode !== undefined)) {
+                        this.teil = this.teils.find((teil) => teil.nummer === teile[i].getAttribute('id') && teil.periode === this.periode);
+                        if(parseInt(this.teil.nummer, 10) <= 3){
+                            this.teil.teiltyp = Teiltyp.PRODUKT;
+                        } else if(((parseInt(this.teil.nummer, 10) > 3) && (parseInt(this.teil.nummer, 10) < 21)) || ((parseInt(this.teil.nummer, 10) > 28) && (parseInt(this.teil.nummer, 10) < 32)) || ((parseInt(this.teil.nummer, 10) > 48) && (parseInt(this.teil.nummer, 10) < 52)) || ((parseInt(this.teil.nummer, 10) > 53) && (parseInt(this.teil.nummer, 10) < 57))){
+                            this.teil.teiltyp = Teiltyp.ERZEUGNIS;
+                        } else {
+                            this.teil.teiltyp = Teiltyp.KAUFTEIL;
+                        }
                         // this.teil.nummer = teile[i].getAttribute("id");
                         this.teil.istmenge = parseInt(teile[i].getAttribute('amount'), 10);
                         this.teil.startmenge = parseInt(teile[i].getAttribute('startamount'), 10);
                         this.teil.prozentsatz = parseFloat(teile[i].getAttribute('pct'));
                         this.teil.lagerpreis = parseFloat(teile[i].getAttribute('price'));
                         this.teil.lagerwert = parseFloat(teile[i].getAttribute('stockvalue'));
+                        // this.teil.arbeitsplatz
                         this.teilService.update(this.teil).subscribe((respond: Teil) =>
                             console.log(respond), (respond: Response) => this.onSaveError());
                     } else {
-                        this.teil = new Teil(undefined, undefined, teile[i].getAttribute('id'),
-                            parseInt(teile[i].getAttribute('amount'), 10), parseInt(teile[i].getAttribute('startamount'), 10),
-                            parseFloat(teile[i].getAttribute('pct')), parseFloat(teile[i].getAttribute('price')),
-                            parseFloat(teile[i].getAttribute('stockvalue')), undefined, undefined,
-                            undefined, undefined, undefined);
+                        if(parseInt(teile[i].getAttribute('id'), 10) <= 3){
+                            this.teil = new Teil(undefined, Teiltyp.PRODUKT, teile[i].getAttribute('id'),
+                                parseInt(teile[i].getAttribute('amount'), 10), parseInt(teile[i].getAttribute('startamount'), 10),
+                                parseFloat(teile[i].getAttribute('pct')), parseFloat(teile[i].getAttribute('price')),
+                                parseFloat(teile[i].getAttribute('stockvalue')), undefined, undefined,
+                                this.periode, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+                        } else if(((parseInt(teile[i].getAttribute('id'), 10) > 3) && (parseInt(teile[i].getAttribute('id'), 10) < 21)) || ((parseInt(teile[i].getAttribute('id'), 10) > 28) && (parseInt(teile[i].getAttribute('id'), 10) < 32)) || ((parseInt(teile[i].getAttribute('id'), 10) > 48) && (parseInt(teile[i].getAttribute('id'), 10) < 52)) || ((parseInt(teile[i].getAttribute('id'), 10) > 53) && (parseInt(teile[i].getAttribute('id'), 10) < 57))){
+                            this.teil = new Teil(undefined, Teiltyp.ERZEUGNIS, teile[i].getAttribute('id'),
+                                parseInt(teile[i].getAttribute('amount'), 10), parseInt(teile[i].getAttribute('startamount'), 10),
+                                parseFloat(teile[i].getAttribute('pct')), parseFloat(teile[i].getAttribute('price')),
+                                parseFloat(teile[i].getAttribute('stockvalue')), undefined, undefined,
+                                this.periode, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+                        } else {
+                            this.teil = new Teil(undefined, Teiltyp.KAUFTEIL, teile[i].getAttribute('id'),
+                                parseInt(teile[i].getAttribute('amount'), 10), parseInt(teile[i].getAttribute('startamount'), 10),
+                                parseFloat(teile[i].getAttribute('pct')), parseFloat(teile[i].getAttribute('price')),
+                                parseFloat(teile[i].getAttribute('stockvalue')), undefined, undefined,
+                                this.periode, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+                        }
                         this.teilService.create(this.teil).subscribe((respond: Teil) =>
                             console.log(respond), (respond: Response) => this.onSaveError());
                     }
@@ -185,77 +215,16 @@ export class PeriodStartComponent implements OnInit {
         this.arbeitsplatzService.query()
             .subscribe((res: ResponseWrapper) => {
                 this.arbeitsplaetze = res.json;
-                const arbeitsplaetze3 = this.xml.getElementsByTagName('ordersinwork')[0].getElementsByTagName('workplace');
                 let i;
                 // && this.arbeitsplaetze[i].periode !== undefined
-                for (i = 0; i < arbeitsplaetze3.length; i++) {
-                    if (this.arbeitsplaetze !== undefined && this.arbeitsplaetze.length !== 0
-                        && (this.arbeitsplaetze[i].nummer !== undefined || this.arbeitsplaetze[i].periode !== undefined)) {
-                        // && arbeitsplatz.periode === parseInt(arbeitsplaetze3[i].getAttribute("orderperiod")))
-                        console.log(this.arbeitsplaetze);
-                        this.arbeitsplatz = this.arbeitsplaetze.find((arbeitsplatz) => (arbeitsplatz.nummer ===
-                            (parseInt(arbeitsplaetze3[i].getAttribute('id'), 10))) && arbeitsplatz.periode ===
-                            parseInt(arbeitsplaetze3[i].getAttribute('orderperiod'), 10));
-                        console.log(this.arbeitsplatz);
-                        this.arbeitsplatz.restzeitbedarf = parseInt(arbeitsplaetze3[i].getAttribute('timeneed'), 10);
-                        this.arbeitsplatzService.update(this.arbeitsplatz).subscribe((respond: Arbeitsplatz) =>
-                            console.log(respond), (respond: Response) => this.onSaveError());
-                    } else {
-                        this.arbeitsplatz = new Arbeitsplatz(undefined, parseInt(arbeitsplaetze3[i].getAttribute('period'), 10),
-                            parseInt(arbeitsplaetze3[i].getAttribute('id'), 10),
-                            parseInt(arbeitsplaetze3[i].getAttribute('timeneed'), 10), undefined, undefined,
-                            undefined, undefined,
-                            undefined, undefined);
-                        this.arbeitsplatzService.create(this.arbeitsplatz).subscribe((respond: Arbeitsplatz) =>
-                            console.log(respond), (respond: Response) => this.onSaveError());
-                    }
-                }
-            }, (respond: ResponseWrapper) => this.onError(respond.json));
-
-        this.arbeitsplatzService.query()
-            .subscribe((res: ResponseWrapper) => {
-                this.arbeitsplaetze = res.json;
-                let i;
-                // verbessern
-                const aktuelleperiode = this.arbeitsplaetze[1].periode;
-                console.log(aktuelleperiode)
-                const arbeitsplaetze2 = this.xml.getElementsByTagName('waitinglistworkstations')[0].getElementsByTagName('workplace');
-                for ( i = 0; i < arbeitsplaetze2.length; i++) {
-                    if (this.arbeitsplaetze !== undefined && this.arbeitsplaetze.length !== 0
-                        && (this.arbeitsplaetze[i].nummer !== undefined || this.arbeitsplaetze[i].periode !== undefined)) {
-                        // && parseInt(arbeitsplaetze2[i].getAttribute("orderperiod"))
-                        this.arbeitsplatz = this.arbeitsplaetze.find((arbeitsplatz) => (arbeitsplatz.nummer ===
-                            (parseInt(arbeitsplaetze2[i].getAttribute('id'), 10))) && arbeitsplatz.periode ===
-                            parseInt(arbeitsplaetze2[i].getAttribute('orderperiod'), 10));
-                        console.log(this.arbeitsplatz);
-                        this.arbeitsplatz.restzeitbedarf = parseInt(arbeitsplaetze2[i].getAttribute('timeneed'), 10);
-                        this.arbeitsplatzService.update(this.arbeitsplatz).subscribe((respond: Arbeitsplatz) =>
-                            console.log(respond), (respond: Response) => this.onSaveError());
-                    } else {
-                        this.arbeitsplatz = new Arbeitsplatz(undefined, aktuelleperiode, parseInt(arbeitsplaetze2[i].getAttribute('id'), 10),
-                            parseInt(arbeitsplaetze2[i].getAttribute('timeneed'), 10), undefined, undefined,
-                            undefined, undefined, undefined, undefined);
-                        this.arbeitsplatzService.create(this.arbeitsplatz).subscribe((respond: Arbeitsplatz) =>
-                            console.log(respond), (respond: Response) => this.onSaveError());
-                    }
-                }
-            }, (respond: ResponseWrapper) => this.onError(respond.json));
-
-        this.arbeitsplatzService.query()
-            .subscribe((res: ResponseWrapper) => {
-                this.arbeitsplaetze = res.json;
-                let i;
-                // && this.arbeitsplaetze[i].periode !== undefined
-                const aktuelleperiode = this.arbeitsplaetze[1].periode;
                 const arbeitsplaetze = this.xml.getElementsByTagName('idletimecosts')[0].getElementsByTagName('workplace');
                 for (i = 0; i < arbeitsplaetze.length; i++) {
                     if (this.arbeitsplaetze !== undefined && this.arbeitsplaetze.length !== 0
                         && (this.arbeitsplaetze[i].nummer !== undefined || this.arbeitsplaetze[i].periode !== undefined)) {
-                        // && parseInt(arbeitsplaetze[i].getAttribute("orderperiod"))
+                        // && parseInt(arbeitsplaetze[i].getAttribute("period"))
                         this.arbeitsplatz = this.arbeitsplaetze.find((arbeitsplatz) => (arbeitsplatz.nummer ===
                             (parseInt(arbeitsplaetze[i].getAttribute('id'), 10))) && arbeitsplatz.periode ===
-                            parseInt(arbeitsplaetze[i].getAttribute('orderperiod'), 10));
-                        console.log(this.arbeitsplatz);
+                            this.periode);
                         this.arbeitsplatz.ruestvorgaenge = parseInt(arbeitsplaetze[i].getAttribute('setupevents'), 10);
                         this.arbeitsplatz.leerzeit = parseInt(arbeitsplaetze[i].getAttribute('idletime'), 10);
                         this.arbeitsplatz.lohnleerkosten = parseFloat(arbeitsplaetze[i].getAttribute('wageidletimecosts'));
@@ -264,102 +233,161 @@ export class PeriodStartComponent implements OnInit {
                         this.arbeitsplatzService.update(this.arbeitsplatz).subscribe((respond: Arbeitsplatz) =>
                             console.log(respond), (respond: Response) => this.onSaveError());
                     } else {
-                        this.arbeitsplatz = new Arbeitsplatz(undefined, aktuelleperiode, parseInt(arbeitsplaetze[i].getAttribute('id'), 10),
+                        this.arbeitsplatz = new Arbeitsplatz(undefined, this.periode, parseInt(arbeitsplaetze[i].getAttribute('id'), 10),
                             undefined, parseInt(arbeitsplaetze[i].getAttribute('setupevents'), 10),
                             parseInt(arbeitsplaetze[i].getAttribute('idletime'), 10),
                             parseFloat(arbeitsplaetze[i].getAttribute('wageidletimecosts')),
                             parseFloat(arbeitsplaetze[i].getAttribute('wagecosts')),
-                            parseFloat(arbeitsplaetze[i].getAttribute('machineidletimecosts')), undefined);
+                            parseFloat(arbeitsplaetze[i].getAttribute('machineidletimecosts')), undefined, undefined,
+                            undefined);
                         this.arbeitsplatzService.create(this.arbeitsplatz).subscribe((respond: Arbeitsplatz) =>
                             console.log(respond), (respond: Response) => this.onSaveError());
                     }
                 }
-            }, (respond: ResponseWrapper) => this.onError(respond.json));
+            }, (respond: ResponseWrapper) => this.onError(respond.json), ()=> {
+
+        this.arbeitsplatzService.query()
+            .subscribe((res: ResponseWrapper) => {
+                this.arbeitsplaetze = res.json;
+                let i;
+                // verbessern
+                const arbeitsplaetze2 = this.xml.getElementsByTagName('waitinglistworkstations')[0].getElementsByTagName('workplace');
+                for ( i = 0; i < arbeitsplaetze2.length; i++) {
+                    if (this.arbeitsplaetze !== undefined && this.arbeitsplaetze.length !== 0
+                        && (this.arbeitsplaetze[i].nummer !== undefined || this.arbeitsplaetze[i].periode !== undefined)) {
+                        // && parseInt(arbeitsplaetze2[i].getAttribute("period"))
+                        this.arbeitsplatz = this.arbeitsplaetze.find((arbeitsplatz) => (arbeitsplatz.nummer ===
+                            (parseInt(arbeitsplaetze2[i].getAttribute('id'), 10))) && arbeitsplatz.periode ===
+                            this.periode);
+                        this.arbeitsplatz.restzeitbedarf = parseInt(arbeitsplaetze2[i].getAttribute('timeneed'), 10);
+                        this.arbeitsplatzService.update(this.arbeitsplatz).subscribe((respond: Arbeitsplatz) =>
+                            console.log(respond), (respond: Response) => this.onSaveError());
+                    } else {
+                        this.arbeitsplatz = new Arbeitsplatz(undefined, this.periode, parseInt(arbeitsplaetze2[i].getAttribute('id'), 10),
+                            parseInt(arbeitsplaetze2[i].getAttribute('timeneed'), 10), undefined, undefined,
+                            undefined, undefined, undefined, undefined, undefined,
+                            undefined);
+                        this.arbeitsplatzService.create(this.arbeitsplatz).subscribe((respond: Arbeitsplatz) =>
+                            console.log(respond), (respond: Response) => this.onSaveError());
+                    }
+                }
+            }, (respond: ResponseWrapper) => this.onError(respond.json), () => {
+
+                this.arbeitsplatzService.query()
+                    .subscribe((res: ResponseWrapper) => {
+                        this.arbeitsplaetze = res.json;
+                        const arbeitsplaetze3 = this.xml.getElementsByTagName('ordersinwork')[0].getElementsByTagName('workplace');
+                        let i;
+                        // && this.arbeitsplaetze[i].periode !== undefined
+                        for (i = 0; i < arbeitsplaetze3.length; i++) {
+                            if (this.arbeitsplaetze !== undefined && this.arbeitsplaetze.length !== 0
+                                && (this.arbeitsplaetze[i].nummer !== undefined || this.arbeitsplaetze[i].periode !== undefined)) {
+                                // && arbeitsplatz.periode === parseInt(arbeitsplaetze3[i].getAttribute("period")))
+                                this.arbeitsplatz = this.arbeitsplaetze.find((arbeitsplatz) => (arbeitsplatz.nummer ===
+                                    (parseInt(arbeitsplaetze3[i].getAttribute('id'), 10))) && arbeitsplatz.periode ===
+                                    parseInt(arbeitsplaetze3[i].getAttribute('period'), 10));
+                                this.arbeitsplatz.restzeitbedarf_in_bearbeitung = parseInt(arbeitsplaetze3[i].getAttribute('timeneed'), 10);
+                                this.arbeitsplatzService.update(this.arbeitsplatz).subscribe((respond: Arbeitsplatz) =>
+                                    console.log(respond), (respond: Response) => this.onSaveError());
+                            } else {
+                                this.arbeitsplatz = new Arbeitsplatz(undefined, parseInt(arbeitsplaetze3[i].getAttribute('period'), 10),
+                                    parseInt(arbeitsplaetze3[i].getAttribute('id'), 10), undefined, undefined,
+                                    undefined, undefined, undefined, undefined,
+                                    parseInt(arbeitsplaetze3[i].getAttribute('timeneed'), 10), undefined, undefined);
+                                this.arbeitsplatzService.create(this.arbeitsplatz).subscribe((respond: Arbeitsplatz) =>
+                                    console.log(respond), (respond: Response) => this.onSaveError());
+                            }
+                        }
+                    }, (respond: ResponseWrapper) => this.onError(respond.json));
+                } );
+            } );
 
     }
 
     saveFertigungsauftrag() {
 
-       /* this.fertigungsauftragService.query()
+       this.fertigungsauftragService.query()
             .subscribe((res: ResponseWrapper) => {
                 this.fertigungsauftraege = res.json;
                 const fertigungsauftraege = this.xml.getElementsByTagName("completedorders")[0].getElementsByTagName("order");
-                var i;
-                var j;
+                let i;
+                let j;
                 for (i = 0; i < fertigungsauftraege.length; i++) {
                     if(this.fertigungsauftraege !== undefined && this.fertigungsauftraege.length !== 0
                     && this.fertigungsauftraege[i].nummer !== undefined && this.fertigungsauftraege[i].periode !== undefined) {
                         this.fertigungsauftrag = this.fertigungsauftraege.find((fertigungsauftrag) => fertigungsauftrag.nummer ===
-                        (parseInt(fertigungsauftraege[i].getAttribute("id")) && parseInt(fertigungsauftraege[i].getAttribute("orderperiod"))));
-
-                        this.fertigungsauftragService.update(this.fertigungsauftrag).subscribe((res: Fertigungsauftrag) =>
-                            console.log(res), (res: Response) => this.onSaveError());;
+                        (parseInt(fertigungsauftraege[i].getAttribute("id")) && parseInt(fertigungsauftraege[i].getAttribute("period"))));
+                        this.fertigungsauftrag.auftragsmenge = parseInt(fertigungsauftraege[i].getAttribute("quantity"));
+                        this.fertigungsauftrag.kostenprolos = parseFloat(fertigungsauftraege[i].getAttribute("cost"));
+                        this.fertigungsauftrag.durchschnittlichestueckkosten =  parseFloat(fertigungsauftraege[i].getAttribute("averageunitcosts"));
+                        this.fertigungsauftrag.auftragsstatus = Auftragstatus.BEENDET;
+                        this.fertigungsauftragService.update(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
+                            console.log(respond), (respond: Response) => this.onSaveError());;
                     } else {
                         this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(fertigungsauftraege[i].getAttribute("period")),
-                        parseInt(fertigungsauftraege[i].getAttribute("quantity")), undefined,
+                        parseInt(fertigungsauftraege[i].getAttribute("quantity")),
                         parseFloat(fertigungsauftraege[i].getAttribute("cost")),
                         parseFloat(fertigungsauftraege[i].getAttribute("averageunitcosts")), Auftragstatus.BEENDET, undefined,
-                            undefined, undefined);
-                        this.fertigungsauftragService.create(this.fertigungsauftrag).subscribe((res: Fertigungsauftrag) =>
-                            console.log(res), (res: Response) => this.onSaveError());
+                            undefined, undefined, undefined,  parseInt(fertigungsauftraege[i].getAttribute("id")));
+                        this.fertigungsauftragService.create(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
+                            console.log(respond), (respond: Response) => this.onSaveError());
+                        const lose = this.xml.getElementsByTagName("completedorders")[0].getElementsByTagName("order")[i].
+                        getElementsByTagName("batch")
+
                         this.losService.query()
                             .subscribe((res: ResponseWrapper) => {
                                 this.lose = res.json;
-                                const lose =
-                                this.xml.getElementsByTagName("completedorders")[0].getElementsByTagName("order")[i].getElementsByTagName("batch")
                                 for (j = 0; j < lose.length;j ++) {
                                     if(this.fertigungsauftraege !== undefined && this.fertigungsauftraege.length !== 0
                                     && this.fertigungsauftraege[i].nummer !== undefined && this.fertigungsauftraege[i].periode !== undefined) {
-                                        this.los = this.lose.find((los) => los.nummer === (parseInt(lose[i].getAttribute("id"))));
-
-                                        this.losService.update(this.los).subscribe((res: Los) =>
-                                            console.log(res), (res: Response) => this.onSaveError());;
+                                        this.los = this.lose.find((los) => los.nummer === parseInt(lose[i].getAttribute("id")) && los.periode === parseInt(lose[i].getAttribute("id")));
+                                        this.los.menge = parseInt(lose[j].getAttribute("amount"));
+                                        this.los.durchlaufzeit = parseInt(lose[j].getAttribute("cycletime"));
+                                        this.los.kosten = parseFloat(lose[j].getAttribute("cost"));
+                                        this.losService.update(this.los).subscribe((respond: Los) =>
+                                            console.log(respond), (respond: Response) => this.onSaveError());;
                                     }
                                     else {
-                                        this.los = new Los(undefined, undefined, parseInt(lose[j].getAttribute("amount")),
-                                        parseInt(lose[j].getAttribute("cycletime")), parseFloat(lose[j].getAttribute("cost")));
-                                        this.losService.create(this.los).subscribe((res: Los) =>
-                                        console.log(res), (res: Response) => this.onSaveError());
+                                        this.los = new Los(undefined, this.periode, parseInt(lose[j].getAttribute("amount")),
+                                        parseInt(lose[j].getAttribute("cycletime")), parseFloat(lose[j].getAttribute("cost")), parseInt(lose[j].getAttribute("id")));
+                                        this.losService.create(this.los).subscribe((respond: Los) =>
+                                        console.log(respond), (respond: Response) => this.onSaveError());
                                     }
                             }
                                 }, (res: ResponseWrapper) => this.onError(res.json));
                     }
                 }
-                const fertigungsauftraege2 = this.xml.getElementsByTagName("cycletimes")[0].getElementsByTagName("order");
-                for (i = 0; i < fertigungsauftraege2.length; i++) {
-                    if(this.fertigungsauftraege !== undefined && this.fertigungsauftraege.length !== 0
-                    && this.fertigungsauftraege[i].nummer !== undefined && this.fertigungsauftraege[i].periode !== undefined) {
-                        this.bestellung = this.bestellungen.find((fertigungsauftrag) => fertigungsauftrag.nummer ===
-                        (parseInt(fertigungsauftraege2[i].getAttribute("id")) && parseInt(fertigungsauftraege2[i].getAttribute("orderperiod"))));
-                        this.fertigungsauftragService.update(this.fertigungsauftrag).subscribe((res: Fertigungsauftrag) =>
-                            console.log(res), (res: Response) => this.onSaveError());
-                    } else {
-                        this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(fertigungsauftraege2[i].getAttribute("period")),
-                        parseInt(fertigungsauftraege2[i].getAttribute("id")), undefined, undefined, undefined, undefined,
-                        fertigungsauftraege2[i].getAttribute("starttime"), fertigungsauftraege2[i].getAttribute("finishtime"),
-                        parseInt(fertigungsauftraege2[i].getAttribute("cycletimemin")));
-                        this.fertigungsauftragService.create(this.fertigungsauftrag).subscribe((res: Fertigungsauftrag) =>
-                            console.log(res), (res: Response) => this.onSaveError());
-                    }
-                }
+            }, (res: ResponseWrapper) => this.onError(res.json), () => {
 
-            }, (res: ResponseWrapper) => this.onError(res.json));
+                this.fertigungsauftragService.query()
+                    .subscribe((res: ResponseWrapper) => {
+                        var i;
+                        const fertigungsauftraege2 = this.xml.getElementsByTagName("cycletimes")[0].getElementsByTagName("order");
+                        for (i = 0; i < fertigungsauftraege2.length; i++) {
+                            if (this.fertigungsauftraege !== undefined && this.fertigungsauftraege.length !== 0
+                                && this.fertigungsauftraege[i].nummer !== undefined && this.fertigungsauftraege[i].periode !== undefined) {
+                                this.fertigungsauftrag = this.fertigungsauftraege.find((fertigungsauftrag) => fertigungsauftrag.nummer ===
+                                    (parseInt(fertigungsauftraege2[i].getAttribute("id")) && parseInt(fertigungsauftraege2[i].getAttribute("period"))));
+                                this.fertigungsauftrag.begonnen = fertigungsauftraege2[i].getAttribute("starttime");
+                                this.fertigungsauftrag.beendet = fertigungsauftraege2[i].getAttribute("finishtime");
+                                this.fertigungsauftrag.dlzminimal = parseInt(fertigungsauftraege2[i].getAttribute("cycletimemin"));
+                                this.fertigungsauftrag.dlzFaktor = parseFloat(fertigungsauftraege2[i].getAttribute("cycletimefactor"));
+                                this.fertigungsauftragService.update(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
+                                    console.log(respond), (respond: Response) => this.onSaveError());
+                            } else {
+                                this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(fertigungsauftraege2[i].getAttribute("period")),
+                                    undefined, undefined, undefined, undefined,
+                                    fertigungsauftraege2[i].getAttribute("starttime"), fertigungsauftraege2[i].getAttribute("finishtime"),
+                                    parseInt(fertigungsauftraege2[i].getAttribute("cycletimemin")), parseFloat(fertigungsauftraege2[i].getAttribute("cycletimefactor")), parseInt(fertigungsauftraege2[i].getAttribute("id")));
+                                this.fertigungsauftragService.create(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
+                                    console.log(respond), (respond: Response) => this.onSaveError());
+                            }
+                        }
 
-        const fertigungsauftraege2 = this.xml.getElementsByTagName("cycletimes")[0].getElementsByTagName("order");
-        for (i = 0; i < fertigungsauftraege2.length; i++) {
-            this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(fertigungsauftraege2[i].getAttribute("period")),
-            parseInt(fertigungsauftraege2[i].getAttribute("id")), undefined, undefined, undefined, undefined,
-            fertigungsauftraege2[i].getAttribute("starttime"), fertigungsauftraege2[i].getAttribute("finishtime"),
-            parseInt(fertigungsauftraege2[i].getAttribute("cycletimemin")));
-            this.fertigungsauftragService.create(this.fertigungsauftrag).subscribe((res: Fertigungsauftrag) =>
-                console.log(res), (res: Response) => this.onSaveError());
-        }*/
+                    }, (res: ResponseWrapper) => this.onError(res.json));
+            });
+
     }
-
-   /* private onSaveSuccess(result: Teil) {
-        this.eventManager.broadcast({ name: 'teilListModification', content: 'OK'});
-        this.isSaving = false;
-    }*/
 
     private onSaveError() {
         this.isSaving = false;

@@ -51,6 +51,12 @@ describe('Arbeitsplatz e2e test', () => {
         expect(arbeitsplatzDialogPage.getLohnkostenInput()).toMatch('5');
         arbeitsplatzDialogPage.setMaschinenstillstandkostenInput('5');
         expect(arbeitsplatzDialogPage.getMaschinenstillstandkostenInput()).toMatch('5');
+        arbeitsplatzDialogPage.setRestzeitbedarf_in_bearbeitungInput('5');
+        expect(arbeitsplatzDialogPage.getRestzeitbedarf_in_bearbeitungInput()).toMatch('5');
+        arbeitsplatzDialogPage.setSchichtInput('5');
+        expect(arbeitsplatzDialogPage.getSchichtInput()).toMatch('5');
+        arbeitsplatzDialogPage.setUeberstundenInput('5');
+        expect(arbeitsplatzDialogPage.getUeberstundenInput()).toMatch('5');
         arbeitsplatzDialogPage.save();
         expect(arbeitsplatzDialogPage.getSaveButton().isPresent()).toBeFalsy();
     }); 
@@ -85,6 +91,9 @@ export class ArbeitsplatzDialogPage {
     lohnleerkostenInput = element(by.css('input#field_lohnleerkosten'));
     lohnkostenInput = element(by.css('input#field_lohnkosten'));
     maschinenstillstandkostenInput = element(by.css('input#field_maschinenstillstandkosten'));
+    restzeitbedarf_in_bearbeitungInput = element(by.css('input#field_restzeitbedarf_in_bearbeitung'));
+    schichtInput = element(by.css('input#field_schicht'));
+    ueberstundenInput = element(by.css('input#field_ueberstunden'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -152,6 +161,30 @@ export class ArbeitsplatzDialogPage {
 
     getMaschinenstillstandkostenInput = function () {
         return this.maschinenstillstandkostenInput.getAttribute('value');
+    }
+
+    setRestzeitbedarf_in_bearbeitungInput = function (restzeitbedarf_in_bearbeitung) {
+        this.restzeitbedarf_in_bearbeitungInput.sendKeys(restzeitbedarf_in_bearbeitung);
+    }
+
+    getRestzeitbedarf_in_bearbeitungInput = function () {
+        return this.restzeitbedarf_in_bearbeitungInput.getAttribute('value');
+    }
+
+    setSchichtInput = function (schicht) {
+        this.schichtInput.sendKeys(schicht);
+    }
+
+    getSchichtInput = function () {
+        return this.schichtInput.getAttribute('value');
+    }
+
+    setUeberstundenInput = function (ueberstunden) {
+        this.ueberstundenInput.sendKeys(ueberstunden);
+    }
+
+    getUeberstundenInput = function () {
+        return this.ueberstundenInput.getAttribute('value');
     }
 
     save() {

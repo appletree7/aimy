@@ -14,10 +14,10 @@
             "otherEntityField": "id"
         },
         {
-            "relationshipType": "many-to-one",
             "relationshipName": "arbeitsplatz",
             "otherEntityName": "arbeitsplatz",
-            "otherEntityField": "id"
+            "relationshipType": "many-to-one",
+            "otherEntityField": "nummer"
         }
     ],
     "fields": [
@@ -57,13 +57,44 @@
         {
             "fieldName": "vertriebswunsch",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "periode",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "gesamtproduktionsmenge",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "direktverkaufmenge",
+            "fieldType": "Integer",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "direktverkaufspreis",
+            "fieldType": "Double",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "strafe",
+            "fieldType": "Double"
         }
     ],
     "changelogDate": "20171220194421",
-    "javadoc": "The Herstellteil entity.",
-    "entityTableName": "teil",
     "dto": "no",
-    "pagination": "no",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false
+    "entityTableName": "teil",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no",
+    "javadoc": "The Herstellteil entity."
 }

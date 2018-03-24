@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +44,7 @@ public class ArbeitsplatzResource {
      */
     @PostMapping("/arbeitsplatzs")
     @Timed
-    public ResponseEntity<Arbeitsplatz> createArbeitsplatz(@RequestBody Arbeitsplatz arbeitsplatz) throws URISyntaxException {
+    public ResponseEntity<Arbeitsplatz> createArbeitsplatz(@Valid @RequestBody Arbeitsplatz arbeitsplatz) throws URISyntaxException {
         log.debug("REST request to save Arbeitsplatz : {}", arbeitsplatz);
         if (arbeitsplatz.getId() != null) {
             throw new BadRequestAlertException("A new arbeitsplatz cannot already have an ID", ENTITY_NAME, "idexists");
@@ -65,7 +66,7 @@ public class ArbeitsplatzResource {
      */
     @PutMapping("/arbeitsplatzs")
     @Timed
-    public ResponseEntity<Arbeitsplatz> updateArbeitsplatz(@RequestBody Arbeitsplatz arbeitsplatz) throws URISyntaxException {
+    public ResponseEntity<Arbeitsplatz> updateArbeitsplatz(@Valid @RequestBody Arbeitsplatz arbeitsplatz) throws URISyntaxException {
         log.debug("REST request to update Arbeitsplatz : {}", arbeitsplatz);
         if (arbeitsplatz.getId() == null) {
             return createArbeitsplatz(arbeitsplatz);

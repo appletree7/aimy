@@ -6,6 +6,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -49,6 +50,18 @@ public class Arbeitsplatz implements Serializable {
 
     @Column(name = "maschinenstillstandkosten")
     private Double maschinenstillstandkosten;
+
+    @DecimalMin(value = "0")
+    @Column(name = "restzeitbedarf_in_bearbeitung")
+    private Double restzeitbedarf_in_bearbeitung;
+
+    @Min(value = 1)
+    @Max(value = 3)
+    @Column(name = "schicht")
+    private Integer schicht;
+
+    @Column(name = "ueberstunden")
+    private Double ueberstunden;
 
     @OneToMany(mappedBy = "arbeitsplatz")
     @JsonIgnore
@@ -168,6 +181,45 @@ public class Arbeitsplatz implements Serializable {
         this.maschinenstillstandkosten = maschinenstillstandkosten;
     }
 
+    public Double getRestzeitbedarf_in_bearbeitung() {
+        return restzeitbedarf_in_bearbeitung;
+    }
+
+    public Arbeitsplatz restzeitbedarf_in_bearbeitung(Double restzeitbedarf_in_bearbeitung) {
+        this.restzeitbedarf_in_bearbeitung = restzeitbedarf_in_bearbeitung;
+        return this;
+    }
+
+    public void setRestzeitbedarf_in_bearbeitung(Double restzeitbedarf_in_bearbeitung) {
+        this.restzeitbedarf_in_bearbeitung = restzeitbedarf_in_bearbeitung;
+    }
+
+    public Integer getSchicht() {
+        return schicht;
+    }
+
+    public Arbeitsplatz schicht(Integer schicht) {
+        this.schicht = schicht;
+        return this;
+    }
+
+    public void setSchicht(Integer schicht) {
+        this.schicht = schicht;
+    }
+
+    public Double getUeberstunden() {
+        return ueberstunden;
+    }
+
+    public Arbeitsplatz ueberstunden(Double ueberstunden) {
+        this.ueberstunden = ueberstunden;
+        return this;
+    }
+
+    public void setUeberstunden(Double ueberstunden) {
+        this.ueberstunden = ueberstunden;
+    }
+
     public Set<Teil> getTeils() {
         return teils;
     }
@@ -226,6 +278,9 @@ public class Arbeitsplatz implements Serializable {
             ", lohnleerkosten='" + getLohnleerkosten() + "'" +
             ", lohnkosten='" + getLohnkosten() + "'" +
             ", maschinenstillstandkosten='" + getMaschinenstillstandkosten() + "'" +
+            ", restzeitbedarf_in_bearbeitung='" + getRestzeitbedarf_in_bearbeitung() + "'" +
+            ", schicht='" + getSchicht() + "'" +
+            ", ueberstunden='" + getUeberstunden() + "'" +
             "}";
     }
 }

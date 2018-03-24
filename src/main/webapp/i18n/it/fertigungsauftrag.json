@@ -17,7 +17,6 @@
             },
             "periode": "Periode",
             "auftragsmenge": "Auftragsmenge",
-            "durchlaufzeit": "Durchlaufzeit",
             "kostenprolos": "Kostenprolos",
             "durchschnittlichestueckkosten": "Durchschnittlichestueckkosten",
             "auftragsstatus": "Auftragsstatus",
@@ -25,6 +24,7 @@
             "beendet": "Beendet",
             "dlzminimal": "Dlzminimal",
             "dlzFaktor": "Dlz Faktor",
+            "nummer": "Nummer",
             "los": "Los",
             "herstellteil": "Herstellteil"
         }

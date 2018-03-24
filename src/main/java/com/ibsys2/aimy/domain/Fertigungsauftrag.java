@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -31,9 +32,6 @@ public class Fertigungsauftrag implements Serializable {
     @Column(name = "auftragsmenge")
     private Integer auftragsmenge;
 
-    @Column(name = "durchlaufzeit")
-    private Double durchlaufzeit;
-
     @Column(name = "kostenprolos")
     private Double kostenprolos;
 
@@ -55,6 +53,11 @@ public class Fertigungsauftrag implements Serializable {
 
     @Column(name = "dlz_faktor")
     private Double dlzFaktor;
+
+    @NotNull
+    @Min(value = 1)
+    @Column(name = "nummer", nullable = false)
+    private Integer nummer;
 
     @ManyToOne
     private Los los;
@@ -95,19 +98,6 @@ public class Fertigungsauftrag implements Serializable {
 
     public void setAuftragsmenge(Integer auftragsmenge) {
         this.auftragsmenge = auftragsmenge;
-    }
-
-    public Double getDurchlaufzeit() {
-        return durchlaufzeit;
-    }
-
-    public Fertigungsauftrag durchlaufzeit(Double durchlaufzeit) {
-        this.durchlaufzeit = durchlaufzeit;
-        return this;
-    }
-
-    public void setDurchlaufzeit(Double durchlaufzeit) {
-        this.durchlaufzeit = durchlaufzeit;
     }
 
     public Double getKostenprolos() {
@@ -201,6 +191,19 @@ public class Fertigungsauftrag implements Serializable {
         this.dlzFaktor = dlzFaktor;
     }
 
+    public Integer getNummer() {
+        return nummer;
+    }
+
+    public Fertigungsauftrag nummer(Integer nummer) {
+        this.nummer = nummer;
+        return this;
+    }
+
+    public void setNummer(Integer nummer) {
+        this.nummer = nummer;
+    }
+
     public Los getLos() {
         return los;
     }
@@ -254,7 +257,6 @@ public class Fertigungsauftrag implements Serializable {
             "id=" + getId() +
             ", periode='" + getPeriode() + "'" +
             ", auftragsmenge='" + getAuftragsmenge() + "'" +
-            ", durchlaufzeit='" + getDurchlaufzeit() + "'" +
             ", kostenprolos='" + getKostenprolos() + "'" +
             ", durchschnittlichestueckkosten='" + getDurchschnittlichestueckkosten() + "'" +
             ", auftragsstatus='" + getAuftragsstatus() + "'" +
@@ -262,6 +264,7 @@ public class Fertigungsauftrag implements Serializable {
             ", beendet='" + getBeendet() + "'" +
             ", dlzminimal='" + getDlzminimal() + "'" +
             ", dlzFaktor='" + getDlzFaktor() + "'" +
+            ", nummer='" + getNummer() + "'" +
             "}";
     }
 }

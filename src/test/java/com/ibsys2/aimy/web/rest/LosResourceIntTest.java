@@ -51,6 +51,9 @@ public class LosResourceIntTest {
     private static final Double DEFAULT_KOSTEN = 1D;
     private static final Double UPDATED_KOSTEN = 2D;
 
+    private static final Integer DEFAULT_NUMMER = 1;
+    private static final Integer UPDATED_NUMMER = 2;
+
     @Autowired
     private LosRepository losRepository;
 
@@ -95,7 +98,8 @@ public class LosResourceIntTest {
             .periode(DEFAULT_PERIODE)
             .menge(DEFAULT_MENGE)
             .durchlaufzeit(DEFAULT_DURCHLAUFZEIT)
-            .kosten(DEFAULT_KOSTEN);
+            .kosten(DEFAULT_KOSTEN)
+            .nummer(DEFAULT_NUMMER);
         return los;
     }
 
@@ -123,6 +127,7 @@ public class LosResourceIntTest {
         assertThat(testLos.getMenge()).isEqualTo(DEFAULT_MENGE);
         assertThat(testLos.getDurchlaufzeit()).isEqualTo(DEFAULT_DURCHLAUFZEIT);
         assertThat(testLos.getKosten()).isEqualTo(DEFAULT_KOSTEN);
+        assertThat(testLos.getNummer()).isEqualTo(DEFAULT_NUMMER);
     }
 
     @Test
@@ -146,6 +151,24 @@ public class LosResourceIntTest {
 
     @Test
     @Transactional
+    public void checkNummerIsRequired() throws Exception {
+        int databaseSizeBeforeTest = losRepository.findAll().size();
+        // set the field null
+        los.setNummer(null);
+
+        // Create the Los, which fails.
+
+        restLosMockMvc.perform(post("/api/los")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(los)))
+            .andExpect(status().isBadRequest());
+
+        List<Los> losList = losRepository.findAll();
+        assertThat(losList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllLos() throws Exception {
         // Initialize the database
         losRepository.saveAndFlush(los);
@@ -158,7 +181,8 @@ public class LosResourceIntTest {
             .andExpect(jsonPath("$.[*].periode").value(hasItem(DEFAULT_PERIODE)))
             .andExpect(jsonPath("$.[*].menge").value(hasItem(DEFAULT_MENGE)))
             .andExpect(jsonPath("$.[*].durchlaufzeit").value(hasItem(DEFAULT_DURCHLAUFZEIT.doubleValue())))
-            .andExpect(jsonPath("$.[*].kosten").value(hasItem(DEFAULT_KOSTEN.doubleValue())));
+            .andExpect(jsonPath("$.[*].kosten").value(hasItem(DEFAULT_KOSTEN.doubleValue())))
+            .andExpect(jsonPath("$.[*].nummer").value(hasItem(DEFAULT_NUMMER)));
     }
 
     @Test
@@ -175,7 +199,8 @@ public class LosResourceIntTest {
             .andExpect(jsonPath("$.periode").value(DEFAULT_PERIODE))
             .andExpect(jsonPath("$.menge").value(DEFAULT_MENGE))
             .andExpect(jsonPath("$.durchlaufzeit").value(DEFAULT_DURCHLAUFZEIT.doubleValue()))
-            .andExpect(jsonPath("$.kosten").value(DEFAULT_KOSTEN.doubleValue()));
+            .andExpect(jsonPath("$.kosten").value(DEFAULT_KOSTEN.doubleValue()))
+            .andExpect(jsonPath("$.nummer").value(DEFAULT_NUMMER));
     }
 
     @Test
@@ -200,7 +225,8 @@ public class LosResourceIntTest {
             .periode(UPDATED_PERIODE)
             .menge(UPDATED_MENGE)
             .durchlaufzeit(UPDATED_DURCHLAUFZEIT)
-            .kosten(UPDATED_KOSTEN);
+            .kosten(UPDATED_KOSTEN)
+            .nummer(UPDATED_NUMMER);
 
         restLosMockMvc.perform(put("/api/los")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -215,6 +241,7 @@ public class LosResourceIntTest {
         assertThat(testLos.getMenge()).isEqualTo(UPDATED_MENGE);
         assertThat(testLos.getDurchlaufzeit()).isEqualTo(UPDATED_DURCHLAUFZEIT);
         assertThat(testLos.getKosten()).isEqualTo(UPDATED_KOSTEN);
+        assertThat(testLos.getNummer()).isEqualTo(UPDATED_NUMMER);
     }
 
     @Test

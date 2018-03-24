@@ -54,6 +54,18 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="restzeitbedarf_in_bearbeitung" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="schicht" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="ueberstunden" type="double">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         

@@ -39,8 +39,6 @@ describe('Fertigungsauftrag e2e test', () => {
         expect(fertigungsauftragDialogPage.getPeriodeInput()).toMatch('5');
         fertigungsauftragDialogPage.setAuftragsmengeInput('5');
         expect(fertigungsauftragDialogPage.getAuftragsmengeInput()).toMatch('5');
-        fertigungsauftragDialogPage.setDurchlaufzeitInput('5');
-        expect(fertigungsauftragDialogPage.getDurchlaufzeitInput()).toMatch('5');
         fertigungsauftragDialogPage.setKostenprolosInput('5');
         expect(fertigungsauftragDialogPage.getKostenprolosInput()).toMatch('5');
         fertigungsauftragDialogPage.setDurchschnittlichestueckkostenInput('5');
@@ -54,6 +52,8 @@ describe('Fertigungsauftrag e2e test', () => {
         expect(fertigungsauftragDialogPage.getDlzminimalInput()).toMatch('5');
         fertigungsauftragDialogPage.setDlzFaktorInput('5');
         expect(fertigungsauftragDialogPage.getDlzFaktorInput()).toMatch('5');
+        fertigungsauftragDialogPage.setNummerInput('5');
+        expect(fertigungsauftragDialogPage.getNummerInput()).toMatch('5');
         fertigungsauftragDialogPage.losSelectLastOption();
         fertigungsauftragDialogPage.herstellteilSelectLastOption();
         fertigungsauftragDialogPage.save();
@@ -84,7 +84,6 @@ export class FertigungsauftragDialogPage {
     closeButton = element(by.css('button.close'));
     periodeInput = element(by.css('input#field_periode'));
     auftragsmengeInput = element(by.css('input#field_auftragsmenge'));
-    durchlaufzeitInput = element(by.css('input#field_durchlaufzeit'));
     kostenprolosInput = element(by.css('input#field_kostenprolos'));
     durchschnittlichestueckkostenInput = element(by.css('input#field_durchschnittlichestueckkosten'));
     auftragsstatusSelect = element(by.css('select#field_auftragsstatus'));
@@ -92,6 +91,7 @@ export class FertigungsauftragDialogPage {
     beendetInput = element(by.css('input#field_beendet'));
     dlzminimalInput = element(by.css('input#field_dlzminimal'));
     dlzFaktorInput = element(by.css('input#field_dlzFaktor'));
+    nummerInput = element(by.css('input#field_nummer'));
     losSelect = element(by.css('select#field_los'));
     herstellteilSelect = element(by.css('select#field_herstellteil'));
 
@@ -113,14 +113,6 @@ export class FertigungsauftragDialogPage {
 
     getAuftragsmengeInput = function () {
         return this.auftragsmengeInput.getAttribute('value');
-    }
-
-    setDurchlaufzeitInput = function (durchlaufzeit) {
-        this.durchlaufzeitInput.sendKeys(durchlaufzeit);
-    }
-
-    getDurchlaufzeitInput = function () {
-        return this.durchlaufzeitInput.getAttribute('value');
     }
 
     setKostenprolosInput = function (kostenprolos) {
@@ -180,6 +172,14 @@ export class FertigungsauftragDialogPage {
 
     getDlzFaktorInput = function () {
         return this.dlzFaktorInput.getAttribute('value');
+    }
+
+    setNummerInput = function (nummer) {
+        this.nummerInput.sendKeys(nummer);
+    }
+
+    getNummerInput = function () {
+        return this.nummerInput.getAttribute('value');
     }
 
     losSelectLastOption = function () {

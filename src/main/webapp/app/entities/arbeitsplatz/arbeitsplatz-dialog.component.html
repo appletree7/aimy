@@ -52,6 +52,45 @@
             <input type="number" class="form-control" name="maschinenstillstandkosten" id="field_maschinenstillstandkosten"
                 [(ngModel)]="arbeitsplatz.maschinenstillstandkosten"  />
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.arbeitsplatz.restzeitbedarf_in_bearbeitung" for="field_restzeitbedarf_in_bearbeitung">Restzeitbedarf In Bearbeitung</label>
+            <input type="number" class="form-control" name="restzeitbedarf_in_bearbeitung" id="field_restzeitbedarf_in_bearbeitung"
+                [(ngModel)]="arbeitsplatz.restzeitbedarf_in_bearbeitung" min="0" />
+            <div [hidden]="!(editForm.controls.restzeitbedarf_in_bearbeitung?.dirty && editForm.controls.restzeitbedarf_in_bearbeitung?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.restzeitbedarf_in_bearbeitung?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.restzeitbedarf_in_bearbeitung?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.arbeitsplatz.schicht" for="field_schicht">Schicht</label>
+            <input type="number" class="form-control" name="schicht" id="field_schicht"
+                [(ngModel)]="arbeitsplatz.schicht" min="1" max="3" />
+            <div [hidden]="!(editForm.controls.schicht?.dirty && editForm.controls.schicht?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.schicht?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 1 }">
+                    This field should be at least 1.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.schicht?.errors?.max" jhiTranslate="entity.validation.max" translateValues="{ max: 3 }">
+                    This field cannot be more than 3.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.schicht?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.arbeitsplatz.ueberstunden" for="field_ueberstunden">Ueberstunden</label>
+            <input type="number" class="form-control" name="ueberstunden" id="field_ueberstunden"
+                [(ngModel)]="arbeitsplatz.ueberstunden"  />
+        </div>
 
     </div>
     <div class="modal-footer">

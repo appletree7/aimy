@@ -46,9 +46,6 @@ public class FertigungsauftragResourceIntTest {
     private static final Integer DEFAULT_AUFTRAGSMENGE = 1;
     private static final Integer UPDATED_AUFTRAGSMENGE = 2;
 
-    private static final Double DEFAULT_DURCHLAUFZEIT = 1D;
-    private static final Double UPDATED_DURCHLAUFZEIT = 2D;
-
     private static final Double DEFAULT_KOSTENPROLOS = 1D;
     private static final Double UPDATED_KOSTENPROLOS = 2D;
 
@@ -69,6 +66,9 @@ public class FertigungsauftragResourceIntTest {
 
     private static final Double DEFAULT_DLZ_FAKTOR = 1D;
     private static final Double UPDATED_DLZ_FAKTOR = 2D;
+
+    private static final Integer DEFAULT_NUMMER = 1;
+    private static final Integer UPDATED_NUMMER = 2;
 
     @Autowired
     private FertigungsauftragRepository fertigungsauftragRepository;
@@ -113,14 +113,14 @@ public class FertigungsauftragResourceIntTest {
         Fertigungsauftrag fertigungsauftrag = new Fertigungsauftrag()
             .periode(DEFAULT_PERIODE)
             .auftragsmenge(DEFAULT_AUFTRAGSMENGE)
-            .durchlaufzeit(DEFAULT_DURCHLAUFZEIT)
             .kostenprolos(DEFAULT_KOSTENPROLOS)
             .durchschnittlichestueckkosten(DEFAULT_DURCHSCHNITTLICHESTUECKKOSTEN)
             .auftragsstatus(DEFAULT_AUFTRAGSSTATUS)
             .begonnen(DEFAULT_BEGONNEN)
             .beendet(DEFAULT_BEENDET)
             .dlzminimal(DEFAULT_DLZMINIMAL)
-            .dlzFaktor(DEFAULT_DLZ_FAKTOR);
+            .dlzFaktor(DEFAULT_DLZ_FAKTOR)
+            .nummer(DEFAULT_NUMMER);
         return fertigungsauftrag;
     }
 
@@ -146,7 +146,6 @@ public class FertigungsauftragResourceIntTest {
         Fertigungsauftrag testFertigungsauftrag = fertigungsauftragList.get(fertigungsauftragList.size() - 1);
         assertThat(testFertigungsauftrag.getPeriode()).isEqualTo(DEFAULT_PERIODE);
         assertThat(testFertigungsauftrag.getAuftragsmenge()).isEqualTo(DEFAULT_AUFTRAGSMENGE);
-        assertThat(testFertigungsauftrag.getDurchlaufzeit()).isEqualTo(DEFAULT_DURCHLAUFZEIT);
         assertThat(testFertigungsauftrag.getKostenprolos()).isEqualTo(DEFAULT_KOSTENPROLOS);
         assertThat(testFertigungsauftrag.getDurchschnittlichestueckkosten()).isEqualTo(DEFAULT_DURCHSCHNITTLICHESTUECKKOSTEN);
         assertThat(testFertigungsauftrag.getAuftragsstatus()).isEqualTo(DEFAULT_AUFTRAGSSTATUS);
@@ -154,6 +153,7 @@ public class FertigungsauftragResourceIntTest {
         assertThat(testFertigungsauftrag.getBeendet()).isEqualTo(DEFAULT_BEENDET);
         assertThat(testFertigungsauftrag.getDlzminimal()).isEqualTo(DEFAULT_DLZMINIMAL);
         assertThat(testFertigungsauftrag.getDlzFaktor()).isEqualTo(DEFAULT_DLZ_FAKTOR);
+        assertThat(testFertigungsauftrag.getNummer()).isEqualTo(DEFAULT_NUMMER);
     }
 
     @Test
@@ -177,6 +177,24 @@ public class FertigungsauftragResourceIntTest {
 
     @Test
     @Transactional
+    public void checkNummerIsRequired() throws Exception {
+        int databaseSizeBeforeTest = fertigungsauftragRepository.findAll().size();
+        // set the field null
+        fertigungsauftrag.setNummer(null);
+
+        // Create the Fertigungsauftrag, which fails.
+
+        restFertigungsauftragMockMvc.perform(post("/api/fertigungsauftrags")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(fertigungsauftrag)))
+            .andExpect(status().isBadRequest());
+
+        List<Fertigungsauftrag> fertigungsauftragList = fertigungsauftragRepository.findAll();
+        assertThat(fertigungsauftragList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllFertigungsauftrags() throws Exception {
         // Initialize the database
         fertigungsauftragRepository.saveAndFlush(fertigungsauftrag);
@@ -188,14 +206,14 @@ public class FertigungsauftragResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(fertigungsauftrag.getId().intValue())))
             .andExpect(jsonPath("$.[*].periode").value(hasItem(DEFAULT_PERIODE)))
             .andExpect(jsonPath("$.[*].auftragsmenge").value(hasItem(DEFAULT_AUFTRAGSMENGE)))
-            .andExpect(jsonPath("$.[*].durchlaufzeit").value(hasItem(DEFAULT_DURCHLAUFZEIT.doubleValue())))
             .andExpect(jsonPath("$.[*].kostenprolos").value(hasItem(DEFAULT_KOSTENPROLOS.doubleValue())))
             .andExpect(jsonPath("$.[*].durchschnittlichestueckkosten").value(hasItem(DEFAULT_DURCHSCHNITTLICHESTUECKKOSTEN.doubleValue())))
             .andExpect(jsonPath("$.[*].auftragsstatus").value(hasItem(DEFAULT_AUFTRAGSSTATUS.toString())))
             .andExpect(jsonPath("$.[*].begonnen").value(hasItem(DEFAULT_BEGONNEN.toString())))
             .andExpect(jsonPath("$.[*].beendet").value(hasItem(DEFAULT_BEENDET.toString())))
             .andExpect(jsonPath("$.[*].dlzminimal").value(hasItem(DEFAULT_DLZMINIMAL)))
-            .andExpect(jsonPath("$.[*].dlzFaktor").value(hasItem(DEFAULT_DLZ_FAKTOR.doubleValue())));
+            .andExpect(jsonPath("$.[*].dlzFaktor").value(hasItem(DEFAULT_DLZ_FAKTOR.doubleValue())))
+            .andExpect(jsonPath("$.[*].nummer").value(hasItem(DEFAULT_NUMMER)));
     }
 
     @Test
@@ -211,14 +229,14 @@ public class FertigungsauftragResourceIntTest {
             .andExpect(jsonPath("$.id").value(fertigungsauftrag.getId().intValue()))
             .andExpect(jsonPath("$.periode").value(DEFAULT_PERIODE))
             .andExpect(jsonPath("$.auftragsmenge").value(DEFAULT_AUFTRAGSMENGE))
-            .andExpect(jsonPath("$.durchlaufzeit").value(DEFAULT_DURCHLAUFZEIT.doubleValue()))
             .andExpect(jsonPath("$.kostenprolos").value(DEFAULT_KOSTENPROLOS.doubleValue()))
             .andExpect(jsonPath("$.durchschnittlichestueckkosten").value(DEFAULT_DURCHSCHNITTLICHESTUECKKOSTEN.doubleValue()))
             .andExpect(jsonPath("$.auftragsstatus").value(DEFAULT_AUFTRAGSSTATUS.toString()))
             .andExpect(jsonPath("$.begonnen").value(DEFAULT_BEGONNEN.toString()))
             .andExpect(jsonPath("$.beendet").value(DEFAULT_BEENDET.toString()))
             .andExpect(jsonPath("$.dlzminimal").value(DEFAULT_DLZMINIMAL))
-            .andExpect(jsonPath("$.dlzFaktor").value(DEFAULT_DLZ_FAKTOR.doubleValue()));
+            .andExpect(jsonPath("$.dlzFaktor").value(DEFAULT_DLZ_FAKTOR.doubleValue()))
+            .andExpect(jsonPath("$.nummer").value(DEFAULT_NUMMER));
     }
 
     @Test
@@ -242,14 +260,14 @@ public class FertigungsauftragResourceIntTest {
         updatedFertigungsauftrag
             .periode(UPDATED_PERIODE)
             .auftragsmenge(UPDATED_AUFTRAGSMENGE)
-            .durchlaufzeit(UPDATED_DURCHLAUFZEIT)
             .kostenprolos(UPDATED_KOSTENPROLOS)
             .durchschnittlichestueckkosten(UPDATED_DURCHSCHNITTLICHESTUECKKOSTEN)
             .auftragsstatus(UPDATED_AUFTRAGSSTATUS)
             .begonnen(UPDATED_BEGONNEN)
             .beendet(UPDATED_BEENDET)
             .dlzminimal(UPDATED_DLZMINIMAL)
-            .dlzFaktor(UPDATED_DLZ_FAKTOR);
+            .dlzFaktor(UPDATED_DLZ_FAKTOR)
+            .nummer(UPDATED_NUMMER);
 
         restFertigungsauftragMockMvc.perform(put("/api/fertigungsauftrags")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -262,7 +280,6 @@ public class FertigungsauftragResourceIntTest {
         Fertigungsauftrag testFertigungsauftrag = fertigungsauftragList.get(fertigungsauftragList.size() - 1);
         assertThat(testFertigungsauftrag.getPeriode()).isEqualTo(UPDATED_PERIODE);
         assertThat(testFertigungsauftrag.getAuftragsmenge()).isEqualTo(UPDATED_AUFTRAGSMENGE);
-        assertThat(testFertigungsauftrag.getDurchlaufzeit()).isEqualTo(UPDATED_DURCHLAUFZEIT);
         assertThat(testFertigungsauftrag.getKostenprolos()).isEqualTo(UPDATED_KOSTENPROLOS);
         assertThat(testFertigungsauftrag.getDurchschnittlichestueckkosten()).isEqualTo(UPDATED_DURCHSCHNITTLICHESTUECKKOSTEN);
         assertThat(testFertigungsauftrag.getAuftragsstatus()).isEqualTo(UPDATED_AUFTRAGSSTATUS);
@@ -270,6 +287,7 @@ public class FertigungsauftragResourceIntTest {
         assertThat(testFertigungsauftrag.getBeendet()).isEqualTo(UPDATED_BEENDET);
         assertThat(testFertigungsauftrag.getDlzminimal()).isEqualTo(UPDATED_DLZMINIMAL);
         assertThat(testFertigungsauftrag.getDlzFaktor()).isEqualTo(UPDATED_DLZ_FAKTOR);
+        assertThat(testFertigungsauftrag.getNummer()).isEqualTo(UPDATED_NUMMER);
     }
 
     @Test

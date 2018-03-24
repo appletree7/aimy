@@ -24,10 +24,6 @@
             "fieldType": "Integer"
         },
         {
-            "fieldName": "durchlaufzeit",
-            "fieldType": "Double"
-        },
-        {
             "fieldName": "kostenprolos",
             "fieldType": "Double"
         },
@@ -55,13 +51,22 @@
         {
             "fieldName": "dlzFaktor",
             "fieldType": "Double"
+        },
+        {
+            "fieldName": "nummer",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": "1"
         }
     ],
     "changelogDate": "20171220194423",
-    "javadoc": "The Fertigungsuftrag entity.",
-    "entityTableName": "fertigungsauftrag",
     "dto": "no",
-    "pagination": "no",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false
+    "entityTableName": "fertigungsauftrag",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no",
+    "javadoc": "The Fertigungsuftrag entity."
 }

@@ -37,7 +37,7 @@ export class AbschlussComponent implements OnInit {
       this.teilService.query()
           .subscribe((res: ResponseWrapper) => {
               this.teils = res.json;
-              this.teils = this.teils.filter((teil) => parseInt(teil.nummer, 10) <= 3);
+              this.teils = this.teils.filter((teil) => (teil.periode === parseInt(localStorage.getItem('aktuelleperiode'), 10)) && (teil.teiltyp === Teiltyp.PRODUKT));
           }, (res: ResponseWrapper) => this.onError(res.json));
       this.bestellungService.query()
           .subscribe((res: ResponseWrapper) => {

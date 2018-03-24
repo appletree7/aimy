@@ -6,6 +6,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -55,6 +56,24 @@ public class Teil implements Serializable {
 
     @Column(name = "vertriebswunsch")
     private Integer vertriebswunsch;
+
+    @NotNull
+    @Min(value = 0)
+    @Column(name = "periode", nullable = false)
+    private Integer periode;
+
+    @Min(value = 0)
+    @Column(name = "gesamtproduktionsmenge")
+    private Integer gesamtproduktionsmenge;
+
+    @Column(name = "direktverkaufmenge")
+    private Integer direktverkaufmenge;
+
+    @Column(name = "direktverkaufspreis")
+    private Double direktverkaufspreis;
+
+    @Column(name = "strafe")
+    private Double strafe;
 
     @OneToMany(mappedBy = "herstellteil")
     @JsonIgnore
@@ -193,6 +212,71 @@ public class Teil implements Serializable {
         this.vertriebswunsch = vertriebswunsch;
     }
 
+    public Integer getPeriode() {
+        return periode;
+    }
+
+    public Teil periode(Integer periode) {
+        this.periode = periode;
+        return this;
+    }
+
+    public void setPeriode(Integer periode) {
+        this.periode = periode;
+    }
+
+    public Integer getGesamtproduktionsmenge() {
+        return gesamtproduktionsmenge;
+    }
+
+    public Teil gesamtproduktionsmenge(Integer gesamtproduktionsmenge) {
+        this.gesamtproduktionsmenge = gesamtproduktionsmenge;
+        return this;
+    }
+
+    public void setGesamtproduktionsmenge(Integer gesamtproduktionsmenge) {
+        this.gesamtproduktionsmenge = gesamtproduktionsmenge;
+    }
+
+    public Integer getDirektverkaufmenge() {
+        return direktverkaufmenge;
+    }
+
+    public Teil direktverkaufmenge(Integer direktverkaufmenge) {
+        this.direktverkaufmenge = direktverkaufmenge;
+        return this;
+    }
+
+    public void setDirektverkaufmenge(Integer direktverkaufmenge) {
+        this.direktverkaufmenge = direktverkaufmenge;
+    }
+
+    public Double getDirektverkaufspreis() {
+        return direktverkaufspreis;
+    }
+
+    public Teil direktverkaufspreis(Double direktverkaufspreis) {
+        this.direktverkaufspreis = direktverkaufspreis;
+        return this;
+    }
+
+    public void setDirektverkaufspreis(Double direktverkaufspreis) {
+        this.direktverkaufspreis = direktverkaufspreis;
+    }
+
+    public Double getStrafe() {
+        return strafe;
+    }
+
+    public Teil strafe(Double strafe) {
+        this.strafe = strafe;
+        return this;
+    }
+
+    public void setStrafe(Double strafe) {
+        this.strafe = strafe;
+    }
+
     public Set<Fertigungsauftrag> getFertigungsauftrags() {
         return fertigungsauftrags;
     }
@@ -278,6 +362,11 @@ public class Teil implements Serializable {
             ", lagerwert='" + getLagerwert() + "'" +
             ", sicherheitsbestand='" + getSicherheitsbestand() + "'" +
             ", vertriebswunsch='" + getVertriebswunsch() + "'" +
+            ", periode='" + getPeriode() + "'" +
+            ", gesamtproduktionsmenge='" + getGesamtproduktionsmenge() + "'" +
+            ", direktverkaufmenge='" + getDirektverkaufmenge() + "'" +
+            ", direktverkaufspreis='" + getDirektverkaufspreis() + "'" +
+            ", strafe='" + getStrafe() + "'" +
             "}";
     }
 }

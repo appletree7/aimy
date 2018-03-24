@@ -63,6 +63,15 @@ public class ArbeitsplatzResourceIntTest {
     private static final Double DEFAULT_MASCHINENSTILLSTANDKOSTEN = 1D;
     private static final Double UPDATED_MASCHINENSTILLSTANDKOSTEN = 2D;
 
+    private static final Double DEFAULT_RESTZEITBEDARF_IN_BEARBEITUNG = 0D;
+    private static final Double UPDATED_RESTZEITBEDARF_IN_BEARBEITUNG = 1D;
+
+    private static final Integer DEFAULT_SCHICHT = 1;
+    private static final Integer UPDATED_SCHICHT = 2;
+
+    private static final Double DEFAULT_UEBERSTUNDEN = 1D;
+    private static final Double UPDATED_UEBERSTUNDEN = 2D;
+
     @Autowired
     private ArbeitsplatzRepository arbeitsplatzRepository;
 
@@ -111,7 +120,10 @@ public class ArbeitsplatzResourceIntTest {
             .leerzeit(DEFAULT_LEERZEIT)
             .lohnleerkosten(DEFAULT_LOHNLEERKOSTEN)
             .lohnkosten(DEFAULT_LOHNKOSTEN)
-            .maschinenstillstandkosten(DEFAULT_MASCHINENSTILLSTANDKOSTEN);
+            .maschinenstillstandkosten(DEFAULT_MASCHINENSTILLSTANDKOSTEN)
+            .restzeitbedarf_in_bearbeitung(DEFAULT_RESTZEITBEDARF_IN_BEARBEITUNG)
+            .schicht(DEFAULT_SCHICHT)
+            .ueberstunden(DEFAULT_UEBERSTUNDEN);
         return arbeitsplatz;
     }
 
@@ -143,6 +155,9 @@ public class ArbeitsplatzResourceIntTest {
         assertThat(testArbeitsplatz.getLohnleerkosten()).isEqualTo(DEFAULT_LOHNLEERKOSTEN);
         assertThat(testArbeitsplatz.getLohnkosten()).isEqualTo(DEFAULT_LOHNKOSTEN);
         assertThat(testArbeitsplatz.getMaschinenstillstandkosten()).isEqualTo(DEFAULT_MASCHINENSTILLSTANDKOSTEN);
+        assertThat(testArbeitsplatz.getRestzeitbedarf_in_bearbeitung()).isEqualTo(DEFAULT_RESTZEITBEDARF_IN_BEARBEITUNG);
+        assertThat(testArbeitsplatz.getSchicht()).isEqualTo(DEFAULT_SCHICHT);
+        assertThat(testArbeitsplatz.getUeberstunden()).isEqualTo(DEFAULT_UEBERSTUNDEN);
     }
 
     @Test
@@ -182,7 +197,10 @@ public class ArbeitsplatzResourceIntTest {
             .andExpect(jsonPath("$.[*].leerzeit").value(hasItem(DEFAULT_LEERZEIT.doubleValue())))
             .andExpect(jsonPath("$.[*].lohnleerkosten").value(hasItem(DEFAULT_LOHNLEERKOSTEN.doubleValue())))
             .andExpect(jsonPath("$.[*].lohnkosten").value(hasItem(DEFAULT_LOHNKOSTEN.doubleValue())))
-            .andExpect(jsonPath("$.[*].maschinenstillstandkosten").value(hasItem(DEFAULT_MASCHINENSTILLSTANDKOSTEN.doubleValue())));
+            .andExpect(jsonPath("$.[*].maschinenstillstandkosten").value(hasItem(DEFAULT_MASCHINENSTILLSTANDKOSTEN.doubleValue())))
+            .andExpect(jsonPath("$.[*].restzeitbedarf_in_bearbeitung").value(hasItem(DEFAULT_RESTZEITBEDARF_IN_BEARBEITUNG.doubleValue())))
+            .andExpect(jsonPath("$.[*].schicht").value(hasItem(DEFAULT_SCHICHT)))
+            .andExpect(jsonPath("$.[*].ueberstunden").value(hasItem(DEFAULT_UEBERSTUNDEN.doubleValue())));
     }
 
     @Test
@@ -203,7 +221,10 @@ public class ArbeitsplatzResourceIntTest {
             .andExpect(jsonPath("$.leerzeit").value(DEFAULT_LEERZEIT.doubleValue()))
             .andExpect(jsonPath("$.lohnleerkosten").value(DEFAULT_LOHNLEERKOSTEN.doubleValue()))
             .andExpect(jsonPath("$.lohnkosten").value(DEFAULT_LOHNKOSTEN.doubleValue()))
-            .andExpect(jsonPath("$.maschinenstillstandkosten").value(DEFAULT_MASCHINENSTILLSTANDKOSTEN.doubleValue()));
+            .andExpect(jsonPath("$.maschinenstillstandkosten").value(DEFAULT_MASCHINENSTILLSTANDKOSTEN.doubleValue()))
+            .andExpect(jsonPath("$.restzeitbedarf_in_bearbeitung").value(DEFAULT_RESTZEITBEDARF_IN_BEARBEITUNG.doubleValue()))
+            .andExpect(jsonPath("$.schicht").value(DEFAULT_SCHICHT))
+            .andExpect(jsonPath("$.ueberstunden").value(DEFAULT_UEBERSTUNDEN.doubleValue()));
     }
 
     @Test
@@ -232,7 +253,10 @@ public class ArbeitsplatzResourceIntTest {
             .leerzeit(UPDATED_LEERZEIT)
             .lohnleerkosten(UPDATED_LOHNLEERKOSTEN)
             .lohnkosten(UPDATED_LOHNKOSTEN)
-            .maschinenstillstandkosten(UPDATED_MASCHINENSTILLSTANDKOSTEN);
+            .maschinenstillstandkosten(UPDATED_MASCHINENSTILLSTANDKOSTEN)
+            .restzeitbedarf_in_bearbeitung(UPDATED_RESTZEITBEDARF_IN_BEARBEITUNG)
+            .schicht(UPDATED_SCHICHT)
+            .ueberstunden(UPDATED_UEBERSTUNDEN);
 
         restArbeitsplatzMockMvc.perform(put("/api/arbeitsplatzs")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -251,6 +275,9 @@ public class ArbeitsplatzResourceIntTest {
         assertThat(testArbeitsplatz.getLohnleerkosten()).isEqualTo(UPDATED_LOHNLEERKOSTEN);
         assertThat(testArbeitsplatz.getLohnkosten()).isEqualTo(UPDATED_LOHNKOSTEN);
         assertThat(testArbeitsplatz.getMaschinenstillstandkosten()).isEqualTo(UPDATED_MASCHINENSTILLSTANDKOSTEN);
+        assertThat(testArbeitsplatz.getRestzeitbedarf_in_bearbeitung()).isEqualTo(UPDATED_RESTZEITBEDARF_IN_BEARBEITUNG);
+        assertThat(testArbeitsplatz.getSchicht()).isEqualTo(UPDATED_SCHICHT);
+        assertThat(testArbeitsplatz.getUeberstunden()).isEqualTo(UPDATED_UEBERSTUNDEN);
     }
 
     @Test

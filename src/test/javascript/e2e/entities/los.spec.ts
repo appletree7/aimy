@@ -43,6 +43,8 @@ describe('Los e2e test', () => {
         expect(losDialogPage.getDurchlaufzeitInput()).toMatch('5');
         losDialogPage.setKostenInput('5');
         expect(losDialogPage.getKostenInput()).toMatch('5');
+        losDialogPage.setNummerInput('5');
+        expect(losDialogPage.getNummerInput()).toMatch('5');
         losDialogPage.save();
         expect(losDialogPage.getSaveButton().isPresent()).toBeFalsy();
     }); 
@@ -73,6 +75,7 @@ export class LosDialogPage {
     mengeInput = element(by.css('input#field_menge'));
     durchlaufzeitInput = element(by.css('input#field_durchlaufzeit'));
     kostenInput = element(by.css('input#field_kosten'));
+    nummerInput = element(by.css('input#field_nummer'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -108,6 +111,14 @@ export class LosDialogPage {
 
     getKostenInput = function () {
         return this.kostenInput.getAttribute('value');
+    }
+
+    setNummerInput = function (nummer) {
+        this.nummerInput.sendKeys(nummer);
+    }
+
+    getNummerInput = function () {
+        return this.nummerInput.getAttribute('value');
     }
 
     save() {

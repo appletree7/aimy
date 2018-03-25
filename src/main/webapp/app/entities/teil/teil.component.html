@@ -26,6 +26,11 @@
             <th><span jhiTranslate="aimyApp.teil.lagerwert">Lagerwert</span></th>
             <th><span jhiTranslate="aimyApp.teil.sicherheitsbestand">Sicherheitsbestand</span></th>
             <th><span jhiTranslate="aimyApp.teil.vertriebswunsch">Vertriebswunsch</span></th>
+            <th><span jhiTranslate="aimyApp.teil.periode">Periode</span></th>
+            <th><span jhiTranslate="aimyApp.teil.gesamtproduktionsmenge">Gesamtproduktionsmenge</span></th>
+            <th><span jhiTranslate="aimyApp.teil.direktverkaufmenge">Direktverkaufmenge</span></th>
+            <th><span jhiTranslate="aimyApp.teil.direktverkaufspreis">Direktverkaufspreis</span></th>
+            <th><span jhiTranslate="aimyApp.teil.strafe">Strafe</span></th>
             <th><span jhiTranslate="aimyApp.teil.subkomponente">Subkomponente</span></th>
             <th><span jhiTranslate="aimyApp.teil.arbeitsplatz">Arbeitsplatz</span></th>
             <th></th>
@@ -43,6 +48,11 @@
                 <td>{{teil.lagerwert}}</td>
                 <td>{{teil.sicherheitsbestand}}</td>
                 <td>{{teil.vertriebswunsch}}</td>
+                <td>{{teil.periode}}</td>
+                <td>{{teil.gesamtproduktionsmenge}}</td>
+                <td>{{teil.direktverkaufmenge}}</td>
+                <td>{{teil.direktverkaufspreis}}</td>
+                <td>{{teil.strafe}}</td>
                 <td>
                     <div *ngIf="teil.subkomponente">
                         <a [routerLink]="['../teil', teil.subkomponente?.id ]" >{{teil.subkomponente?.id}}</a>
@@ -50,7 +60,7 @@
                 </td>
                 <td>
                     <div *ngIf="teil.arbeitsplatz">
-                        <a [routerLink]="['../arbeitsplatz', teil.arbeitsplatz?.id ]" >{{teil.arbeitsplatz?.id}}</a>
+                        <a [routerLink]="['../arbeitsplatz', teil.arbeitsplatz?.id ]" >{{teil.arbeitsplatz?.nummer}}</a>
                     </div>
                 </td>
                 <td class="text-right">

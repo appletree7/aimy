@@ -23,6 +23,9 @@
             "lohnleerkosten": "Lohnleerkosten",
             "lohnkosten": "Lohnkosten",
             "maschinenstillstandkosten": "Maschinenstillstandkosten",
+            "restzeitbedarf_in_bearbeitung": "Restzeitbedarf In Bearbeitung",
+            "schicht": "Schicht",
+            "ueberstunden": "Ueberstunden",
             "teil": "Teil"
         }
     }

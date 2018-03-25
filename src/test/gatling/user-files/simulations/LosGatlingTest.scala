@@ -68,7 +68,7 @@ class LosGatlingTest extends Simulation {
             .exec(http("Create new los")
             .post("/api/los")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "periode":"0", "menge":"0", "durchlaufzeit":null, "kosten":null}""")).asJSON
+            .body(StringBody("""{"id":null, "periode":"0", "menge":"0", "durchlaufzeit":null, "kosten":null, "nummer":"0"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_los_url"))).exitHereIfFailed
             .pause(10)

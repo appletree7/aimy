@@ -43,12 +43,14 @@
                 "main": "Periodenplanung",
                 "in-house_production": "Eigenfertigung",
                 "purchased_part": "Kaufteiledisposition",
-                "purchased_part": "Kaufteiledisposition",
-                "capacity_planning": "Kapazitätsplannung"
-   
+                "capacity_planning": "Kapazitätsplannung",
+                "period_start": "Periode starten",
+                "direktverkauf_und_normalverkauf": "Direktverkauf und Normalverkauf",
+                "abschluss": "Abschluss"
+
             },
-             
-            
+
+
             "language": "Sprache"
         },
         "form": {

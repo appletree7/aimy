@@ -7,6 +7,7 @@ export class Los implements BaseEntity {
         public menge?: number,
         public durchlaufzeit?: number,
         public kosten?: number,
+        public nummer?: number,
     ) {
     }
 }

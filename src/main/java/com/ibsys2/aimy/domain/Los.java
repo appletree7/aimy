@@ -4,6 +4,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -32,6 +33,11 @@ public class Los implements Serializable {
 
     @Column(name = "kosten")
     private Double kosten;
+
+    @NotNull
+    @Min(value = 1)
+    @Column(name = "nummer", nullable = false)
+    private Integer nummer;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -93,6 +99,19 @@ public class Los implements Serializable {
     public void setKosten(Double kosten) {
         this.kosten = kosten;
     }
+
+    public Integer getNummer() {
+        return nummer;
+    }
+
+    public Los nummer(Integer nummer) {
+        this.nummer = nummer;
+        return this;
+    }
+
+    public void setNummer(Integer nummer) {
+        this.nummer = nummer;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -123,6 +142,7 @@ public class Los implements Serializable {
             ", menge='" + getMenge() + "'" +
             ", durchlaufzeit='" + getDurchlaufzeit() + "'" +
             ", kosten='" + getKosten() + "'" +
+            ", nummer='" + getNummer() + "'" +
             "}";
     }
 }

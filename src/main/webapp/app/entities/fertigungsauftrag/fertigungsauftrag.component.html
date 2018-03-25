@@ -19,7 +19,6 @@
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="aimyApp.fertigungsauftrag.periode">Periode</span></th>
             <th><span jhiTranslate="aimyApp.fertigungsauftrag.auftragsmenge">Auftragsmenge</span></th>
-            <th><span jhiTranslate="aimyApp.fertigungsauftrag.durchlaufzeit">Durchlaufzeit</span></th>
             <th><span jhiTranslate="aimyApp.fertigungsauftrag.kostenprolos">Kostenprolos</span></th>
             <th><span jhiTranslate="aimyApp.fertigungsauftrag.durchschnittlichestueckkosten">Durchschnittlichestueckkosten</span></th>
             <th><span jhiTranslate="aimyApp.fertigungsauftrag.auftragsstatus">Auftragsstatus</span></th>
@@ -27,6 +26,7 @@
             <th><span jhiTranslate="aimyApp.fertigungsauftrag.beendet">Beendet</span></th>
             <th><span jhiTranslate="aimyApp.fertigungsauftrag.dlzminimal">Dlzminimal</span></th>
             <th><span jhiTranslate="aimyApp.fertigungsauftrag.dlzFaktor">Dlz Faktor</span></th>
+            <th><span jhiTranslate="aimyApp.fertigungsauftrag.nummer">Nummer</span></th>
             <th><span jhiTranslate="aimyApp.fertigungsauftrag.los">Los</span></th>
             <th><span jhiTranslate="aimyApp.fertigungsauftrag.herstellteil">Herstellteil</span></th>
             <th></th>
@@ -37,7 +37,6 @@
                 <td><a [routerLink]="['../fertigungsauftrag', fertigungsauftrag.id ]">{{fertigungsauftrag.id}}</a></td>
                 <td>{{fertigungsauftrag.periode}}</td>
                 <td>{{fertigungsauftrag.auftragsmenge}}</td>
-                <td>{{fertigungsauftrag.durchlaufzeit}}</td>
                 <td>{{fertigungsauftrag.kostenprolos}}</td>
                 <td>{{fertigungsauftrag.durchschnittlichestueckkosten}}</td>
                 <td jhiTranslate="{{'aimyApp.Auftragstatus.' + fertigungsauftrag.auftragsstatus}}">{{fertigungsauftrag.auftragsstatus}}</td>
@@ -45,6 +44,7 @@
                 <td>{{fertigungsauftrag.beendet}}</td>
                 <td>{{fertigungsauftrag.dlzminimal}}</td>
                 <td>{{fertigungsauftrag.dlzFaktor}}</td>
+                <td>{{fertigungsauftrag.nummer}}</td>
                 <td>
                     <div *ngIf="fertigungsauftrag.los">
                         <a [routerLink]="['../los', fertigungsauftrag.los?.id ]" >{{fertigungsauftrag.los?.id}}</a>

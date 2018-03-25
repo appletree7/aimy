@@ -67,6 +67,21 @@ public class TeilResourceIntTest {
     private static final Integer DEFAULT_VERTRIEBSWUNSCH = 1;
     private static final Integer UPDATED_VERTRIEBSWUNSCH = 2;
 
+    private static final Integer DEFAULT_PERIODE = 0;
+    private static final Integer UPDATED_PERIODE = 1;
+
+    private static final Integer DEFAULT_GESAMTPRODUKTIONSMENGE = 0;
+    private static final Integer UPDATED_GESAMTPRODUKTIONSMENGE = 1;
+
+    private static final Integer DEFAULT_DIREKTVERKAUFMENGE = 1;
+    private static final Integer UPDATED_DIREKTVERKAUFMENGE = 2;
+
+    private static final Double DEFAULT_DIREKTVERKAUFSPREIS = 1D;
+    private static final Double UPDATED_DIREKTVERKAUFSPREIS = 2D;
+
+    private static final Double DEFAULT_STRAFE = 1D;
+    private static final Double UPDATED_STRAFE = 2D;
+
     @Autowired
     private TeilRepository teilRepository;
 
@@ -116,7 +131,12 @@ public class TeilResourceIntTest {
             .lagerpreis(DEFAULT_LAGERPREIS)
             .lagerwert(DEFAULT_LAGERWERT)
             .sicherheitsbestand(DEFAULT_SICHERHEITSBESTAND)
-            .vertriebswunsch(DEFAULT_VERTRIEBSWUNSCH);
+            .vertriebswunsch(DEFAULT_VERTRIEBSWUNSCH)
+            .periode(DEFAULT_PERIODE)
+            .gesamtproduktionsmenge(DEFAULT_GESAMTPRODUKTIONSMENGE)
+            .direktverkaufmenge(DEFAULT_DIREKTVERKAUFMENGE)
+            .direktverkaufspreis(DEFAULT_DIREKTVERKAUFSPREIS)
+            .strafe(DEFAULT_STRAFE);
         return teil;
     }
 
@@ -149,6 +169,11 @@ public class TeilResourceIntTest {
         assertThat(testTeil.getLagerwert()).isEqualTo(DEFAULT_LAGERWERT);
         assertThat(testTeil.getSicherheitsbestand()).isEqualTo(DEFAULT_SICHERHEITSBESTAND);
         assertThat(testTeil.getVertriebswunsch()).isEqualTo(DEFAULT_VERTRIEBSWUNSCH);
+        assertThat(testTeil.getPeriode()).isEqualTo(DEFAULT_PERIODE);
+        assertThat(testTeil.getGesamtproduktionsmenge()).isEqualTo(DEFAULT_GESAMTPRODUKTIONSMENGE);
+        assertThat(testTeil.getDirektverkaufmenge()).isEqualTo(DEFAULT_DIREKTVERKAUFMENGE);
+        assertThat(testTeil.getDirektverkaufspreis()).isEqualTo(DEFAULT_DIREKTVERKAUFSPREIS);
+        assertThat(testTeil.getStrafe()).isEqualTo(DEFAULT_STRAFE);
     }
 
     @Test
@@ -172,6 +197,24 @@ public class TeilResourceIntTest {
 
     @Test
     @Transactional
+    public void checkPeriodeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = teilRepository.findAll().size();
+        // set the field null
+        teil.setPeriode(null);
+
+        // Create the Teil, which fails.
+
+        restTeilMockMvc.perform(post("/api/teils")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(teil)))
+            .andExpect(status().isBadRequest());
+
+        List<Teil> teilList = teilRepository.findAll();
+        assertThat(teilList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllTeils() throws Exception {
         // Initialize the database
         teilRepository.saveAndFlush(teil);
@@ -189,7 +232,12 @@ public class TeilResourceIntTest {
             .andExpect(jsonPath("$.[*].lagerpreis").value(hasItem(DEFAULT_LAGERPREIS.doubleValue())))
             .andExpect(jsonPath("$.[*].lagerwert").value(hasItem(DEFAULT_LAGERWERT.doubleValue())))
             .andExpect(jsonPath("$.[*].sicherheitsbestand").value(hasItem(DEFAULT_SICHERHEITSBESTAND)))
-            .andExpect(jsonPath("$.[*].vertriebswunsch").value(hasItem(DEFAULT_VERTRIEBSWUNSCH)));
+            .andExpect(jsonPath("$.[*].vertriebswunsch").value(hasItem(DEFAULT_VERTRIEBSWUNSCH)))
+            .andExpect(jsonPath("$.[*].periode").value(hasItem(DEFAULT_PERIODE)))
+            .andExpect(jsonPath("$.[*].gesamtproduktionsmenge").value(hasItem(DEFAULT_GESAMTPRODUKTIONSMENGE)))
+            .andExpect(jsonPath("$.[*].direktverkaufmenge").value(hasItem(DEFAULT_DIREKTVERKAUFMENGE)))
+            .andExpect(jsonPath("$.[*].direktverkaufspreis").value(hasItem(DEFAULT_DIREKTVERKAUFSPREIS.doubleValue())))
+            .andExpect(jsonPath("$.[*].strafe").value(hasItem(DEFAULT_STRAFE.doubleValue())));
     }
 
     @Test
@@ -211,7 +259,12 @@ public class TeilResourceIntTest {
             .andExpect(jsonPath("$.lagerpreis").value(DEFAULT_LAGERPREIS.doubleValue()))
             .andExpect(jsonPath("$.lagerwert").value(DEFAULT_LAGERWERT.doubleValue()))
             .andExpect(jsonPath("$.sicherheitsbestand").value(DEFAULT_SICHERHEITSBESTAND))
-            .andExpect(jsonPath("$.vertriebswunsch").value(DEFAULT_VERTRIEBSWUNSCH));
+            .andExpect(jsonPath("$.vertriebswunsch").value(DEFAULT_VERTRIEBSWUNSCH))
+            .andExpect(jsonPath("$.periode").value(DEFAULT_PERIODE))
+            .andExpect(jsonPath("$.gesamtproduktionsmenge").value(DEFAULT_GESAMTPRODUKTIONSMENGE))
+            .andExpect(jsonPath("$.direktverkaufmenge").value(DEFAULT_DIREKTVERKAUFMENGE))
+            .andExpect(jsonPath("$.direktverkaufspreis").value(DEFAULT_DIREKTVERKAUFSPREIS.doubleValue()))
+            .andExpect(jsonPath("$.strafe").value(DEFAULT_STRAFE.doubleValue()));
     }
 
     @Test
@@ -241,7 +294,12 @@ public class TeilResourceIntTest {
             .lagerpreis(UPDATED_LAGERPREIS)
             .lagerwert(UPDATED_LAGERWERT)
             .sicherheitsbestand(UPDATED_SICHERHEITSBESTAND)
-            .vertriebswunsch(UPDATED_VERTRIEBSWUNSCH);
+            .vertriebswunsch(UPDATED_VERTRIEBSWUNSCH)
+            .periode(UPDATED_PERIODE)
+            .gesamtproduktionsmenge(UPDATED_GESAMTPRODUKTIONSMENGE)
+            .direktverkaufmenge(UPDATED_DIREKTVERKAUFMENGE)
+            .direktverkaufspreis(UPDATED_DIREKTVERKAUFSPREIS)
+            .strafe(UPDATED_STRAFE);
 
         restTeilMockMvc.perform(put("/api/teils")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -261,6 +319,11 @@ public class TeilResourceIntTest {
         assertThat(testTeil.getLagerwert()).isEqualTo(UPDATED_LAGERWERT);
         assertThat(testTeil.getSicherheitsbestand()).isEqualTo(UPDATED_SICHERHEITSBESTAND);
         assertThat(testTeil.getVertriebswunsch()).isEqualTo(UPDATED_VERTRIEBSWUNSCH);
+        assertThat(testTeil.getPeriode()).isEqualTo(UPDATED_PERIODE);
+        assertThat(testTeil.getGesamtproduktionsmenge()).isEqualTo(UPDATED_GESAMTPRODUKTIONSMENGE);
+        assertThat(testTeil.getDirektverkaufmenge()).isEqualTo(UPDATED_DIREKTVERKAUFMENGE);
+        assertThat(testTeil.getDirektverkaufspreis()).isEqualTo(UPDATED_DIREKTVERKAUFSPREIS);
+        assertThat(testTeil.getStrafe()).isEqualTo(UPDATED_STRAFE);
     }
 
     @Test

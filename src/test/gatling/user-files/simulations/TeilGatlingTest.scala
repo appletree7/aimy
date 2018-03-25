@@ -68,7 +68,7 @@ class TeilGatlingTest extends Simulation {
             .exec(http("Create new teil")
             .post("/api/teils")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "teiltyp":null, "nummer":"SAMPLE_TEXT", "istmenge":"0", "startmenge":"0", "prozentsatz":null, "lagerpreis":null, "lagerwert":null, "sicherheitsbestand":"0", "vertriebswunsch":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "teiltyp":null, "nummer":"SAMPLE_TEXT", "istmenge":"0", "startmenge":"0", "prozentsatz":null, "lagerpreis":null, "lagerwert":null, "sicherheitsbestand":"0", "vertriebswunsch":"0", "periode":"0", "gesamtproduktionsmenge":"0", "direktverkaufmenge":"0", "direktverkaufspreis":null, "strafe":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_teil_url"))).exitHereIfFailed
             .pause(10)

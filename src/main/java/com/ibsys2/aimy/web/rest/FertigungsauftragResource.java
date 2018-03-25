@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +44,7 @@ public class FertigungsauftragResource {
      */
     @PostMapping("/fertigungsauftrags")
     @Timed
-    public ResponseEntity<Fertigungsauftrag> createFertigungsauftrag(@RequestBody Fertigungsauftrag fertigungsauftrag) throws URISyntaxException {
+    public ResponseEntity<Fertigungsauftrag> createFertigungsauftrag(@Valid @RequestBody Fertigungsauftrag fertigungsauftrag) throws URISyntaxException {
         log.debug("REST request to save Fertigungsauftrag : {}", fertigungsauftrag);
         if (fertigungsauftrag.getId() != null) {
             throw new BadRequestAlertException("A new fertigungsauftrag cannot already have an ID", ENTITY_NAME, "idexists");
@@ -65,7 +66,7 @@ public class FertigungsauftragResource {
      */
     @PutMapping("/fertigungsauftrags")
     @Timed
-    public ResponseEntity<Fertigungsauftrag> updateFertigungsauftrag(@RequestBody Fertigungsauftrag fertigungsauftrag) throws URISyntaxException {
+    public ResponseEntity<Fertigungsauftrag> updateFertigungsauftrag(@Valid @RequestBody Fertigungsauftrag fertigungsauftrag) throws URISyntaxException {
         log.debug("REST request to update Fertigungsauftrag : {}", fertigungsauftrag);
         if (fertigungsauftrag.getId() == null) {
             return createFertigungsauftrag(fertigungsauftrag);

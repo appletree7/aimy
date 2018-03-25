@@ -24,6 +24,11 @@
             "lagerwert": "Lagerwert",
             "sicherheitsbestand": "Sicherheitsbestand",
             "vertriebswunsch": "Vertriebswunsch",
+            "periode": "Periode",
+            "gesamtproduktionsmenge": "Gesamtproduktionsmenge",
+            "direktverkaufmenge": "Direktverkaufmenge",
+            "direktverkaufspreis": "Direktverkaufspreis",
+            "strafe": "Strafe",
             "fertigungsauftrag": "Fertigungsauftrag",
             "subkomponente": "Subkomponente",
             "arbeitsplatz": "Arbeitsplatz"

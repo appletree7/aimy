@@ -30,10 +30,6 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="durchlaufzeit" type="double">
-                <constraints nullable="true" />
-            </column>
-
             <column name="kostenprolos" type="double">
                 <constraints nullable="true" />
             </column>
@@ -60,6 +56,10 @@
 
             <column name="dlz_faktor" type="double">
                 <constraints nullable="true" />
+            </column>
+
+            <column name="nummer" type="integer">
+                <constraints nullable="false" />
             </column>
 
             <column name="los_id" type="bigint">

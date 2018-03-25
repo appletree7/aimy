@@ -1,0 +1,150 @@
+    <div>
+        <h2>
+            <span jhitranslate="direktverkauf_und_normalverkauf.title">Direktverkauf und Normalverkauf</span>
+        </h2>
+        <jhi-alert></jhi-alert>
+        <div>
+        <p class="lead">Normalverkauf</p>
+        </div>
+    </div>
+    <div class="table-responsive" *ngIf="teils">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><span jhiTranslate="aimyApp.teil.teiltyp">Teiltyp</span></th>
+                <th><span jhiTranslate="aimyApp.teil.nummer">Nummer</span></th>
+                <th><span jhiTranslate="aimyApp.teil.vertriebswunsch">Vertriebswunsch</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let teil of teils ;trackBy: trackId">
+                <td class="form-group">
+                    <label class="form-control-label" jhiTranslate="aimyApp.teil.teiltyp" for="field_teiltyp">Teiltyp</label>
+                    <select class="form-control" name="teiltyp" [(ngModel)]="teil.teiltyp" id="field_teiltyp" >
+                        <option value="PRODUKT">{{'aimyApp.Teiltyp.PRODUKT' | translate}}</option>
+                        <option value="ERZEUGNIS">{{'aimyApp.Teiltyp.ERZEUGNIS' | translate}}</option>
+                        <option value="KAUFTEIL">{{'aimyApp.Teiltyp.KAUFTEIL' | translate}}</option>
+                    </select>
+                </td>
+                <td>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="aimyApp.teil.nummer" for="field_nummer">Nummer</label>
+                    <input type="text" class="form-control" name="nummer" id="field_nummer"
+                           [(ngModel)]="teil.nummer"  />
+                </div>
+                </td>
+                <td>{{teil.vertriebswunsch}}</td>
+                <td>
+                    <div *ngIf="teil.subkomponente">
+                        <a [routerLink]="['../teil', teil.subkomponente?.id ]" >{{teil.subkomponente?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="teil.arbeitsplatz">
+                        <a [routerLink]="['../arbeitsplatz', teil.arbeitsplatz?.id ]" >{{teil.arbeitsplatz?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../teil', teil.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'teil/'+ teil.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <p class="lead">Direktverkauf</p>
+    </div>
+    </div>
+    <div class="table-responsive" *ngIf="teils">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><span jhiTranslate="aimyApp.teil.teiltyp">Teiltyp</span></th>
+                <th><span jhiTranslate="aimyApp.teil.nummer">Nummer</span></th>
+                <th><span jhiTranslate="aimyApp.teil.direktverkaufmenge">Direktverkaufsmenge</span></th>
+                <th><span jhiTranslate="aimyApp.teil.direktverkaufspreis">Direktverkaufspreis</span></th>
+                <th><span jhiTranslate="aimyApp.teil.strafe">Strafe</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let teil of teils ;trackBy: trackId">
+                <td>
+                    <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="aimyApp.teil.teiltyp" for="field_teiltyp">Teiltyp</label>
+                        <select class="form-control" name="teiltyp" [(ngModel)]="teil.teiltyp" id="field_teiltyp" >
+                            <option value="PRODUKT">{{'aimyApp.Teiltyp.PRODUKT' | translate}}</option>
+                            <option value="ERZEUGNIS">{{'aimyApp.Teiltyp.ERZEUGNIS' | translate}}</option>
+                            <option value="KAUFTEIL">{{'aimyApp.Teiltyp.KAUFTEIL' | translate}}</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="aimyApp.teil.nummer" for="field_nummer">Nummer</label>
+                        <input type="text" class="form-control" name="nummer" id="field_nummer"
+                               [(ngModel)]="teil.nummer"  />
+                    </div>
+                </td>
+                <td>{{teil.direktverkaufmenge}}</td>
+                <td>{{teil.direktverkaufspreis}}</td>
+                <td>{{teil.strafe}}</td>
+                <td>
+                    <div *ngIf="teil.subkomponente">
+                        <a [routerLink]="['../teil', teil.subkomponente?.id ]" >{{teil.subkomponente?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="teil.arbeitsplatz">
+                        <a [routerLink]="['../arbeitsplatz', teil.arbeitsplatz?.id ]" >{{teil.arbeitsplatz?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../teil', teil.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'teil/'+ teil.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <button type="submit"
+                (click)="previousState()"
+                class="btn btn-info">
+            <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+        </button>
+        <button class="btn btn-primary" [routerLink]="['/in-house_production']"
+                replaceUrl="true">
+            <span>
+                Weiter
+                </span>
+        </button>
+    </div>

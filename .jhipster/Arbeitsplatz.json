@@ -40,13 +40,36 @@
         {
             "fieldName": "maschinenstillstandkosten",
             "fieldType": "Double"
+        },
+        {
+            "fieldName": "restzeitbedarf_in_bearbeitung",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "schicht",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": "1",
+            "fieldValidateRulesMax": "3"
+        },
+        {
+            "fieldName": "ueberstunden",
+            "fieldType": "Double",
+            "fieldValidateRules": []
         }
     ],
     "changelogDate": "20171220194424",
-    "javadoc": "The Arbeitsplatz entity.",
-    "entityTableName": "arbeitsplatz",
     "dto": "no",
-    "pagination": "no",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false
+    "entityTableName": "arbeitsplatz",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no",
+    "javadoc": "The Arbeitsplatz entity."
 }

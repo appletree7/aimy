@@ -58,6 +58,26 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="periode" type="integer">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="gesamtproduktionsmenge" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="direktverkaufmenge" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="direktverkaufspreis" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="strafe" type="double">
+                <constraints nullable="true" />
+            </column>
+
             <column name="subkomponente_id" type="bigint">
                 <constraints nullable="true" />
             </column>

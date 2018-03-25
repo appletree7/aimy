@@ -1,0 +1,62 @@
+<form name="saveForm" role="form" novalidate (ngSubmit)="save()" #saveForm="ngForm">
+    <div>
+      <h2>
+          <span jhitranslate="period_start.title">Starte Periode</span>
+      </h2>
+        <h4>Wähle die zu planende Periode aus:</h4>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.periode" for="field_aktuelleperiode">Periode</label>
+            <input type="number" class="form-control" aria-labelledby="Aktuelle Periode" name="aktuelleperiode" id="field_aktuelleperiode"
+                   [(ngModel)]="aktuelleperiode" required min="0" />
+            <div [hidden]="!(saveForm.controls.aktuelleperiode?.dirty && saveForm.controls.aktuelleperiode?.invalid)">
+                <small class="form-text text-danger"
+                       [hidden]="!saveForm.controls.aktuelleperiode?.errors?.required" jhiTranslate="entity.validation.required">
+                    This field is required.
+                </small>
+                <small class="form-text text-danger"
+                       [hidden]="!saveForm.controls.aktuelleperiode?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                       [hidden]="!saveForm.controls.aktuelleperiode?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+      <jhi-alert></jhi-alert>
+        <p class="lead">Wähle die Datei aus um die Eingabedaten aus der Datei zu erhalten: </p>
+      <div class="form-group">
+        <input type="file" class="form-control-file" name="text" id="file" accept="text/xml" aria-labelledby="Dateiimport der Planungsdaten"
+               (change)="changeListener($event)" [(ngModel)]="text" required/>
+          <div [hidden]="!(saveForm.controls.text?.dirty && saveForm.controls.text?.invalid)">
+              <small class="form-text text-danger"
+                     [hidden]="!saveForm.controls.text?.errors?.required" jhiTranslate="entity.validation.required">
+                  This field is required.
+              </small>
+          </div>
+      </div>
+      <h3>
+        <p>Vorschau der Datei: </p>
+      </h3>
+        <span>{{text}}</span>
+    </div>
+    <div>
+        <span>{{message}}</span>
+       <!-- <div *ngFor="let teil of teils">{{teil.id}}</div>-->
+    </div>
+    <div>
+
+        <button type="submit" [disabled]="saveForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+        <button class="btn btn-primary" [routerLink]="['/direketverkauf_und_normalverkauf']"
+                replaceUrl="true">
+            <span>
+                Weiter
+                </span>
+        </button>
+    </div>
+</form>
+
+
+

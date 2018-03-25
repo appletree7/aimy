@@ -60,6 +60,55 @@
             <input type="number" class="form-control" name="vertriebswunsch" id="field_vertriebswunsch"
                 [(ngModel)]="teil.vertriebswunsch"  />
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.periode" for="field_periode">Periode</label>
+            <input type="number" class="form-control" name="periode" id="field_periode"
+                [(ngModel)]="teil.periode" required min="0" />
+            <div [hidden]="!(editForm.controls.periode?.dirty && editForm.controls.periode?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.periode?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.periode?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.periode?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.gesamtproduktionsmenge" for="field_gesamtproduktionsmenge">Gesamtproduktionsmenge</label>
+            <input type="number" class="form-control" name="gesamtproduktionsmenge" id="field_gesamtproduktionsmenge"
+                [(ngModel)]="teil.gesamtproduktionsmenge" min="0" />
+            <div [hidden]="!(editForm.controls.gesamtproduktionsmenge?.dirty && editForm.controls.gesamtproduktionsmenge?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.gesamtproduktionsmenge?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.gesamtproduktionsmenge?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.direktverkaufmenge" for="field_direktverkaufmenge">Direktverkaufmenge</label>
+            <input type="number" class="form-control" name="direktverkaufmenge" id="field_direktverkaufmenge"
+                [(ngModel)]="teil.direktverkaufmenge"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.direktverkaufspreis" for="field_direktverkaufspreis">Direktverkaufspreis</label>
+            <input type="number" class="form-control" name="direktverkaufspreis" id="field_direktverkaufspreis"
+                [(ngModel)]="teil.direktverkaufspreis"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.strafe" for="field_strafe">Strafe</label>
+            <input type="number" class="form-control" name="strafe" id="field_strafe"
+                [(ngModel)]="teil.strafe"  />
+        </div>
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.teil.subkomponente" for="field_subkomponente">Subkomponente</label>
@@ -72,7 +121,7 @@
             <label class="form-control-label" jhiTranslate="aimyApp.teil.arbeitsplatz" for="field_arbeitsplatz">Arbeitsplatz</label>
             <select class="form-control" id="field_arbeitsplatz" name="arbeitsplatz" [(ngModel)]="teil.arbeitsplatz" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="arbeitsplatzOption.id === teil.arbeitsplatz?.id ? teil.arbeitsplatz : arbeitsplatzOption" *ngFor="let arbeitsplatzOption of arbeitsplatzs; trackBy: trackArbeitsplatzById">{{arbeitsplatzOption.id}}</option>
+                <option [ngValue]="arbeitsplatzOption.id === teil.arbeitsplatz?.id ? teil.arbeitsplatz : arbeitsplatzOption" *ngFor="let arbeitsplatzOption of arbeitsplatzs; trackBy: trackArbeitsplatzById">{{arbeitsplatzOption.nummer}}</option>
             </select>
         </div>
     </div>

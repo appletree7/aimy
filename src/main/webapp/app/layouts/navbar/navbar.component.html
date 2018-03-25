@@ -74,37 +74,55 @@
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>
-   
-            <li *jhiHasAnyAuthority="'ROLE_ADMIN','ROLE_USER'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"> 
-                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="purchased_part-menu"> 
-                    <span> 
-                        <i class="fa fa-periodplanning" aria-hidden="true"></i> 
-                        <span jhiTranslate="global.menu.periodplanning.main">Periodplanning</span> 
-                    </span> 
-                </a> 
-                <ul class="dropdown-menu" ngbDropdownMenu> 
-                    <li> 
-                        <a class="dropdown-item" routerLink="in-house_production" routerLinkActive="active" (click)="collapseNavbar()"> 
-                            <i class="fa fa-periodplanning-in-house_production" aria-hidden="true"></i> 
-                            <span jhiTranslate="global.menu.periodplanning.in-house_production">In-house Production</span>                       
-                        </a> 
-                    </li> 
-                    <li> 
-                        <a class="dropdown-item" routerLink="purchased_part" routerLinkActive="active" (click)="collapseNavbar()"> 
-                            <i class="fa fa-periodplanning-purchased_part" aria-hidden="true"></i> 
-                            <span jhiTranslate="global.menu.periodplanning.purchased_part">Purchased part</span>                       
-                        </a> 
-                    </li> 
-                    <li> 
-                        <a class="dropdown-item" routerLink="capacity_planning" routerLinkActive="active" (click)="collapseNavbar()"> 
-                            <i class="fa fa-periodplanning-capacity_planning" aria-hidden="true"></i> 
-                            <span jhiTranslate="global.menu.periodplanning.capacity_planning">Capacity Planning</span>                       
-                        </a> 
-                    </li> 
+
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN','ROLE_USER'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="purchased_part-menu">
+                    <span>
+                        <i class="fa fa-periodplanning" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.periodplanning.main">Periodplanning</span>
+                    </span>
+                </a>
+                <ul class="dropdown-menu" ngbDropdownMenu>
+                    <li>
+                        <a class="dropdown-item" routerLink="period_start" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-periodplanning-period_start" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.periodplanning.period_start">Periode starten</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="direktverkauf_und_normalverkauf" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-periodplanning-direktverkauf_und_normalverkauf" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.periodplanning.direktverkauf_und_normalverkauf">Direktverkauf und Normalverkauf</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="in-house_production" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-periodplanning-in-house_production" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.periodplanning.in-house_production">In-house Production</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="purchased_part" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-periodplanning-purchased_part" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.periodplanning.purchased_part">Purchased part</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="capacity_planning" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-periodplanning-capacity_planning" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.periodplanning.capacity_planning">Capacity Planning</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="abschluss" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-periodplanning-abschluss" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.periodplanning.abschluss">Abschluss</span>
+                        </a>
+                    </li>
                 </ul>
-            </li>       
-            
-            
+            </li>
+
+
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
                     <span>

@@ -22,6 +22,113 @@
                 </tr> 
             </thead> 
             <tbody> 
+                <!--
+               <td><a [routerLink]="['../../entities/teil', teil.nummer ]">{{teil.nummer}}</a></td>  
+                
+                ng-if="fertigungsauftrag.herstellteil === teil.nummer"
+                
+                
+                
+                
+                <tr *ngFor="let element of anzeige; trackBy: trackId">     
+                <td spalte ="Teilenummer">{{element.}}</td>
+                <td spalte ="Vertriebswunsch">{{teil.vertriebswunsch}}</td>
+                <td spalte ="Sicherheitsbestand">{{teil.sicherheitsbestand}}</td>
+                <td spalte ="Bestand Vorperiode" >{{teil.istmenge}}</td>            
+                <td></td>
+                <td></td>
+                
+                
+                div ng-repeat="value in model.values">
+                <input type="text" ng-model="value" />
+                </div>
+        
+                
+                <tr ng-repeat="element in anzeige track by $id(element)">
+                    <td>{{element}}</td>
+                </tr>                
+                
+                
+               
+                
+                <div ng-repeat="n in anzeige track by $index">
+                    {{ $index }}
+                </div>
+                
+                
+                
+                <div ng-repeat="element in anzeige.constructor(7) track by $index">
+                                <div ng-repeat="element in anzeige.constructor(15) track by $index">
+                    <tr>{{ element.continue}}</tr>    
+                    </div>  
+                
+                
+                
+                                <td>{{ element.}}</td>
+                <td>{{ element}}</td>
+                <td>{{ element.continue }}</td>
+                <td>{{ element.continue }}</td>
+                <td>{{ element.continue }}</td>
+                <td>{{ element.continue }}</td>
+                <td>{{ element.continue }}</td> 
+                </tr>  
+                
+                <div *ngFor="let element of anzeige">
+                <tr ng-repeat> <td  ng-repeat=7> {{element}}</td></tr>
+                </div>
+                
+                 -->
+
+                
+
+
+
+
+            
+            
+            
+            
+
+                
+                
+                
+                    
+
+
+                
+                
+                
+        
+
+                <!--
+                <td *ngFor="let a of array_warteliste_eines_teils_zu_herstellteilmenge; trackBy: trackId"> {{a}} </td>
+                <div *ngFor="let fertigungsauftrag of wartelistezuherstellteilmenge; trackBy: trackId">
+                    <td > {{fertigungsauftrag.auftragsmenge}}</td></div>
+                <td></td>
+                <td></td>
+                <!--Hier muss ich noch ein if einbauen..Warteliste&Bearbeitungsliste_einfügen.
+                
+                 *ngFor="let teil of wanted; trackBy: trackId"> 
+              
+                <td spalte ="Produktionsaufträge(n+1)"> <tr>{{teil.vertriebswunsch + teil.sicherheitsbestand - teil.istmenge}}</tr> </td> 
+                 --> 
+                    <!--
+                    <tr><td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{fertigungsauftrag.auftragsmenge}}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    -->
+
+                <!--Hier sind noch 2 FA zu Herstellteil 1 überall doppelt eingetragen worden// Hier muss man nochmal eigrenzen.
+                -->
+
+
+                
+                
             </tbody> 
         </table>
     </div>

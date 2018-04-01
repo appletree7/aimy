@@ -10,6 +10,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { Teil, Teiltyp } from '../../entities/teil/teil.model';
+import { InHouse } from '../../entities/anzeige/in-house_production.model';
 import { TeilService } from '../../entities/teil/teil.service';
 import { InHouseProductionService } from './in-house_production.service';
 
@@ -61,6 +62,9 @@ export class InHouseProductionComponent implements OnInit {
     anzahl_auftraege_in_bearbeitung: any; 
     // für die HTML-Seite
     anzeige: any; 
+    //inhouse: InHouse; 
+    inhouse_anzeige_array: InHouse[]; 
+    
 
 
      
@@ -143,11 +147,22 @@ export class InHouseProductionComponent implements OnInit {
  
              
              //Anzeige der HTML-Seite
-             this.anzeige = this.anzeige_html_seite(this.wanted, this.anzahl_auftraege_in_warteliste, this.anzahl_auftraege_in_bearbeitung);
+             this.inhouse_anzeige_array = this.anzeige_html_seite(this.wanted, this.anzahl_auftraege_in_warteliste, this.anzahl_auftraege_in_bearbeitung);
              
                 
-             console.log("MEIN AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARRRAAAAAAAAAAAAAAAAAAAAAAY: "+this.anzeige.toString());
-
+             console.log("MEIN AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARRRAAAAAAAAAAAAAAAAAAAAAAY: "+this.inhouse_anzeige_array.toString());
+             
+             
+            for (let i = 0; i< this.inhouse_anzeige_array.length; i++ ){
+                console.log("Meine Anzeige: + Nummer: " + this.inhouse_anzeige_array[i].nummer + "  VT-Wunsch: "+ this.inhouse_anzeige_array[i].vertriebswunsch + " Sicherheitsbestand:  "+ this.inhouse_anzeige_array[i].sicherheitsbestand + 
+                    + " bestand_vorperiode:  " + this.inhouse_anzeige_array[i].bestand_vorperiode +  " auftraege_in_warteliste:  " + this.inhouse_anzeige_array[i].auftraege_in_warteliste +
+                    " auftraege_in_bearbeitung:  " + this.inhouse_anzeige_array[i].auftraege_in_bearbeitung + " produktionsauftraege:  " + this.inhouse_anzeige_array[i].produktionsauftraege
+                    ); 
+            }
+             
+             
+             
+             //hier nochmal drüber gehen!!!!
              res = this.anzeige;
              
              
@@ -319,7 +334,6 @@ export class InHouseProductionComponent implements OnInit {
         console.log("Funktion wird aufgerufen");
         
         let produktionsauftraege = 0; 
-        let anzeigetabelle = new Array; 
         let auftraege_wartend_zu_herstellteil; 
         let auftraege_bearbeitend_zu_herstellteil;
         let zaehler = 1; 
@@ -327,24 +341,30 @@ export class InHouseProductionComponent implements OnInit {
         let durchlauf2 = 1; 
         let vertriebswunsch_subkomponente;
         let zweite_teile_tabelle = wanted; 
+         
+        let inhouse_anzeige_array = new Array; 
+        
         
 
          wanted.forEach(function(teil){
+             
+            let inhouse = new InHouse;
  
-            anzeigetabelle.push(teil.nummer); 
+            inhouse.nummer = teil.nummer;
             
             if (teil.nummer == "1" || teil.nummer == "2" || teil.nummer == "3"){
                 console.log(" Sollte nur bei P1, P2, P3 durchlaufen werden! " + teil.vertriebswunsch);
                 if (teil.vertriebswunsch == null) {
                     teil.vertriebswunsch = 0; 
-                    anzeigetabelle.push(0);
+                    inhouse.vertriebswunsch = 0;
                 }
                 else {
-                    anzeigetabelle.push(teil.vertriebswunsch);
+                    inhouse.vertriebswunsch = teil.vertriebswunsch;
                 }
             }
             else {
-                console.log(" Sollte nur bei Subkomponenten durchlaufen werden! " + " Teilenummer : " + teil.nummer + " Teil.vertriebswunsch/ hier kann auch noch null stehen: "+ teil.vertriebswunsch);
+                console.log(" Sollte nur bei Subkomponenten durchlaufen werden! " + " Teilenummer : " + teil.nummer +
+                            " Teil.vertriebswunsch/ hier kann auch noch null stehen: "+ teil.vertriebswunsch);
                 // Funktion für Subkomponenten aufrufen!!!
                 //let vertriebswunsch_subkomponenten = this.algorithmus_Produktionsplan_auf_Subkomponenten_Vertriebswunsch_übertragen(teil, produktionsauftraege);
                 
@@ -375,29 +395,30 @@ export class InHouseProductionComponent implements OnInit {
                 if (teil.vertriebswunsch == null && vertriebswunsch_subkomponente == 0 ) {
                     console.log("sollte nur durchlaufen werden wenn vertiebswunsch_Subkomponente = 0 sein"); 
                     teil.vertriebswunsch = 0; 
-                    anzeigetabelle.push(0);
+                    inhouse.vertriebswunsch = 0;
                 }
                 else {
                     console.log("sollte bei Teile-Nr 26,16,4,7 durchlaufen werden.");
                     teil.vertriebswunsch = vertriebswunsch_subkomponente;
-                    anzeigetabelle.push(vertriebswunsch_subkomponente);
+                    inhouse.vertriebswunsch = vertriebswunsch_subkomponente;
                 }
             }
             
   
             if (teil.sicherheitsbestand == null) {
                 teil.sicherheitsbestand = 0; 
-                anzeigetabelle.push(0);
+                inhouse.sicherheitsbestand = 0; 
             }
-            else anzeigetabelle.push(teil.sicherheitsbestand);
+            else {
+                inhouse.sicherheitsbestand = teil.sicherheitsbestand; 
+            }
             if (teil.istmenge == null){
                 teil.istmenge = 0; 
-                anzeigetabelle.push(0);
+                inhouse.bestand_vorperiode = 0; 
             } 
-            else anzeigetabelle.push(teil.istmenge);
-            
-            
-            console.log("Hinzugefügte Elemente :"+ anzeigetabelle.toString());
+            else {
+                inhouse.bestand_vorperiode = teil.istmenge;
+            }
             
 
             // && i < anzahl_auftraege_in_warteliste.length-1
@@ -409,8 +430,11 @@ export class InHouseProductionComponent implements OnInit {
                     if( anzahl_auftraege_in_warteliste != null)
                     {
                     // console.log("Durchlauf Nr "+durchlauf + "zaehler: " + zaehler + " Element in der Liste : "+ anzahl_auftraege_in_warteliste[i]);
-                    // Hier gibts noch Probleme:
-                    anzeigetabelle.push(anzahl_auftraege_in_warteliste[i]);
+
+                    inhouse.auftraege_in_warteliste = anzahl_auftraege_in_warteliste[i]; 
+
+
+
                     // console.log("Element wird hinzugefügt: "+ anzahl_auftraege_in_warteliste[i]); 
                 
                     // console.log(anzahl_auftraege_in_warteliste[i].toString());
@@ -437,8 +461,9 @@ export class InHouseProductionComponent implements OnInit {
                     if( anzahl_auftraege_in_bearbeitung != null)
                     {
                     // console.log("Durchlauf Nr "+durchlauf + "zaehler: " + zaehler + " Element in der Liste : "+ anzahl_auftraege_in_warteliste[i]);
-                    // Hier gibts noch Probleme:
-                    anzeigetabelle.push(anzahl_auftraege_in_bearbeitung[i]);
+                    inhouse.auftraege_in_bearbeitung = anzahl_auftraege_in_bearbeitung[i]; 
+                    
+                    
                     // console.log("Element wird hinzugefügt: "+ anzahl_auftraege_in_warteliste[i]); 
                 
                     // console.log(anzahl_auftraege_in_warteliste[i].toString());
@@ -470,17 +495,25 @@ export class InHouseProductionComponent implements OnInit {
             
             console.log("BERECHNUNG FOLGT"); 
             console.log("Produktionsauftraege :"+  produktionsauftraege + "Vertiebswunsch"+ teil.vertriebswunsch + "Sicherheitsbestand"+teil.sicherheitsbestand + "Bestand_Vorperiode"+teil.istmenge +"Aufträge Warteschlange"+ auftraege_wartend_zu_herstellteil +"Aufträge Bearbeitung"+ auftraege_bearbeitend_zu_herstellteil)
-            anzeigetabelle.push(produktionsauftraege);
+
+            inhouse.produktionsauftraege = produktionsauftraege; 
             
-            console.log(" TABELLE NACH DURCHLAUF DER ZEILE :"+ anzeigetabelle.toString());
+
             console.log("!!!!!!!!! Zeile ENDE !!!!!!! "); 
+            
+            
+            inhouse_anzeige_array.push(inhouse);
              
             }); 
-            console.log("GESAMTE TABELLE :"+ anzeigetabelle.toString());
+
             console.log("!!!!!!!!! FUNKTION ENDE !!!!!!! "); 
             
             
-            return anzeigetabelle;
+            
+            
+
+            
+            return inhouse_anzeige_array; //inhouse
             
             
          };

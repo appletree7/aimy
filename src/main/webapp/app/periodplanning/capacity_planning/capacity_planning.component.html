@@ -30,14 +30,14 @@ and open the template in the editor.
             </thead> 
             <tbody> 
                         <tr *ngFor="let capacity of capacity_array; trackBy: trackId">     
-                        <td>{{capacity.arbeitsplatznummer}}</td>
-                        <td>{{capacity.kapazitaetsbedarf_alt}}</td>
-                        <td>{{capacity.ruestzeit_alt}}</td>
-                        <td>{{capacity.kapazitaetsbedarf_neu}}</td>
-                        <td>{{capacity.ruestzeit_neu}}</td>
-                        <td>{{capacity.gesamter_kapazitaetsbedarf}}</td>            
-                        <td>{{capacity.schichten}}</td>
-                        <td>{{capacity.ueberstunden}}</td>
+                        <td class="text-center">{{capacity.arbeitsplatznummer}}</td>
+                        <td class="text-center">{{capacity.kapazitaetsbedarf_alt}}</td>
+                        <td class="text-center">{{capacity.ruestzeit_alt}}</td>
+                        <td class="text-center">{{capacity.kapazitaetsbedarf_neu}}</td>
+                        <td class="text-center">{{capacity.ruestzeit_neu}}</td>
+                        <td class="text-center">{{capacity.gesamter_kapazitaetsbedarf}}</td>            
+                        <td class="text-center">{{capacity.schichten}}</td>
+                        <td class="text-center">{{capacity.ueberstunden}}</td>
             </tbody> 
         </table>
     </div>

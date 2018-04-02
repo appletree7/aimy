@@ -4,6 +4,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute,  Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Response } from '@angular/http'; 
+import { PurchasedPart } from '../../entities/anzeige/purchased_part.model';
  
 //import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; 
  
@@ -99,7 +100,7 @@ export class PurchasedPartComponent implements OnInit {
 
                 
                 //Beispielhaft für Kaufteile 21,22,23:        
-                this.lieferdauer_max_array = [2.2, 2.1, 1.4]; //
+                this.lieferdauer_max_array = [2.2, 2.1, 1.4]; // [2.2, 2.1, 1.4, 3.5, 1.1, 1.1, 2.1, 2.6, 2.4, 1.9, 2.6, 1.3, 1.8, 2.1, 1.8, 1.9, 1.1, 1.5, 2.5, 1.2, 2.0, 1.2, 1.2, 2.1,]
                 this.diskontmenge_array = [300,300,300]; 
                 this.verwendung_array = [[1,0,0],[0,1,0],[0,0,1]]; 
                 //

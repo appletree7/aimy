@@ -82,7 +82,7 @@ export class PurchasedPartComponent implements OnInit {
 
                     if (teil.nummer == "1" || teil.nummer == "2" || teil.nummer == "3" ){
                         console.log("Teil :"+ teil.nummer ); 
-                        produktionsprogramm.push("Vertriebswunsch: "+teil.vertriebswunsch);     
+                        produktionsprogramm.push(teil.vertriebswunsch);     
                         console.log(produktionsprogramm.toString()); 
 
                     };
@@ -100,9 +100,9 @@ export class PurchasedPartComponent implements OnInit {
 
                 
                 //Beispielhaft für Kaufteile 21,22,23:        
-                this.lieferdauer_max_array = [2.2, 2.1, 1.4]; // [2.2, 2.1, 1.4, 3.5, 1.1, 1.1, 2.1, 2.6, 2.4, 1.9, 2.6, 1.3, 1.8, 2.1, 1.8, 1.9, 1.1, 1.5, 2.5, 1.2, 2.0, 1.2, 1.2, 2.1,]
-                this.diskontmenge_array = [300,300,300]; 
-                this.verwendung_array = [[1,0,0],[0,1,0],[0,0,1]]; 
+                this.lieferdauer_max_array = [2.2, 2.1, 1.4]; // [2.2, 2.1, 1.4, 3.5, 1.1, 1.1, 2.1, 2.6, 2.4, 1.9, 2.6, 1.3, 1.8, 2.1, 1.8, 1.9, 1.1, 1.5, 2.5, 1.2, 2.0, 1.2, 1.2, 2.0, 1.8, 2.0, 2.1, 0.9]
+                this.diskontmenge_array = [300,300,300]; //[300,300,300,6100,3600, 1800,4500,2700,900,2200,3600,900,900,300,1800,900,900,1800,2700,900,900,900,900,1800,600,22000,600,22000,1800]
+                this.verwendung_array = [[1,0,0],[0,1,0],[0,0,1]]; //[[1,0,0],[0,1,0],[0,0,1],[7,7,7],[4,4,4],[2,2,2],[4,5,6],[3,3,3],[0,0,2],[0,0,2],[0,0,2],[0,0,2],[0,0,2],[0,0,2],[0,0,2],[0,0,72],[4,4,4],[1,1,1],[1,1,1],[1,1,1],[2,2,2],[1,1,1],[1,1,1],[2,2,2],[1,1,1],[3,3,3],,[1,1,1],[1,1,1],[1,1,1],[2,2,2],[2,0,0],[72,0,0],[0,2,0],[0,72,0],[2,2,2]]                                  
                 //
                 //                                
                 //this.produktionsprogramm_periode_1 = [teil.vertriebswunsch für Teil 1,teil.vertriebswunsch für Teil 2, teil.vertriebswunsch für Teil3 ];     
@@ -111,7 +111,7 @@ export class PurchasedPartComponent implements OnInit {
                 
                 //falls Produktionsprogramm nächste Periode < Anfangsbestand, dann bestellen: 
                 // Was hier noch alles rein muss: this.anfangsbestand_vorperiode + produktionsprogramm
-                this.gesamtes_array = this.bruttobedarf_berechnen(this.alle_kaufteile, this.lieferdauer_max_array, this.diskontmenge_array, this.verwendung_array, anfangsbestand_vorperiode, produktionsprogramm);
+                this.gesamtes_array = this.bruttobedarf_berechnen(this.alle_kaufteile, this.lieferdauer_max_array, this.diskontmenge_array, this.verwendung_array, produktionsprogramm);
                 
                 
                 
@@ -144,40 +144,87 @@ export class PurchasedPartComponent implements OnInit {
    
      
      
-    Produktionsprogramm_der_nächsten_drei_Perioden(){} 
-     
 
-    public bruttobedarf_berechnen(alle_kaufteile: Teil[], lieferdauer_max_array: Number[], diskontmenge_array: Number[], verwendung_array:Number[], anfangsbestand_vorperiode: Number[], produktionsprogramm: Number[]) { 
+    public bruttobedarf_berechnen(alle_kaufteile: Teil[], lieferdauer_max_array: any, diskontmenge_array: any, verwendung_array:Number[], produktionsprogramm: any) { 
+        
+
         
         console.log("Funktion: bruttobedarf_berechnen wird aufgerufen ");
 
-        var gesamtes_array = new Array(); 
+        let purchasedpart_anzeige_array = new Array(); 
+        let purchasedpart = new PurchasedPart;
+        let durchlauf = 1;
+          
+
+        
+        
         alle_kaufteile.forEach(function(kaufteil){
-            lieferdauer_max_array.forEach(function(ld){
-                verwendung_array.forEach(function(verwendung){
-                    diskontmenge_array.forEach(function(diskontmenge){
-                        anfangsbestand_vorperiode.forEach(function(anfangsbestand_vorperiode){
-                            for(let i= 0; i < alle_kaufteile.length; i++ ){
-                                gesamtes_array[i] = [kaufteil, ld, verwendung, diskontmenge, anfangsbestand_vorperiode];
-                            } 
-                            console.log("Funktion Gesamt-Array_pro_Schleife: "+ gesamtes_array.toString());
-                        });
-                    });   
-                });         
-            });         
+            
+            let purchasedpart = new PurchasedPart;
+            purchasedpart.nummer = kaufteil.nummer;
+            purchasedpart.bestand = kaufteil.istmenge;
+ 
+            for (let i = 0; i < durchlauf ; i++){
+                lieferdauer_max_array[i]; 
+                console.log("lieferdauer_max_array[i]: "+lieferdauer_max_array[i]);
+                purchasedpart.lieferdauer = lieferdauer_max_array[i];
+                lieferdauer_max_array.shift(); 
+                
+                diskontmenge_array[i]; 
+                console.log("diskontmenge_array[i]: "+ diskontmenge_array[i]);
+                purchasedpart.diskontmenge = diskontmenge_array[i];
+                diskontmenge_array.shift(); 
+                
+                
+                //Bruttobedarf berechnen: 
+                for (let i = 0; i < durchlauf ; i++){
+                    
+                    verwendung_array[i]; 
+                    console.log("verwendung_array[i]: "+verwendung_array[i]);
+                     
+                    for(let j = 0; j < 3; j++){
+                        console.log("[j]-Schleife: "+ j);
+                        verwendung_array[i][j]; 
+                        console.log("verwendung_array[i][j]: "+ verwendung_array[i][j]);
+                        
+                        for (let produkt_produktionsprogramm = 0; produkt_produktionsprogramm < 3; produkt_produktionsprogramm++){
+                            //console.log("i: "+i+" j "+j+"  Produktionsprogramm-nr: "+produkt_produktionsprogramm); 
+                            //console.log("verwendung_array[i][j]: "+ verwendung_array[i][j] + " Produkt_produktionsprogramm" + produktionsprogramm[produkt_produktionsprogramm] );
+                            //console.log(" bruttobedarf - davor - sollte 0 sein "+x);
+                            purchasedpart.bruttobedarf = verwendung_array[i][j] * produktionsprogramm[produkt_produktionsprogramm]; 
+                            
+                            //console.log(" bruttobedarf: "+ purchasedpart.bruttobedarf);
+                        }       
+                    }  
+                    verwendung_array.shift();                        
+                } 
+                
+                
+                
+                
+                
+                
+                      
+            }
+
+                            purchasedpart.bestellung = 0; 
+                            purchasedpart.art= "N";  
+                            
+          
+                            
+                            
+                            
+            purchasedpart_anzeige_array.push(purchasedpart);
+            
+                   
         });
      
-        console.log("Gesamtes Array: "+ gesamtes_array.toString());
+        console.log("Gesamtes Array: "+ purchasedpart_anzeige_array.toString());
         
-        return gesamtes_array; 
+        return purchasedpart_anzeige_array; 
         
         
     }; 
      
-     
-    Bestellmenge_ermitteln() { 
-         
-        //komplex!! 
-         
-    }       
+          
 }

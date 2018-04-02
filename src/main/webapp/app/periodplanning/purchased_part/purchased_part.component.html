@@ -22,9 +22,21 @@
                 </tr> 
             </thead> 
             <tbody> 
+                <tr *ngFor="let element of gesamtes_array; trackBy: trackId">     
+                <td class="text-center">{{element.nummer}}</td>
+                <td class="text-center">{{element.bestand}}</td>
+                <td class="text-center">{{element.lieferdauer}}</td>
+                <td class="text-center">{{element.diskontmenge}}</td>            
+                <td class="text-center">{{element.bruttobedarf}}</td>
+                <td class="text-center">{{element.bestellung}}</td>
+                <td class="text-center">{{element.art}}</td>
+                
+                
+                
+                
                     <!-- 
                     <tr *ngFor="let entry of currentHealth.details | keys"> 
-                    -->
+                    
                 <tr>
                         <td class="text-center">21</td> 
                         <td> </td>
@@ -202,6 +214,8 @@
                     <!--
                     </tr> 
                     --> 
+                    
+                 
             </tbody> 
         </table>
     </div>

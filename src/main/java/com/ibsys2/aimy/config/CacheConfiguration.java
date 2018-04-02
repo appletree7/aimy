@@ -53,6 +53,7 @@ public class CacheConfiguration {
             cm.createCache(com.ibsys2.aimy.domain.Arbeitsplatz.class.getName(), jcacheConfiguration);
             cm.createCache(com.ibsys2.aimy.domain.Arbeitsplatz.class.getName() + ".teils", jcacheConfiguration);
             cm.createCache(com.ibsys2.aimy.domain.Kennzahlen.class.getName(), jcacheConfiguration);
+            cm.createCache(com.ibsys2.aimy.domain.Teil.class.getName() + ".subkomponentes", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

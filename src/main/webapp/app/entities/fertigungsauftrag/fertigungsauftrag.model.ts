@@ -10,16 +10,16 @@ export class Fertigungsauftrag implements BaseEntity {
     constructor(
         public id?: number,
         public periode?: number,
+        public nummer?: number,
         public auftragsmenge?: number,
-        public kostenprolos?: number,
+        public kosten?: number,
         public durchschnittlichestueckkosten?: number,
         public auftragsstatus?: Auftragstatus,
         public begonnen?: string,
         public beendet?: string,
         public dlzminimal?: number,
         public dlzFaktor?: number,
-        public nummer?: number,
-        public los?: BaseEntity,
+        public bearbeitungszeitmin?: number,
         public herstellteil?: BaseEntity,
     ) {
     }

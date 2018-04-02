@@ -13,6 +13,7 @@ import {
     FertigungsauftragDeleteDialogComponent,
     fertigungsauftragRoute,
     fertigungsauftragPopupRoute,
+    FertigungsauftragResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         FertigungsauftragService,
         FertigungsauftragPopupService,
+        FertigungsauftragResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

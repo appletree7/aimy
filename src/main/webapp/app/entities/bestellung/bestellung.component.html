@@ -15,21 +15,15 @@
     <div class="table-responsive" *ngIf="bestellungs">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="aimyApp.bestellung.periode">Periode</span></th>
-            <th><span jhiTranslate="aimyApp.bestellung.nummer">Nummer</span></th>
-            <th><span jhiTranslate="aimyApp.bestellung.lieferfrist">Lieferfrist</span></th>
-            <th><span jhiTranslate="aimyApp.bestellung.lieferzeit">Lieferzeit</span></th>
-            <th><span jhiTranslate="aimyApp.bestellung.kaufmenge">Kaufmenge</span></th>
-            <th><span jhiTranslate="aimyApp.bestellung.diskontmenge">Diskontmenge</span></th>
-            <th><span jhiTranslate="aimyApp.bestellung.materialkosten">Materialkosten</span></th>
-            <th><span jhiTranslate="aimyApp.bestellung.bestellkosten">Bestellkosten</span></th>
-            <th><span jhiTranslate="aimyApp.bestellung.gesamtkosten">Gesamtkosten</span></th>
-            <th><span jhiTranslate="aimyApp.bestellung.stueckkosten">Stueckkosten</span></th>
-            <th><span jhiTranslate="aimyApp.bestellung.bestellstatus">Bestellstatus</span></th>
-            <th><span jhiTranslate="aimyApp.bestellung.modus">Modus</span></th>
-            <th><span jhiTranslate="aimyApp.bestellung.kaufteil">Kaufteil</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="periode"><span jhiTranslate="aimyApp.bestellung.periode">Periode</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nummer"><span jhiTranslate="aimyApp.bestellung.nummer">Nummer</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="lieferzeit"><span jhiTranslate="aimyApp.bestellung.lieferzeit">Lieferzeit</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="kaufmenge"><span jhiTranslate="aimyApp.bestellung.kaufmenge">Kaufmenge</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="bestellstatus"><span jhiTranslate="aimyApp.bestellung.bestellstatus">Bestellstatus</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="modus.id"><span jhiTranslate="aimyApp.bestellung.modus">Modus</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="kaufteil.nummer"><span jhiTranslate="aimyApp.bestellung.kaufteil">Kaufteil</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -38,14 +32,8 @@
                 <td><a [routerLink]="['../bestellung', bestellung.id ]">{{bestellung.id}}</a></td>
                 <td>{{bestellung.periode}}</td>
                 <td>{{bestellung.nummer}}</td>
-                <td>{{bestellung.lieferfrist}}</td>
                 <td>{{bestellung.lieferzeit}}</td>
                 <td>{{bestellung.kaufmenge}}</td>
-                <td>{{bestellung.diskontmenge}}</td>
-                <td>{{bestellung.materialkosten}}</td>
-                <td>{{bestellung.bestellkosten}}</td>
-                <td>{{bestellung.gesamtkosten}}</td>
-                <td>{{bestellung.stueckkosten}}</td>
                 <td jhiTranslate="{{'aimyApp.Bestellstatus.' + bestellung.bestellstatus}}">{{bestellung.bestellstatus}}</td>
                 <td>
                     <div *ngIf="bestellung.modus">
@@ -54,7 +42,7 @@
                 </td>
                 <td>
                     <div *ngIf="bestellung.kaufteil">
-                        <a [routerLink]="['../teil', bestellung.kaufteil?.id ]" >{{bestellung.kaufteil?.id}}</a>
+                        <a [routerLink]="['../teil', bestellung.kaufteil?.id ]" >{{bestellung.kaufteil?.nummer}}</a>
                     </div>
                 </td>
                 <td class="text-right">
@@ -85,4 +73,12 @@
             </tbody>
         </table>
     </div>
+        <div *ngIf="bestellungs && bestellungs.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [maxSize]="5" [pageSize]="itemsPerPage" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
 </div>

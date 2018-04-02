@@ -24,7 +24,7 @@ export class BestellungDialogComponent implements OnInit {
 
     moduses: Modus[];
 
-    kaufteils: Teil[];
+    teils: Teil[];
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -38,32 +38,10 @@ export class BestellungDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.modusService
-            .query({filter: 'bestellung-is-null'})
-            .subscribe((res: ResponseWrapper) => {
-                if (!this.bestellung.modus || !this.bestellung.modus.id) {
-                    this.moduses = res.json;
-                } else {
-                    this.modusService
-                        .find(this.bestellung.modus.id)
-                        .subscribe((subRes: Modus) => {
-                            this.moduses = [subRes].concat(res.json);
-                        }, (subRes: ResponseWrapper) => this.onError(subRes.json));
-                }
-            }, (res: ResponseWrapper) => this.onError(res.json));
-        this.teilService
-            .query({filter: 'bestellung-is-null'})
-            .subscribe((res: ResponseWrapper) => {
-                if (!this.bestellung.kaufteil || !this.bestellung.kaufteil.id) {
-                    this.kaufteils = res.json;
-                } else {
-                    this.teilService
-                        .find(this.bestellung.kaufteil.id)
-                        .subscribe((subRes: Teil) => {
-                            this.kaufteils = [subRes].concat(res.json);
-                        }, (subRes: ResponseWrapper) => this.onError(subRes.json));
-                }
-            }, (res: ResponseWrapper) => this.onError(res.json));
+        this.modusService.query()
+            .subscribe((res: ResponseWrapper) => { this.moduses = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.teilService.query()
+            .subscribe((res: ResponseWrapper) => { this.teils = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {

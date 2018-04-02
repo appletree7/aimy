@@ -22,22 +22,27 @@ public class Los implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "periode")
+    @NotNull
+    @Min(value = 0)
+    @Column(name = "periode", nullable = false)
     private Integer periode;
-
-    @Column(name = "menge")
-    private Integer menge;
-
-    @Column(name = "durchlaufzeit")
-    private Double durchlaufzeit;
-
-    @Column(name = "kosten")
-    private Double kosten;
 
     @NotNull
     @Min(value = 1)
     @Column(name = "nummer", nullable = false)
     private Integer nummer;
+
+    @Min(value = 0)
+    @Column(name = "menge")
+    private Integer menge;
+
+    @DecimalMin(value = "0")
+    @Column(name = "durchlaufzeit")
+    private Double durchlaufzeit;
+
+    @DecimalMin(value = "0")
+    @Column(name = "kosten")
+    private Double kosten;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -59,6 +64,19 @@ public class Los implements Serializable {
 
     public void setPeriode(Integer periode) {
         this.periode = periode;
+    }
+
+    public Integer getNummer() {
+        return nummer;
+    }
+
+    public Los nummer(Integer nummer) {
+        this.nummer = nummer;
+        return this;
+    }
+
+    public void setNummer(Integer nummer) {
+        this.nummer = nummer;
     }
 
     public Integer getMenge() {
@@ -99,19 +117,6 @@ public class Los implements Serializable {
     public void setKosten(Double kosten) {
         this.kosten = kosten;
     }
-
-    public Integer getNummer() {
-        return nummer;
-    }
-
-    public Los nummer(Integer nummer) {
-        this.nummer = nummer;
-        return this;
-    }
-
-    public void setNummer(Integer nummer) {
-        this.nummer = nummer;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -139,10 +144,10 @@ public class Los implements Serializable {
         return "Los{" +
             "id=" + getId() +
             ", periode='" + getPeriode() + "'" +
+            ", nummer='" + getNummer() + "'" +
             ", menge='" + getMenge() + "'" +
             ", durchlaufzeit='" + getDurchlaufzeit() + "'" +
             ", kosten='" + getKosten() + "'" +
-            ", nummer='" + getNummer() + "'" +
             "}";
     }
 }

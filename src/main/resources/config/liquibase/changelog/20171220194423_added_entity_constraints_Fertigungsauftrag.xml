@@ -8,12 +8,6 @@
     -->
     <changeSet id="20171220194423-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="los_id"
-                                 baseTableName="fertigungsauftrag"
-                                 constraintName="fk_fertigungsauftrag_los_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="los"/>
-
         <addForeignKeyConstraint baseColumnNames="herstellteil_id"
                                  baseTableName="fertigungsauftrag"
                                  constraintName="fk_fertigungsauftrag_herstellteil_id"

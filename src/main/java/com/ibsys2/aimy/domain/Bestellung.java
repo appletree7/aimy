@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -25,33 +26,37 @@ public class Bestellung implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "periode")
+    @NotNull
+    @Min(value = 0)
+    @Column(name = "periode", nullable = false)
     private Integer periode;
 
-    @Column(name = "nummer")
+    @NotNull
+    @Min(value = 0)
+    @Column(name = "nummer", nullable = false)
     private Integer nummer;
 
-    @Column(name = "lieferfrist")
-    private Double lieferfrist;
-
+    @DecimalMin(value = "0")
     @Column(name = "lieferzeit")
     private Double lieferzeit;
 
+    @Min(value = 0)
     @Column(name = "kaufmenge")
     private Integer kaufmenge;
 
-    @Column(name = "diskontmenge")
-    private Integer diskontmenge;
-
+    @DecimalMin(value = "0")
     @Column(name = "materialkosten")
     private Double materialkosten;
 
+    @DecimalMin(value = "0")
     @Column(name = "bestellkosten")
     private Double bestellkosten;
 
+    @DecimalMin(value = "0")
     @Column(name = "gesamtkosten")
     private Double gesamtkosten;
 
+    @DecimalMin(value = "0")
     @Column(name = "stueckkosten")
     private Double stueckkosten;
 
@@ -59,12 +64,11 @@ public class Bestellung implements Serializable {
     @Column(name = "bestellstatus")
     private Bestellstatus bestellstatus;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne(optional = false)
+    @NotNull
     private Modus modus;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private Teil kaufteil;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -102,19 +106,6 @@ public class Bestellung implements Serializable {
         this.nummer = nummer;
     }
 
-    public Double getLieferfrist() {
-        return lieferfrist;
-    }
-
-    public Bestellung lieferfrist(Double lieferfrist) {
-        this.lieferfrist = lieferfrist;
-        return this;
-    }
-
-    public void setLieferfrist(Double lieferfrist) {
-        this.lieferfrist = lieferfrist;
-    }
-
     public Double getLieferzeit() {
         return lieferzeit;
     }
@@ -139,19 +130,6 @@ public class Bestellung implements Serializable {
 
     public void setKaufmenge(Integer kaufmenge) {
         this.kaufmenge = kaufmenge;
-    }
-
-    public Integer getDiskontmenge() {
-        return diskontmenge;
-    }
-
-    public Bestellung diskontmenge(Integer diskontmenge) {
-        this.diskontmenge = diskontmenge;
-        return this;
-    }
-
-    public void setDiskontmenge(Integer diskontmenge) {
-        this.diskontmenge = diskontmenge;
     }
 
     public Double getMaterialkosten() {
@@ -272,10 +250,8 @@ public class Bestellung implements Serializable {
             "id=" + getId() +
             ", periode='" + getPeriode() + "'" +
             ", nummer='" + getNummer() + "'" +
-            ", lieferfrist='" + getLieferfrist() + "'" +
             ", lieferzeit='" + getLieferzeit() + "'" +
             ", kaufmenge='" + getKaufmenge() + "'" +
-            ", diskontmenge='" + getDiskontmenge() + "'" +
             ", materialkosten='" + getMaterialkosten() + "'" +
             ", bestellkosten='" + getBestellkosten() + "'" +
             ", gesamtkosten='" + getGesamtkosten() + "'" +

@@ -9,10 +9,29 @@ import { ArbeitsplatzDetailComponent } from './arbeitsplatz-detail.component';
 import { ArbeitsplatzPopupComponent } from './arbeitsplatz-dialog.component';
 import { ArbeitsplatzDeletePopupComponent } from './arbeitsplatz-delete-dialog.component';
 
+@Injectable()
+export class ArbeitsplatzResolvePagingParams implements Resolve<any> {
+
+    constructor(private paginationUtil: JhiPaginationUtil) {}
+
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
+        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
+        return {
+            page: this.paginationUtil.parsePage(page),
+            predicate: this.paginationUtil.parsePredicate(sort),
+            ascending: this.paginationUtil.parseAscending(sort)
+      };
+    }
+}
+
 export const arbeitsplatzRoute: Routes = [
     {
         path: 'arbeitsplatz',
         component: ArbeitsplatzComponent,
+        resolve: {
+            'pagingParams': ArbeitsplatzResolvePagingParams
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'aimyApp.arbeitsplatz.home.title'

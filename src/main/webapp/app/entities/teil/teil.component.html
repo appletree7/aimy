@@ -15,24 +15,17 @@
     <div class="table-responsive" *ngIf="teils">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="aimyApp.teil.teiltyp">Teiltyp</span></th>
-            <th><span jhiTranslate="aimyApp.teil.nummer">Nummer</span></th>
-            <th><span jhiTranslate="aimyApp.teil.istmenge">Istmenge</span></th>
-            <th><span jhiTranslate="aimyApp.teil.startmenge">Startmenge</span></th>
-            <th><span jhiTranslate="aimyApp.teil.prozentsatz">Prozentsatz</span></th>
-            <th><span jhiTranslate="aimyApp.teil.lagerpreis">Lagerpreis</span></th>
-            <th><span jhiTranslate="aimyApp.teil.lagerwert">Lagerwert</span></th>
-            <th><span jhiTranslate="aimyApp.teil.sicherheitsbestand">Sicherheitsbestand</span></th>
-            <th><span jhiTranslate="aimyApp.teil.vertriebswunsch">Vertriebswunsch</span></th>
-            <th><span jhiTranslate="aimyApp.teil.periode">Periode</span></th>
-            <th><span jhiTranslate="aimyApp.teil.gesamtproduktionsmenge">Gesamtproduktionsmenge</span></th>
-            <th><span jhiTranslate="aimyApp.teil.direktverkaufmenge">Direktverkaufmenge</span></th>
-            <th><span jhiTranslate="aimyApp.teil.direktverkaufspreis">Direktverkaufspreis</span></th>
-            <th><span jhiTranslate="aimyApp.teil.strafe">Strafe</span></th>
-            <th><span jhiTranslate="aimyApp.teil.subkomponente">Subkomponente</span></th>
-            <th><span jhiTranslate="aimyApp.teil.arbeitsplatz">Arbeitsplatz</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="teiltyp"><span jhiTranslate="aimyApp.teil.teiltyp">Teiltyp</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="periode"><span jhiTranslate="aimyApp.teil.periode">Periode</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nummer"><span jhiTranslate="aimyApp.teil.nummer">Nummer</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="istmenge"><span jhiTranslate="aimyApp.teil.istmenge">Istmenge</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="lagerpreis"><span jhiTranslate="aimyApp.teil.lagerpreis">Lagerpreis</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="lagerwert"><span jhiTranslate="aimyApp.teil.lagerwert">Lagerwert</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="sicherheitsbestand"><span jhiTranslate="aimyApp.teil.sicherheitsbestand">Sicherheitsbestand</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="vertriebswunsch"><span jhiTranslate="aimyApp.teil.vertriebswunsch">Vertriebswunsch</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="gesamtproduktionsmenge"><span jhiTranslate="aimyApp.teil.gesamtproduktionsmenge">Gesamtproduktionsmenge</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -40,29 +33,14 @@
             <tr *ngFor="let teil of teils ;trackBy: trackId">
                 <td><a [routerLink]="['../teil', teil.id ]">{{teil.id}}</a></td>
                 <td jhiTranslate="{{'aimyApp.Teiltyp.' + teil.teiltyp}}">{{teil.teiltyp}}</td>
+                <td>{{teil.periode}}</td>
                 <td>{{teil.nummer}}</td>
                 <td>{{teil.istmenge}}</td>
-                <td>{{teil.startmenge}}</td>
-                <td>{{teil.prozentsatz}}</td>
                 <td>{{teil.lagerpreis}}</td>
                 <td>{{teil.lagerwert}}</td>
                 <td>{{teil.sicherheitsbestand}}</td>
                 <td>{{teil.vertriebswunsch}}</td>
-                <td>{{teil.periode}}</td>
                 <td>{{teil.gesamtproduktionsmenge}}</td>
-                <td>{{teil.direktverkaufmenge}}</td>
-                <td>{{teil.direktverkaufspreis}}</td>
-                <td>{{teil.strafe}}</td>
-                <td>
-                    <div *ngIf="teil.subkomponente">
-                        <a [routerLink]="['../teil', teil.subkomponente?.id ]" >{{teil.subkomponente?.id}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="teil.arbeitsplatz">
-                        <a [routerLink]="['../arbeitsplatz', teil.arbeitsplatz?.id ]" >{{teil.arbeitsplatz?.nummer}}</a>
-                    </div>
-                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
@@ -91,4 +69,12 @@
             </tbody>
         </table>
     </div>
+        <div *ngIf="teils && teils.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [maxSize]="5" [pageSize]="itemsPerPage" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
 </div>

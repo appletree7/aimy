@@ -13,6 +13,7 @@ import {
     ModusDeleteDialogComponent,
     modusRoute,
     modusPopupRoute,
+    ModusResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         ModusService,
         ModusPopupService,
+        ModusResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

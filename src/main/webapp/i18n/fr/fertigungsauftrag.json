@@ -16,16 +16,16 @@
                 "title": "Fertigungsauftrag"
             },
             "periode": "Periode",
+            "nummer": "Nummer",
             "auftragsmenge": "Auftragsmenge",
-            "kostenprolos": "Kostenprolos",
+            "kosten": "Kosten",
             "durchschnittlichestueckkosten": "Durchschnittlichestueckkosten",
             "auftragsstatus": "Auftragsstatus",
             "begonnen": "Begonnen",
             "beendet": "Beendet",
             "dlzminimal": "Dlzminimal",
             "dlzFaktor": "Dlz Faktor",
-            "nummer": "Nummer",
-            "los": "Los",
+            "bearbeitungszeitmin": "Bearbeitungszeitmin",
             "herstellteil": "Herstellteil"
         }
     }

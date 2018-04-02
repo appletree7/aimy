@@ -4,29 +4,49 @@
     "fields": [
         {
             "fieldName": "periode",
-            "fieldType": "Integer"
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "name",
-            "fieldType": "String"
+            "fieldType": "String",
+			"fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "aktuell",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "durchschnitt",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "gesamt",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         }
     ],
     "changelogDate": "20171220194425",
     "entityTableName": "kennzahlen",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false
+    "jpaMetamodelFiltering": true
 }

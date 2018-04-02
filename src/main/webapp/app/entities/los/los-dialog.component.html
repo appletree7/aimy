@@ -15,22 +15,21 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.los.periode" for="field_periode">Periode</label>
             <input type="number" class="form-control" name="periode" id="field_periode"
-                [(ngModel)]="los.periode"  />
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="aimyApp.los.menge" for="field_menge">Menge</label>
-            <input type="number" class="form-control" name="menge" id="field_menge"
-                [(ngModel)]="los.menge"  />
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="aimyApp.los.durchlaufzeit" for="field_durchlaufzeit">Durchlaufzeit</label>
-            <input type="number" class="form-control" name="durchlaufzeit" id="field_durchlaufzeit"
-                [(ngModel)]="los.durchlaufzeit"  />
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="aimyApp.los.kosten" for="field_kosten">Kosten</label>
-            <input type="number" class="form-control" name="kosten" id="field_kosten"
-                [(ngModel)]="los.kosten"  />
+                [(ngModel)]="los.periode" required min="0" />
+            <div [hidden]="!(editForm.controls.periode?.dirty && editForm.controls.periode?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.periode?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.periode?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.periode?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.los.nummer" for="field_nummer">Nummer</label>
@@ -47,6 +46,51 @@
                 </small>
                 <small class="form-text text-danger"
                     [hidden]="!editForm.controls.nummer?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.los.menge" for="field_menge">Menge</label>
+            <input type="number" class="form-control" name="menge" id="field_menge"
+                [(ngModel)]="los.menge" min="0" />
+            <div [hidden]="!(editForm.controls.menge?.dirty && editForm.controls.menge?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.menge?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.menge?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.los.durchlaufzeit" for="field_durchlaufzeit">Durchlaufzeit</label>
+            <input type="number" class="form-control" name="durchlaufzeit" id="field_durchlaufzeit"
+                [(ngModel)]="los.durchlaufzeit" min="0" />
+            <div [hidden]="!(editForm.controls.durchlaufzeit?.dirty && editForm.controls.durchlaufzeit?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.durchlaufzeit?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.durchlaufzeit?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.los.kosten" for="field_kosten">Kosten</label>
+            <input type="number" class="form-control" name="kosten" id="field_kosten"
+                [(ngModel)]="los.kosten" min="0" />
+            <div [hidden]="!(editForm.controls.kosten?.dirty && editForm.controls.kosten?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.kosten?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.kosten?.errors?.number" jhiTranslate="entity.validation.number">
                     This field should be a number.
                 </small>
             </div>

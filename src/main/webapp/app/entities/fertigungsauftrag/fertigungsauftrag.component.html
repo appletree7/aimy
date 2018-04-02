@@ -15,20 +15,17 @@
     <div class="table-responsive" *ngIf="fertigungsauftrags">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="aimyApp.fertigungsauftrag.periode">Periode</span></th>
-            <th><span jhiTranslate="aimyApp.fertigungsauftrag.auftragsmenge">Auftragsmenge</span></th>
-            <th><span jhiTranslate="aimyApp.fertigungsauftrag.kostenprolos">Kostenprolos</span></th>
-            <th><span jhiTranslate="aimyApp.fertigungsauftrag.durchschnittlichestueckkosten">Durchschnittlichestueckkosten</span></th>
-            <th><span jhiTranslate="aimyApp.fertigungsauftrag.auftragsstatus">Auftragsstatus</span></th>
-            <th><span jhiTranslate="aimyApp.fertigungsauftrag.begonnen">Begonnen</span></th>
-            <th><span jhiTranslate="aimyApp.fertigungsauftrag.beendet">Beendet</span></th>
-            <th><span jhiTranslate="aimyApp.fertigungsauftrag.dlzminimal">Dlzminimal</span></th>
-            <th><span jhiTranslate="aimyApp.fertigungsauftrag.dlzFaktor">Dlz Faktor</span></th>
-            <th><span jhiTranslate="aimyApp.fertigungsauftrag.nummer">Nummer</span></th>
-            <th><span jhiTranslate="aimyApp.fertigungsauftrag.los">Los</span></th>
-            <th><span jhiTranslate="aimyApp.fertigungsauftrag.herstellteil">Herstellteil</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="periode"><span jhiTranslate="aimyApp.fertigungsauftrag.periode">Periode</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nummer"><span jhiTranslate="aimyApp.fertigungsauftrag.nummer">Nummer</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="auftragsmenge"><span jhiTranslate="aimyApp.fertigungsauftrag.auftragsmenge">Auftragsmenge</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="kosten"><span jhiTranslate="aimyApp.fertigungsauftrag.kosten">Kosten</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="auftragsstatus"><span jhiTranslate="aimyApp.fertigungsauftrag.auftragsstatus">Auftragsstatus</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="dlzminimal"><span jhiTranslate="aimyApp.fertigungsauftrag.dlzminimal">Dlzminimal</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="dlzFaktor"><span jhiTranslate="aimyApp.fertigungsauftrag.dlzFaktor">Dlz Faktor</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="bearbeitungszeitmin"><span jhiTranslate="aimyApp.fertigungsauftrag.bearbeitungszeitmin">Bearbeitungszeitmin</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="herstellteil.nummer"><span jhiTranslate="aimyApp.fertigungsauftrag.herstellteil">Herstellteil</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -36,23 +33,16 @@
             <tr *ngFor="let fertigungsauftrag of fertigungsauftrags ;trackBy: trackId">
                 <td><a [routerLink]="['../fertigungsauftrag', fertigungsauftrag.id ]">{{fertigungsauftrag.id}}</a></td>
                 <td>{{fertigungsauftrag.periode}}</td>
+                <td>{{fertigungsauftrag.nummer}}</td>
                 <td>{{fertigungsauftrag.auftragsmenge}}</td>
-                <td>{{fertigungsauftrag.kostenprolos}}</td>
-                <td>{{fertigungsauftrag.durchschnittlichestueckkosten}}</td>
+                <td>{{fertigungsauftrag.kosten}}</td>
                 <td jhiTranslate="{{'aimyApp.Auftragstatus.' + fertigungsauftrag.auftragsstatus}}">{{fertigungsauftrag.auftragsstatus}}</td>
-                <td>{{fertigungsauftrag.begonnen}}</td>
-                <td>{{fertigungsauftrag.beendet}}</td>
                 <td>{{fertigungsauftrag.dlzminimal}}</td>
                 <td>{{fertigungsauftrag.dlzFaktor}}</td>
-                <td>{{fertigungsauftrag.nummer}}</td>
-                <td>
-                    <div *ngIf="fertigungsauftrag.los">
-                        <a [routerLink]="['../los', fertigungsauftrag.los?.id ]" >{{fertigungsauftrag.los?.id}}</a>
-                    </div>
-                </td>
+                <td>{{fertigungsauftrag.bearbeitungszeitmin}}</td>
                 <td>
                     <div *ngIf="fertigungsauftrag.herstellteil">
-                        <a [routerLink]="['../teil', fertigungsauftrag.herstellteil?.id ]" >{{fertigungsauftrag.herstellteil?.id}}</a>
+                        <a [routerLink]="['../teil', fertigungsauftrag.herstellteil?.id ]" >{{fertigungsauftrag.herstellteil?.nummer}}</a>
                     </div>
                 </td>
                 <td class="text-right">
@@ -83,4 +73,12 @@
             </tbody>
         </table>
     </div>
+        <div *ngIf="fertigungsauftrags && fertigungsauftrags.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [maxSize]="5" [pageSize]="itemsPerPage" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
 </div>

@@ -12,10 +12,6 @@
         <dd>
             <span>{{bestellung.nummer}}</span>
         </dd>
-        <dt><span jhiTranslate="aimyApp.bestellung.lieferfrist">Lieferfrist</span></dt>
-        <dd>
-            <span>{{bestellung.lieferfrist}}</span>
-        </dd>
         <dt><span jhiTranslate="aimyApp.bestellung.lieferzeit">Lieferzeit</span></dt>
         <dd>
             <span>{{bestellung.lieferzeit}}</span>
@@ -23,10 +19,6 @@
         <dt><span jhiTranslate="aimyApp.bestellung.kaufmenge">Kaufmenge</span></dt>
         <dd>
             <span>{{bestellung.kaufmenge}}</span>
-        </dd>
-        <dt><span jhiTranslate="aimyApp.bestellung.diskontmenge">Diskontmenge</span></dt>
-        <dd>
-            <span>{{bestellung.diskontmenge}}</span>
         </dd>
         <dt><span jhiTranslate="aimyApp.bestellung.materialkosten">Materialkosten</span></dt>
         <dd>
@@ -57,7 +49,7 @@
         <dt><span jhiTranslate="aimyApp.bestellung.kaufteil">Kaufteil</span></dt>
         <dd>
             <div *ngIf="bestellung.kaufteil">
-                <a [routerLink]="['/teil', bestellung.kaufteil?.id]">{{bestellung.kaufteil?.id}}</a>
+                <a [routerLink]="['/teil', bestellung.kaufteil?.id]">{{bestellung.kaufteil?.nummer}}</a>
             </div>
         </dd>
     </dl>

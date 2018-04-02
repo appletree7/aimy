@@ -5,12 +5,11 @@ import com.ibsys2.aimy.domain.Modus;
 import com.ibsys2.aimy.repository.ModusRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * Service Implementation for managing Modus.
@@ -42,27 +41,14 @@ public class ModusServiceImpl implements ModusService{
     /**
      *  Get all the moduses.
      *
+     *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Modus> findAll() {
+    public Page<Modus> findAll(Pageable pageable) {
         log.debug("Request to get all Moduses");
-        return modusRepository.findAll();
-    }
-
-
-    /**
-     *  get all the moduses where Bestellung is null.
-     *  @return the list of entities
-     */
-    @Transactional(readOnly = true) 
-    public List<Modus> findAllWhereBestellungIsNull() {
-        log.debug("Request to get all moduses where Bestellung is null");
-        return StreamSupport
-            .stream(modusRepository.findAll().spliterator(), false)
-            .filter(modus -> modus.getBestellung() == null)
-            .collect(Collectors.toList());
+        return modusRepository.findAll(pageable);
     }
 
     /**

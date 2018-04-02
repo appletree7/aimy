@@ -10,7 +10,8 @@ export class Teil implements BaseEntity {
     constructor(
         public id?: number,
         public teiltyp?: Teiltyp,
-        public nummer?: string,
+        public periode?: number,
+        public nummer?: number,
         public istmenge?: number,
         public startmenge?: number,
         public prozentsatz?: number,
@@ -18,14 +19,11 @@ export class Teil implements BaseEntity {
         public lagerwert?: number,
         public sicherheitsbestand?: number,
         public vertriebswunsch?: number,
-        public periode?: number,
         public gesamtproduktionsmenge?: number,
         public direktverkaufmenge?: number,
         public direktverkaufspreis?: number,
         public strafe?: number,
-        public fertigungsauftrags?: BaseEntity[],
-        public subkomponente?: BaseEntity,
-        public arbeitsplatz?: BaseEntity,
+        public subkomponentes?: BaseEntity[],
     ) {
     }
 }

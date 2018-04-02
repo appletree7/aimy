@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { URLSearchParams, BaseRequestOptions } from '@angular/http';
+import { ActivatedRoute, Router } from '@angular/router';
 import {Subscription} from 'rxjs/Rx';
-import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
+import {JhiAlertService, JhiParseLinks, JhiEventManager} from 'ng-jhipster';
 
-import {Teil} from '../../entities/teil/teil.model';
+import {Teil, Teiltyp} from '../../entities/teil/teil.model';
 import {TeilService} from '../../entities/teil/teil.service';
-import {Principal, ResponseWrapper} from '../../shared';
-import {Teiltyp} from '../../entities/teil';
-import {PeriodStartComponent} from '../';
+import {createRequestOption, ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
 
 @Component({
   selector: 'jhi-direktverkauf-und-normalverkauf',
@@ -17,31 +17,117 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit {
     isSaving: boolean;
     teil: Teil;
     teils: Teil[];
+    teile: Teil[];
     currentAccount: any;
     eventSubscriber: Subscription;
+    links: any;
+    totalItems: any;
+    queryCount: any;
 
   constructor( private teilService: TeilService,
+               private parseLinks: JhiParseLinks,
+               private activatedRoute: ActivatedRoute,
                private jhiAlertService: JhiAlertService,
                private eventManager: JhiEventManager,
-               private principal: Principal) {
+               private principal: Principal)
+  {
   }
 
+    loadTeile() {
+        let criteria = [
+            {key: 'teiltyp.equals', value: 'PRODUKT'},
+            {key: 'periode.equals', value: localStorage.getItem('aktuelleperiode')}
+        ];
+        this.teilService.query({
+            size: 60,
+            criteria
+            }
+        )
+            .subscribe((res: ResponseWrapper) => this.onSuccessTeil(res.json, res.headers)
+                // this.teils = this.teils.filter((teil) => teil.teiltyp.toString() === 'PRODUKT' && teil.periode === parseInt(localStorage.getItem('aktuelleperiode'), 10));
+            , (res: ResponseWrapper) => this.onError(res.json));
+    }
+
     ngOnInit() {
+        this.loadTeile();
       this.principal.identity().then((account) => {
           this.currentAccount = account;
       });
-      this.teilService.query()
-          .subscribe((res: ResponseWrapper) => {
-              this.teils = res.json;
-              this.teils = this.teils.filter((teil) => teil.teiltyp === Teiltyp.PRODUKT && teil.periode === parseInt(localStorage.getItem('aktuelleperiode'), 10));
-          }, (res: ResponseWrapper) => this.onError(res.json));
+        this.isSaving = false;
+        this.registerChangeInTeils();
   }
+
+    ngOnDestroy() {
+        this.eventManager.destroy(this.eventSubscriber);
+    }
+
+    registerChangeInTeils() {
+        this.eventSubscriber = this.eventManager.subscribe('teilListModification', (response) => this.loadTeile());
+    }
 
     previousState() {
         window.history.back();
     }
+
+    trackId(index: number, item: Teil) {
+        return item.id;
+    }
+
+    save() {
+        let criteria = [
+            {key: 'teiltyp.equals', value: 'PRODUKT'},
+            {key: 'periode.equals', value: localStorage.getItem('aktuelleperiode')}
+        ];
+        this.teilService.query(
+            {
+                size: 60,
+                criteria
+            }
+        )
+            .subscribe((res: ResponseWrapper) => {
+                this.teile = res.json;
+                for (const teil1 of this.teils) {
+                    this.teil = this.teils.find((teil) => teil.nummer === teil1.nummer && teil.periode === parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                    if (this.teile !== undefined) {
+                        this.teilService.update(this.teil).subscribe((respond: Teil) =>
+                            console.log(respond), (respond: Response) => this.onSaveError());
+                    } else {
+                        this.teilService.create(this.teil).subscribe((respond: Teil) =>
+                            console.log(respond), (respond: Response) => this.onSaveError());
+                    }
+                }
+
+            }, (res: ResponseWrapper) => this.onError(res.json));
+    }
+
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
+    }
+
+    private onSuccessTeil(data, headers) {
+        this.links = this.parseLinks.parse(headers.get('link'));
+        this.totalItems = headers.get('X-Total-Count');
+        this.queryCount = this.totalItems;
+        // this.page = pagingParams.page;
+        this.teils = data;
+        if (this.teils === undefined || this.teils.length === 0) {
+            this.teil = new Teil(undefined, Teiltyp.PRODUKT, parseInt(localStorage.getItem('aktuelleperiode'), 10), 1, undefined, undefined, undefined,
+                undefined, undefined, undefined, undefined, undefined, undefined, undefined,
+                undefined, undefined);
+            this.teils.push(this.teil);
+            this.teil = new Teil(undefined, Teiltyp.PRODUKT, parseInt(localStorage.getItem('aktuelleperiode'), 10), 2, undefined, undefined, undefined,
+                undefined, undefined, undefined, undefined, undefined, undefined, undefined,
+                undefined, undefined);
+            this.teils.push(this.teil);
+            this.teil = new Teil(undefined, Teiltyp.PRODUKT, parseInt(localStorage.getItem('aktuelleperiode'), 10), 3, undefined, undefined, undefined,
+                undefined, undefined, undefined, undefined, undefined, undefined, undefined,
+                undefined, undefined);
+            this.teils.push(this.teil);
+        }
+    }
+
+    private onSaveError() {
+        this.isSaving = false;
     }
 
 }

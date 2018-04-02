@@ -9,10 +9,29 @@ import { TeilDetailComponent } from './teil-detail.component';
 import { TeilPopupComponent } from './teil-dialog.component';
 import { TeilDeletePopupComponent } from './teil-delete-dialog.component';
 
+@Injectable()
+export class TeilResolvePagingParams implements Resolve<any> {
+
+    constructor(private paginationUtil: JhiPaginationUtil) {}
+
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
+        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
+        return {
+            page: this.paginationUtil.parsePage(page),
+            predicate: this.paginationUtil.parsePredicate(sort),
+            ascending: this.paginationUtil.parseAscending(sort)
+      };
+    }
+}
+
 export const teilRoute: Routes = [
     {
         path: 'teil',
         component: TeilComponent,
+        resolve: {
+            'pagingParams': TeilResolvePagingParams
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'aimyApp.teil.home.title'

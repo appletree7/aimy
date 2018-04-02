@@ -1,7 +1,8 @@
 package com.ibsys2.aimy.service;
 
 import com.ibsys2.aimy.domain.Modus;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service Interface for managing Modus.
@@ -19,15 +20,10 @@ public interface ModusService {
     /**
      *  Get all the moduses.
      *
+     *  @param pageable the pagination information
      *  @return the list of entities
      */
-    List<Modus> findAll();
-    /**
-     *  Get all the ModusDTO where Bestellung is null.
-     *
-     *  @return the list of entities
-     */
-    List<Modus> findAllWhereBestellungIsNull();
+    Page<Modus> findAll(Pageable pageable);
 
     /**
      *  Get the "id" modus.

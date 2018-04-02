@@ -2,22 +2,11 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "one-to-many",
-            "relationshipName": "fertigungsauftrag",
-            "otherEntityName": "fertigungsauftrag",
-            "otherEntityRelationshipName": "herstellteil"
-        },
-        {
-            "relationshipType": "many-to-one",
+            "relationshipType": "many-to-many",
             "relationshipName": "subkomponente",
             "otherEntityName": "teil",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipName": "arbeitsplatz",
-            "otherEntityName": "arbeitsplatz",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "nummer"
+            "otherEntityField": "nummer",
+			"ownerSide": true
         }
     ],
     "fields": [
@@ -26,43 +15,76 @@
             "fieldType": "Teiltyp",
             "fieldValues": "PRODUKT,ERZEUGNIS,KAUFTEIL"
         },
-        {
-            "fieldName": "nummer",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "istmenge",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "startmenge",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "prozentsatz",
-            "fieldType": "Double"
-        },
-        {
-            "fieldName": "lagerpreis",
-            "fieldType": "Double"
-        },
-        {
-            "fieldName": "lagerwert",
-            "fieldType": "Double"
-        },
-        {
-            "fieldName": "sicherheitsbestand",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "vertriebswunsch",
-            "fieldType": "Integer"
-        },
-        {
+		{
             "fieldName": "periode",
             "fieldType": "Integer",
             "fieldValidateRules": [
                 "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "nummer",
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": "1"
+        },
+        {
+            "fieldName": "istmenge",
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "startmenge",
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "prozentsatz",
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "lagerpreis",
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "lagerwert",
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "sicherheitsbestand",
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "vertriebswunsch",
+            "fieldType": "Integer",
+			"fieldValidateRules": [
                 "min"
             ],
             "fieldValidateRulesMin": 0
@@ -78,23 +100,33 @@
         {
             "fieldName": "direktverkaufmenge",
             "fieldType": "Integer",
-            "fieldValidateRules": []
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "direktverkaufspreis",
             "fieldType": "Double",
-            "fieldValidateRules": []
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "strafe",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         }
     ],
     "changelogDate": "20171220194421",
     "dto": "no",
     "service": "serviceImpl",
     "entityTableName": "teil",
-    "jpaMetamodelFiltering": false,
-    "pagination": "no",
+    "jpaMetamodelFiltering": true,
+    "pagination": "pagination",
     "javadoc": "The Herstellteil entity."
 }

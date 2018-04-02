@@ -41,15 +41,11 @@
         <span>{{text}}</span>
     </div>
     <div>
-        <span>{{message}}</span>
-       <!-- <div *ngFor="let teil of teils">{{teil.id}}</div>-->
-    </div>
-    <div>
 
         <button type="submit" [disabled]="saveForm.form.invalid || isSaving" class="btn btn-primary">
             <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
         </button>
-        <button class="btn btn-primary" [routerLink]="['/direketverkauf_und_normalverkauf']"
+        <button type="button" class="btn btn-primary" [routerLink]="['/direktverkauf_und_normalverkauf']"
                 replaceUrl="true">
             <span>
                 Weiter

@@ -9,7 +9,6 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { Fertigungsauftrag } from './fertigungsauftrag.model';
 import { FertigungsauftragPopupService } from './fertigungsauftrag-popup.service';
 import { FertigungsauftragService } from './fertigungsauftrag.service';
-import { Los, LosService } from '../los';
 import { Teil, TeilService } from '../teil';
 import { ResponseWrapper } from '../../shared';
 
@@ -22,15 +21,12 @@ export class FertigungsauftragDialogComponent implements OnInit {
     fertigungsauftrag: Fertigungsauftrag;
     isSaving: boolean;
 
-    los: Los[];
-
     teils: Teil[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private fertigungsauftragService: FertigungsauftragService,
-        private losService: LosService,
         private teilService: TeilService,
         private eventManager: JhiEventManager
     ) {
@@ -38,8 +34,6 @@ export class FertigungsauftragDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.losService.query()
-            .subscribe((res: ResponseWrapper) => { this.los = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.teilService.query()
             .subscribe((res: ResponseWrapper) => { this.teils = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
@@ -76,10 +70,6 @@ export class FertigungsauftragDialogComponent implements OnInit {
 
     private onError(error: any) {
         this.jhiAlertService.error(error.message, null, null);
-    }
-
-    trackLosById(index: number, item: Los) {
-        return item.id;
     }
 
     trackTeilById(index: number, item: Teil) {

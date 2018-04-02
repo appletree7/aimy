@@ -5,9 +5,17 @@ import com.ibsys2.aimy.domain.Fertigungsauftrag;
 import com.ibsys2.aimy.service.FertigungsauftragService;
 import com.ibsys2.aimy.web.rest.errors.BadRequestAlertException;
 import com.ibsys2.aimy.web.rest.util.HeaderUtil;
+import com.ibsys2.aimy.web.rest.util.PaginationUtil;
+import com.ibsys2.aimy.service.dto.FertigungsauftragCriteria;
+import com.ibsys2.aimy.service.FertigungsauftragQueryService;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +39,11 @@ public class FertigungsauftragResource {
 
     private final FertigungsauftragService fertigungsauftragService;
 
-    public FertigungsauftragResource(FertigungsauftragService fertigungsauftragService) {
+    private final FertigungsauftragQueryService fertigungsauftragQueryService;
+
+    public FertigungsauftragResource(FertigungsauftragService fertigungsauftragService, FertigungsauftragQueryService fertigungsauftragQueryService) {
         this.fertigungsauftragService = fertigungsauftragService;
+        this.fertigungsauftragQueryService = fertigungsauftragQueryService;
     }
 
     /**
@@ -80,14 +91,18 @@ public class FertigungsauftragResource {
     /**
      * GET  /fertigungsauftrags : get all the fertigungsauftrags.
      *
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of fertigungsauftrags in body
      */
     @GetMapping("/fertigungsauftrags")
     @Timed
-    public List<Fertigungsauftrag> getAllFertigungsauftrags() {
-        log.debug("REST request to get all Fertigungsauftrags");
-        return fertigungsauftragService.findAll();
-        }
+    public ResponseEntity<List<Fertigungsauftrag>> getAllFertigungsauftrags(FertigungsauftragCriteria criteria,@ApiParam Pageable pageable) {
+        log.debug("REST request to get Fertigungsauftrags by criteria: {}", criteria);
+        Page<Fertigungsauftrag> page = fertigungsauftragQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/fertigungsauftrags");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
     /**
      * GET  /fertigungsauftrags/:id : get the "id" fertigungsauftrag.

@@ -6,6 +6,8 @@ import com.ibsys2.aimy.domain.Modus;
 import com.ibsys2.aimy.repository.ModusRepository;
 import com.ibsys2.aimy.service.ModusService;
 import com.ibsys2.aimy.web.rest.errors.ExceptionTranslator;
+import com.ibsys2.aimy.service.dto.ModusCriteria;
+import com.ibsys2.aimy.service.ModusQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -42,38 +44,41 @@ public class ModusResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final Double DEFAULT_BEARBEITUNGSFAKTOR = 1D;
-    private static final Double UPDATED_BEARBEITUNGSFAKTOR = 2D;
+    private static final Double DEFAULT_BEARBEITUNGSFAKTOR = 0D;
+    private static final Double UPDATED_BEARBEITUNGSFAKTOR = 1D;
 
-    private static final Double DEFAULT_BEARBEITUNGSABWEICHUNG = 1D;
-    private static final Double UPDATED_BEARBEITUNGSABWEICHUNG = 2D;
+    private static final Double DEFAULT_BEARBEITUNGSABWEICHUNG = 0D;
+    private static final Double UPDATED_BEARBEITUNGSABWEICHUNG = 1D;
 
-    private static final Double DEFAULT_LIEFERFAKTOR = 1D;
-    private static final Double UPDATED_LIEFERFAKTOR = 2D;
+    private static final Double DEFAULT_LIEFERFAKTOR = 0D;
+    private static final Double UPDATED_LIEFERFAKTOR = 1D;
 
-    private static final Double DEFAULT_LIEFERABWEICHUNG = 1D;
-    private static final Double UPDATED_LIEFERABWEICHUNG = 2D;
+    private static final Double DEFAULT_LIEFERABWEICHUNG = 0D;
+    private static final Double UPDATED_LIEFERABWEICHUNG = 1D;
 
-    private static final Double DEFAULT_MENGENFAKOR = 1D;
-    private static final Double UPDATED_MENGENFAKOR = 2D;
+    private static final Double DEFAULT_MENGENFAKOR = 0D;
+    private static final Double UPDATED_MENGENFAKOR = 1D;
 
-    private static final Double DEFAULT_MENGENABWEICHUNG = 1D;
-    private static final Double UPDATED_MENGENABWEICHUNG = 2D;
+    private static final Double DEFAULT_MENGENABWEICHUNG = 0D;
+    private static final Double UPDATED_MENGENABWEICHUNG = 1D;
 
-    private static final Double DEFAULT_PREISFAKTOR = 1D;
-    private static final Double UPDATED_PREISFAKTOR = 2D;
+    private static final Double DEFAULT_PREISFAKTOR = 0D;
+    private static final Double UPDATED_PREISFAKTOR = 1D;
 
-    private static final Double DEFAULT_DISKONTFAKTOR = 1D;
-    private static final Double UPDATED_DISKONTFAKTOR = 2D;
+    private static final Double DEFAULT_DISKONTFAKTOR = 0D;
+    private static final Double UPDATED_DISKONTFAKTOR = 1D;
 
-    private static final Double DEFAULT_BESTELLKOSTENFAKTOR = 1D;
-    private static final Double UPDATED_BESTELLKOSTENFAKTOR = 2D;
+    private static final Double DEFAULT_BESTELLKOSTENFAKTOR = 0D;
+    private static final Double UPDATED_BESTELLKOSTENFAKTOR = 1D;
 
     @Autowired
     private ModusRepository modusRepository;
 
     @Autowired
     private ModusService modusService;
+
+    @Autowired
+    private ModusQueryService modusQueryService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -94,7 +99,7 @@ public class ModusResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ModusResource modusResource = new ModusResource(modusService);
+        final ModusResource modusResource = new ModusResource(modusService, modusQueryService);
         this.restModusMockMvc = MockMvcBuilders.standaloneSetup(modusResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -176,6 +181,24 @@ public class ModusResourceIntTest {
 
     @Test
     @Transactional
+    public void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = modusRepository.findAll().size();
+        // set the field null
+        modus.setName(null);
+
+        // Create the Modus, which fails.
+
+        restModusMockMvc.perform(post("/api/moduses")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(modus)))
+            .andExpect(status().isBadRequest());
+
+        List<Modus> modusList = modusRepository.findAll();
+        assertThat(modusList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllModuses() throws Exception {
         // Initialize the database
         modusRepository.saveAndFlush(modus);
@@ -219,6 +242,427 @@ public class ModusResourceIntTest {
             .andExpect(jsonPath("$.diskontfaktor").value(DEFAULT_DISKONTFAKTOR.doubleValue()))
             .andExpect(jsonPath("$.bestellkostenfaktor").value(DEFAULT_BESTELLKOSTENFAKTOR.doubleValue()));
     }
+
+    @Test
+    @Transactional
+    public void getAllModusesByNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where name equals to DEFAULT_NAME
+        defaultModusShouldBeFound("name.equals=" + DEFAULT_NAME);
+
+        // Get all the modusList where name equals to UPDATED_NAME
+        defaultModusShouldNotBeFound("name.equals=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where name in DEFAULT_NAME or UPDATED_NAME
+        defaultModusShouldBeFound("name.in=" + DEFAULT_NAME + "," + UPDATED_NAME);
+
+        // Get all the modusList where name equals to UPDATED_NAME
+        defaultModusShouldNotBeFound("name.in=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where name is not null
+        defaultModusShouldBeFound("name.specified=true");
+
+        // Get all the modusList where name is null
+        defaultModusShouldNotBeFound("name.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByBearbeitungsfaktorIsEqualToSomething() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where bearbeitungsfaktor equals to DEFAULT_BEARBEITUNGSFAKTOR
+        defaultModusShouldBeFound("bearbeitungsfaktor.equals=" + DEFAULT_BEARBEITUNGSFAKTOR);
+
+        // Get all the modusList where bearbeitungsfaktor equals to UPDATED_BEARBEITUNGSFAKTOR
+        defaultModusShouldNotBeFound("bearbeitungsfaktor.equals=" + UPDATED_BEARBEITUNGSFAKTOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByBearbeitungsfaktorIsInShouldWork() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where bearbeitungsfaktor in DEFAULT_BEARBEITUNGSFAKTOR or UPDATED_BEARBEITUNGSFAKTOR
+        defaultModusShouldBeFound("bearbeitungsfaktor.in=" + DEFAULT_BEARBEITUNGSFAKTOR + "," + UPDATED_BEARBEITUNGSFAKTOR);
+
+        // Get all the modusList where bearbeitungsfaktor equals to UPDATED_BEARBEITUNGSFAKTOR
+        defaultModusShouldNotBeFound("bearbeitungsfaktor.in=" + UPDATED_BEARBEITUNGSFAKTOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByBearbeitungsfaktorIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where bearbeitungsfaktor is not null
+        defaultModusShouldBeFound("bearbeitungsfaktor.specified=true");
+
+        // Get all the modusList where bearbeitungsfaktor is null
+        defaultModusShouldNotBeFound("bearbeitungsfaktor.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByBearbeitungsabweichungIsEqualToSomething() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where bearbeitungsabweichung equals to DEFAULT_BEARBEITUNGSABWEICHUNG
+        defaultModusShouldBeFound("bearbeitungsabweichung.equals=" + DEFAULT_BEARBEITUNGSABWEICHUNG);
+
+        // Get all the modusList where bearbeitungsabweichung equals to UPDATED_BEARBEITUNGSABWEICHUNG
+        defaultModusShouldNotBeFound("bearbeitungsabweichung.equals=" + UPDATED_BEARBEITUNGSABWEICHUNG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByBearbeitungsabweichungIsInShouldWork() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where bearbeitungsabweichung in DEFAULT_BEARBEITUNGSABWEICHUNG or UPDATED_BEARBEITUNGSABWEICHUNG
+        defaultModusShouldBeFound("bearbeitungsabweichung.in=" + DEFAULT_BEARBEITUNGSABWEICHUNG + "," + UPDATED_BEARBEITUNGSABWEICHUNG);
+
+        // Get all the modusList where bearbeitungsabweichung equals to UPDATED_BEARBEITUNGSABWEICHUNG
+        defaultModusShouldNotBeFound("bearbeitungsabweichung.in=" + UPDATED_BEARBEITUNGSABWEICHUNG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByBearbeitungsabweichungIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where bearbeitungsabweichung is not null
+        defaultModusShouldBeFound("bearbeitungsabweichung.specified=true");
+
+        // Get all the modusList where bearbeitungsabweichung is null
+        defaultModusShouldNotBeFound("bearbeitungsabweichung.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByLieferfaktorIsEqualToSomething() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where lieferfaktor equals to DEFAULT_LIEFERFAKTOR
+        defaultModusShouldBeFound("lieferfaktor.equals=" + DEFAULT_LIEFERFAKTOR);
+
+        // Get all the modusList where lieferfaktor equals to UPDATED_LIEFERFAKTOR
+        defaultModusShouldNotBeFound("lieferfaktor.equals=" + UPDATED_LIEFERFAKTOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByLieferfaktorIsInShouldWork() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where lieferfaktor in DEFAULT_LIEFERFAKTOR or UPDATED_LIEFERFAKTOR
+        defaultModusShouldBeFound("lieferfaktor.in=" + DEFAULT_LIEFERFAKTOR + "," + UPDATED_LIEFERFAKTOR);
+
+        // Get all the modusList where lieferfaktor equals to UPDATED_LIEFERFAKTOR
+        defaultModusShouldNotBeFound("lieferfaktor.in=" + UPDATED_LIEFERFAKTOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByLieferfaktorIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where lieferfaktor is not null
+        defaultModusShouldBeFound("lieferfaktor.specified=true");
+
+        // Get all the modusList where lieferfaktor is null
+        defaultModusShouldNotBeFound("lieferfaktor.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByLieferabweichungIsEqualToSomething() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where lieferabweichung equals to DEFAULT_LIEFERABWEICHUNG
+        defaultModusShouldBeFound("lieferabweichung.equals=" + DEFAULT_LIEFERABWEICHUNG);
+
+        // Get all the modusList where lieferabweichung equals to UPDATED_LIEFERABWEICHUNG
+        defaultModusShouldNotBeFound("lieferabweichung.equals=" + UPDATED_LIEFERABWEICHUNG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByLieferabweichungIsInShouldWork() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where lieferabweichung in DEFAULT_LIEFERABWEICHUNG or UPDATED_LIEFERABWEICHUNG
+        defaultModusShouldBeFound("lieferabweichung.in=" + DEFAULT_LIEFERABWEICHUNG + "," + UPDATED_LIEFERABWEICHUNG);
+
+        // Get all the modusList where lieferabweichung equals to UPDATED_LIEFERABWEICHUNG
+        defaultModusShouldNotBeFound("lieferabweichung.in=" + UPDATED_LIEFERABWEICHUNG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByLieferabweichungIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where lieferabweichung is not null
+        defaultModusShouldBeFound("lieferabweichung.specified=true");
+
+        // Get all the modusList where lieferabweichung is null
+        defaultModusShouldNotBeFound("lieferabweichung.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByMengenfakorIsEqualToSomething() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where mengenfakor equals to DEFAULT_MENGENFAKOR
+        defaultModusShouldBeFound("mengenfakor.equals=" + DEFAULT_MENGENFAKOR);
+
+        // Get all the modusList where mengenfakor equals to UPDATED_MENGENFAKOR
+        defaultModusShouldNotBeFound("mengenfakor.equals=" + UPDATED_MENGENFAKOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByMengenfakorIsInShouldWork() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where mengenfakor in DEFAULT_MENGENFAKOR or UPDATED_MENGENFAKOR
+        defaultModusShouldBeFound("mengenfakor.in=" + DEFAULT_MENGENFAKOR + "," + UPDATED_MENGENFAKOR);
+
+        // Get all the modusList where mengenfakor equals to UPDATED_MENGENFAKOR
+        defaultModusShouldNotBeFound("mengenfakor.in=" + UPDATED_MENGENFAKOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByMengenfakorIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where mengenfakor is not null
+        defaultModusShouldBeFound("mengenfakor.specified=true");
+
+        // Get all the modusList where mengenfakor is null
+        defaultModusShouldNotBeFound("mengenfakor.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByMengenabweichungIsEqualToSomething() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where mengenabweichung equals to DEFAULT_MENGENABWEICHUNG
+        defaultModusShouldBeFound("mengenabweichung.equals=" + DEFAULT_MENGENABWEICHUNG);
+
+        // Get all the modusList where mengenabweichung equals to UPDATED_MENGENABWEICHUNG
+        defaultModusShouldNotBeFound("mengenabweichung.equals=" + UPDATED_MENGENABWEICHUNG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByMengenabweichungIsInShouldWork() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where mengenabweichung in DEFAULT_MENGENABWEICHUNG or UPDATED_MENGENABWEICHUNG
+        defaultModusShouldBeFound("mengenabweichung.in=" + DEFAULT_MENGENABWEICHUNG + "," + UPDATED_MENGENABWEICHUNG);
+
+        // Get all the modusList where mengenabweichung equals to UPDATED_MENGENABWEICHUNG
+        defaultModusShouldNotBeFound("mengenabweichung.in=" + UPDATED_MENGENABWEICHUNG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByMengenabweichungIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where mengenabweichung is not null
+        defaultModusShouldBeFound("mengenabweichung.specified=true");
+
+        // Get all the modusList where mengenabweichung is null
+        defaultModusShouldNotBeFound("mengenabweichung.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByPreisfaktorIsEqualToSomething() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where preisfaktor equals to DEFAULT_PREISFAKTOR
+        defaultModusShouldBeFound("preisfaktor.equals=" + DEFAULT_PREISFAKTOR);
+
+        // Get all the modusList where preisfaktor equals to UPDATED_PREISFAKTOR
+        defaultModusShouldNotBeFound("preisfaktor.equals=" + UPDATED_PREISFAKTOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByPreisfaktorIsInShouldWork() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where preisfaktor in DEFAULT_PREISFAKTOR or UPDATED_PREISFAKTOR
+        defaultModusShouldBeFound("preisfaktor.in=" + DEFAULT_PREISFAKTOR + "," + UPDATED_PREISFAKTOR);
+
+        // Get all the modusList where preisfaktor equals to UPDATED_PREISFAKTOR
+        defaultModusShouldNotBeFound("preisfaktor.in=" + UPDATED_PREISFAKTOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByPreisfaktorIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where preisfaktor is not null
+        defaultModusShouldBeFound("preisfaktor.specified=true");
+
+        // Get all the modusList where preisfaktor is null
+        defaultModusShouldNotBeFound("preisfaktor.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByDiskontfaktorIsEqualToSomething() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where diskontfaktor equals to DEFAULT_DISKONTFAKTOR
+        defaultModusShouldBeFound("diskontfaktor.equals=" + DEFAULT_DISKONTFAKTOR);
+
+        // Get all the modusList where diskontfaktor equals to UPDATED_DISKONTFAKTOR
+        defaultModusShouldNotBeFound("diskontfaktor.equals=" + UPDATED_DISKONTFAKTOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByDiskontfaktorIsInShouldWork() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where diskontfaktor in DEFAULT_DISKONTFAKTOR or UPDATED_DISKONTFAKTOR
+        defaultModusShouldBeFound("diskontfaktor.in=" + DEFAULT_DISKONTFAKTOR + "," + UPDATED_DISKONTFAKTOR);
+
+        // Get all the modusList where diskontfaktor equals to UPDATED_DISKONTFAKTOR
+        defaultModusShouldNotBeFound("diskontfaktor.in=" + UPDATED_DISKONTFAKTOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByDiskontfaktorIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where diskontfaktor is not null
+        defaultModusShouldBeFound("diskontfaktor.specified=true");
+
+        // Get all the modusList where diskontfaktor is null
+        defaultModusShouldNotBeFound("diskontfaktor.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByBestellkostenfaktorIsEqualToSomething() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where bestellkostenfaktor equals to DEFAULT_BESTELLKOSTENFAKTOR
+        defaultModusShouldBeFound("bestellkostenfaktor.equals=" + DEFAULT_BESTELLKOSTENFAKTOR);
+
+        // Get all the modusList where bestellkostenfaktor equals to UPDATED_BESTELLKOSTENFAKTOR
+        defaultModusShouldNotBeFound("bestellkostenfaktor.equals=" + UPDATED_BESTELLKOSTENFAKTOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByBestellkostenfaktorIsInShouldWork() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where bestellkostenfaktor in DEFAULT_BESTELLKOSTENFAKTOR or UPDATED_BESTELLKOSTENFAKTOR
+        defaultModusShouldBeFound("bestellkostenfaktor.in=" + DEFAULT_BESTELLKOSTENFAKTOR + "," + UPDATED_BESTELLKOSTENFAKTOR);
+
+        // Get all the modusList where bestellkostenfaktor equals to UPDATED_BESTELLKOSTENFAKTOR
+        defaultModusShouldNotBeFound("bestellkostenfaktor.in=" + UPDATED_BESTELLKOSTENFAKTOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByBestellkostenfaktorIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where bestellkostenfaktor is not null
+        defaultModusShouldBeFound("bestellkostenfaktor.specified=true");
+
+        // Get all the modusList where bestellkostenfaktor is null
+        defaultModusShouldNotBeFound("bestellkostenfaktor.specified=false");
+    }
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultModusShouldBeFound(String filter) throws Exception {
+        restModusMockMvc.perform(get("/api/moduses?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(modus.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].bearbeitungsfaktor").value(hasItem(DEFAULT_BEARBEITUNGSFAKTOR.doubleValue())))
+            .andExpect(jsonPath("$.[*].bearbeitungsabweichung").value(hasItem(DEFAULT_BEARBEITUNGSABWEICHUNG.doubleValue())))
+            .andExpect(jsonPath("$.[*].lieferfaktor").value(hasItem(DEFAULT_LIEFERFAKTOR.doubleValue())))
+            .andExpect(jsonPath("$.[*].lieferabweichung").value(hasItem(DEFAULT_LIEFERABWEICHUNG.doubleValue())))
+            .andExpect(jsonPath("$.[*].mengenfakor").value(hasItem(DEFAULT_MENGENFAKOR.doubleValue())))
+            .andExpect(jsonPath("$.[*].mengenabweichung").value(hasItem(DEFAULT_MENGENABWEICHUNG.doubleValue())))
+            .andExpect(jsonPath("$.[*].preisfaktor").value(hasItem(DEFAULT_PREISFAKTOR.doubleValue())))
+            .andExpect(jsonPath("$.[*].diskontfaktor").value(hasItem(DEFAULT_DISKONTFAKTOR.doubleValue())))
+            .andExpect(jsonPath("$.[*].bestellkostenfaktor").value(hasItem(DEFAULT_BESTELLKOSTENFAKTOR.doubleValue())));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultModusShouldNotBeFound(String filter) throws Exception {
+        restModusMockMvc.perform(get("/api/moduses?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+    }
+
 
     @Test
     @Transactional

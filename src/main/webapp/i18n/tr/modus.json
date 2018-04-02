@@ -24,8 +24,7 @@
             "mengenabweichung": "Mengenabweichung",
             "preisfaktor": "Preisfaktor",
             "diskontfaktor": "Diskontfaktor",
-            "bestellkostenfaktor": "Bestellkostenfaktor",
-            "bestellung": "Bestellung"
+            "bestellkostenfaktor": "Bestellkostenfaktor"
         }
     }
 }

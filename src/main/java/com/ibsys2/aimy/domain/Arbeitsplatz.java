@@ -1,6 +1,5 @@
 package com.ibsys2.aimy.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -8,8 +7,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -27,27 +24,37 @@ public class Arbeitsplatz implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "periode")
+    @NotNull
+    @Min(value = 0)
+    @Column(name = "periode", nullable = false)
     private Integer periode;
 
-    @Column(name = "nummer")
+    @NotNull
+    @Min(value = 0)
+    @Column(name = "nummer", nullable = false)
     private Integer nummer;
 
+    @DecimalMin(value = "0")
     @Column(name = "restzeitbedarf")
     private Double restzeitbedarf;
 
+    @Min(value = 0)
     @Column(name = "ruestvorgaenge")
     private Integer ruestvorgaenge;
 
+    @DecimalMin(value = "0")
     @Column(name = "leerzeit")
     private Double leerzeit;
 
+    @DecimalMin(value = "0")
     @Column(name = "lohnleerkosten")
     private Double lohnleerkosten;
 
+    @DecimalMin(value = "0")
     @Column(name = "lohnkosten")
     private Double lohnkosten;
 
+    @DecimalMin(value = "0")
     @Column(name = "maschinenstillstandkosten")
     private Double maschinenstillstandkosten;
 
@@ -60,13 +67,9 @@ public class Arbeitsplatz implements Serializable {
     @Column(name = "schicht")
     private Integer schicht;
 
+    @DecimalMin(value = "0")
     @Column(name = "ueberstunden")
     private Double ueberstunden;
-
-    @OneToMany(mappedBy = "arbeitsplatz")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Teil> teils = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -218,31 +221,6 @@ public class Arbeitsplatz implements Serializable {
 
     public void setUeberstunden(Double ueberstunden) {
         this.ueberstunden = ueberstunden;
-    }
-
-    public Set<Teil> getTeils() {
-        return teils;
-    }
-
-    public Arbeitsplatz teils(Set<Teil> teils) {
-        this.teils = teils;
-        return this;
-    }
-
-    public Arbeitsplatz addTeil(Teil teil) {
-        this.teils.add(teil);
-        teil.setArbeitsplatz(this);
-        return this;
-    }
-
-    public Arbeitsplatz removeTeil(Teil teil) {
-        this.teils.remove(teil);
-        teil.setArbeitsplatz(null);
-        return this;
-    }
-
-    public void setTeils(Set<Teil> teils) {
-        this.teils = teils;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

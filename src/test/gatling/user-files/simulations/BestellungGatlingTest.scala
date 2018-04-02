@@ -68,7 +68,7 @@ class BestellungGatlingTest extends Simulation {
             .exec(http("Create new bestellung")
             .post("/api/bestellungs")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "periode":"0", "nummer":"0", "lieferfrist":null, "lieferzeit":null, "kaufmenge":"0", "diskontmenge":"0", "materialkosten":null, "bestellkosten":null, "gesamtkosten":null, "stueckkosten":null, "bestellstatus":null}""")).asJSON
+            .body(StringBody("""{"id":null, "periode":"0", "nummer":"0", "lieferzeit":null, "kaufmenge":"0", "materialkosten":null, "bestellkosten":null, "gesamtkosten":null, "stueckkosten":null, "bestellstatus":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_bestellung_url"))).exitHereIfFailed
             .pause(10)

@@ -1,7 +1,8 @@
 package com.ibsys2.aimy.service;
 
 import com.ibsys2.aimy.domain.Fertigungsauftrag;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service Interface for managing Fertigungsauftrag.
@@ -19,9 +20,10 @@ public interface FertigungsauftragService {
     /**
      *  Get all the fertigungsauftrags.
      *
+     *  @param pageable the pagination information
      *  @return the list of entities
      */
-    List<Fertigungsauftrag> findAll();
+    Page<Fertigungsauftrag> findAll(Pageable pageable);
 
     /**
      *  Get the "id" fertigungsauftrag.

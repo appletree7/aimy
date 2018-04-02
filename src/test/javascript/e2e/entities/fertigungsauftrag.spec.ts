@@ -37,10 +37,12 @@ describe('Fertigungsauftrag e2e test', () => {
         fertigungsauftragComponentsPage.clickOnCreateButton();
         fertigungsauftragDialogPage.setPeriodeInput('5');
         expect(fertigungsauftragDialogPage.getPeriodeInput()).toMatch('5');
+        fertigungsauftragDialogPage.setNummerInput('5');
+        expect(fertigungsauftragDialogPage.getNummerInput()).toMatch('5');
         fertigungsauftragDialogPage.setAuftragsmengeInput('5');
         expect(fertigungsauftragDialogPage.getAuftragsmengeInput()).toMatch('5');
-        fertigungsauftragDialogPage.setKostenprolosInput('5');
-        expect(fertigungsauftragDialogPage.getKostenprolosInput()).toMatch('5');
+        fertigungsauftragDialogPage.setKostenInput('5');
+        expect(fertigungsauftragDialogPage.getKostenInput()).toMatch('5');
         fertigungsauftragDialogPage.setDurchschnittlichestueckkostenInput('5');
         expect(fertigungsauftragDialogPage.getDurchschnittlichestueckkostenInput()).toMatch('5');
         fertigungsauftragDialogPage.auftragsstatusSelectLastOption();
@@ -52,9 +54,8 @@ describe('Fertigungsauftrag e2e test', () => {
         expect(fertigungsauftragDialogPage.getDlzminimalInput()).toMatch('5');
         fertigungsauftragDialogPage.setDlzFaktorInput('5');
         expect(fertigungsauftragDialogPage.getDlzFaktorInput()).toMatch('5');
-        fertigungsauftragDialogPage.setNummerInput('5');
-        expect(fertigungsauftragDialogPage.getNummerInput()).toMatch('5');
-        fertigungsauftragDialogPage.losSelectLastOption();
+        fertigungsauftragDialogPage.setBearbeitungszeitminInput('5');
+        expect(fertigungsauftragDialogPage.getBearbeitungszeitminInput()).toMatch('5');
         fertigungsauftragDialogPage.herstellteilSelectLastOption();
         fertigungsauftragDialogPage.save();
         expect(fertigungsauftragDialogPage.getSaveButton().isPresent()).toBeFalsy();
@@ -83,16 +84,16 @@ export class FertigungsauftragDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     periodeInput = element(by.css('input#field_periode'));
+    nummerInput = element(by.css('input#field_nummer'));
     auftragsmengeInput = element(by.css('input#field_auftragsmenge'));
-    kostenprolosInput = element(by.css('input#field_kostenprolos'));
+    kostenInput = element(by.css('input#field_kosten'));
     durchschnittlichestueckkostenInput = element(by.css('input#field_durchschnittlichestueckkosten'));
     auftragsstatusSelect = element(by.css('select#field_auftragsstatus'));
     begonnenInput = element(by.css('input#field_begonnen'));
     beendetInput = element(by.css('input#field_beendet'));
     dlzminimalInput = element(by.css('input#field_dlzminimal'));
     dlzFaktorInput = element(by.css('input#field_dlzFaktor'));
-    nummerInput = element(by.css('input#field_nummer'));
-    losSelect = element(by.css('select#field_los'));
+    bearbeitungszeitminInput = element(by.css('input#field_bearbeitungszeitmin'));
     herstellteilSelect = element(by.css('select#field_herstellteil'));
 
     getModalTitle() {
@@ -107,6 +108,14 @@ export class FertigungsauftragDialogPage {
         return this.periodeInput.getAttribute('value');
     }
 
+    setNummerInput = function (nummer) {
+        this.nummerInput.sendKeys(nummer);
+    }
+
+    getNummerInput = function () {
+        return this.nummerInput.getAttribute('value');
+    }
+
     setAuftragsmengeInput = function (auftragsmenge) {
         this.auftragsmengeInput.sendKeys(auftragsmenge);
     }
@@ -115,12 +124,12 @@ export class FertigungsauftragDialogPage {
         return this.auftragsmengeInput.getAttribute('value');
     }
 
-    setKostenprolosInput = function (kostenprolos) {
-        this.kostenprolosInput.sendKeys(kostenprolos);
+    setKostenInput = function (kosten) {
+        this.kostenInput.sendKeys(kosten);
     }
 
-    getKostenprolosInput = function () {
-        return this.kostenprolosInput.getAttribute('value');
+    getKostenInput = function () {
+        return this.kostenInput.getAttribute('value');
     }
 
     setDurchschnittlichestueckkostenInput = function (durchschnittlichestueckkosten) {
@@ -174,28 +183,12 @@ export class FertigungsauftragDialogPage {
         return this.dlzFaktorInput.getAttribute('value');
     }
 
-    setNummerInput = function (nummer) {
-        this.nummerInput.sendKeys(nummer);
+    setBearbeitungszeitminInput = function (bearbeitungszeitmin) {
+        this.bearbeitungszeitminInput.sendKeys(bearbeitungszeitmin);
     }
 
-    getNummerInput = function () {
-        return this.nummerInput.getAttribute('value');
-    }
-
-    losSelectLastOption = function () {
-        this.losSelect.all(by.tagName('option')).last().click();
-    }
-
-    losSelectOption = function (option) {
-        this.losSelect.sendKeys(option);
-    }
-
-    getLosSelect = function () {
-        return this.losSelect;
-    }
-
-    getLosSelectedOption = function () {
-        return this.losSelect.element(by.css('option:checked')).getText();
+    getBearbeitungszeitminInput = function () {
+        return this.bearbeitungszeitminInput.getAttribute('value');
     }
 
     herstellteilSelectLastOption = function () {

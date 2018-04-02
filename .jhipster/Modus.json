@@ -1,61 +1,92 @@
 {
     "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "one-to-one",
-            "relationshipName": "bestellung",
-            "otherEntityName": "bestellung",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "modus"
-        }
-    ],
+    "relationships": [],
     "fields": [
         {
             "fieldName": "name",
-            "fieldType": "String"
+            "fieldType": "String",
+			"fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "bearbeitungsfaktor",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "bearbeitungsabweichung",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "lieferfaktor",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "lieferabweichung",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "mengenfakor",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "mengenabweichung",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "preisfaktor",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "diskontfaktor",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "bestellkostenfaktor",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         }
     ],
     "changelogDate": "20171220194420",
-    "javadoc": "The Modus entity.",
-    "entityTableName": "modus",
     "dto": "no",
-    "pagination": "no",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false
+    "entityTableName": "modus",
+    "jpaMetamodelFiltering": true,
+    "pagination": "pagination",
+    "javadoc": "The Modus entity."
 }

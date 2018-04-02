@@ -37,14 +37,14 @@ describe('Los e2e test', () => {
         losComponentsPage.clickOnCreateButton();
         losDialogPage.setPeriodeInput('5');
         expect(losDialogPage.getPeriodeInput()).toMatch('5');
+        losDialogPage.setNummerInput('5');
+        expect(losDialogPage.getNummerInput()).toMatch('5');
         losDialogPage.setMengeInput('5');
         expect(losDialogPage.getMengeInput()).toMatch('5');
         losDialogPage.setDurchlaufzeitInput('5');
         expect(losDialogPage.getDurchlaufzeitInput()).toMatch('5');
         losDialogPage.setKostenInput('5');
         expect(losDialogPage.getKostenInput()).toMatch('5');
-        losDialogPage.setNummerInput('5');
-        expect(losDialogPage.getNummerInput()).toMatch('5');
         losDialogPage.save();
         expect(losDialogPage.getSaveButton().isPresent()).toBeFalsy();
     }); 
@@ -72,10 +72,10 @@ export class LosDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     periodeInput = element(by.css('input#field_periode'));
+    nummerInput = element(by.css('input#field_nummer'));
     mengeInput = element(by.css('input#field_menge'));
     durchlaufzeitInput = element(by.css('input#field_durchlaufzeit'));
     kostenInput = element(by.css('input#field_kosten'));
-    nummerInput = element(by.css('input#field_nummer'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -87,6 +87,14 @@ export class LosDialogPage {
 
     getPeriodeInput = function () {
         return this.periodeInput.getAttribute('value');
+    }
+
+    setNummerInput = function (nummer) {
+        this.nummerInput.sendKeys(nummer);
+    }
+
+    getNummerInput = function () {
+        return this.nummerInput.getAttribute('value');
     }
 
     setMengeInput = function (menge) {
@@ -111,14 +119,6 @@ export class LosDialogPage {
 
     getKostenInput = function () {
         return this.kostenInput.getAttribute('value');
-    }
-
-    setNummerInput = function (nummer) {
-        this.nummerInput.sendKeys(nummer);
-    }
-
-    getNummerInput = function () {
-        return this.nummerInput.getAttribute('value');
     }
 
     save() {

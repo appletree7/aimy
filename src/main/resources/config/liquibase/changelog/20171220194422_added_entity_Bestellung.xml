@@ -23,15 +23,11 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="periode" type="integer">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="nummer" type="integer">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="lieferfrist" type="double">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="lieferzeit" type="double">
@@ -39,10 +35,6 @@
             </column>
 
             <column name="kaufmenge" type="integer">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="diskontmenge" type="integer">
                 <constraints nullable="true" />
             </column>
 
@@ -65,11 +57,15 @@
             <column name="bestellstatus" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
             <column name="modus_id" type="bigint">
-                <constraints unique="true" nullable="true" />
-            </column>            <column name="kaufteil_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+                <constraints nullable="false" />
             </column>
+
+            <column name="kaufteil_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         

@@ -2,62 +2,87 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "one-to-one",
             "relationshipName": "modus",
             "otherEntityName": "modus",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "bestellung"
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id"
         },
         {
-            "relationshipType": "one-to-one",
             "relationshipName": "kaufteil",
             "otherEntityName": "teil",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "bestellung"
+            "relationshipType": "many-to-one",
+            "otherEntityField": "nummer"
         }
     ],
     "fields": [
         {
             "fieldName": "periode",
-            "fieldType": "Integer"
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "nummer",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "lieferfrist",
-            "fieldType": "Double"
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "lieferzeit",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "kaufmenge",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "diskontmenge",
-            "fieldType": "Integer"
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "materialkosten",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "bestellkosten",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "gesamtkosten",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "stueckkosten",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "bestellstatus",
@@ -66,10 +91,10 @@
         }
     ],
     "changelogDate": "20171220194422",
-    "javadoc": "The Bestellung entity.",
-    "entityTableName": "bestellung",
     "dto": "no",
-    "pagination": "no",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false
+    "entityTableName": "bestellung",
+    "jpaMetamodelFiltering": true,
+    "pagination": "pagination",
+    "javadoc": "The Bestellung entity."
 }

@@ -5,10 +5,11 @@ import com.ibsys2.aimy.domain.Los;
 import com.ibsys2.aimy.repository.LosRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 /**
  * Service Implementation for managing Los.
@@ -40,13 +41,14 @@ public class LosServiceImpl implements LosService{
     /**
      *  Get all the los.
      *
+     *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Los> findAll() {
+    public Page<Los> findAll(Pageable pageable) {
         log.debug("Request to get all Los");
-        return losRepository.findAll();
+        return losRepository.findAll(pageable);
     }
 
     /**

@@ -1,7 +1,8 @@
 package com.ibsys2.aimy.service;
 
 import com.ibsys2.aimy.domain.Arbeitsplatz;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service Interface for managing Arbeitsplatz.
@@ -19,9 +20,10 @@ public interface ArbeitsplatzService {
     /**
      *  Get all the arbeitsplatzs.
      *
+     *  @param pageable the pagination information
      *  @return the list of entities
      */
-    List<Arbeitsplatz> findAll();
+    Page<Arbeitsplatz> findAll(Pageable pageable);
 
     /**
      *  Get the "id" arbeitsplatz.

@@ -8,13 +8,17 @@
         <dd>
             <span>{{fertigungsauftrag.periode}}</span>
         </dd>
+        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.nummer">Nummer</span></dt>
+        <dd>
+            <span>{{fertigungsauftrag.nummer}}</span>
+        </dd>
         <dt><span jhiTranslate="aimyApp.fertigungsauftrag.auftragsmenge">Auftragsmenge</span></dt>
         <dd>
             <span>{{fertigungsauftrag.auftragsmenge}}</span>
         </dd>
-        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.kostenprolos">Kostenprolos</span></dt>
+        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.kosten">Kosten</span></dt>
         <dd>
-            <span>{{fertigungsauftrag.kostenprolos}}</span>
+            <span>{{fertigungsauftrag.kosten}}</span>
         </dd>
         <dt><span jhiTranslate="aimyApp.fertigungsauftrag.durchschnittlichestueckkosten">Durchschnittlichestueckkosten</span></dt>
         <dd>
@@ -40,20 +44,14 @@
         <dd>
             <span>{{fertigungsauftrag.dlzFaktor}}</span>
         </dd>
-        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.nummer">Nummer</span></dt>
+        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.bearbeitungszeitmin">Bearbeitungszeitmin</span></dt>
         <dd>
-            <span>{{fertigungsauftrag.nummer}}</span>
-        </dd>
-        <dt><span jhiTranslate="aimyApp.fertigungsauftrag.los">Los</span></dt>
-        <dd>
-            <div *ngIf="fertigungsauftrag.los">
-                <a [routerLink]="['/los', fertigungsauftrag.los?.id]">{{fertigungsauftrag.los?.id}}</a>
-            </div>
+            <span>{{fertigungsauftrag.bearbeitungszeitmin}}</span>
         </dd>
         <dt><span jhiTranslate="aimyApp.fertigungsauftrag.herstellteil">Herstellteil</span></dt>
         <dd>
             <div *ngIf="fertigungsauftrag.herstellteil">
-                <a [routerLink]="['/teil', fertigungsauftrag.herstellteil?.id]">{{fertigungsauftrag.herstellteil?.id}}</a>
+                <a [routerLink]="['/teil', fertigungsauftrag.herstellteil?.id]">{{fertigungsauftrag.herstellteil?.nummer}}</a>
             </div>
         </dd>
     </dl>

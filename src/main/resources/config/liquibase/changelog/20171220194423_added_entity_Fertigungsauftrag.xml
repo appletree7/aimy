@@ -23,14 +23,18 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="periode" type="integer">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
+            </column>
+
+            <column name="nummer" type="integer">
+                <constraints nullable="false" />
             </column>
 
             <column name="auftragsmenge" type="integer">
                 <constraints nullable="true" />
             </column>
 
-            <column name="kostenprolos" type="double">
+            <column name="kosten" type="double">
                 <constraints nullable="true" />
             </column>
 
@@ -58,11 +62,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="nummer" type="integer">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="los_id" type="bigint">
+            <column name="bearbeitungszeitmin" type="integer">
                 <constraints nullable="true" />
             </column>
 

@@ -4,6 +4,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -21,18 +22,24 @@ public class Kennzahlen implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "periode")
+    @NotNull
+    @Min(value = 0)
+    @Column(name = "periode", nullable = false)
     private Integer periode;
 
-    @Column(name = "name")
+    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @DecimalMin(value = "0")
     @Column(name = "aktuell")
     private Double aktuell;
 
+    @DecimalMin(value = "0")
     @Column(name = "durchschnitt")
     private Double durchschnitt;
 
+    @DecimalMin(value = "0")
     @Column(name = "gesamt")
     private Double gesamt;
 

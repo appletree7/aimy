@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface KennzahlenRepository extends JpaRepository<Kennzahlen, Long> {
+public interface KennzahlenRepository extends JpaRepository<Kennzahlen, Long>, JpaSpecificationExecutor<Kennzahlen> {
 
 }

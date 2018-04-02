@@ -5,10 +5,11 @@ import com.ibsys2.aimy.domain.Kennzahlen;
 import com.ibsys2.aimy.repository.KennzahlenRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 /**
  * Service Implementation for managing Kennzahlen.
@@ -40,13 +41,14 @@ public class KennzahlenServiceImpl implements KennzahlenService{
     /**
      *  Get all the kennzahlens.
      *
+     *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Kennzahlen> findAll() {
+    public Page<Kennzahlen> findAll(Pageable pageable) {
         log.debug("Request to get all Kennzahlens");
-        return kennzahlenRepository.findAll();
+        return kennzahlenRepository.findAll(pageable);
     }
 
     /**

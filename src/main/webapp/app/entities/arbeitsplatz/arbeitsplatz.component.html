@@ -15,19 +15,18 @@
     <div class="table-responsive" *ngIf="arbeitsplatzs">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="aimyApp.arbeitsplatz.periode">Periode</span></th>
-            <th><span jhiTranslate="aimyApp.arbeitsplatz.nummer">Nummer</span></th>
-            <th><span jhiTranslate="aimyApp.arbeitsplatz.restzeitbedarf">Restzeitbedarf</span></th>
-            <th><span jhiTranslate="aimyApp.arbeitsplatz.ruestvorgaenge">Ruestvorgaenge</span></th>
-            <th><span jhiTranslate="aimyApp.arbeitsplatz.leerzeit">Leerzeit</span></th>
-            <th><span jhiTranslate="aimyApp.arbeitsplatz.lohnleerkosten">Lohnleerkosten</span></th>
-            <th><span jhiTranslate="aimyApp.arbeitsplatz.lohnkosten">Lohnkosten</span></th>
-            <th><span jhiTranslate="aimyApp.arbeitsplatz.maschinenstillstandkosten">Maschinenstillstandkosten</span></th>
-            <th><span jhiTranslate="aimyApp.arbeitsplatz.restzeitbedarf_in_bearbeitung">Restzeitbedarf In Bearbeitung</span></th>
-            <th><span jhiTranslate="aimyApp.arbeitsplatz.schicht">Schicht</span></th>
-            <th><span jhiTranslate="aimyApp.arbeitsplatz.ueberstunden">Ueberstunden</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="periode"><span jhiTranslate="aimyApp.arbeitsplatz.periode">Periode</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nummer"><span jhiTranslate="aimyApp.arbeitsplatz.nummer">Nummer</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="restzeitbedarf"><span jhiTranslate="aimyApp.arbeitsplatz.restzeitbedarf">Restzeitbedarf</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="ruestvorgaenge"><span jhiTranslate="aimyApp.arbeitsplatz.ruestvorgaenge">Ruestvorgaenge</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="leerzeit"><span jhiTranslate="aimyApp.arbeitsplatz.leerzeit">Leerzeit</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="lohnleerkosten"><span jhiTranslate="aimyApp.arbeitsplatz.lohnleerkosten">Lohnleerkosten</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="lohnkosten"><span jhiTranslate="aimyApp.arbeitsplatz.lohnkosten">Lohnkosten</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="restzeitbedarf_in_bearbeitung"><span jhiTranslate="aimyApp.arbeitsplatz.restzeitbedarf_in_bearbeitung">Restzeitbedarf In Bearbeitung</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="schicht"><span jhiTranslate="aimyApp.arbeitsplatz.schicht">Schicht</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="ueberstunden"><span jhiTranslate="aimyApp.arbeitsplatz.ueberstunden">Ueberstunden</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -41,7 +40,6 @@
                 <td>{{arbeitsplatz.leerzeit}}</td>
                 <td>{{arbeitsplatz.lohnleerkosten}}</td>
                 <td>{{arbeitsplatz.lohnkosten}}</td>
-                <td>{{arbeitsplatz.maschinenstillstandkosten}}</td>
                 <td>{{arbeitsplatz.restzeitbedarf_in_bearbeitung}}</td>
                 <td>{{arbeitsplatz.schicht}}</td>
                 <td>{{arbeitsplatz.ueberstunden}}</td>
@@ -73,4 +71,12 @@
             </tbody>
         </table>
     </div>
+        <div *ngIf="arbeitsplatzs && arbeitsplatzs.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [maxSize]="5" [pageSize]="itemsPerPage" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
 </div>

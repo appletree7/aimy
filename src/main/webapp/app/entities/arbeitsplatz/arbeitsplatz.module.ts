@@ -13,6 +13,7 @@ import {
     ArbeitsplatzDeleteDialogComponent,
     arbeitsplatzRoute,
     arbeitsplatzPopupRoute,
+    ArbeitsplatzResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         ArbeitsplatzService,
         ArbeitsplatzPopupService,
+        ArbeitsplatzResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

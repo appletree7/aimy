@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface BestellungRepository extends JpaRepository<Bestellung, Long> {
+public interface BestellungRepository extends JpaRepository<Bestellung, Long>, JpaSpecificationExecutor<Bestellung> {
 
 }

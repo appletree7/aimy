@@ -5,10 +5,11 @@ import com.ibsys2.aimy.domain.Fertigungsauftrag;
 import com.ibsys2.aimy.repository.FertigungsauftragRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 /**
  * Service Implementation for managing Fertigungsauftrag.
@@ -40,13 +41,14 @@ public class FertigungsauftragServiceImpl implements FertigungsauftragService{
     /**
      *  Get all the fertigungsauftrags.
      *
+     *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Fertigungsauftrag> findAll() {
+    public Page<Fertigungsauftrag> findAll(Pageable pageable) {
         log.debug("Request to get all Fertigungsauftrags");
-        return fertigungsauftragRepository.findAll();
+        return fertigungsauftragRepository.findAll(pageable);
     }
 
     /**

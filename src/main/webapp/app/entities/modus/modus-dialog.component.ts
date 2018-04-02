@@ -9,8 +9,6 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { Modus } from './modus.model';
 import { ModusPopupService } from './modus-popup.service';
 import { ModusService } from './modus.service';
-import { Bestellung, BestellungService } from '../bestellung';
-import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-modus-dialog',
@@ -21,21 +19,16 @@ export class ModusDialogComponent implements OnInit {
     modus: Modus;
     isSaving: boolean;
 
-    bestellungs: Bestellung[];
-
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private modusService: ModusService,
-        private bestellungService: BestellungService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.bestellungService.query()
-            .subscribe((res: ResponseWrapper) => { this.bestellungs = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {
@@ -70,10 +63,6 @@ export class ModusDialogComponent implements OnInit {
 
     private onError(error: any) {
         this.jhiAlertService.error(error.message, null, null);
-    }
-
-    trackBestellungById(index: number, item: Bestellung) {
-        return item.id;
     }
 }
 

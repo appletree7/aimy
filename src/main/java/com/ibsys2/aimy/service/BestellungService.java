@@ -1,7 +1,8 @@
 package com.ibsys2.aimy.service;
 
 import com.ibsys2.aimy.domain.Bestellung;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service Interface for managing Bestellung.
@@ -19,9 +20,10 @@ public interface BestellungService {
     /**
      *  Get all the bestellungs.
      *
+     *  @param pageable the pagination information
      *  @return the list of entities
      */
-    List<Bestellung> findAll();
+    Page<Bestellung> findAll(Pageable pageable);
 
     /**
      *  Get the "id" bestellung.

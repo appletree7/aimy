@@ -4,19 +4,12 @@
     "fields": [
         {
             "fieldName": "periode",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "menge",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "durchlaufzeit",
-            "fieldType": "Double"
-        },
-        {
-            "fieldName": "kosten",
-            "fieldType": "Double"
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "nummer",
@@ -26,12 +19,36 @@
                 "min"
             ],
             "fieldValidateRulesMin": "1"
+        },
+        {
+            "fieldName": "menge",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "durchlaufzeit",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "kosten",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         }
     ],
     "changelogDate": "20171220194419",
     "dto": "no",
     "service": "serviceImpl",
     "entityTableName": "los",
-    "jpaMetamodelFiltering": false,
-    "pagination": "no"
+    "jpaMetamodelFiltering": true,
+    "pagination": "pagination"
 }

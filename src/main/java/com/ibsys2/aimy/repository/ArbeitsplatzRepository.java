@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ArbeitsplatzRepository extends JpaRepository<Arbeitsplatz, Long> {
+public interface ArbeitsplatzRepository extends JpaRepository<Arbeitsplatz, Long>, JpaSpecificationExecutor<Arbeitsplatz> {
 
 }

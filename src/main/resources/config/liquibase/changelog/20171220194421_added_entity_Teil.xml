@@ -26,8 +26,12 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="nummer" type="varchar(255)">
-                <constraints nullable="true" />
+            <column name="periode" type="integer">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="nummer" type="integer">
+                <constraints nullable="false" />
             </column>
 
             <column name="istmenge" type="integer">
@@ -58,10 +62,6 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="periode" type="integer">
-                <constraints nullable="false" />
-            </column>
-
             <column name="gesamtproduktionsmenge" type="integer">
                 <constraints nullable="true" />
             </column>
@@ -78,16 +78,19 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="subkomponente_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="arbeitsplatz_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+        
+        <createTable tableName="teil_subkomponente">
+            <column name="subkomponentes_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="teils_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="teils_id, subkomponentes_id" tableName="teil_subkomponente"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

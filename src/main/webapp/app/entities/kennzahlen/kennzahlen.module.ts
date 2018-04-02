@@ -13,6 +13,7 @@ import {
     KennzahlenDeleteDialogComponent,
     kennzahlenRoute,
     kennzahlenPopupRoute,
+    KennzahlenResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         KennzahlenService,
         KennzahlenPopupService,
+        KennzahlenResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

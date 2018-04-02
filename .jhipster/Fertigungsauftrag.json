@@ -3,33 +3,53 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "los",
-            "otherEntityName": "los",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "many-to-one",
             "relationshipName": "herstellteil",
             "otherEntityName": "teil",
-            "otherEntityField": "id"
+            "otherEntityField": "nummer"
         }
     ],
     "fields": [
         {
             "fieldName": "periode",
-            "fieldType": "Integer"
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+		{
+            "fieldName": "nummer",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "auftragsmenge",
-            "fieldType": "Integer"
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
-            "fieldName": "kostenprolos",
-            "fieldType": "Double"
+            "fieldName": "kosten",
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "durchschnittlichestueckkosten",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "auftragsstatus",
@@ -46,27 +66,34 @@
         },
         {
             "fieldName": "dlzminimal",
-            "fieldType": "Integer"
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "dlzFaktor",
-            "fieldType": "Double"
-        },
-        {
-            "fieldName": "nummer",
-            "fieldType": "Integer",
-            "fieldValidateRules": [
-                "required",
+            "fieldType": "Double",
+			"fieldValidateRules": [
                 "min"
             ],
-            "fieldValidateRulesMin": "1"
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "bearbeitungszeitmin",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         }
     ],
     "changelogDate": "20171220194423",
     "dto": "no",
     "service": "serviceImpl",
     "entityTableName": "fertigungsauftrag",
-    "jpaMetamodelFiltering": false,
-    "pagination": "no",
+    "jpaMetamodelFiltering": true,
+    "pagination": "pagination",
     "javadoc": "The Fertigungsuftrag entity."
 }

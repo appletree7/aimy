@@ -6,6 +6,8 @@ import com.ibsys2.aimy.domain.Kennzahlen;
 import com.ibsys2.aimy.repository.KennzahlenRepository;
 import com.ibsys2.aimy.service.KennzahlenService;
 import com.ibsys2.aimy.web.rest.errors.ExceptionTranslator;
+import com.ibsys2.aimy.service.dto.KennzahlenCriteria;
+import com.ibsys2.aimy.service.KennzahlenQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,26 +41,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = AimyApp.class)
 public class KennzahlenResourceIntTest {
 
-    private static final Integer DEFAULT_PERIODE = 1;
-    private static final Integer UPDATED_PERIODE = 2;
+    private static final Integer DEFAULT_PERIODE = 0;
+    private static final Integer UPDATED_PERIODE = 1;
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final Double DEFAULT_AKTUELL = 1D;
-    private static final Double UPDATED_AKTUELL = 2D;
+    private static final Double DEFAULT_AKTUELL = 0D;
+    private static final Double UPDATED_AKTUELL = 1D;
 
-    private static final Double DEFAULT_DURCHSCHNITT = 1D;
-    private static final Double UPDATED_DURCHSCHNITT = 2D;
+    private static final Double DEFAULT_DURCHSCHNITT = 0D;
+    private static final Double UPDATED_DURCHSCHNITT = 1D;
 
-    private static final Double DEFAULT_GESAMT = 1D;
-    private static final Double UPDATED_GESAMT = 2D;
+    private static final Double DEFAULT_GESAMT = 0D;
+    private static final Double UPDATED_GESAMT = 1D;
 
     @Autowired
     private KennzahlenRepository kennzahlenRepository;
 
     @Autowired
     private KennzahlenService kennzahlenService;
+
+    @Autowired
+    private KennzahlenQueryService kennzahlenQueryService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -79,7 +84,7 @@ public class KennzahlenResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final KennzahlenResource kennzahlenResource = new KennzahlenResource(kennzahlenService);
+        final KennzahlenResource kennzahlenResource = new KennzahlenResource(kennzahlenService, kennzahlenQueryService);
         this.restKennzahlenMockMvc = MockMvcBuilders.standaloneSetup(kennzahlenResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -151,6 +156,42 @@ public class KennzahlenResourceIntTest {
 
     @Test
     @Transactional
+    public void checkPeriodeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = kennzahlenRepository.findAll().size();
+        // set the field null
+        kennzahlen.setPeriode(null);
+
+        // Create the Kennzahlen, which fails.
+
+        restKennzahlenMockMvc.perform(post("/api/kennzahlens")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(kennzahlen)))
+            .andExpect(status().isBadRequest());
+
+        List<Kennzahlen> kennzahlenList = kennzahlenRepository.findAll();
+        assertThat(kennzahlenList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = kennzahlenRepository.findAll().size();
+        // set the field null
+        kennzahlen.setName(null);
+
+        // Create the Kennzahlen, which fails.
+
+        restKennzahlenMockMvc.perform(post("/api/kennzahlens")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(kennzahlen)))
+            .andExpect(status().isBadRequest());
+
+        List<Kennzahlen> kennzahlenList = kennzahlenRepository.findAll();
+        assertThat(kennzahlenList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllKennzahlens() throws Exception {
         // Initialize the database
         kennzahlenRepository.saveAndFlush(kennzahlen);
@@ -184,6 +225,254 @@ public class KennzahlenResourceIntTest {
             .andExpect(jsonPath("$.durchschnitt").value(DEFAULT_DURCHSCHNITT.doubleValue()))
             .andExpect(jsonPath("$.gesamt").value(DEFAULT_GESAMT.doubleValue()));
     }
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByPeriodeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where periode equals to DEFAULT_PERIODE
+        defaultKennzahlenShouldBeFound("periode.equals=" + DEFAULT_PERIODE);
+
+        // Get all the kennzahlenList where periode equals to UPDATED_PERIODE
+        defaultKennzahlenShouldNotBeFound("periode.equals=" + UPDATED_PERIODE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByPeriodeIsInShouldWork() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where periode in DEFAULT_PERIODE or UPDATED_PERIODE
+        defaultKennzahlenShouldBeFound("periode.in=" + DEFAULT_PERIODE + "," + UPDATED_PERIODE);
+
+        // Get all the kennzahlenList where periode equals to UPDATED_PERIODE
+        defaultKennzahlenShouldNotBeFound("periode.in=" + UPDATED_PERIODE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByPeriodeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where periode is not null
+        defaultKennzahlenShouldBeFound("periode.specified=true");
+
+        // Get all the kennzahlenList where periode is null
+        defaultKennzahlenShouldNotBeFound("periode.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByPeriodeIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where periode greater than or equals to DEFAULT_PERIODE
+        defaultKennzahlenShouldBeFound("periode.greaterOrEqualThan=" + DEFAULT_PERIODE);
+
+        // Get all the kennzahlenList where periode greater than or equals to UPDATED_PERIODE
+        defaultKennzahlenShouldNotBeFound("periode.greaterOrEqualThan=" + UPDATED_PERIODE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByPeriodeIsLessThanSomething() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where periode less than or equals to DEFAULT_PERIODE
+        defaultKennzahlenShouldNotBeFound("periode.lessThan=" + DEFAULT_PERIODE);
+
+        // Get all the kennzahlenList where periode less than or equals to UPDATED_PERIODE
+        defaultKennzahlenShouldBeFound("periode.lessThan=" + UPDATED_PERIODE);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where name equals to DEFAULT_NAME
+        defaultKennzahlenShouldBeFound("name.equals=" + DEFAULT_NAME);
+
+        // Get all the kennzahlenList where name equals to UPDATED_NAME
+        defaultKennzahlenShouldNotBeFound("name.equals=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where name in DEFAULT_NAME or UPDATED_NAME
+        defaultKennzahlenShouldBeFound("name.in=" + DEFAULT_NAME + "," + UPDATED_NAME);
+
+        // Get all the kennzahlenList where name equals to UPDATED_NAME
+        defaultKennzahlenShouldNotBeFound("name.in=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where name is not null
+        defaultKennzahlenShouldBeFound("name.specified=true");
+
+        // Get all the kennzahlenList where name is null
+        defaultKennzahlenShouldNotBeFound("name.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByAktuellIsEqualToSomething() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where aktuell equals to DEFAULT_AKTUELL
+        defaultKennzahlenShouldBeFound("aktuell.equals=" + DEFAULT_AKTUELL);
+
+        // Get all the kennzahlenList where aktuell equals to UPDATED_AKTUELL
+        defaultKennzahlenShouldNotBeFound("aktuell.equals=" + UPDATED_AKTUELL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByAktuellIsInShouldWork() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where aktuell in DEFAULT_AKTUELL or UPDATED_AKTUELL
+        defaultKennzahlenShouldBeFound("aktuell.in=" + DEFAULT_AKTUELL + "," + UPDATED_AKTUELL);
+
+        // Get all the kennzahlenList where aktuell equals to UPDATED_AKTUELL
+        defaultKennzahlenShouldNotBeFound("aktuell.in=" + UPDATED_AKTUELL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByAktuellIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where aktuell is not null
+        defaultKennzahlenShouldBeFound("aktuell.specified=true");
+
+        // Get all the kennzahlenList where aktuell is null
+        defaultKennzahlenShouldNotBeFound("aktuell.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByDurchschnittIsEqualToSomething() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where durchschnitt equals to DEFAULT_DURCHSCHNITT
+        defaultKennzahlenShouldBeFound("durchschnitt.equals=" + DEFAULT_DURCHSCHNITT);
+
+        // Get all the kennzahlenList where durchschnitt equals to UPDATED_DURCHSCHNITT
+        defaultKennzahlenShouldNotBeFound("durchschnitt.equals=" + UPDATED_DURCHSCHNITT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByDurchschnittIsInShouldWork() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where durchschnitt in DEFAULT_DURCHSCHNITT or UPDATED_DURCHSCHNITT
+        defaultKennzahlenShouldBeFound("durchschnitt.in=" + DEFAULT_DURCHSCHNITT + "," + UPDATED_DURCHSCHNITT);
+
+        // Get all the kennzahlenList where durchschnitt equals to UPDATED_DURCHSCHNITT
+        defaultKennzahlenShouldNotBeFound("durchschnitt.in=" + UPDATED_DURCHSCHNITT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByDurchschnittIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where durchschnitt is not null
+        defaultKennzahlenShouldBeFound("durchschnitt.specified=true");
+
+        // Get all the kennzahlenList where durchschnitt is null
+        defaultKennzahlenShouldNotBeFound("durchschnitt.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByGesamtIsEqualToSomething() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where gesamt equals to DEFAULT_GESAMT
+        defaultKennzahlenShouldBeFound("gesamt.equals=" + DEFAULT_GESAMT);
+
+        // Get all the kennzahlenList where gesamt equals to UPDATED_GESAMT
+        defaultKennzahlenShouldNotBeFound("gesamt.equals=" + UPDATED_GESAMT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByGesamtIsInShouldWork() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where gesamt in DEFAULT_GESAMT or UPDATED_GESAMT
+        defaultKennzahlenShouldBeFound("gesamt.in=" + DEFAULT_GESAMT + "," + UPDATED_GESAMT);
+
+        // Get all the kennzahlenList where gesamt equals to UPDATED_GESAMT
+        defaultKennzahlenShouldNotBeFound("gesamt.in=" + UPDATED_GESAMT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllKennzahlensByGesamtIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        kennzahlenRepository.saveAndFlush(kennzahlen);
+
+        // Get all the kennzahlenList where gesamt is not null
+        defaultKennzahlenShouldBeFound("gesamt.specified=true");
+
+        // Get all the kennzahlenList where gesamt is null
+        defaultKennzahlenShouldNotBeFound("gesamt.specified=false");
+    }
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultKennzahlenShouldBeFound(String filter) throws Exception {
+        restKennzahlenMockMvc.perform(get("/api/kennzahlens?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(kennzahlen.getId().intValue())))
+            .andExpect(jsonPath("$.[*].periode").value(hasItem(DEFAULT_PERIODE)))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].aktuell").value(hasItem(DEFAULT_AKTUELL.doubleValue())))
+            .andExpect(jsonPath("$.[*].durchschnitt").value(hasItem(DEFAULT_DURCHSCHNITT.doubleValue())))
+            .andExpect(jsonPath("$.[*].gesamt").value(hasItem(DEFAULT_GESAMT.doubleValue())));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultKennzahlenShouldNotBeFound(String filter) throws Exception {
+        restKennzahlenMockMvc.perform(get("/api/kennzahlens?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+    }
+
 
     @Test
     @Transactional

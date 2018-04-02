@@ -16,6 +16,7 @@
                 "title": "Teil"
             },
             "teiltyp": "Teiltyp",
+            "periode": "Periode",
             "nummer": "Nummer",
             "istmenge": "Istmenge",
             "startmenge": "Startmenge",
@@ -24,14 +25,11 @@
             "lagerwert": "Lagerwert",
             "sicherheitsbestand": "Sicherheitsbestand",
             "vertriebswunsch": "Vertriebswunsch",
-            "periode": "Periode",
             "gesamtproduktionsmenge": "Gesamtproduktionsmenge",
             "direktverkaufmenge": "Direktverkaufmenge",
             "direktverkaufspreis": "Direktverkaufspreis",
             "strafe": "Strafe",
-            "fertigungsauftrag": "Fertigungsauftrag",
-            "subkomponente": "Subkomponente",
-            "arbeitsplatz": "Arbeitsplatz"
+            "subkomponente": "Subkomponente"
         }
     }
 }

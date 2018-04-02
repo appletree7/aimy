@@ -1,6 +1,5 @@
 package com.ibsys2.aimy.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -33,58 +32,66 @@ public class Teil implements Serializable {
     @Column(name = "teiltyp")
     private Teiltyp teiltyp;
 
-    @Column(name = "nummer")
-    private String nummer;
-
-    @Column(name = "istmenge")
-    private Integer istmenge;
-
-    @Column(name = "startmenge")
-    private Integer startmenge;
-
-    @Column(name = "prozentsatz")
-    private Double prozentsatz;
-
-    @Column(name = "lagerpreis")
-    private Double lagerpreis;
-
-    @Column(name = "lagerwert")
-    private Double lagerwert;
-
-    @Column(name = "sicherheitsbestand")
-    private Integer sicherheitsbestand;
-
-    @Column(name = "vertriebswunsch")
-    private Integer vertriebswunsch;
-
     @NotNull
     @Min(value = 0)
     @Column(name = "periode", nullable = false)
     private Integer periode;
 
+    @NotNull
+    @Min(value = 1)
+    @Column(name = "nummer", nullable = false)
+    private Integer nummer;
+
+    @Min(value = 0)
+    @Column(name = "istmenge")
+    private Integer istmenge;
+
+    @Min(value = 0)
+    @Column(name = "startmenge")
+    private Integer startmenge;
+
+    @DecimalMin(value = "0")
+    @Column(name = "prozentsatz")
+    private Double prozentsatz;
+
+    @DecimalMin(value = "0")
+    @Column(name = "lagerpreis")
+    private Double lagerpreis;
+
+    @DecimalMin(value = "0")
+    @Column(name = "lagerwert")
+    private Double lagerwert;
+
+    @Min(value = 0)
+    @Column(name = "sicherheitsbestand")
+    private Integer sicherheitsbestand;
+
+    @Min(value = 0)
+    @Column(name = "vertriebswunsch")
+    private Integer vertriebswunsch;
+
     @Min(value = 0)
     @Column(name = "gesamtproduktionsmenge")
     private Integer gesamtproduktionsmenge;
 
+    @Min(value = 0)
     @Column(name = "direktverkaufmenge")
     private Integer direktverkaufmenge;
 
+    @DecimalMin(value = "0")
     @Column(name = "direktverkaufspreis")
     private Double direktverkaufspreis;
 
+    @DecimalMin(value = "0")
     @Column(name = "strafe")
     private Double strafe;
 
-    @OneToMany(mappedBy = "herstellteil")
-    @JsonIgnore
+    @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Fertigungsauftrag> fertigungsauftrags = new HashSet<>();
-
-    @ManyToOne
-    private Teil subkomponente;
-
-    @ManyToOne
-    private Arbeitsplatz arbeitsplatz;
+    @JoinTable(name = "teil_subkomponente",
+               joinColumns = @JoinColumn(name="teils_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="subkomponentes_id", referencedColumnName="id"))
+    private Set<Teil> subkomponentes = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -108,16 +115,29 @@ public class Teil implements Serializable {
         this.teiltyp = teiltyp;
     }
 
-    public String getNummer() {
+    public Integer getPeriode() {
+        return periode;
+    }
+
+    public Teil periode(Integer periode) {
+        this.periode = periode;
+        return this;
+    }
+
+    public void setPeriode(Integer periode) {
+        this.periode = periode;
+    }
+
+    public Integer getNummer() {
         return nummer;
     }
 
-    public Teil nummer(String nummer) {
+    public Teil nummer(Integer nummer) {
         this.nummer = nummer;
         return this;
     }
 
-    public void setNummer(String nummer) {
+    public void setNummer(Integer nummer) {
         this.nummer = nummer;
     }
 
@@ -212,19 +232,6 @@ public class Teil implements Serializable {
         this.vertriebswunsch = vertriebswunsch;
     }
 
-    public Integer getPeriode() {
-        return periode;
-    }
-
-    public Teil periode(Integer periode) {
-        this.periode = periode;
-        return this;
-    }
-
-    public void setPeriode(Integer periode) {
-        this.periode = periode;
-    }
-
     public Integer getGesamtproduktionsmenge() {
         return gesamtproduktionsmenge;
     }
@@ -277,55 +284,27 @@ public class Teil implements Serializable {
         this.strafe = strafe;
     }
 
-    public Set<Fertigungsauftrag> getFertigungsauftrags() {
-        return fertigungsauftrags;
+    public Set<Teil> getSubkomponentes() {
+        return subkomponentes;
     }
 
-    public Teil fertigungsauftrags(Set<Fertigungsauftrag> fertigungsauftrags) {
-        this.fertigungsauftrags = fertigungsauftrags;
+    public Teil subkomponentes(Set<Teil> teils) {
+        this.subkomponentes = teils;
         return this;
     }
 
-    public Teil addFertigungsauftrag(Fertigungsauftrag fertigungsauftrag) {
-        this.fertigungsauftrags.add(fertigungsauftrag);
-        fertigungsauftrag.setHerstellteil(this);
+    public Teil addSubkomponente(Teil teil) {
+        this.subkomponentes.add(teil);
         return this;
     }
 
-    public Teil removeFertigungsauftrag(Fertigungsauftrag fertigungsauftrag) {
-        this.fertigungsauftrags.remove(fertigungsauftrag);
-        fertigungsauftrag.setHerstellteil(null);
+    public Teil removeSubkomponente(Teil teil) {
+        this.subkomponentes.remove(teil);
         return this;
     }
 
-    public void setFertigungsauftrags(Set<Fertigungsauftrag> fertigungsauftrags) {
-        this.fertigungsauftrags = fertigungsauftrags;
-    }
-
-    public Teil getSubkomponente() {
-        return subkomponente;
-    }
-
-    public Teil subkomponente(Teil teil) {
-        this.subkomponente = teil;
-        return this;
-    }
-
-    public void setSubkomponente(Teil teil) {
-        this.subkomponente = teil;
-    }
-
-    public Arbeitsplatz getArbeitsplatz() {
-        return arbeitsplatz;
-    }
-
-    public Teil arbeitsplatz(Arbeitsplatz arbeitsplatz) {
-        this.arbeitsplatz = arbeitsplatz;
-        return this;
-    }
-
-    public void setArbeitsplatz(Arbeitsplatz arbeitsplatz) {
-        this.arbeitsplatz = arbeitsplatz;
+    public void setSubkomponentes(Set<Teil> teils) {
+        this.subkomponentes = teils;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -354,6 +333,7 @@ public class Teil implements Serializable {
         return "Teil{" +
             "id=" + getId() +
             ", teiltyp='" + getTeiltyp() + "'" +
+            ", periode='" + getPeriode() + "'" +
             ", nummer='" + getNummer() + "'" +
             ", istmenge='" + getIstmenge() + "'" +
             ", startmenge='" + getStartmenge() + "'" +
@@ -362,7 +342,6 @@ public class Teil implements Serializable {
             ", lagerwert='" + getLagerwert() + "'" +
             ", sicherheitsbestand='" + getSicherheitsbestand() + "'" +
             ", vertriebswunsch='" + getVertriebswunsch() + "'" +
-            ", periode='" + getPeriode() + "'" +
             ", gesamtproduktionsmenge='" + getGesamtproduktionsmenge() + "'" +
             ", direktverkaufmenge='" + getDirektverkaufmenge() + "'" +
             ", direktverkaufspreis='" + getDirektverkaufspreis() + "'" +

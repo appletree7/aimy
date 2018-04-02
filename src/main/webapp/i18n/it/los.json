@@ -16,10 +16,10 @@
                 "title": "Los"
             },
             "periode": "Periode",
+            "nummer": "Nummer",
             "menge": "Menge",
             "durchlaufzeit": "Durchlaufzeit",
-            "kosten": "Kosten",
-            "nummer": "Nummer"
+            "kosten": "Kosten"
         }
     }
 }

@@ -5,9 +5,17 @@ import com.ibsys2.aimy.domain.Teil;
 import com.ibsys2.aimy.service.TeilService;
 import com.ibsys2.aimy.web.rest.errors.BadRequestAlertException;
 import com.ibsys2.aimy.web.rest.util.HeaderUtil;
+import com.ibsys2.aimy.web.rest.util.PaginationUtil;
+import com.ibsys2.aimy.service.dto.TeilCriteria;
+import com.ibsys2.aimy.service.TeilQueryService;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +39,11 @@ public class TeilResource {
 
     private final TeilService teilService;
 
-    public TeilResource(TeilService teilService) {
+    private final TeilQueryService teilQueryService;
+
+    public TeilResource(TeilService teilService, TeilQueryService teilQueryService) {
         this.teilService = teilService;
+        this.teilQueryService = teilQueryService;
     }
 
     /**
@@ -80,14 +91,18 @@ public class TeilResource {
     /**
      * GET  /teils : get all the teils.
      *
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of teils in body
      */
     @GetMapping("/teils")
     @Timed
-    public List<Teil> getAllTeils() {
-        log.debug("REST request to get all Teils");
-        return teilService.findAll();
-        }
+    public ResponseEntity<List<Teil>> getAllTeils(TeilCriteria criteria,@ApiParam Pageable pageable) {
+        log.debug("REST request to get Teils by criteria: {}", criteria);
+        Page<Teil> page = teilQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/teils");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
     /**
      * GET  /teils/:id : get the "id" teil.

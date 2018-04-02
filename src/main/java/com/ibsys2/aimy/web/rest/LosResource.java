@@ -5,9 +5,17 @@ import com.ibsys2.aimy.domain.Los;
 import com.ibsys2.aimy.service.LosService;
 import com.ibsys2.aimy.web.rest.errors.BadRequestAlertException;
 import com.ibsys2.aimy.web.rest.util.HeaderUtil;
+import com.ibsys2.aimy.web.rest.util.PaginationUtil;
+import com.ibsys2.aimy.service.dto.LosCriteria;
+import com.ibsys2.aimy.service.LosQueryService;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +39,11 @@ public class LosResource {
 
     private final LosService losService;
 
-    public LosResource(LosService losService) {
+    private final LosQueryService losQueryService;
+
+    public LosResource(LosService losService, LosQueryService losQueryService) {
         this.losService = losService;
+        this.losQueryService = losQueryService;
     }
 
     /**
@@ -80,14 +91,18 @@ public class LosResource {
     /**
      * GET  /los : get all the los.
      *
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of los in body
      */
     @GetMapping("/los")
     @Timed
-    public List<Los> getAllLos() {
-        log.debug("REST request to get all Los");
-        return losService.findAll();
-        }
+    public ResponseEntity<List<Los>> getAllLos(LosCriteria criteria,@ApiParam Pageable pageable) {
+        log.debug("REST request to get Los by criteria: {}", criteria);
+        Page<Los> page = losQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/los");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
     /**
      * GET  /los/:id : get the "id" los.

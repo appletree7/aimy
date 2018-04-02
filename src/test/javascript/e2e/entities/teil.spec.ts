@@ -36,8 +36,10 @@ describe('Teil e2e test', () => {
     it('should create and save Teils', () => {
         teilComponentsPage.clickOnCreateButton();
         teilDialogPage.teiltypSelectLastOption();
-        teilDialogPage.setNummerInput('nummer');
-        expect(teilDialogPage.getNummerInput()).toMatch('nummer');
+        teilDialogPage.setPeriodeInput('5');
+        expect(teilDialogPage.getPeriodeInput()).toMatch('5');
+        teilDialogPage.setNummerInput('5');
+        expect(teilDialogPage.getNummerInput()).toMatch('5');
         teilDialogPage.setIstmengeInput('5');
         expect(teilDialogPage.getIstmengeInput()).toMatch('5');
         teilDialogPage.setStartmengeInput('5');
@@ -52,8 +54,6 @@ describe('Teil e2e test', () => {
         expect(teilDialogPage.getSicherheitsbestandInput()).toMatch('5');
         teilDialogPage.setVertriebswunschInput('5');
         expect(teilDialogPage.getVertriebswunschInput()).toMatch('5');
-        teilDialogPage.setPeriodeInput('5');
-        expect(teilDialogPage.getPeriodeInput()).toMatch('5');
         teilDialogPage.setGesamtproduktionsmengeInput('5');
         expect(teilDialogPage.getGesamtproduktionsmengeInput()).toMatch('5');
         teilDialogPage.setDirektverkaufmengeInput('5');
@@ -62,8 +62,7 @@ describe('Teil e2e test', () => {
         expect(teilDialogPage.getDirektverkaufspreisInput()).toMatch('5');
         teilDialogPage.setStrafeInput('5');
         expect(teilDialogPage.getStrafeInput()).toMatch('5');
-        teilDialogPage.subkomponenteSelectLastOption();
-        teilDialogPage.arbeitsplatzSelectLastOption();
+        // teilDialogPage.subkomponenteSelectLastOption();
         teilDialogPage.save();
         expect(teilDialogPage.getSaveButton().isPresent()).toBeFalsy();
     }); 
@@ -91,6 +90,7 @@ export class TeilDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     teiltypSelect = element(by.css('select#field_teiltyp'));
+    periodeInput = element(by.css('input#field_periode'));
     nummerInput = element(by.css('input#field_nummer'));
     istmengeInput = element(by.css('input#field_istmenge'));
     startmengeInput = element(by.css('input#field_startmenge'));
@@ -99,13 +99,11 @@ export class TeilDialogPage {
     lagerwertInput = element(by.css('input#field_lagerwert'));
     sicherheitsbestandInput = element(by.css('input#field_sicherheitsbestand'));
     vertriebswunschInput = element(by.css('input#field_vertriebswunsch'));
-    periodeInput = element(by.css('input#field_periode'));
     gesamtproduktionsmengeInput = element(by.css('input#field_gesamtproduktionsmenge'));
     direktverkaufmengeInput = element(by.css('input#field_direktverkaufmenge'));
     direktverkaufspreisInput = element(by.css('input#field_direktverkaufspreis'));
     strafeInput = element(by.css('input#field_strafe'));
     subkomponenteSelect = element(by.css('select#field_subkomponente'));
-    arbeitsplatzSelect = element(by.css('select#field_arbeitsplatz'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -122,6 +120,14 @@ export class TeilDialogPage {
     teiltypSelectLastOption = function () {
         this.teiltypSelect.all(by.tagName('option')).last().click();
     }
+    setPeriodeInput = function (periode) {
+        this.periodeInput.sendKeys(periode);
+    }
+
+    getPeriodeInput = function () {
+        return this.periodeInput.getAttribute('value');
+    }
+
     setNummerInput = function (nummer) {
         this.nummerInput.sendKeys(nummer);
     }
@@ -186,14 +192,6 @@ export class TeilDialogPage {
         return this.vertriebswunschInput.getAttribute('value');
     }
 
-    setPeriodeInput = function (periode) {
-        this.periodeInput.sendKeys(periode);
-    }
-
-    getPeriodeInput = function () {
-        return this.periodeInput.getAttribute('value');
-    }
-
     setGesamtproduktionsmengeInput = function (gesamtproduktionsmenge) {
         this.gesamtproduktionsmengeInput.sendKeys(gesamtproduktionsmenge);
     }
@@ -240,22 +238,6 @@ export class TeilDialogPage {
 
     getSubkomponenteSelectedOption = function () {
         return this.subkomponenteSelect.element(by.css('option:checked')).getText();
-    }
-
-    arbeitsplatzSelectLastOption = function () {
-        this.arbeitsplatzSelect.all(by.tagName('option')).last().click();
-    }
-
-    arbeitsplatzSelectOption = function (option) {
-        this.arbeitsplatzSelect.sendKeys(option);
-    }
-
-    getArbeitsplatzSelect = function () {
-        return this.arbeitsplatzSelect;
-    }
-
-    getArbeitsplatzSelectedOption = function () {
-        return this.arbeitsplatzSelect.element(by.css('option:checked')).getText();
     }
 
     save() {

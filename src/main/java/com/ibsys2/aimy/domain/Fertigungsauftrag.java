@@ -26,15 +26,25 @@ public class Fertigungsauftrag implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "periode")
+    @NotNull
+    @Min(value = 0)
+    @Column(name = "periode", nullable = false)
     private Integer periode;
 
+    @NotNull
+    @Min(value = 0)
+    @Column(name = "nummer", nullable = false)
+    private Integer nummer;
+
+    @Min(value = 0)
     @Column(name = "auftragsmenge")
     private Integer auftragsmenge;
 
-    @Column(name = "kostenprolos")
-    private Double kostenprolos;
+    @DecimalMin(value = "0")
+    @Column(name = "kosten")
+    private Double kosten;
 
+    @DecimalMin(value = "0")
     @Column(name = "durchschnittlichestueckkosten")
     private Double durchschnittlichestueckkosten;
 
@@ -48,19 +58,17 @@ public class Fertigungsauftrag implements Serializable {
     @Column(name = "beendet")
     private String beendet;
 
+    @Min(value = 0)
     @Column(name = "dlzminimal")
     private Integer dlzminimal;
 
+    @DecimalMin(value = "0")
     @Column(name = "dlz_faktor")
     private Double dlzFaktor;
 
-    @NotNull
-    @Min(value = 1)
-    @Column(name = "nummer", nullable = false)
-    private Integer nummer;
-
-    @ManyToOne
-    private Los los;
+    @Min(value = 0)
+    @Column(name = "bearbeitungszeitmin")
+    private Integer bearbeitungszeitmin;
 
     @ManyToOne
     private Teil herstellteil;
@@ -87,6 +95,19 @@ public class Fertigungsauftrag implements Serializable {
         this.periode = periode;
     }
 
+    public Integer getNummer() {
+        return nummer;
+    }
+
+    public Fertigungsauftrag nummer(Integer nummer) {
+        this.nummer = nummer;
+        return this;
+    }
+
+    public void setNummer(Integer nummer) {
+        this.nummer = nummer;
+    }
+
     public Integer getAuftragsmenge() {
         return auftragsmenge;
     }
@@ -100,17 +121,17 @@ public class Fertigungsauftrag implements Serializable {
         this.auftragsmenge = auftragsmenge;
     }
 
-    public Double getKostenprolos() {
-        return kostenprolos;
+    public Double getKosten() {
+        return kosten;
     }
 
-    public Fertigungsauftrag kostenprolos(Double kostenprolos) {
-        this.kostenprolos = kostenprolos;
+    public Fertigungsauftrag kosten(Double kosten) {
+        this.kosten = kosten;
         return this;
     }
 
-    public void setKostenprolos(Double kostenprolos) {
-        this.kostenprolos = kostenprolos;
+    public void setKosten(Double kosten) {
+        this.kosten = kosten;
     }
 
     public Double getDurchschnittlichestueckkosten() {
@@ -191,30 +212,17 @@ public class Fertigungsauftrag implements Serializable {
         this.dlzFaktor = dlzFaktor;
     }
 
-    public Integer getNummer() {
-        return nummer;
+    public Integer getBearbeitungszeitmin() {
+        return bearbeitungszeitmin;
     }
 
-    public Fertigungsauftrag nummer(Integer nummer) {
-        this.nummer = nummer;
+    public Fertigungsauftrag bearbeitungszeitmin(Integer bearbeitungszeitmin) {
+        this.bearbeitungszeitmin = bearbeitungszeitmin;
         return this;
     }
 
-    public void setNummer(Integer nummer) {
-        this.nummer = nummer;
-    }
-
-    public Los getLos() {
-        return los;
-    }
-
-    public Fertigungsauftrag los(Los los) {
-        this.los = los;
-        return this;
-    }
-
-    public void setLos(Los los) {
-        this.los = los;
+    public void setBearbeitungszeitmin(Integer bearbeitungszeitmin) {
+        this.bearbeitungszeitmin = bearbeitungszeitmin;
     }
 
     public Teil getHerstellteil() {
@@ -256,15 +264,16 @@ public class Fertigungsauftrag implements Serializable {
         return "Fertigungsauftrag{" +
             "id=" + getId() +
             ", periode='" + getPeriode() + "'" +
+            ", nummer='" + getNummer() + "'" +
             ", auftragsmenge='" + getAuftragsmenge() + "'" +
-            ", kostenprolos='" + getKostenprolos() + "'" +
+            ", kosten='" + getKosten() + "'" +
             ", durchschnittlichestueckkosten='" + getDurchschnittlichestueckkosten() + "'" +
             ", auftragsstatus='" + getAuftragsstatus() + "'" +
             ", begonnen='" + getBegonnen() + "'" +
             ", beendet='" + getBeendet() + "'" +
             ", dlzminimal='" + getDlzminimal() + "'" +
             ", dlzFaktor='" + getDlzFaktor() + "'" +
-            ", nummer='" + getNummer() + "'" +
+            ", bearbeitungszeitmin='" + getBearbeitungszeitmin() + "'" +
             "}";
     }
 }

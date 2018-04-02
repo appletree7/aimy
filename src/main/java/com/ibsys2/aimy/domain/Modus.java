@@ -1,11 +1,11 @@
 package com.ibsys2.aimy.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -24,39 +24,45 @@ public class Modus implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @DecimalMin(value = "0")
     @Column(name = "bearbeitungsfaktor")
     private Double bearbeitungsfaktor;
 
+    @DecimalMin(value = "0")
     @Column(name = "bearbeitungsabweichung")
     private Double bearbeitungsabweichung;
 
+    @DecimalMin(value = "0")
     @Column(name = "lieferfaktor")
     private Double lieferfaktor;
 
+    @DecimalMin(value = "0")
     @Column(name = "lieferabweichung")
     private Double lieferabweichung;
 
+    @DecimalMin(value = "0")
     @Column(name = "mengenfakor")
     private Double mengenfakor;
 
+    @DecimalMin(value = "0")
     @Column(name = "mengenabweichung")
     private Double mengenabweichung;
 
+    @DecimalMin(value = "0")
     @Column(name = "preisfaktor")
     private Double preisfaktor;
 
+    @DecimalMin(value = "0")
     @Column(name = "diskontfaktor")
     private Double diskontfaktor;
 
+    @DecimalMin(value = "0")
     @Column(name = "bestellkostenfaktor")
     private Double bestellkostenfaktor;
-
-    @OneToOne(mappedBy = "modus")
-    @JsonIgnore
-    private Bestellung bestellung;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -195,19 +201,6 @@ public class Modus implements Serializable {
 
     public void setBestellkostenfaktor(Double bestellkostenfaktor) {
         this.bestellkostenfaktor = bestellkostenfaktor;
-    }
-
-    public Bestellung getBestellung() {
-        return bestellung;
-    }
-
-    public Modus bestellung(Bestellung bestellung) {
-        this.bestellung = bestellung;
-        return this;
-    }
-
-    public void setBestellung(Bestellung bestellung) {
-        this.bestellung = bestellung;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

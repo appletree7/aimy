@@ -8,6 +8,10 @@
         <dd>
             <span jhiTranslate="{{'aimyApp.Teiltyp.' + teil.teiltyp}}">{{teil.teiltyp}}</span>
         </dd>
+        <dt><span jhiTranslate="aimyApp.teil.periode">Periode</span></dt>
+        <dd>
+            <span>{{teil.periode}}</span>
+        </dd>
         <dt><span jhiTranslate="aimyApp.teil.nummer">Nummer</span></dt>
         <dd>
             <span>{{teil.nummer}}</span>
@@ -40,10 +44,6 @@
         <dd>
             <span>{{teil.vertriebswunsch}}</span>
         </dd>
-        <dt><span jhiTranslate="aimyApp.teil.periode">Periode</span></dt>
-        <dd>
-            <span>{{teil.periode}}</span>
-        </dd>
         <dt><span jhiTranslate="aimyApp.teil.gesamtproduktionsmenge">Gesamtproduktionsmenge</span></dt>
         <dd>
             <span>{{teil.gesamtproduktionsmenge}}</span>
@@ -62,15 +62,9 @@
         </dd>
         <dt><span jhiTranslate="aimyApp.teil.subkomponente">Subkomponente</span></dt>
         <dd>
-            <div *ngIf="teil.subkomponente">
-                <a [routerLink]="['/teil', teil.subkomponente?.id]">{{teil.subkomponente?.id}}</a>
-            </div>
-        </dd>
-        <dt><span jhiTranslate="aimyApp.teil.arbeitsplatz">Arbeitsplatz</span></dt>
-        <dd>
-            <div *ngIf="teil.arbeitsplatz">
-                <a [routerLink]="['/arbeitsplatz', teil.arbeitsplatz?.id]">{{teil.arbeitsplatz?.nummer}}</a>
-            </div>
+            <span *ngFor="let subkomponente of teil.subkomponentes; let last = last">
+                <a [routerLink]="['/teil', subkomponente?.id ]">{{subkomponente.nummer}}</a>{{last ? '' : ', '}}
+            </span>
         </dd>
     </dl>
 

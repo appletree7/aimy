@@ -1,45 +1,72 @@
 {
     "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "teil",
-            "otherEntityName": "teil",
-            "otherEntityRelationshipName": "arbeitsplatz"
-        }
-    ],
+    "relationships": [],
     "fields": [
         {
             "fieldName": "periode",
-            "fieldType": "Integer"
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "nummer",
-            "fieldType": "Integer"
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "restzeitbedarf",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "ruestvorgaenge",
-            "fieldType": "Integer"
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "leerzeit",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "lohnleerkosten",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "lohnkosten",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "maschinenstillstandkosten",
-            "fieldType": "Double"
+            "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "restzeitbedarf_in_bearbeitung",
@@ -62,14 +89,17 @@
         {
             "fieldName": "ueberstunden",
             "fieldType": "Double",
-            "fieldValidateRules": []
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         }
     ],
     "changelogDate": "20171220194424",
     "dto": "no",
     "service": "serviceImpl",
     "entityTableName": "arbeitsplatz",
-    "jpaMetamodelFiltering": false,
-    "pagination": "no",
+    "jpaMetamodelFiltering": true,
+    "pagination": "pagination",
     "javadoc": "The Arbeitsplatz entity."
 }

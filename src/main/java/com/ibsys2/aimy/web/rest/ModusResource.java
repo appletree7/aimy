@@ -5,18 +5,26 @@ import com.ibsys2.aimy.domain.Modus;
 import com.ibsys2.aimy.service.ModusService;
 import com.ibsys2.aimy.web.rest.errors.BadRequestAlertException;
 import com.ibsys2.aimy.web.rest.util.HeaderUtil;
+import com.ibsys2.aimy.web.rest.util.PaginationUtil;
+import com.ibsys2.aimy.service.dto.ModusCriteria;
+import com.ibsys2.aimy.service.ModusQueryService;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
 
 /**
  * REST controller for managing Modus.
@@ -31,8 +39,11 @@ public class ModusResource {
 
     private final ModusService modusService;
 
-    public ModusResource(ModusService modusService) {
+    private final ModusQueryService modusQueryService;
+
+    public ModusResource(ModusService modusService, ModusQueryService modusQueryService) {
         this.modusService = modusService;
+        this.modusQueryService = modusQueryService;
     }
 
     /**
@@ -44,7 +55,7 @@ public class ModusResource {
      */
     @PostMapping("/moduses")
     @Timed
-    public ResponseEntity<Modus> createModus(@RequestBody Modus modus) throws URISyntaxException {
+    public ResponseEntity<Modus> createModus(@Valid @RequestBody Modus modus) throws URISyntaxException {
         log.debug("REST request to save Modus : {}", modus);
         if (modus.getId() != null) {
             throw new BadRequestAlertException("A new modus cannot already have an ID", ENTITY_NAME, "idexists");
@@ -66,7 +77,7 @@ public class ModusResource {
      */
     @PutMapping("/moduses")
     @Timed
-    public ResponseEntity<Modus> updateModus(@RequestBody Modus modus) throws URISyntaxException {
+    public ResponseEntity<Modus> updateModus(@Valid @RequestBody Modus modus) throws URISyntaxException {
         log.debug("REST request to update Modus : {}", modus);
         if (modus.getId() == null) {
             return createModus(modus);
@@ -80,19 +91,18 @@ public class ModusResource {
     /**
      * GET  /moduses : get all the moduses.
      *
-     * @param filter the filter of the request
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of moduses in body
      */
     @GetMapping("/moduses")
     @Timed
-    public List<Modus> getAllModuses(@RequestParam(required = false) String filter) {
-        if ("bestellung-is-null".equals(filter)) {
-            log.debug("REST request to get all Moduss where bestellung is null");
-            return modusService.findAllWhereBestellungIsNull();
-        }
-        log.debug("REST request to get all Moduses");
-        return modusService.findAll();
-        }
+    public ResponseEntity<List<Modus>> getAllModuses(ModusCriteria criteria,@ApiParam Pageable pageable) {
+        log.debug("REST request to get Moduses by criteria: {}", criteria);
+        Page<Modus> page = modusQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/moduses");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
     /**
      * GET  /moduses/:id : get the "id" modus.

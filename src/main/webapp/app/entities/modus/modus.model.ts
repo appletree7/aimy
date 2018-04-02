@@ -13,7 +13,6 @@ export class Modus implements BaseEntity {
         public preisfaktor?: number,
         public diskontfaktor?: number,
         public bestellkostenfaktor?: number,
-        public bestellung?: BaseEntity,
     ) {
     }
 }

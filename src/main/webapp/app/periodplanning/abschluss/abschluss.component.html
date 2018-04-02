@@ -1,35 +1,69 @@
-<form name="saveForm" role="form" novalidate (ngSubmit)="save()" #saveForm="ngForm">
 <div>
     <h2>
         <span jhitranslate="abschluss.title">Abschluss</span>
     </h2>
     <jhi-alert></jhi-alert>
 </div>
+    <div>
+        <p class="lead">Normalverkauf</p>
+    </div>
+    <div class="table-responsive" *ngIf="teils">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th><span jhiTranslate="aimyApp.teil.teiltyp">Teiltyp</span></th>
+            <th><span jhiTranslate="aimyApp.teil.nummer">Nummer</span></th>
+            <th><span jhiTranslate="aimyApp.teil.vertriebswunsch">Vertriebswunsch</span></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let teil of teils ;trackBy: trackId">
+            <td jhiTranslate="{{'aimyApp.Teiltyp.' + teil.teiltyp}}">{{teil.teiltyp}}</td>
+            <td>{{teil.nummer}}</td>
+            <td>{{teil.vertriebswunsch}}</td>
+            <td class="text-right">
+                <div class="btn-group flex-btn-group-container">
+                    <button type="submit"
+                            [routerLink]="['../teil', teil.id ]"
+                            class="btn btn-info btn-sm">
+                        <span class="fa fa-eye"></span>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                    </button>
+                    <button type="submit"
+                            [routerLink]="['/', { outlets: { popup: 'teil/'+ teil.id + '/edit'} }]"
+                            replaceUrl="true"
+                            class="btn btn-primary btn-sm">
+                        <span class="fa fa-pencil"></span>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                    </button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+    <div>
+        <p class="lead">Direktverkauf</p>
+    </div>
     <div class="table-responsive" *ngIf="teils">
         <table class="table table-striped">
             <thead>
             <tr>
                 <th><span jhiTranslate="aimyApp.teil.teiltyp">Teiltyp</span></th>
                 <th><span jhiTranslate="aimyApp.teil.nummer">Nummer</span></th>
-                <th><span jhiTranslate="aimyApp.teil.vertriebswunsch">Vertriebswunsch</span></th>
-                <th></th>
+                <th><span jhiTranslate="aimyApp.teil.direktverkaufmenge">Direktverkaufsmenge</span></th>
+                <th><span jhiTranslate="aimyApp.teil.direktverkaufspreis">Direktverkaufspreis</span></th>
+                <th><span jhiTranslate="aimyApp.teil.strafe">Strafe</span></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let teil of teils ;trackBy: trackId">
-                <td jhiTranslate="{{'aimyApp.Teiltyp.' + teil.teiltyp}}">{{teil.teiltyp}}</td>
+                <td>{{teil.teiltyp}}</td>
                 <td>{{teil.nummer}}</td>
-                <td>{{teil.vertriebswunsch}}</td>
-                <td>
-                    <div *ngIf="teil.subkomponente">
-                        <a [routerLink]="['../teil', teil.subkomponente?.id ]" >{{teil.subkomponente?.id}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="teil.arbeitsplatz">
-                        <a [routerLink]="['../arbeitsplatz', teil.arbeitsplatz?.id ]" >{{teil.arbeitsplatz?.id}}</a>
-                    </div>
-                </td>
+                <td>{{teil.direktverkaufmenge}}</td>
+                <td>{{teil.direktverkaufspreis}}</td>
+                <td>{{teil.strafe}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
@@ -51,14 +85,152 @@
             </tbody>
         </table>
     </div>
-<div>
-    <button type="submit"
+    <div>
+        <p class="lead">Bestellungen</p>
+    </div>
+    <div class="table-responsive" *ngIf="bestellungen">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><span jhiTranslate="aimyApp.bestellung.nummer">Nummer</span></th>
+                <th><span jhiTranslate="aimyApp.bestellung.kaufteil">Kaufteil</span></th>
+                <th><span jhiTranslate="aimyApp.bestellung.kaufmenge">Kaufmenge</span></th>
+                <th><span jhiTranslate="aimyApp.bestellung.modus">Modus</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let bestellung of bestellungen ;trackBy: trackId">
+                <td>{{bestellung.nummer}}</td>
+                <td>{{bestellung.bestellung.kaufteil.id}}</td>
+                <td>{{bestellung.kaufmenge}}</td>
+                <td>{{bestellung.modus.id}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../bestellung', bestellung.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'bestellung/'+ bestellung.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <p class="lead">Produktionsaufträge</p>
+    </div>
+    <div class="table-responsive" *ngIf="fertigungsauftraege">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><span jhiTranslate="aimyApp.fertigungsauftrag.nummer">Nummer</span></th>
+                <th><span jhiTranslate="aimyApp.fertigungsauftrag.herstellteil">Herstellteil</span></th>
+                <th><span jhiTranslate="aimyApp.fertigungsauftrag.auftragsmenge">Auftragsmenge</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let fertigungsauftrag of fertigungsauftraege|orderBy:'nummer';trackBy: trackId">
+                <td>{{fertigungsauftrag.nummer}}</td>
+                <td>
+                    <div *ngIf="fertigungsauftrag.herstellteil">
+                        <a [routerLink]="['../teil', fertigungsauftrag.herstellteil?.id ]" >{{fertigungsauftrag.herstellteil?.nummer}}</a>
+                    </div>
+                </td>
+                <td>{{fertigungsauftrag.auftragsmenge}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../fertigungsauftrag', fertigungsauftrag.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'fertigungsauftrag/'+ fertigungsauftrag.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'fertigungsauftrag/'+ fertigungsauftrag.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <p class="lead">Kapazitätsplan</p>
+    </div>
+    <div class="table-responsive" *ngIf="arbeitsplaetze">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><span jhiTranslate="aimyApp.arbeitsplatz.nummer">Nummer</span></th>
+                <th><span jhiTranslate="aimyApp.arbeitsplatz.schicht">Schicht</span></th>
+                <th><span jhiTranslate="aimyApp.arbeitsplatz.ueberstunden">Ueberstunden</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let arbeitsplatz of arbeitsplaetze ;trackBy: trackId">
+                <td jhiTranslate="{{'aimyApp.Teiltyp.' + teil.teiltyp}}">{{teil.teiltyp}}</td>
+                <td>{{arbeitsplatz.nummer}}</td>
+                <td>{{arbeitsplatz.vertriebswunsch}}</td>
+                <td>{{arbeitsplatz.ueberstunden}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../arbeitsplatz', arbeitsplatz.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'arbeitsplatz/'+ arbeitsplatz.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+<div class="btn-group" role="group">
+    <button type="button" class="btn btn-primary" (click)="split()">
+        Splitting
+    </button>
+    <button type="button" class="btn btn-primary" (click)="sort()">
+        Sortieren
+    </button>
+</div>
+<div class="btn-group" role="group">
+    <button type="button"
             (click)="previousState()"
             class="btn btn-info">
         <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
     </button>
-    <button type="submit" [disabled]="saveForm.form.invalid" class="btn btn-primary">
+    <button type="button" class="btn btn-primary" (click)="export()">
         <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
     </button>
 </div>
-</form>

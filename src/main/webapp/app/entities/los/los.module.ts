@@ -13,6 +13,7 @@ import {
     LosDeleteDialogComponent,
     losRoute,
     losPopupRoute,
+    LosResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         LosService,
         LosPopupService,
+        LosResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

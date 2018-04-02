@@ -5,9 +5,17 @@ import com.ibsys2.aimy.domain.Arbeitsplatz;
 import com.ibsys2.aimy.service.ArbeitsplatzService;
 import com.ibsys2.aimy.web.rest.errors.BadRequestAlertException;
 import com.ibsys2.aimy.web.rest.util.HeaderUtil;
+import com.ibsys2.aimy.web.rest.util.PaginationUtil;
+import com.ibsys2.aimy.service.dto.ArbeitsplatzCriteria;
+import com.ibsys2.aimy.service.ArbeitsplatzQueryService;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +39,11 @@ public class ArbeitsplatzResource {
 
     private final ArbeitsplatzService arbeitsplatzService;
 
-    public ArbeitsplatzResource(ArbeitsplatzService arbeitsplatzService) {
+    private final ArbeitsplatzQueryService arbeitsplatzQueryService;
+
+    public ArbeitsplatzResource(ArbeitsplatzService arbeitsplatzService, ArbeitsplatzQueryService arbeitsplatzQueryService) {
         this.arbeitsplatzService = arbeitsplatzService;
+        this.arbeitsplatzQueryService = arbeitsplatzQueryService;
     }
 
     /**
@@ -80,14 +91,18 @@ public class ArbeitsplatzResource {
     /**
      * GET  /arbeitsplatzs : get all the arbeitsplatzs.
      *
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of arbeitsplatzs in body
      */
     @GetMapping("/arbeitsplatzs")
     @Timed
-    public List<Arbeitsplatz> getAllArbeitsplatzs() {
-        log.debug("REST request to get all Arbeitsplatzs");
-        return arbeitsplatzService.findAll();
-        }
+    public ResponseEntity<List<Arbeitsplatz>> getAllArbeitsplatzs(ArbeitsplatzCriteria criteria,@ApiParam Pageable pageable) {
+        log.debug("REST request to get Arbeitsplatzs by criteria: {}", criteria);
+        Page<Arbeitsplatz> page = arbeitsplatzQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/arbeitsplatzs");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
     /**
      * GET  /arbeitsplatzs/:id : get the "id" arbeitsplatz.

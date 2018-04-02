@@ -13,6 +13,7 @@ import {
     TeilDeleteDialogComponent,
     teilRoute,
     teilPopupRoute,
+    TeilResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         TeilService,
         TeilPopupService,
+        TeilResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

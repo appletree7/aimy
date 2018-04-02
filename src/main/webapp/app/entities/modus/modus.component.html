@@ -15,18 +15,15 @@
     <div class="table-responsive" *ngIf="moduses">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="aimyApp.modus.name">Name</span></th>
-            <th><span jhiTranslate="aimyApp.modus.bearbeitungsfaktor">Bearbeitungsfaktor</span></th>
-            <th><span jhiTranslate="aimyApp.modus.bearbeitungsabweichung">Bearbeitungsabweichung</span></th>
-            <th><span jhiTranslate="aimyApp.modus.lieferfaktor">Lieferfaktor</span></th>
-            <th><span jhiTranslate="aimyApp.modus.lieferabweichung">Lieferabweichung</span></th>
-            <th><span jhiTranslate="aimyApp.modus.mengenfakor">Mengenfakor</span></th>
-            <th><span jhiTranslate="aimyApp.modus.mengenabweichung">Mengenabweichung</span></th>
-            <th><span jhiTranslate="aimyApp.modus.preisfaktor">Preisfaktor</span></th>
-            <th><span jhiTranslate="aimyApp.modus.diskontfaktor">Diskontfaktor</span></th>
-            <th><span jhiTranslate="aimyApp.modus.bestellkostenfaktor">Bestellkostenfaktor</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="name"><span jhiTranslate="aimyApp.modus.name">Name</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="bearbeitungsfaktor"><span jhiTranslate="aimyApp.modus.bearbeitungsfaktor">Bearbeitungsfaktor</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="lieferfaktor"><span jhiTranslate="aimyApp.modus.lieferfaktor">Lieferfaktor</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="mengenfakor"><span jhiTranslate="aimyApp.modus.mengenfakor">Mengenfakor</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="preisfaktor"><span jhiTranslate="aimyApp.modus.preisfaktor">Preisfaktor</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="diskontfaktor"><span jhiTranslate="aimyApp.modus.diskontfaktor">Diskontfaktor</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="bestellkostenfaktor"><span jhiTranslate="aimyApp.modus.bestellkostenfaktor">Bestellkostenfaktor</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -35,11 +32,8 @@
                 <td><a [routerLink]="['../modus', modus.id ]">{{modus.id}}</a></td>
                 <td>{{modus.name}}</td>
                 <td>{{modus.bearbeitungsfaktor}}</td>
-                <td>{{modus.bearbeitungsabweichung}}</td>
                 <td>{{modus.lieferfaktor}}</td>
-                <td>{{modus.lieferabweichung}}</td>
                 <td>{{modus.mengenfakor}}</td>
-                <td>{{modus.mengenabweichung}}</td>
                 <td>{{modus.preisfaktor}}</td>
                 <td>{{modus.diskontfaktor}}</td>
                 <td>{{modus.bestellkostenfaktor}}</td>
@@ -71,4 +65,12 @@
             </tbody>
         </table>
     </div>
+        <div *ngIf="moduses && moduses.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [maxSize]="5" [pageSize]="itemsPerPage" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
 </div>

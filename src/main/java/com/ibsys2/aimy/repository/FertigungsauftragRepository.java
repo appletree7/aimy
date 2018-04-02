@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface FertigungsauftragRepository extends JpaRepository<Fertigungsauftrag, Long> {
+public interface FertigungsauftragRepository extends JpaRepository<Fertigungsauftrag, Long>, JpaSpecificationExecutor<Fertigungsauftrag> {
 
 }

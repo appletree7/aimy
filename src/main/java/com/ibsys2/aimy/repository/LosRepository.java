@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface LosRepository extends JpaRepository<Los, Long> {
+public interface LosRepository extends JpaRepository<Los, Long>, JpaSpecificationExecutor<Los> {
 
 }

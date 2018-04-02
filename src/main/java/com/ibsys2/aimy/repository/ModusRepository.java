@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ModusRepository extends JpaRepository<Modus, Long> {
+public interface ModusRepository extends JpaRepository<Modus, Long>, JpaSpecificationExecutor<Modus> {
 
 }

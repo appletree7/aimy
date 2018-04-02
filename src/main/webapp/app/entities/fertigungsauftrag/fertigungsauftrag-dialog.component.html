@@ -15,22 +15,85 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.periode" for="field_periode">Periode</label>
             <input type="number" class="form-control" name="periode" id="field_periode"
-                [(ngModel)]="fertigungsauftrag.periode"  />
+                [(ngModel)]="fertigungsauftrag.periode" required min="0" />
+            <div [hidden]="!(editForm.controls.periode?.dirty && editForm.controls.periode?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.periode?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.periode?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.periode?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.nummer" for="field_nummer">Nummer</label>
+            <input type="number" class="form-control" name="nummer" id="field_nummer"
+                [(ngModel)]="fertigungsauftrag.nummer" required min="0" />
+            <div [hidden]="!(editForm.controls.nummer?.dirty && editForm.controls.nummer?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.nummer?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.nummer?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.nummer?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.auftragsmenge" for="field_auftragsmenge">Auftragsmenge</label>
             <input type="number" class="form-control" name="auftragsmenge" id="field_auftragsmenge"
-                [(ngModel)]="fertigungsauftrag.auftragsmenge"  />
+                [(ngModel)]="fertigungsauftrag.auftragsmenge" min="0" />
+            <div [hidden]="!(editForm.controls.auftragsmenge?.dirty && editForm.controls.auftragsmenge?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.auftragsmenge?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.auftragsmenge?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.kostenprolos" for="field_kostenprolos">Kostenprolos</label>
-            <input type="number" class="form-control" name="kostenprolos" id="field_kostenprolos"
-                [(ngModel)]="fertigungsauftrag.kostenprolos"  />
+            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.kosten" for="field_kosten">Kosten</label>
+            <input type="number" class="form-control" name="kosten" id="field_kosten"
+                [(ngModel)]="fertigungsauftrag.kosten" min="0" />
+            <div [hidden]="!(editForm.controls.kosten?.dirty && editForm.controls.kosten?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.kosten?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.kosten?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.durchschnittlichestueckkosten" for="field_durchschnittlichestueckkosten">Durchschnittlichestueckkosten</label>
             <input type="number" class="form-control" name="durchschnittlichestueckkosten" id="field_durchschnittlichestueckkosten"
-                [(ngModel)]="fertigungsauftrag.durchschnittlichestueckkosten"  />
+                [(ngModel)]="fertigungsauftrag.durchschnittlichestueckkosten" min="0" />
+            <div [hidden]="!(editForm.controls.durchschnittlichestueckkosten?.dirty && editForm.controls.durchschnittlichestueckkosten?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.durchschnittlichestueckkosten?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.durchschnittlichestueckkosten?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.auftragsstatus" for="field_auftragsstatus">Auftragsstatus</label>
@@ -53,45 +116,54 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.dlzminimal" for="field_dlzminimal">Dlzminimal</label>
             <input type="number" class="form-control" name="dlzminimal" id="field_dlzminimal"
-                [(ngModel)]="fertigungsauftrag.dlzminimal"  />
+                [(ngModel)]="fertigungsauftrag.dlzminimal" min="0" />
+            <div [hidden]="!(editForm.controls.dlzminimal?.dirty && editForm.controls.dlzminimal?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.dlzminimal?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.dlzminimal?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.dlzFaktor" for="field_dlzFaktor">Dlz Faktor</label>
             <input type="number" class="form-control" name="dlzFaktor" id="field_dlzFaktor"
-                [(ngModel)]="fertigungsauftrag.dlzFaktor"  />
+                [(ngModel)]="fertigungsauftrag.dlzFaktor" min="0" />
+            <div [hidden]="!(editForm.controls.dlzFaktor?.dirty && editForm.controls.dlzFaktor?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.dlzFaktor?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.dlzFaktor?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.nummer" for="field_nummer">Nummer</label>
-            <input type="number" class="form-control" name="nummer" id="field_nummer"
-                [(ngModel)]="fertigungsauftrag.nummer" required min="1" />
-            <div [hidden]="!(editForm.controls.nummer?.dirty && editForm.controls.nummer?.invalid)">
+            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.bearbeitungszeitmin" for="field_bearbeitungszeitmin">Bearbeitungszeitmin</label>
+            <input type="number" class="form-control" name="bearbeitungszeitmin" id="field_bearbeitungszeitmin"
+                [(ngModel)]="fertigungsauftrag.bearbeitungszeitmin" min="0" />
+            <div [hidden]="!(editForm.controls.bearbeitungszeitmin?.dirty && editForm.controls.bearbeitungszeitmin?.invalid)">
                 <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.nummer?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
+                    [hidden]="!editForm.controls.bearbeitungszeitmin?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
                 </small>
                 <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.nummer?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 1 }">
-                    This field should be at least 1.
-                </small>
-                <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.nummer?.errors?.number" jhiTranslate="entity.validation.number">
+                    [hidden]="!editForm.controls.bearbeitungszeitmin?.errors?.number" jhiTranslate="entity.validation.number">
                     This field should be a number.
                 </small>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.los" for="field_los">Los</label>
-            <select class="form-control" id="field_los" name="los" [(ngModel)]="fertigungsauftrag.los" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="losOption.id === fertigungsauftrag.los?.id ? fertigungsauftrag.los : losOption" *ngFor="let losOption of los; trackBy: trackLosById">{{losOption.id}}</option>
-            </select>
-        </div>
-        <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.herstellteil" for="field_herstellteil">Herstellteil</label>
             <select class="form-control" id="field_herstellteil" name="herstellteil" [(ngModel)]="fertigungsauftrag.herstellteil" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="teilOption.id === fertigungsauftrag.herstellteil?.id ? fertigungsauftrag.herstellteil : teilOption" *ngFor="let teilOption of teils; trackBy: trackTeilById">{{teilOption.id}}</option>
+                <option [ngValue]="teilOption.id === fertigungsauftrag.herstellteil?.id ? fertigungsauftrag.herstellteil : teilOption" *ngFor="let teilOption of teils; trackBy: trackTeilById">{{teilOption.nummer}}</option>
             </select>
         </div>
     </div>

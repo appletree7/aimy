@@ -5,12 +5,21 @@ import com.ibsys2.aimy.domain.Bestellung;
 import com.ibsys2.aimy.service.BestellungService;
 import com.ibsys2.aimy.web.rest.errors.BadRequestAlertException;
 import com.ibsys2.aimy.web.rest.util.HeaderUtil;
+import com.ibsys2.aimy.web.rest.util.PaginationUtil;
+import com.ibsys2.aimy.service.dto.BestellungCriteria;
+import com.ibsys2.aimy.service.BestellungQueryService;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -30,8 +39,11 @@ public class BestellungResource {
 
     private final BestellungService bestellungService;
 
-    public BestellungResource(BestellungService bestellungService) {
+    private final BestellungQueryService bestellungQueryService;
+
+    public BestellungResource(BestellungService bestellungService, BestellungQueryService bestellungQueryService) {
         this.bestellungService = bestellungService;
+        this.bestellungQueryService = bestellungQueryService;
     }
 
     /**
@@ -43,7 +55,7 @@ public class BestellungResource {
      */
     @PostMapping("/bestellungs")
     @Timed
-    public ResponseEntity<Bestellung> createBestellung(@RequestBody Bestellung bestellung) throws URISyntaxException {
+    public ResponseEntity<Bestellung> createBestellung(@Valid @RequestBody Bestellung bestellung) throws URISyntaxException {
         log.debug("REST request to save Bestellung : {}", bestellung);
         if (bestellung.getId() != null) {
             throw new BadRequestAlertException("A new bestellung cannot already have an ID", ENTITY_NAME, "idexists");
@@ -65,7 +77,7 @@ public class BestellungResource {
      */
     @PutMapping("/bestellungs")
     @Timed
-    public ResponseEntity<Bestellung> updateBestellung(@RequestBody Bestellung bestellung) throws URISyntaxException {
+    public ResponseEntity<Bestellung> updateBestellung(@Valid @RequestBody Bestellung bestellung) throws URISyntaxException {
         log.debug("REST request to update Bestellung : {}", bestellung);
         if (bestellung.getId() == null) {
             return createBestellung(bestellung);
@@ -79,14 +91,18 @@ public class BestellungResource {
     /**
      * GET  /bestellungs : get all the bestellungs.
      *
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of bestellungs in body
      */
     @GetMapping("/bestellungs")
     @Timed
-    public List<Bestellung> getAllBestellungs() {
-        log.debug("REST request to get all Bestellungs");
-        return bestellungService.findAll();
-        }
+    public ResponseEntity<List<Bestellung>> getAllBestellungs(BestellungCriteria criteria,@ApiParam Pageable pageable) {
+        log.debug("REST request to get Bestellungs by criteria: {}", criteria);
+        Page<Bestellung> page = bestellungQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/bestellungs");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
     /**
      * GET  /bestellungs/:id : get the "id" bestellung.

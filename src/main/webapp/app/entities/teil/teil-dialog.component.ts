@@ -9,7 +9,6 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { Teil } from './teil.model';
 import { TeilPopupService } from './teil-popup.service';
 import { TeilService } from './teil.service';
-import { Arbeitsplatz, ArbeitsplatzService } from '../arbeitsplatz';
 import { ResponseWrapper } from '../../shared';
 
 @Component({
@@ -23,13 +22,10 @@ export class TeilDialogComponent implements OnInit {
 
     teils: Teil[];
 
-    arbeitsplatzs: Arbeitsplatz[];
-
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private teilService: TeilService,
-        private arbeitsplatzService: ArbeitsplatzService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -38,8 +34,6 @@ export class TeilDialogComponent implements OnInit {
         this.isSaving = false;
         this.teilService.query()
             .subscribe((res: ResponseWrapper) => { this.teils = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
-        this.arbeitsplatzService.query()
-            .subscribe((res: ResponseWrapper) => { this.arbeitsplatzs = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {
@@ -80,8 +74,15 @@ export class TeilDialogComponent implements OnInit {
         return item.id;
     }
 
-    trackArbeitsplatzById(index: number, item: Arbeitsplatz) {
-        return item.id;
+    getSelected(selectedVals: Array<any>, option: any) {
+        if (selectedVals) {
+            for (let i = 0; i < selectedVals.length; i++) {
+                if (option.id === selectedVals[i].id) {
+                    return selectedVals[i];
+                }
+            }
+        }
+        return option;
     }
 }
 

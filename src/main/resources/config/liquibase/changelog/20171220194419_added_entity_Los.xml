@@ -23,7 +23,11 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="periode" type="integer">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
+            </column>
+
+            <column name="nummer" type="integer">
+                <constraints nullable="false" />
             </column>
 
             <column name="menge" type="integer">
@@ -36,10 +40,6 @@
 
             <column name="kosten" type="double">
                 <constraints nullable="true" />
-            </column>
-
-            <column name="nummer" type="integer">
-                <constraints nullable="false" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->

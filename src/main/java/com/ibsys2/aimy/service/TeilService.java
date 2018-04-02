@@ -1,7 +1,8 @@
 package com.ibsys2.aimy.service;
 
 import com.ibsys2.aimy.domain.Teil;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service Interface for managing Teil.
@@ -19,9 +20,10 @@ public interface TeilService {
     /**
      *  Get all the teils.
      *
+     *  @param pageable the pagination information
      *  @return the list of entities
      */
-    List<Teil> findAll();
+    Page<Teil> findAll(Pageable pageable);
 
     /**
      *  Get the "id" teil.

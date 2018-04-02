@@ -15,52 +15,148 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.modus.name" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
-                [(ngModel)]="modus.name"  />
+                [(ngModel)]="modus.name" required />
+            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.modus.bearbeitungsfaktor" for="field_bearbeitungsfaktor">Bearbeitungsfaktor</label>
             <input type="number" class="form-control" name="bearbeitungsfaktor" id="field_bearbeitungsfaktor"
-                [(ngModel)]="modus.bearbeitungsfaktor"  />
+                [(ngModel)]="modus.bearbeitungsfaktor" min="0" />
+            <div [hidden]="!(editForm.controls.bearbeitungsfaktor?.dirty && editForm.controls.bearbeitungsfaktor?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.bearbeitungsfaktor?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.bearbeitungsfaktor?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.modus.bearbeitungsabweichung" for="field_bearbeitungsabweichung">Bearbeitungsabweichung</label>
             <input type="number" class="form-control" name="bearbeitungsabweichung" id="field_bearbeitungsabweichung"
-                [(ngModel)]="modus.bearbeitungsabweichung"  />
+                [(ngModel)]="modus.bearbeitungsabweichung" min="0" />
+            <div [hidden]="!(editForm.controls.bearbeitungsabweichung?.dirty && editForm.controls.bearbeitungsabweichung?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.bearbeitungsabweichung?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.bearbeitungsabweichung?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.modus.lieferfaktor" for="field_lieferfaktor">Lieferfaktor</label>
             <input type="number" class="form-control" name="lieferfaktor" id="field_lieferfaktor"
-                [(ngModel)]="modus.lieferfaktor"  />
+                [(ngModel)]="modus.lieferfaktor" min="0" />
+            <div [hidden]="!(editForm.controls.lieferfaktor?.dirty && editForm.controls.lieferfaktor?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.lieferfaktor?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.lieferfaktor?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.modus.lieferabweichung" for="field_lieferabweichung">Lieferabweichung</label>
             <input type="number" class="form-control" name="lieferabweichung" id="field_lieferabweichung"
-                [(ngModel)]="modus.lieferabweichung"  />
+                [(ngModel)]="modus.lieferabweichung" min="0" />
+            <div [hidden]="!(editForm.controls.lieferabweichung?.dirty && editForm.controls.lieferabweichung?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.lieferabweichung?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.lieferabweichung?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.modus.mengenfakor" for="field_mengenfakor">Mengenfakor</label>
             <input type="number" class="form-control" name="mengenfakor" id="field_mengenfakor"
-                [(ngModel)]="modus.mengenfakor"  />
+                [(ngModel)]="modus.mengenfakor" min="0" />
+            <div [hidden]="!(editForm.controls.mengenfakor?.dirty && editForm.controls.mengenfakor?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.mengenfakor?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.mengenfakor?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.modus.mengenabweichung" for="field_mengenabweichung">Mengenabweichung</label>
             <input type="number" class="form-control" name="mengenabweichung" id="field_mengenabweichung"
-                [(ngModel)]="modus.mengenabweichung"  />
+                [(ngModel)]="modus.mengenabweichung" min="0" />
+            <div [hidden]="!(editForm.controls.mengenabweichung?.dirty && editForm.controls.mengenabweichung?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.mengenabweichung?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.mengenabweichung?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.modus.preisfaktor" for="field_preisfaktor">Preisfaktor</label>
             <input type="number" class="form-control" name="preisfaktor" id="field_preisfaktor"
-                [(ngModel)]="modus.preisfaktor"  />
+                [(ngModel)]="modus.preisfaktor" min="0" />
+            <div [hidden]="!(editForm.controls.preisfaktor?.dirty && editForm.controls.preisfaktor?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.preisfaktor?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.preisfaktor?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.modus.diskontfaktor" for="field_diskontfaktor">Diskontfaktor</label>
             <input type="number" class="form-control" name="diskontfaktor" id="field_diskontfaktor"
-                [(ngModel)]="modus.diskontfaktor"  />
+                [(ngModel)]="modus.diskontfaktor" min="0" />
+            <div [hidden]="!(editForm.controls.diskontfaktor?.dirty && editForm.controls.diskontfaktor?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.diskontfaktor?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.diskontfaktor?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.modus.bestellkostenfaktor" for="field_bestellkostenfaktor">Bestellkostenfaktor</label>
             <input type="number" class="form-control" name="bestellkostenfaktor" id="field_bestellkostenfaktor"
-                [(ngModel)]="modus.bestellkostenfaktor"  />
+                [(ngModel)]="modus.bestellkostenfaktor" min="0" />
+            <div [hidden]="!(editForm.controls.bestellkostenfaktor?.dirty && editForm.controls.bestellkostenfaktor?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.bestellkostenfaktor?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.bestellkostenfaktor?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
         </div>
 
     </div>

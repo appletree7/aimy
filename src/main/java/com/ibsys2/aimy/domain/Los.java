@@ -44,6 +44,9 @@ public class Los implements Serializable {
     @Column(name = "kosten")
     private Double kosten;
 
+    @ManyToOne
+    private Fertigungsauftrag fertigungsauftrag;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -116,6 +119,19 @@ public class Los implements Serializable {
 
     public void setKosten(Double kosten) {
         this.kosten = kosten;
+    }
+
+    public Fertigungsauftrag getFertigungsauftrag() {
+        return fertigungsauftrag;
+    }
+
+    public Los fertigungsauftrag(Fertigungsauftrag fertigungsauftrag) {
+        this.fertigungsauftrag = fertigungsauftrag;
+        return this;
+    }
+
+    public void setFertigungsauftrag(Fertigungsauftrag fertigungsauftrag) {
+        this.fertigungsauftrag = fertigungsauftrag;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

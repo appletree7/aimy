@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {Subscription} from 'rxjs/Rx';
 import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
 
-import {TeilService} from '../../entities/teil/teil.service';
+import {TeilService} from '../../entities/teil';
 import {Principal, ResponseWrapper} from '../../shared';
 import {Teil} from '../../entities/teil';
-import {Bestellung, BestellungService} from '../../entities/bestellung';
-import {Arbeitsplatz, ArbeitsplatzService} from '../../entities/arbeitsplatz';
+import {BestellungService} from '../../entities/bestellung';
+import {ArbeitsplatzService} from '../../entities/arbeitsplatz';
 import {Fertigungsauftrag, FertigungsauftragService} from '../../entities/fertigungsauftrag';
 
 @Component({
@@ -14,18 +14,18 @@ import {Fertigungsauftrag, FertigungsauftragService} from '../../entities/fertig
   templateUrl: './abschluss.component.html',
   styles: []
 })
-export class AbschlussComponent implements OnInit {
+export class AbschlussComponent implements OnInit, OnDestroy {
     xmlstring: string;
     currentAccount: any;
     eventSubscriber: Subscription;
     teil: Teil;
-    teils = new Array<Teil>();
-    teile = new Array<Teil>();
+    teils = [];
+    teile = [];
     fertigungsauftrag: Fertigungsauftrag;
-    fertigungsauftraege = new Array<Fertigungsauftrag>();
-    fertigungsauftraege2 = new Array<Fertigungsauftrag>();
-    bestellungen = new Array<Bestellung>()
-    arbeitsplaetze = new Array<Arbeitsplatz>();
+    fertigungsauftraege = [];
+    fertigungsauftraege2 = [];
+    bestellungen = [];
+    arbeitsplaetze = [];
 
   constructor(
       private jhiAlertService: JhiAlertService,
@@ -60,22 +60,22 @@ export class AbschlussComponent implements OnInit {
                     })
                         .subscribe((response: ResponseWrapper) => {
                             this.teile = response.json;
-                            let i= 0;
+                            let i = 0;
                             for (const teil of this.teile) {
                                 i = i + 1;
-                                this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode')), i,
+                                this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
                                     teil.gesamtproduktionsmenge, undefined, undefined,
-                                    undefined, undefined, undefined, undefined,undefined,
+                                    undefined, undefined, undefined, undefined, undefined,
                                     undefined,  teil);
                                 this.fertigungsauftraege2.push(this.fertigungsauftrag);
                             }
                             for (const fertigungsauftrag of this.fertigungsauftraege2) {
                                 if (fertigungsauftrag.id !== null) {
                                     this.fertigungsauftragService.update(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
-                                        console.log(respond), (respond: Response) => this.onSaveError());
+                                        console.log(respond), () => this.onSaveError());
                                 } else {
                                     this.fertigungsauftragService.create(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
-                                        console.log(respond), (respond: Response) => this.onSaveError());
+                                        console.log(respond), () => this.onSaveError());
                                 }
                             }
                         }, (response: ResponseWrapper) => this.onError(response.json));
@@ -266,8 +266,7 @@ export class AbschlussComponent implements OnInit {
         const file = new File([this.xmlstring],
             'Input_Periode_' + localStorage.getItem('aktuelleperiode') + '.xml', {type: 'application/xml;charset=utf-8'});
         const element = document.createElement('a');
-        const url = URL.createObjectURL(file);
-        element.href = url;
+        element.href = URL.createObjectURL(file);
         element.setAttribute('download', file.name);
         document.body.appendChild(element);
          element.click();
@@ -302,7 +301,7 @@ export class AbschlussComponent implements OnInit {
                                       || teil.nummer === 5 || teil.nummer === 6 || teil.nummer === 7
                                       || teil.nummer === 8 || teil.nummer === 9) {
                                       const auftragsmenge = teil.gesamtproduktionsmenge / 2;
-                                      this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode')), i,
+                                      this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
                                           parseInt(auftragsmenge.toFixed(2), 10), undefined, undefined,
                                           undefined, undefined, undefined, undefined,
                                           undefined, undefined, teil);
@@ -312,7 +311,7 @@ export class AbschlussComponent implements OnInit {
                                       || teil.nummer === 13 || teil.nummer === 14 || teil.nummer === 15
                                       || teil.nummer === 18 || teil.nummer === 19 || teil.nummer === 20) {
                                       const auftragsmenge = teil.gesamtproduktionsmenge / 3;
-                                      this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode')), i,
+                                      this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
                                           parseInt(auftragsmenge.toFixed(2), 10), undefined, undefined,
                                           undefined, undefined, undefined, undefined,
                                           undefined, undefined, teil);
@@ -320,7 +319,7 @@ export class AbschlussComponent implements OnInit {
                                       this.fertigungsauftraege2.push(this.fertigungsauftrag);
                                       this.fertigungsauftraege2.push(this.fertigungsauftrag);
                                   } else {
-                                      this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode')), i,
+                                      this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
                                           teil.gesamtproduktionsmenge, undefined, undefined,
                                           undefined, undefined, undefined, undefined,
                                           undefined, undefined, teil);
@@ -330,10 +329,10 @@ export class AbschlussComponent implements OnInit {
                               for (const fertigungsauftrag of this.fertigungsauftraege2) {
                                   if (fertigungsauftrag.id !== null) {
                                       this.fertigungsauftragService.update(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
-                                          console.log(respond), (respond: Response) => this.onSaveError());
+                                          console.log(respond), () => this.onSaveError());
                                   } else {
                                       this.fertigungsauftragService.create(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
-                                          console.log(respond), (respond: Response) => this.onSaveError());
+                                          console.log(respond), () => this.onSaveError());
                                   }
                               }
                       }, (response: ResponseWrapper) => this.onError(response.json));
@@ -354,60 +353,50 @@ export class AbschlussComponent implements OnInit {
     sort() {
       for (const fertigungsauftrag of this.fertigungsauftraege) {
           this.teil = this.teile.find((teil) => (teil.id === fertigungsauftrag.herstellteil.id));
-              if((this.teil.nummer >= 4) && (this.teil.nummer <=9)) {
+              if ((this.teil.nummer >= 4) && (this.teil.nummer <= 9)) {
                         fertigungsauftrag.bearbeitungszeitmin = fertigungsauftrag.auftragsmenge * 4 + fertigungsauftrag.auftragsmenge * 3;
-              }
-              else if((this.teil.nummer === 10) || (this.teil.nummer === 13)) {
+              } else if ((this.teil.nummer === 10) || (this.teil.nummer === 13)) {
                         fertigungsauftrag.bearbeitungszeitmin = fertigungsauftrag.auftragsmenge * 2 + fertigungsauftrag.auftragsmenge
                             + fertigungsauftrag.auftragsmenge * 3 + fertigungsauftrag.auftragsmenge * 3 + + fertigungsauftrag.auftragsmenge * 2;
-                    }
-              else if((this.teil.nummer === 11) || (this.teil.nummer === 12)
+              } else if ((this.teil.nummer === 11) || (this.teil.nummer === 12)
                         || (this.teil.nummer === 14) || (this.teil.nummer === 15)) {
                         fertigungsauftrag.bearbeitungszeitmin = fertigungsauftrag.auftragsmenge * 2 + fertigungsauftrag.auftragsmenge * 2
                             + fertigungsauftrag.auftragsmenge * 3 + fertigungsauftrag.auftragsmenge * 3 + + fertigungsauftrag.auftragsmenge * 2;
-              }
-              else if((this.teil.nummer === 16)) {
+              } else if ((this.teil.nummer === 16)) {
                         fertigungsauftrag.bearbeitungszeitmin = fertigungsauftrag.auftragsmenge * 2 + fertigungsauftrag.auftragsmenge * 3;
-              }
-              else if((this.teil.nummer === 17)) {
+              } else if ((this.teil.nummer === 17)) {
                         fertigungsauftrag.bearbeitungszeitmin = fertigungsauftrag.auftragsmenge * 3;
-              }
-              else if((this.teil.nummer >= 18) && (this.teil.nummer <=20)) {
+              } else if ((this.teil.nummer >= 18) && (this.teil.nummer <= 20)) {
                         fertigungsauftrag.bearbeitungszeitmin = fertigungsauftrag.auftragsmenge * 3 + fertigungsauftrag.auftragsmenge * 2
                             + fertigungsauftrag.auftragsmenge * 3 + fertigungsauftrag.auftragsmenge * 2;
-              }
-              else if((this.teil.nummer === 26)) {
+              } else if ((this.teil.nummer === 26)) {
                         fertigungsauftrag.bearbeitungszeitmin = fertigungsauftrag.auftragsmenge * 2 + fertigungsauftrag.auftragsmenge * 3;
-              }
-              else if((this.teil.nummer === 49) || (this.teil.nummer === 54)
+              } else if ((this.teil.nummer === 49) || (this.teil.nummer === 54)
                         || (this.teil.nummer === 29) || (this.teil.nummer === 56)
                             || (this.teil.nummer === 31) || (this.teil.nummer === 1)) {
                         fertigungsauftrag.bearbeitungszeitmin = fertigungsauftrag.auftragsmenge * 6
-              }
-              else if((this.teil.nummer === 50) || (this.teil.nummer === 55)
+              } else if ((this.teil.nummer === 50) || (this.teil.nummer === 55)
                         || (this.teil.nummer === 30) || (this.teil.nummer === 51)) {
                         fertigungsauftrag.bearbeitungszeitmin = fertigungsauftrag.auftragsmenge * 5
-              }
-              else if((this.teil.nummer === 2) || (this.teil.nummer === 3)) {
+              } else if ((this.teil.nummer === 2) || (this.teil.nummer === 3)) {
                         fertigungsauftrag.bearbeitungszeitmin = fertigungsauftrag.auftragsmenge * 7
               }
               this.fertigungsauftragService.update(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
-                        console.log(respond), (respond: Response) => this.onSaveError());
+                        console.log(respond), () => this.onSaveError());
       }
 
-        this.fertigungsauftraege.sort((a,b) => a.bearbeitungszeitmin-b.bearbeitungszeitmin);
-        // this.fertigungsauftraege.reverse();
+        this.fertigungsauftraege.sort((a, b) => a.bearbeitungszeitmin - b.bearbeitungszeitmin);
         let i = 1;
         for (const fertigungsauftrag of this.fertigungsauftraege) {
             fertigungsauftrag.nummer = i;
             this.fertigungsauftragService.update(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
-                console.log(respond), (respond: Response) => this.onSaveError());
+                console.log(respond), () => this.onSaveError());
             i = i + 1;
         }
     }
 
     registerChangeInFertigungsauftrags() {
-        this.eventSubscriber = this.eventManager.subscribe('fertigungsauftragListModification', (response) => this.loadAll());
+        this.eventSubscriber = this.eventManager.subscribe('fertigungsauftragListModification', () => this.loadAll());
     }
 
     ngOnDestroy() {

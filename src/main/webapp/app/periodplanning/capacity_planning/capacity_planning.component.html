@@ -4,7 +4,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<div> 
+<div>
     <h2>
         <span jhiTranslate="capacity_planning.title">Kapazitätsplanung</span>
     </h2>
@@ -12,33 +12,33 @@ and open the template in the editor.
     <div class="row">
     </div>
         <h1>
-            <p class="lead" >Kapazitätsplanung</p> 
-        </h1> 
+            <p class="lead" >Kapazitätsplanung</p>
+        </h1>
     <div class="table-responsive">
         <table id="capacity_planning" class="table table-striped">
-             <thead> 
-                <tr> 
-                        <th class="text-center" jhiTranslate="capacity_planning.table.number">Nummer</th> 
-                        <th class="text-center" jhiTranslate="capacity_planning.table.capacity_last_period">Kapazität Vorperiode (n-1)</th> 
+             <thead>
+                <tr>
+                        <th class="text-center" jhiTranslate="capacity_planning.table.number">Nummer</th>
+                        <th class="text-center" jhiTranslate="capacity_planning.table.capacity_last_period">Kapazität Vorperiode (n-1)</th>
                         <th class="text-center" jhiTranslate="capacity_planning.table.set-up_time_last_period">Rüstzeit Vorperiode (n-1)</th>
                         <th class="text-center" jhiTranslate="capacity_planning.table.capacity">Kapazität (n)</th>
-                        <th class="text-center" jhiTranslate="capacity_planning.table.set-up_time">Rüstzeit (n)</th> 
+                        <th class="text-center" jhiTranslate="capacity_planning.table.set-up_time">Rüstzeit (n)</th>
                         <th class="text-center" jhiTranslate="capacity_planning.table.reqiurement_of_time">Gesamter Zeitbedarf (n+1)</th>
                         <th class="text-center" jhiTranslate="capacity_planning.table.shifts">Schichten</th>
                         <th class="text-center" jhiTranslate="capacity_planning.table.overtime">"Überstunden"</th>
-                </tr> 
-            </thead> 
-            <tbody> 
-                        <tr *ngFor="let capacity of capacity_array; trackBy: trackId">     
+                </tr>
+            </thead>
+            <tbody>
+                        <tr *ngFor="let capacity of capacity_array">
                         <td class="text-center">{{capacity.arbeitsplatznummer}}</td>
                         <td class="text-center">{{capacity.kapazitaetsbedarf_alt}}</td>
                         <td class="text-center">{{capacity.ruestzeit_alt}}</td>
                         <td class="text-center">{{capacity.kapazitaetsbedarf_neu}}</td>
                         <td class="text-center">{{capacity.ruestzeit_neu}}</td>
-                        <td class="text-center">{{capacity.gesamter_kapazitaetsbedarf}}</td>            
+                        <td class="text-center">{{capacity.gesamter_kapazitaetsbedarf}}</td>
                         <td class="text-center">{{capacity.schichten}}</td>
                         <td class="text-center">{{capacity.ueberstunden}}</td>
-            </tbody> 
+            </tbody>
         </table>
     </div>
-</div> 
+</div>

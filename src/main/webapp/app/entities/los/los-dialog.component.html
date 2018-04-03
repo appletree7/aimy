@@ -96,6 +96,13 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.los.fertigungsauftrag" for="field_fertigungsauftrag">Fertigungsauftrag</label>
+            <select class="form-control" id="field_fertigungsauftrag" name="fertigungsauftrag" [(ngModel)]="los.fertigungsauftrag" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="fertigungsauftragOption.id === los.fertigungsauftrag?.id ? los.fertigungsauftrag : fertigungsauftragOption" *ngFor="let fertigungsauftragOption of fertigungsauftrags; trackBy: trackFertigungsauftragById">{{fertigungsauftragOption.id}}</option>
+            </select>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

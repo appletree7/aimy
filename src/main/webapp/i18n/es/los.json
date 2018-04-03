@@ -19,7 +19,8 @@
             "nummer": "Nummer",
             "menge": "Menge",
             "durchlaufzeit": "Durchlaufzeit",
-            "kosten": "Kosten"
+            "kosten": "Kosten",
+            "fertigungsauftrag": "Fertigungsauftrag"
         }
     }
 }

@@ -27,13 +27,7 @@
         <p class="lead">Wähle die Datei aus um die Eingabedaten aus der Datei zu erhalten: </p>
       <div class="form-group">
         <input type="file" class="form-control-file" name="text" id="file" accept="text/xml" aria-labelledby="Dateiimport der Planungsdaten"
-               (change)="changeListener($event)" [(ngModel)]="text" required/>
-          <div [hidden]="!(saveForm.controls.text?.dirty && saveForm.controls.text?.invalid)">
-              <small class="form-text text-danger"
-                     [hidden]="!saveForm.controls.text?.errors?.required" jhiTranslate="entity.validation.required">
-                  This field is required.
-              </small>
-          </div>
+               (change)="changeListener($event)"/>
       </div>
       <h3>
         <p>Vorschau der Datei: </p>

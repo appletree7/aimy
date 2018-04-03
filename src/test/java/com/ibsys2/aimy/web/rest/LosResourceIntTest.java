@@ -3,6 +3,7 @@ package com.ibsys2.aimy.web.rest;
 import com.ibsys2.aimy.AimyApp;
 
 import com.ibsys2.aimy.domain.Los;
+import com.ibsys2.aimy.domain.Fertigungsauftrag;
 import com.ibsys2.aimy.repository.LosRepository;
 import com.ibsys2.aimy.service.LosService;
 import com.ibsys2.aimy.web.rest.errors.ExceptionTranslator;
@@ -501,6 +502,25 @@ public class LosResourceIntTest {
         // Get all the losList where kosten is null
         defaultLosShouldNotBeFound("kosten.specified=false");
     }
+
+    @Test
+    @Transactional
+    public void getAllLosByFertigungsauftragIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Fertigungsauftrag fertigungsauftrag = FertigungsauftragResourceIntTest.createEntity(em);
+        em.persist(fertigungsauftrag);
+        em.flush();
+        los.setFertigungsauftrag(fertigungsauftrag);
+        losRepository.saveAndFlush(los);
+        Long fertigungsauftragId = fertigungsauftrag.getId();
+
+        // Get all the losList where fertigungsauftrag equals to fertigungsauftragId
+        defaultLosShouldBeFound("fertigungsauftragId.equals=" + fertigungsauftragId);
+
+        // Get all the losList where fertigungsauftrag equals to fertigungsauftragId + 1
+        defaultLosShouldNotBeFound("fertigungsauftragId.equals=" + (fertigungsauftragId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned
      */

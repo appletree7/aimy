@@ -38,6 +38,8 @@ public class LosCriteria implements Serializable {
 
     private DoubleFilter kosten;
 
+    private LongFilter fertigungsauftragId;
+
     public LosCriteria() {
     }
 
@@ -89,6 +91,14 @@ public class LosCriteria implements Serializable {
         this.kosten = kosten;
     }
 
+    public LongFilter getFertigungsauftragId() {
+        return fertigungsauftragId;
+    }
+
+    public void setFertigungsauftragId(LongFilter fertigungsauftragId) {
+        this.fertigungsauftragId = fertigungsauftragId;
+    }
+
     @Override
     public String toString() {
         return "LosCriteria{" +
@@ -98,6 +108,7 @@ public class LosCriteria implements Serializable {
                 (menge != null ? "menge=" + menge + ", " : "") +
                 (durchlaufzeit != null ? "durchlaufzeit=" + durchlaufzeit + ", " : "") +
                 (kosten != null ? "kosten=" + kosten + ", " : "") +
+                (fertigungsauftragId != null ? "fertigungsauftragId=" + fertigungsauftragId + ", " : "") +
             "}";
     }
 

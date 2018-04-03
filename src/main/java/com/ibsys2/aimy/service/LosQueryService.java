@@ -87,6 +87,9 @@ public class LosQueryService extends QueryService<Los> {
             if (criteria.getKosten() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getKosten(), Los_.kosten));
             }
+            if (criteria.getFertigungsauftragId() != null) {
+                specification = specification.and(buildReferringEntitySpecification(criteria.getFertigungsauftragId(), Los_.fertigungsauftrag, Fertigungsauftrag_.id));
+            }
         }
         return specification;
     }

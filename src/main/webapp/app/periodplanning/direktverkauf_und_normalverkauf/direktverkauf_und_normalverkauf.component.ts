@@ -1,19 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { URLSearchParams, BaseRequestOptions } from '@angular/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Rx';
 import {JhiAlertService, JhiParseLinks, JhiEventManager} from 'ng-jhipster';
 
-import {Teil, Teiltyp} from '../../entities/teil/teil.model';
-import {TeilService} from '../../entities/teil/teil.service';
-import {createRequestOption, ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
+import {Teil, Teiltyp} from '../../entities/teil';
+import {TeilService} from '../../entities/teil';
+import {Principal, ResponseWrapper} from '../../shared';
 
 @Component({
   selector: 'jhi-direktverkauf-und-normalverkauf',
   templateUrl: './direktverkauf_und_normalverkauf.component.html',
   styles: []
 })
-export class DirektverkaufUndNormalverkaufComponent implements OnInit {
+export class DirektverkaufUndNormalverkaufComponent implements OnInit, OnDestroy {
     isSaving: boolean;
     teil: Teil;
     teils: Teil[];
@@ -29,12 +28,10 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit {
                private activatedRoute: ActivatedRoute,
                private jhiAlertService: JhiAlertService,
                private eventManager: JhiEventManager,
-               private principal: Principal)
-  {
-  }
+               private principal: Principal) {}
 
     loadTeile() {
-        let criteria = [
+        const criteria = [
             {key: 'teiltyp.equals', value: 'PRODUKT'},
             {key: 'periode.equals', value: localStorage.getItem('aktuelleperiode')}
         ];
@@ -44,8 +41,7 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit {
             }
         )
             .subscribe((res: ResponseWrapper) => this.onSuccessTeil(res.json, res.headers)
-                // this.teils = this.teils.filter((teil) => teil.teiltyp.toString() === 'PRODUKT' && teil.periode === parseInt(localStorage.getItem('aktuelleperiode'), 10));
-            , (res: ResponseWrapper) => this.onError(res.json));
+          , (res: ResponseWrapper) => this.onError(res.json));
     }
 
     ngOnInit() {
@@ -62,7 +58,7 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit {
     }
 
     registerChangeInTeils() {
-        this.eventSubscriber = this.eventManager.subscribe('teilListModification', (response) => this.loadTeile());
+        this.eventSubscriber = this.eventManager.subscribe('teilListModification', () => this.loadTeile());
     }
 
     previousState() {
@@ -74,7 +70,7 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit {
     }
 
     save() {
-        let criteria = [
+        const criteria = [
             {key: 'teiltyp.equals', value: 'PRODUKT'},
             {key: 'periode.equals', value: localStorage.getItem('aktuelleperiode')}
         ];
@@ -90,10 +86,10 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit {
                     this.teil = this.teils.find((teil) => teil.nummer === teil1.nummer && teil.periode === parseInt(localStorage.getItem('aktuelleperiode'), 10));
                     if (this.teile !== undefined) {
                         this.teilService.update(this.teil).subscribe((respond: Teil) =>
-                            console.log(respond), (respond: Response) => this.onSaveError());
+                            console.log(respond), () => this.onSaveError());
                     } else {
                         this.teilService.create(this.teil).subscribe((respond: Teil) =>
-                            console.log(respond), (respond: Response) => this.onSaveError());
+                            console.log(respond), () => this.onSaveError());
                     }
                 }
 
@@ -108,7 +104,6 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = headers.get('X-Total-Count');
         this.queryCount = this.totalItems;
-        // this.page = pagingParams.page;
         this.teils = data;
         if (this.teils === undefined || this.teils.length === 0) {
             this.teil = new Teil(undefined, Teiltyp.PRODUKT, parseInt(localStorage.getItem('aktuelleperiode'), 10), 1, undefined, undefined, undefined,

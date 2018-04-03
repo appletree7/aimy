@@ -45,6 +45,7 @@ describe('Los e2e test', () => {
         expect(losDialogPage.getDurchlaufzeitInput()).toMatch('5');
         losDialogPage.setKostenInput('5');
         expect(losDialogPage.getKostenInput()).toMatch('5');
+        losDialogPage.fertigungsauftragSelectLastOption();
         losDialogPage.save();
         expect(losDialogPage.getSaveButton().isPresent()).toBeFalsy();
     }); 
@@ -76,6 +77,7 @@ export class LosDialogPage {
     mengeInput = element(by.css('input#field_menge'));
     durchlaufzeitInput = element(by.css('input#field_durchlaufzeit'));
     kostenInput = element(by.css('input#field_kosten'));
+    fertigungsauftragSelect = element(by.css('select#field_fertigungsauftrag'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -119,6 +121,22 @@ export class LosDialogPage {
 
     getKostenInput = function () {
         return this.kostenInput.getAttribute('value');
+    }
+
+    fertigungsauftragSelectLastOption = function () {
+        this.fertigungsauftragSelect.all(by.tagName('option')).last().click();
+    }
+
+    fertigungsauftragSelectOption = function (option) {
+        this.fertigungsauftragSelect.sendKeys(option);
+    }
+
+    getFertigungsauftragSelect = function () {
+        return this.fertigungsauftragSelect;
+    }
+
+    getFertigungsauftragSelectedOption = function () {
+        return this.fertigungsauftragSelect.element(by.css('option:checked')).getText();
     }
 
     save() {

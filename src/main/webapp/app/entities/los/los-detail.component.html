@@ -24,6 +24,12 @@
         <dd>
             <span>{{los.kosten}}</span>
         </dd>
+        <dt><span jhiTranslate="aimyApp.los.fertigungsauftrag">Fertigungsauftrag</span></dt>
+        <dd>
+            <div *ngIf="los.fertigungsauftrag">
+                <a [routerLink]="['/fertigungsauftrag', los.fertigungsauftrag?.id]">{{los.fertigungsauftrag?.id}}</a>
+            </div>
+        </dd>
     </dl>
 
     <button type="submit"

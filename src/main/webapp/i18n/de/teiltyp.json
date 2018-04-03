@@ -4,7 +4,10 @@
             "null": "",
             "PRODUKT": "PRODUKT",
             "ERZEUGNIS": "ERZEUGNIS",
-            "KAUFTEIL": "KAUFTEIL"
+            "KAUFTEIL": "KAUFTEIL",
+            "0": "PRODUKT",
+            "1": "ERZEUGNIS",
+            "2": "KAUFTEIL"
         }
     }
 }

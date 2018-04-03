@@ -9,6 +9,8 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { Los } from './los.model';
 import { LosPopupService } from './los-popup.service';
 import { LosService } from './los.service';
+import { Fertigungsauftrag, FertigungsauftragService } from '../fertigungsauftrag';
+import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-los-dialog',
@@ -19,16 +21,21 @@ export class LosDialogComponent implements OnInit {
     los: Los;
     isSaving: boolean;
 
+    fertigungsauftrags: Fertigungsauftrag[];
+
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private losService: LosService,
+        private fertigungsauftragService: FertigungsauftragService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
+        this.fertigungsauftragService.query()
+            .subscribe((res: ResponseWrapper) => { this.fertigungsauftrags = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {
@@ -63,6 +70,10 @@ export class LosDialogComponent implements OnInit {
 
     private onError(error: any) {
         this.jhiAlertService.error(error.message, null, null);
+    }
+
+    trackFertigungsauftragById(index: number, item: Fertigungsauftrag) {
+        return item.id;
     }
 }
 

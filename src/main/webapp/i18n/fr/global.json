@@ -8,12 +8,12 @@
             "entities": {
                 "main": "Entités",
                 "los": "Los",
-                "modus": "Modus",
-                "teil": "Teil",
-                "bestellung": "Bestellung",
-                "fertigungsauftrag": "Fertigungsauftrag",
-                "arbeitsplatz": "Arbeitsplatz",
-                "kennzahlen": "Kennzahlen",
+                "modus": "mode",
+                "teil": "composant",
+                "bestellung": "ordre",
+                "fertigungsauftrag": "ordre de production",
+                "arbeitsplatz": "lieu de travail",
+                "kennzahlen": "mesurer",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -38,6 +38,18 @@
                 "database": "Base de données",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
+
+            "periodplanning": {
+                "main": "la planification de la période",
+                "in-house_production": "Eigenfertigung",
+                "purchased_part": "Kaufteiledisposition",
+                "capacity_planning": "Kapazitätsplannung",
+                "period_start": "Période de démarrage",
+                "direktverkauf_und_normalverkauf": "Vente directe et vente normale",
+                "abschluss": "achèvement"
+
+            },
+
             "language": "Langue"
         },
         "form": {
@@ -103,7 +115,8 @@
             "delete": "Supprimer",
             "open": "Ouvrir",
             "save": "Sauvegarder",
-            "view": "Voir"
+            "view": "Voir",
+            "next": "plus"
         },
         "detail": {
             "field": "Champs",

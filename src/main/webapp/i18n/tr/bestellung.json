@@ -2,30 +2,30 @@
     "aimyApp": {
         "bestellung" : {
             "home": {
-                "title": "Bestellungs",
-                "createLabel": "Create a new Bestellung",
-                "createOrEditLabel": "Create or edit a Bestellung"
+                "title": "emir",
+                "createLabel": "Yeni bir tane oluştur sipariş",
+                "createOrEditLabel": "Oluştur veya düzenle sipariş"
             },
-            "created": "A new Bestellung is created with identifier {{ param }}",
-            "updated": "A Bestellung is updated with identifier {{ param }}",
-            "deleted": "A Bestellung is deleted with identifier {{ param }}",
+            "created": "Yeni sipariş tanımlayıcı ile oluşturulur {{ param }}",
+            "updated": "bir sipariş tanımlayıcı ile güncellendi {{ param }}",
+            "deleted": "bir sipariş tanımlayıcı ile silinir {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Bestellung {{ id }}?"
+                "question": "Silmek istediğine emin misin sipariş {{ id }}?"
             },
             "detail": {
-                "title": "Bestellung"
+                "title": "sipariş"
             },
-            "periode": "Periode",
-            "nummer": "Nummer",
-            "lieferzeit": "Lieferzeit",
-            "kaufmenge": "Kaufmenge",
-            "materialkosten": "Materialkosten",
-            "bestellkosten": "Bestellkosten",
-            "gesamtkosten": "Gesamtkosten",
-            "stueckkosten": "Stueckkosten",
-            "bestellstatus": "Bestellstatus",
-            "modus": "Modus",
-            "kaufteil": "Kaufteil"
+            "periode": "dönem",
+            "nummer": "sayı",
+            "lieferzeit": "teslim süresi",
+            "kaufmenge": "satın alma tutarı",
+            "materialkosten": "malzeme maliyetleri",
+            "bestellkosten": "sipariş maliyetleri",
+            "gesamtkosten": "toplam maliyet",
+            "stueckkosten": "birim maliyetleri",
+            "bestellstatus": "Sipariş durumu",
+            "modus": "kip",
+            "kaufteil": "Satın alınan kısım"
         }
     }
 }

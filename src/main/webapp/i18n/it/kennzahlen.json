@@ -2,24 +2,24 @@
     "aimyApp": {
         "kennzahlen" : {
             "home": {
-                "title": "Kennzahlens",
-                "createLabel": "Genera un nuovo Kennzahlen",
-                "createOrEditLabel": "Genera o modifica un Kennzahlen"
+                "title": "cifre chiave",
+                "createLabel": "Genera un nuovo misurare",
+                "createOrEditLabel": "Genera o modifica un misurare"
             },
-            "created": "&Egrave; stato generato un nuovo Kennzahlen con identificatore {{ param }}",
-            "updated": "&Egrave; stato aggiornato Kennzahlen identificato da {{ param }}",
-            "deleted": "&Egrave; stato eliminato Kennzahlen con identificatore {{ param }}",
+            "created": "&Egrave; stato generato un nuovo misurare con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato misurare identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato misurare con identificatore {{ param }}",
             "delete": {
-                "question": "Sei sicuro di volere eliminare Kennzahlen {{ id }}?"
+                "question": "Sei sicuro di volere eliminare misurare {{ id }}?"
             },
             "detail": {
-                "title": "Kennzahlen"
+                "title": "misurare"
             },
-            "periode": "Periode",
-            "name": "Name",
-            "aktuell": "Aktuell",
+            "periode": "periodo",
+            "name": "nome",
+            "aktuell": "corrente",
             "durchschnitt": "Durchschnitt",
-            "gesamt": "Gesamt"
+            "gesamt": "globale"
         }
     }
 }

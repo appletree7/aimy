@@ -2,30 +2,30 @@
     "aimyApp": {
         "arbeitsplatz" : {
             "home": {
-                "title": "Arbeitsplatzs",
-                "createLabel": "Create a new Arbeitsplatz",
-                "createOrEditLabel": "Create or edit a Arbeitsplatz"
+                "title": "işler",
+                "createLabel": "Yeni bir tane oluştur iş yeri",
+                "createOrEditLabel": "Oluştur veya düzenle iş yeri"
             },
-            "created": "A new Arbeitsplatz is created with identifier {{ param }}",
-            "updated": "A Arbeitsplatz is updated with identifier {{ param }}",
-            "deleted": "A Arbeitsplatz is deleted with identifier {{ param }}",
+            "created": "Yeni iş yeri tanımlayıcı ile oluşturulur {{ param }}",
+            "updated": "A iş yeri tanımlayıcı ile güncellendi {{ param }}",
+            "deleted": "A iş yeriis tanımlayıcı ile silinmiş {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Arbeitsplatz {{ id }}?"
+                "question": "Silmek istediğine emin misin iş yeri {{ id }}?"
             },
             "detail": {
-                "title": "Arbeitsplatz"
+                "title": "iş yeri"
             },
-            "periode": "Periode",
-            "nummer": "Nummer",
-            "restzeitbedarf": "Restzeitbedarf",
-            "ruestvorgaenge": "Ruestvorgaenge",
-            "leerzeit": "Leerzeit",
-            "lohnleerkosten": "Lohnleerkosten",
-            "lohnkosten": "Lohnkosten",
-            "maschinenstillstandkosten": "Maschinenstillstandkosten",
-            "restzeitbedarf_in_bearbeitung": "Restzeitbedarf In Bearbeitung",
-            "schicht": "Schicht",
-            "ueberstunden": "Ueberstunden"
+            "periode": "dönem",
+            "nummer": "sayı",
+            "restzeitbedarf": "gerekli zaman",
+            "ruestvorgaenge": "hazırlık",
+            "leerzeit": "boş zaman",
+            "lohnleerkosten": "Boşta Ücret maliyetleri",
+            "lohnkosten": "işçilik maliyetleri",
+            "maschinenstillstandkosten": "Makine kesinti maliyetleri",
+            "restzeitbedarf_in_bearbeitung": "Kalan süre gerekli Devam ediyor",
+            "schicht": "iş genel bakış",
+            "ueberstunden": "fazla mesai"
         }
     }
 }

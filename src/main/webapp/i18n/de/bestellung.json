@@ -2,7 +2,7 @@
     "aimyApp": {
         "bestellung" : {
             "home": {
-                "title": "Bestellungs",
+                "title": "Bestellungen",
                 "createLabel": "Bestellung erstellen",
                 "createOrEditLabel": "Bestellung erstellen oder bearbeiten"
             },

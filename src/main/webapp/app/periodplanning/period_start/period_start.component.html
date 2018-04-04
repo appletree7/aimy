@@ -29,10 +29,6 @@
         <input type="file" class="form-control-file" name="text" id="file" accept="text/xml" aria-labelledby="Dateiimport der Planungsdaten"
                (change)="changeListener($event)"/>
       </div>
-      <h3>
-        <p>Vorschau der Datei: </p>
-      </h3>
-        <span>{{text}}</span>
     </div>
     <div>
 
@@ -41,9 +37,7 @@
         </button>
         <button type="button" class="btn btn-primary" [routerLink]="['/direktverkauf_und_normalverkauf']"
                 replaceUrl="true">
-            <span>
-                Weiter
-                </span>
+            <span jhiTranslate="entity.action.next"> Weiter</span>
         </button>
     </div>
 </form>

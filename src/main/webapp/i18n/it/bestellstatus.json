@@ -2,8 +2,8 @@
     "aimyApp": {
         "Bestellstatus" : {
             "null": "",
-            "GELIEFERT": "GELIEFERT",
-            "UNTERWEGS": "UNTERWEGS"
+            "GELIEFERT": "DOTAZIONE",
+            "UNTERWEGS": "COME MUOVERSI"
         }
     }
 }

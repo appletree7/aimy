@@ -2,34 +2,34 @@
     "aimyApp": {
         "teil" : {
             "home": {
-                "title": "Teils",
-                "createLabel": "Create a new Teil",
-                "createOrEditLabel": "Create or edit a Teil"
+                "title": "components",
+                "createLabel": "Create a new component",
+                "createOrEditLabel": "Create or edit a component"
             },
-            "created": "A new Teil is created with identifier {{ param }}",
-            "updated": "A Teil is updated with identifier {{ param }}",
-            "deleted": "A Teil is deleted with identifier {{ param }}",
+            "created": "A new component is created with identifier {{ param }}",
+            "updated": "A component is updated with identifier {{ param }}",
+            "deleted": "A component is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Teil {{ id }}?"
+                "question": "Are you sure you want to delete component {{ id }}?"
             },
             "detail": {
-                "title": "Teil"
+                "title": "component"
             },
-            "teiltyp": "Teiltyp",
-            "periode": "Periode",
-            "nummer": "Nummer",
-            "istmenge": "Istmenge",
-            "startmenge": "Startmenge",
-            "prozentsatz": "Prozentsatz",
-            "lagerpreis": "Lagerpreis",
-            "lagerwert": "Lagerwert",
-            "sicherheitsbestand": "Sicherheitsbestand",
-            "vertriebswunsch": "Vertriebswunsch",
-            "gesamtproduktionsmenge": "Gesamtproduktionsmenge",
-            "direktverkaufmenge": "Direktverkaufmenge",
-            "direktverkaufspreis": "Direktverkaufspreis",
-            "strafe": "Strafe",
-            "subkomponente": "Subkomponente"
+            "teiltyp": "component type",
+            "periode": "period",
+            "nummer": "number",
+            "istmenge": "actual quantity",
+            "startmenge": "starting quantity",
+            "prozentsatz": "percentage",
+            "lagerpreis": "stock price",
+            "lagerwert": "stock value",
+            "sicherheitsbestand": "security stock",
+            "vertriebswunsch": "sales request",
+            "gesamtproduktionsmenge": "production quantity",
+            "direktverkaufmenge": "direct sales quantity",
+            "direktverkaufspreis": "direct selling price",
+            "strafe": "penalty",
+            "subkomponente": "subcomponent"
         }
     }
 }

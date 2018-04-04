@@ -2,29 +2,29 @@
     "aimyApp": {
         "modus" : {
             "home": {
-                "title": "Moduses",
-                "createLabel": "Create a new Modus",
-                "createOrEditLabel": "Create or edit a Modus"
+                "title": "modes",
+                "createLabel": "Create a new modo",
+                "createOrEditLabel": "Create or edit a modo"
             },
-            "created": "A new Modus is created with identifier {{ param }}",
-            "updated": "A Modus is updated with identifier {{ param }}",
-            "deleted": "A Modus is deleted with identifier {{ param }}",
+            "created": "A new mode is created with identifier {{ param }}",
+            "updated": "A mode is updated with identifier {{ param }}",
+            "deleted": "A v is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Modus {{ id }}?"
+                "question": "Are you sure you want to delete mode {{ id }}?"
             },
             "detail": {
-                "title": "Modus"
+                "title": "mode"
             },
-            "name": "Name",
-            "bearbeitungsfaktor": "Bearbeitungsfaktor",
-            "bearbeitungsabweichung": "Bearbeitungsabweichung",
-            "lieferfaktor": "Lieferfaktor",
-            "lieferabweichung": "Lieferabweichung",
-            "mengenfakor": "Mengenfakor",
-            "mengenabweichung": "Mengenabweichung",
-            "preisfaktor": "Preisfaktor",
-            "diskontfaktor": "Diskontfaktor",
-            "bestellkostenfaktor": "Bestellkostenfaktor"
+            "name": "name",
+            "bearbeitungsfaktor": "processing factor",
+            "bearbeitungsabweichung": "processing deviation",
+            "lieferfaktor": "delivery factor",
+            "lieferabweichung": "delivery deviation",
+            "mengenfakor": "quantity factor",
+            "mengenabweichung": "quantity variance",
+            "preisfaktor": "price factor",
+            "diskontfaktor": "discount factor",
+            "bestellkostenfaktor": "Ordering cost"
         }
     }
 }

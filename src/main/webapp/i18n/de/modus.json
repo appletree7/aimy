@@ -2,7 +2,7 @@
     "aimyApp": {
         "modus" : {
             "home": {
-                "title": "Moduses",
+                "title": "Modi",
                 "createLabel": "Modus erstellen",
                 "createOrEditLabel": "Modus erstellen oder bearbeiten"
             },
@@ -20,7 +20,7 @@
             "bearbeitungsabweichung": "Bearbeitungsabweichung",
             "lieferfaktor": "Lieferfaktor",
             "lieferabweichung": "Lieferabweichung",
-            "mengenfakor": "Mengenfakor",
+            "mengenfakor": "Mengenfaktor",
             "mengenabweichung": "Mengenabweichung",
             "preisfaktor": "Preisfaktor",
             "diskontfaktor": "Diskontfaktor",

@@ -2,30 +2,30 @@
     "aimyApp": {
         "bestellung" : {
             "home": {
-                "title": "Bestellungs",
-                "createLabel": "Créer un nouveau Bestellung",
-                "createOrEditLabel": "Créer ou éditer un Bestellung"
+                "title": "ordres",
+                "createLabel": "Créer un nouveau ordre",
+                "createOrEditLabel": "Créer ou éditer un ordre"
             },
-            "created": "Un nouveau Bestellung a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Bestellung avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Bestellung avec l'identifiant {{ param }} a été supprimé",
+            "created": "Un nouveau ordre a été créé avec l'identifiant {{ param }}",
+            "updated": "Le ordre avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le ordre avec l'identifiant {{ param }} a été supprimé",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Bestellung {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer le ordre {{ id }} ?"
             },
             "detail": {
-                "title": "Bestellung"
+                "title": "v"
             },
-            "periode": "Periode",
-            "nummer": "Nummer",
-            "lieferzeit": "Lieferzeit",
-            "kaufmenge": "Kaufmenge",
-            "materialkosten": "Materialkosten",
-            "bestellkosten": "Bestellkosten",
-            "gesamtkosten": "Gesamtkosten",
-            "stueckkosten": "Stueckkosten",
-            "bestellstatus": "Bestellstatus",
-            "modus": "Modus",
-            "kaufteil": "Kaufteil"
+            "periode": "période",
+            "nummer": "nombre",
+            "lieferzeit": "délai de livraison",
+            "kaufmenge": "montant de l'achat",
+            "materialkosten": "coûts des matières",
+            "bestellkosten": "les coûts de commande",
+            "gesamtkosten": "coût total",
+            "stueckkosten": "les coûts unitaires",
+            "bestellstatus": "commande",
+            "modus": "mode",
+            "kaufteil": "a acheté une partie"
         }
     }
 }

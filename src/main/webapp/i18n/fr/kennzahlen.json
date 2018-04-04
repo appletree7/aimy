@@ -2,24 +2,24 @@
     "aimyApp": {
         "kennzahlen" : {
             "home": {
-                "title": "Kennzahlens",
-                "createLabel": "Créer un nouveau Kennzahlen",
-                "createOrEditLabel": "Créer ou éditer un Kennzahlen"
+                "title": "chiffres clés",
+                "createLabel": "Créer un nouveau mesurer",
+                "createOrEditLabel": "Créer ou éditer un mesurer"
             },
-            "created": "Un nouveau Kennzahlen a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Kennzahlen avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Kennzahlen avec l'identifiant {{ param }} a été supprimé",
+            "created": "Un nouveau mesurer a été créé avec l'identifiant {{ param }}",
+            "updated": "Le mesurer avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le mesurer avec l'identifiant {{ param }} a été supprimé",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Kennzahlen {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer le mesurer {{ id }} ?"
             },
             "detail": {
-                "title": "Kennzahlen"
+                "title": "mesurer"
             },
-            "periode": "Periode",
-            "name": "Name",
-            "aktuell": "Aktuell",
-            "durchschnitt": "Durchschnitt",
-            "gesamt": "Gesamt"
+            "periode": "période",
+            "name": "nom",
+            "aktuell": "courant",
+            "durchschnitt": "moyenne",
+            "gesamt": "global"
         }
     }
 }

@@ -8,12 +8,12 @@
             "entities": {
                 "main": "Varlıklar",
                 "los": "Los",
-                "modus": "Modus",
-                "teil": "Teil",
-                "bestellung": "Bestellung",
-                "fertigungsauftrag": "Fertigungsauftrag",
-                "arbeitsplatz": "Arbeitsplatz",
-                "kennzahlen": "Kennzahlen",
+                "modus": "kip",
+                "teil": "bileşen",
+                "bestellung": "sipariş",
+                "fertigungsauftrag": "üretim emri",
+                "arbeitsplatz": "işyeri",
+                "kennzahlen": "ölçmek",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -38,6 +38,18 @@
                 "database": "Veritabanı",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
+
+            "periodplanning": {
+                "main": "dönem planlaması",
+                "in-house_production": "Eigenfertigung",
+                "purchased_part": "Kaufteiledisposition",
+                "capacity_planning": "Kapazitätsplannung",
+                "period_start": "Başlangıç dönemi",
+                "direktverkauf_und_normalverkauf": "Doğrudan satış ve normal satış",
+                "abschluss": "tamamlama"
+
+            },
+
             "language": "Dil"
         },
         "form": {
@@ -103,7 +115,8 @@
             "edit": "Düzenle",
             "open": "Aç",
             "save": "Kaydet",
-            "view": "Görüntüle"
+            "view": "Görüntüle",
+            "next": "daha"
         },
         "detail": {
             "field": "Alan",

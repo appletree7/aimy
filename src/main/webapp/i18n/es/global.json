@@ -8,12 +8,12 @@
             "entities": {
                 "main": "Entidades",
                 "los": "Los",
-                "modus": "Modus",
-                "teil": "Teil",
-                "bestellung": "Bestellung",
-                "fertigungsauftrag": "Fertigungsauftrag",
-                "arbeitsplatz": "Arbeitsplatz",
-                "kennzahlen": "Kennzahlen",
+                "modus": "modo",
+                "teil": "componente",
+                "bestellung": "orden",
+                "fertigungsauftrag": "orden de producción",
+                "arbeitsplatz": "lugar de trabajo",
+                "kennzahlen": "número indicador",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -38,6 +38,18 @@
                 "database": "Base de datos",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
+
+            "periodplanning": {
+                "main": "la planificación periodo",
+                "in-house_production": "Eigenfertigung",
+                "purchased_part": "Kaufteiledisposition",
+                "capacity_planning": "Kapazitätsplannung",
+                "period_start": "Período de inicio",
+                "direktverkauf_und_normalverkauf": "Ventas directas y venta normal",
+                "abschluss": "terminación"
+
+            },
+
             "language": "Idioma"
         },
         "form": {
@@ -103,7 +115,8 @@
             "edit": "Editar",
             "open": "Open",
             "save": "Guardar",
-            "view": "Vista"
+            "view": "Vista",
+            "next": "más"
         },
         "detail": {
             "field": "Campo",

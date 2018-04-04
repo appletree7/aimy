@@ -2,24 +2,24 @@
     "aimyApp": {
         "kennzahlen" : {
             "home": {
-                "title": "Kennzahlens",
-                "createLabel": "Create a new Kennzahlen",
-                "createOrEditLabel": "Create or edit a Kennzahlen"
+                "title": "Anahtar rakamlar",
+                "createLabel": "Yeni bir tane oluştur ölçmek",
+                "createOrEditLabel": "Oluştur veya düzenle ölçmek"
             },
-            "created": "A new Kennzahlen is created with identifier {{ param }}",
-            "updated": "A Kennzahlen is updated with identifier {{ param }}",
-            "deleted": "A Kennzahlen is deleted with identifier {{ param }}",
+            "created": "Yeni ölçmek tanımlayıcı ile oluşturulur {{ param }}",
+            "updated": "bir ölçmek tanımlayıcı ile güncellendi {{ param }}",
+            "deleted": "bir ölçmek tanımlayıcı ile silinir {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Kennzahlen {{ id }}?"
+                "question": "Silmek istediğine emin misin ölçmek {{ id }}?"
             },
             "detail": {
-                "title": "Kennzahlen"
+                "title": "ölçmek"
             },
-            "periode": "Periode",
-            "name": "Name",
-            "aktuell": "Aktuell",
+            "periode": "dönem",
+            "name": "isim",
+            "aktuell": "şimdiki",
             "durchschnitt": "Durchschnitt",
-            "gesamt": "Gesamt"
+            "gesamt": "tüm"
         }
     }
 }

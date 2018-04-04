@@ -2,24 +2,24 @@
     "aimyApp": {
         "kennzahlen" : {
             "home": {
-                "title": "Kennzahlens",
-                "createLabel": "Create a new Kennzahlen",
-                "createOrEditLabel": "Create or edit a Kennzahlen"
+                "title": "key figures",
+                "createLabel": "Create a new key figure",
+                "createOrEditLabel": "Create or edit a key figure"
             },
-            "created": "A new Kennzahlen is created with identifier {{ param }}",
-            "updated": "A Kennzahlen is updated with identifier {{ param }}",
-            "deleted": "A Kennzahlen is deleted with identifier {{ param }}",
+            "created": "A new key figure is created with identifier {{ param }}",
+            "updated": "A key figure is updated with identifier {{ param }}",
+            "deleted": "A key figure is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Kennzahlen {{ id }}?"
+                "question": "Are you sure you want to delete key figure {{ id }}?"
             },
             "detail": {
-                "title": "Kennzahlen"
+                "title": "key figure"
             },
-            "periode": "Periode",
-            "name": "Name",
-            "aktuell": "Aktuell",
-            "durchschnitt": "Durchschnitt",
-            "gesamt": "Gesamt"
+            "periode": "period",
+            "name": "name",
+            "aktuell": "current",
+            "durchschnitt": "average",
+            "gesamt": "total"
         }
     }
 }

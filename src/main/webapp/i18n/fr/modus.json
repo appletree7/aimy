@@ -2,29 +2,29 @@
     "aimyApp": {
         "modus" : {
             "home": {
-                "title": "Moduses",
-                "createLabel": "Créer un nouveau Modus",
-                "createOrEditLabel": "Créer ou éditer un Modus"
+                "title": "modes",
+                "createLabel": "Créer un nouveau mode",
+                "createOrEditLabel": "Créer ou éditer un modo"
             },
-            "created": "Un nouveau Modus a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Modus avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Modus avec l'identifiant {{ param }} a été supprimé",
+            "created": "Un nouveau mode a été créé avec l'identifiant {{ param }}",
+            "updated": "Le mode avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le mode avec l'identifiant {{ param }} a été supprimé",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Modus {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer le mode {{ id }} ?"
             },
             "detail": {
-                "title": "Modus"
+                "title": "mode"
             },
-            "name": "Name",
-            "bearbeitungsfaktor": "Bearbeitungsfaktor",
-            "bearbeitungsabweichung": "Bearbeitungsabweichung",
-            "lieferfaktor": "Lieferfaktor",
-            "lieferabweichung": "Lieferabweichung",
-            "mengenfakor": "Mengenfakor",
-            "mengenabweichung": "Mengenabweichung",
-            "preisfaktor": "Preisfaktor",
-            "diskontfaktor": "Diskontfaktor",
-            "bestellkostenfaktor": "Bestellkostenfaktor"
+            "name": "nom",
+            "bearbeitungsfaktor": "facteur de transformation",
+            "bearbeitungsabweichung": "allocation d'usinage",
+            "lieferfaktor": "facteur de livraison",
+            "lieferabweichung": "écart de livraison",
+            "mengenfakor": "facteur de quantité",
+            "mengenabweichung": "variance Quantité",
+            "preisfaktor": "facteur de prix",
+            "diskontfaktor": "facteur d'actualisation",
+            "bestellkostenfaktor": "Coût de commande"
         }
     }
 }

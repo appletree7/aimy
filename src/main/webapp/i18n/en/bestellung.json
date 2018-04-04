@@ -2,30 +2,30 @@
     "aimyApp": {
         "bestellung" : {
             "home": {
-                "title": "Bestellungs",
-                "createLabel": "Create a new Bestellung",
-                "createOrEditLabel": "Create or edit a Bestellung"
+                "title": "orders",
+                "createLabel": "Create a new order",
+                "createOrEditLabel": "Create or edit a order"
             },
-            "created": "A new Bestellung is created with identifier {{ param }}",
-            "updated": "A Bestellung is updated with identifier {{ param }}",
-            "deleted": "A Bestellung is deleted with identifier {{ param }}",
+            "created": "A new order is created with identifier {{ param }}",
+            "updated": "A order is updated with identifier {{ param }}",
+            "deleted": "A order is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Bestellung {{ id }}?"
+                "question": "Are you sure you want to delete order {{ id }}?"
             },
             "detail": {
-                "title": "Bestellung"
+                "title": "order"
             },
-            "periode": "Periode",
-            "nummer": "Nummer",
-            "lieferzeit": "Lieferzeit",
-            "kaufmenge": "Kaufmenge",
-            "materialkosten": "Materialkosten",
-            "bestellkosten": "Bestellkosten",
-            "gesamtkosten": "Gesamtkosten",
-            "stueckkosten": "Stueckkosten",
-            "bestellstatus": "Bestellstatus",
-            "modus": "Modus",
-            "kaufteil": "Kaufteil"
+            "periode": "period",
+            "nummer": "number",
+            "lieferzeit": "delivery time",
+            "kaufmenge": "purchase amount",
+            "materialkosten": "material costs",
+            "bestellkosten": "ordering costs",
+            "gesamtkosten": "total cost",
+            "stueckkosten": "unit costs",
+            "bestellstatus": "order status",
+            "modus": "mode",
+            "kaufteil": "purchased component"
         }
     }
 }

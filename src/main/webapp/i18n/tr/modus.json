@@ -2,29 +2,29 @@
     "aimyApp": {
         "modus" : {
             "home": {
-                "title": "Moduses",
-                "createLabel": "Create a new Modus",
-                "createOrEditLabel": "Create or edit a Modus"
+                "title": "modları",
+                "createLabel": "Yeni oluştur kip",
+                "createOrEditLabel": "Oluştur veya düzenle kip"
             },
-            "created": "A new Modus is created with identifier {{ param }}",
-            "updated": "A Modus is updated with identifier {{ param }}",
-            "deleted": "A Modus is deleted with identifier {{ param }}",
+            "created": "Yeni kip tanımlayıcı ile oluşturulur {{ param }}",
+            "updated": "bir kip tanımlayıcı ile güncellendi {{ param }}",
+            "deleted": "bir kip tanımlayıcı ile silinir {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Modus {{ id }}?"
+                "question": "Silmek istediğine emin misin kip {{ id }}?"
             },
             "detail": {
-                "title": "Modus"
+                "title": "kip"
             },
-            "name": "Name",
-            "bearbeitungsfaktor": "Bearbeitungsfaktor",
-            "bearbeitungsabweichung": "Bearbeitungsabweichung",
-            "lieferfaktor": "Lieferfaktor",
-            "lieferabweichung": "Lieferabweichung",
-            "mengenfakor": "Mengenfakor",
-            "mengenabweichung": "Mengenabweichung",
-            "preisfaktor": "Preisfaktor",
-            "diskontfaktor": "Diskontfaktor",
-            "bestellkostenfaktor": "Bestellkostenfaktor"
+            "name": "isim",
+            "bearbeitungsfaktor": "işleme faktörü",
+            "bearbeitungsabweichung": "işleme yardımı",
+            "lieferfaktor": "teslimat faktörü",
+            "lieferabweichung": "Sevkiyat sapması",
+            "mengenfakor": "miktar faktörü",
+            "mengenabweichung": "Miktar varyans",
+            "preisfaktor": "Fiyat faktörü",
+            "diskontfaktor": "indirim faktörü",
+            "bestellkostenfaktor": "Sipariş maliyeti"
         }
     }
 }

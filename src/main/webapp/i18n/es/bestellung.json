@@ -2,30 +2,30 @@
     "aimyApp": {
         "bestellung" : {
             "home": {
-                "title": "Bestellungs",
-                "createLabel": "Crear nuevo Bestellung",
-                "createOrEditLabel": "Crear o editar Bestellung"
+                "title": "pedidos",
+                "createLabel": "Crear nuevo pedido",
+                "createOrEditLabel": "Crear o editar pedido"
             },
-            "created": "Un nuevo Bestellung ha sido creado con el identificador {{ param }}",
-            "updated": "Un Bestellung ha sido actualizado con el identificador {{ param }}",
-            "deleted": "Un Bestellung ha sido eliminado con el identificador {{ param }}",
+            "created": "Un nuevo pedido ha sido creado con el identificador {{ param }}",
+            "updated": "Un pedido ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un pedido ha sido eliminado con el identificador {{ param }}",
             "delete": {
-                "question": "¿Seguro que quiere eliminar Bestellung {{ id }}?"
+                "question": "¿Seguro que quiere eliminar pedido {{ id }}?"
             },
             "detail": {
-                "title": "Bestellung"
+                "title": "pedido"
             },
-            "periode": "Periode",
-            "nummer": "Nummer",
-            "lieferzeit": "Lieferzeit",
-            "kaufmenge": "Kaufmenge",
+            "periode": "período",
+            "nummer": "número",
+            "lieferzeit": "tiempo de entrega",
+            "kaufmenge": "importe de la compra",
             "materialkosten": "Materialkosten",
-            "bestellkosten": "Bestellkosten",
-            "gesamtkosten": "Gesamtkosten",
-            "stueckkosten": "Stueckkosten",
-            "bestellstatus": "Bestellstatus",
-            "modus": "Modus",
-            "kaufteil": "Kaufteil"
+            "bestellkosten": "costos de pedido",
+            "gesamtkosten": "costo total",
+            "stueckkosten": "los costos unitarios",
+            "bestellstatus": "orden",
+            "modus": "modo",
+            "kaufteil": "pieza de compra"
         }
     }
 }

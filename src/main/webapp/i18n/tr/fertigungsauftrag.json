@@ -2,31 +2,31 @@
     "aimyApp": {
         "fertigungsauftrag" : {
             "home": {
-                "title": "Fertigungsauftrags",
-                "createLabel": "Create a new Fertigungsauftrag",
-                "createOrEditLabel": "Create or edit a Fertigungsauftrag"
+                "title": "İnşaat sözleşmeleri",
+                "createLabel": "Yeni bir tane oluştur üretim emri",
+                "createOrEditLabel": "Oluştur veya düzenle üretim emri"
             },
-            "created": "A new Fertigungsauftrag is created with identifier {{ param }}",
-            "updated": "A Fertigungsauftrag is updated with identifier {{ param }}",
-            "deleted": "A Fertigungsauftrag is deleted with identifier {{ param }}",
+            "created": "Yeni üretim emri tanımlayıcı ile oluşturulur {{ param }}",
+            "updated": "A üretim emri anımlayıcı ile güncellendi {{ param }}",
+            "deleted": "A üretim emri tanımlayıcı ile silinir {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Fertigungsauftrag {{ id }}?"
+                "question": "Silmek istediğine emin misin üretim emri {{ id }}?"
             },
             "detail": {
-                "title": "Fertigungsauftrag"
+                "title": "üretim emri"
             },
-            "periode": "Periode",
-            "nummer": "Nummer",
-            "auftragsmenge": "Auftragsmenge",
-            "kosten": "Kosten",
-            "durchschnittlichestueckkosten": "Durchschnittlichestueckkosten",
-            "auftragsstatus": "Auftragsstatus",
-            "begonnen": "Begonnen",
-            "beendet": "Beendet",
-            "dlzminimal": "Dlzminimal",
-            "dlzFaktor": "Dlz Faktor",
-            "bearbeitungszeitmin": "Bearbeitungszeitmin",
-            "herstellteil": "Herstellteil"
+            "periode": "dönem",
+            "nummer": "sayı",
+            "auftragsmenge": "Sipariş miktarı",
+            "kosten": "maliyetler",
+            "durchschnittlichestueckkosten": "Ortalama birim maliyetleri",
+            "auftragsstatus": "Sipariş durumu",
+            "begonnen": "başladı",
+            "beendet": "bitmiş",
+            "dlzminimal": "Çevrim süresi minimum",
+            "dlzFaktor": "Çevrim süresi faktör",
+            "bearbeitungszeitmin": "Işlem süresi min",
+            "herstellteil": "Üretim parçası"
         }
     }
 }

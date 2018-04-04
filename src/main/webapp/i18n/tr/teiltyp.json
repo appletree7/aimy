@@ -2,9 +2,12 @@
     "aimyApp": {
         "Teiltyp" : {
             "null": "",
-            "PRODUKT": "PRODUKT",
-            "ERZEUGNIS": "ERZEUGNIS",
-            "KAUFTEIL": "KAUFTEIL"
+            "PRODUKT": "ÜRÜN",
+            "ERZEUGNIS": "eşya",
+            "KAUFTEIL": "ALIM BÖLÜM",
+            "0": "ÜRÜN",
+            "1": "eşya",
+            "2": "ALIM BÖLÜM"
         }
     }
 }

@@ -2,30 +2,30 @@
     "aimyApp": {
         "arbeitsplatz" : {
             "home": {
-                "title": "Arbeitsplatzs",
-                "createLabel": "Genera un nuovo Arbeitsplatz",
-                "createOrEditLabel": "Genera o modifica un Arbeitsplatz"
+                "title": "posti di lavoro",
+                "createLabel": "Genera un nuovo sul posto di lavoro",
+                "createOrEditLabel": "Genera o modifica un sul posto di lavoro"
             },
-            "created": "&Egrave; stato generato un nuovo Arbeitsplatz con identificatore {{ param }}",
-            "updated": "&Egrave; stato aggiornato Arbeitsplatz identificato da {{ param }}",
-            "deleted": "&Egrave; stato eliminato Arbeitsplatz con identificatore {{ param }}",
+            "created": "&Egrave; stato generato un nuovo sul posto di lavoro con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato sul posto di lavoro identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato sul posto di lavoro con identificatore {{ param }}",
             "delete": {
-                "question": "Sei sicuro di volere eliminare Arbeitsplatz {{ id }}?"
+                "question": "Sei sicuro di volere eliminare sul posto di lavoro {{ id }}?"
             },
             "detail": {
-                "title": "Arbeitsplatz"
+                "title": "sul posto di lavoro"
             },
-            "periode": "Periode",
-            "nummer": "Nummer",
-            "restzeitbedarf": "Restzeitbedarf",
-            "ruestvorgaenge": "Ruestvorgaenge",
-            "leerzeit": "Leerzeit",
-            "lohnleerkosten": "Lohnleerkosten",
-            "lohnkosten": "Lohnkosten",
-            "maschinenstillstandkosten": "Maschinenstillstandkosten",
-            "restzeitbedarf_in_bearbeitung": "Restzeitbedarf In Bearbeitung",
-            "schicht": "Schicht",
-            "ueberstunden": "Ueberstunden"
+            "periode": "periodo",
+            "nummer": "numero",
+            "restzeitbedarf": "tempo necessario",
+            "ruestvorgaenge": "messa in macchina",
+            "leerzeit": "tempo di inattività",
+            "lohnleerkosten": "Costi salariali di inattività",
+            "lohnkosten": "il costo del lavoro",
+            "maschinenstillstandkosten": "Costi di inattività della macchina",
+            "restzeitbedarf_in_bearbeitung": "Tempo rimanente richiesto In corso",
+            "schicht": "panoramica lavoro",
+            "ueberstunden": "straordinario"
         }
     }
 }

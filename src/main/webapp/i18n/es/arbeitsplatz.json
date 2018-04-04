@@ -2,30 +2,30 @@
     "aimyApp": {
         "arbeitsplatz" : {
             "home": {
-                "title": "Arbeitsplatzs",
-                "createLabel": "Crear nuevo Arbeitsplatz",
-                "createOrEditLabel": "Crear o editar Arbeitsplatz"
+                "title": "puesto de trabajo",
+                "createLabel": "Crear nuevo puesto de trabajo",
+                "createOrEditLabel": "Crear o editar puesto de trabajo"
             },
-            "created": "Un nuevo Arbeitsplatz ha sido creado con el identificador {{ param }}",
-            "updated": "Un Arbeitsplatz ha sido actualizado con el identificador {{ param }}",
-            "deleted": "Un Arbeitsplatz ha sido eliminado con el identificador {{ param }}",
+            "created": "Un nuevo puesto de trabajo ha sido creado con el identificador {{ param }}",
+            "updated": "Un puesto de trabajo ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un puesto de trabajo ha sido eliminado con el identificador {{ param }}",
             "delete": {
-                "question": "¿Seguro que quiere eliminar Arbeitsplatz {{ id }}?"
+                "question": "¿Seguro que quiere eliminar puesto de trabajo {{ id }}?"
             },
             "detail": {
-                "title": "Arbeitsplatz"
+                "title": "puesto de trabajo"
             },
-            "periode": "Periode",
-            "nummer": "Nummer",
-            "restzeitbedarf": "Restzeitbedarf",
-            "ruestvorgaenge": "Ruestvorgaenge",
-            "leerzeit": "Leerzeit",
-            "lohnleerkosten": "Lohnleerkosten",
-            "lohnkosten": "Lohnkosten",
-            "maschinenstillstandkosten": "Maschinenstillstandkosten",
-            "restzeitbedarf_in_bearbeitung": "Restzeitbedarf In Bearbeitung",
-            "schicht": "Schicht",
-            "ueberstunden": "Ueberstunden"
+            "periode": "período",
+            "nummer": "número",
+            "restzeitbedarf": "El tiempo requerido",
+            "ruestvorgaenge": "la puesta a punto",
+            "leerzeit": "tiempo de inactividad",
+            "lohnleerkosten": "Los costes salariales de inactividad",
+            "lohnkosten": "los costes laborales",
+            "maschinenstillstandkosten": "Los costos de tiempo de inactividad de la máquina",
+            "restzeitbedarf_in_bearbeitung": "Tiempo restante requerido En progreso",
+            "schicht": "turno de trabajo",
+            "ueberstunden": "horas extraordinarias"
         }
     }
 }

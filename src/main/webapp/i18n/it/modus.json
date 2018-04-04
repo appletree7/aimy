@@ -2,29 +2,29 @@
     "aimyApp": {
         "modus" : {
             "home": {
-                "title": "Moduses",
-                "createLabel": "Genera un nuovo Modus",
-                "createOrEditLabel": "Genera o modifica un Modus"
+                "title": "modalità",
+                "createLabel": "Genera un nuovo modo",
+                "createOrEditLabel": "Genera o modifica un modo"
             },
-            "created": "&Egrave; stato generato un nuovo Modus con identificatore {{ param }}",
-            "updated": "&Egrave; stato aggiornato Modus identificato da {{ param }}",
-            "deleted": "&Egrave; stato eliminato Modus con identificatore {{ param }}",
+            "created": "&Egrave; stato generato un nuovo modo con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato modo identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato modo con identificatore {{ param }}",
             "delete": {
-                "question": "Sei sicuro di volere eliminare Modus {{ id }}?"
+                "question": "Sei sicuro di volere eliminare modo {{ id }}?"
             },
             "detail": {
-                "title": "Modus"
+                "title": "modo"
             },
-            "name": "Name",
-            "bearbeitungsfaktor": "Bearbeitungsfaktor",
-            "bearbeitungsabweichung": "Bearbeitungsabweichung",
-            "lieferfaktor": "Lieferfaktor",
-            "lieferabweichung": "Lieferabweichung",
-            "mengenfakor": "Mengenfakor",
-            "mengenabweichung": "Mengenabweichung",
-            "preisfaktor": "Preisfaktor",
-            "diskontfaktor": "Diskontfaktor",
-            "bestellkostenfaktor": "Bestellkostenfaktor"
+            "name": "nome",
+            "bearbeitungsfaktor": "fattore di trasformazione",
+            "bearbeitungsabweichung": "sovrametallo",
+            "lieferfaktor": "fattore di consegna",
+            "lieferabweichung": "deviazione consegna",
+            "mengenfakor": "fattore di quantità",
+            "mengenabweichung": "Quantità varianza",
+            "preisfaktor": "fattore prezzo",
+            "diskontfaktor": "fattore di sconto",
+            "bestellkostenfaktor": "Costo di ordinazione"
         }
     }
 }

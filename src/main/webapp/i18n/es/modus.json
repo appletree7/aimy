@@ -2,29 +2,29 @@
     "aimyApp": {
         "modus" : {
             "home": {
-                "title": "Moduses",
-                "createLabel": "Crear nuevo Modus",
-                "createOrEditLabel": "Crear o editar Modus"
+                "title": "modos",
+                "createLabel": "Crear nuevo modo",
+                "createOrEditLabel": "Crear o editar modo"
             },
-            "created": "Un nuevo Modus ha sido creado con el identificador {{ param }}",
-            "updated": "Un Modus ha sido actualizado con el identificador {{ param }}",
-            "deleted": "Un Modus ha sido eliminado con el identificador {{ param }}",
+            "created": "Un nuevo modo ha sido creado con el identificador {{ param }}",
+            "updated": "Un modo ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un modo ha sido eliminado con el identificador {{ param }}",
             "delete": {
-                "question": "¿Seguro que quiere eliminar Modus {{ id }}?"
+                "question": "¿Seguro que quiere eliminar modo {{ id }}?"
             },
             "detail": {
-                "title": "Modus"
+                "title": "modo"
             },
-            "name": "Name",
-            "bearbeitungsfaktor": "Bearbeitungsfaktor",
-            "bearbeitungsabweichung": "Bearbeitungsabweichung",
-            "lieferfaktor": "Lieferfaktor",
-            "lieferabweichung": "Lieferabweichung",
-            "mengenfakor": "Mengenfakor",
-            "mengenabweichung": "Mengenabweichung",
-            "preisfaktor": "Preisfaktor",
-            "diskontfaktor": "Diskontfaktor",
-            "bestellkostenfaktor": "Bestellkostenfaktor"
+            "name": "nombre",
+            "bearbeitungsfaktor": "factor de elaboración",
+            "bearbeitungsabweichung": "tolerancia de mecanizado",
+            "lieferfaktor": "factor de entrega",
+            "lieferabweichung": "desviación entrega",
+            "mengenfakor": "factor de cantidad",
+            "mengenabweichung": "Cantidad varianza",
+            "preisfaktor": "factor precio",
+            "diskontfaktor": "factor de descuento",
+            "bestellkostenfaktor": "Costos de pedido"
         }
     }
 }

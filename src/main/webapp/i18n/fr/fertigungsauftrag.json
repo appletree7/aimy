@@ -2,31 +2,31 @@
     "aimyApp": {
         "fertigungsauftrag" : {
             "home": {
-                "title": "Fertigungsauftrags",
-                "createLabel": "Créer un nouveau Fertigungsauftrag",
-                "createOrEditLabel": "Créer ou éditer un Fertigungsauftrag"
+                "title": "contrats de construction",
+                "createLabel": "Créer un nouveau ordre de production",
+                "createOrEditLabel": "Créer ou éditer un ordre de production"
             },
-            "created": "Un nouveau Fertigungsauftrag a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Fertigungsauftrag avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Fertigungsauftrag avec l'identifiant {{ param }} a été supprimé",
+            "created": "Un nouveau ordre de production a été créé avec l'identifiant {{ param }}",
+            "updated": "Le ordre de production avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le ordre de production avec l'identifiant {{ param }} a été supprimé",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Fertigungsauftrag {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer le ordre de production {{ id }} ?"
             },
             "detail": {
-                "title": "Fertigungsauftrag"
+                "title": "ordre de production"
             },
-            "periode": "Periode",
-            "nummer": "Nummer",
-            "auftragsmenge": "Auftragsmenge",
-            "kosten": "Kosten",
-            "durchschnittlichestueckkosten": "Durchschnittlichestueckkosten",
-            "auftragsstatus": "Auftragsstatus",
-            "begonnen": "Begonnen",
-            "beendet": "Beendet",
-            "dlzminimal": "Dlzminimal",
-            "dlzFaktor": "Dlz Faktor",
-            "bearbeitungszeitmin": "Bearbeitungszeitmin",
-            "herstellteil": "Herstellteil"
+            "periode": "période",
+            "nummer": "nombre",
+            "auftragsmenge": "Quantité de commande",
+            "kosten": "frais",
+            "durchschnittlichestueckkosten": "Coûts unitaires moyens",
+            "auftragsstatus": "Statut de la commande",
+            "begonnen": "commencé",
+            "beendet": "fini",
+            "dlzminimal": "Temps de cycle minimal",
+            "dlzFaktor": "Temps de cycle minimal facteur",
+            "bearbeitungszeitmin": "Temps de traitement min",
+            "herstellteil": "Partie de fabrication"
         }
     }
 }

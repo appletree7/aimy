@@ -2,8 +2,8 @@
     "aimyApp": {
         "Bestellstatus" : {
             "null": "",
-            "GELIEFERT": "GELIEFERT",
-            "UNTERWEGS": "UNTERWEGS"
+            "GELIEFERT": "SUMINISTRO",
+            "UNTERWEGS": "MOVERSE"
         }
     }
 }

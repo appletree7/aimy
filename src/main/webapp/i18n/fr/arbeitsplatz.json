@@ -2,30 +2,30 @@
     "aimyApp": {
         "arbeitsplatz" : {
             "home": {
-                "title": "Arbeitsplatzs",
-                "createLabel": "Créer un nouveau Arbeitsplatz",
-                "createOrEditLabel": "Créer ou éditer un Arbeitsplatz"
+                "title": "lieu de travails",
+                "createLabel": "Créer un nouveau lieu de travail",
+                "createOrEditLabel": "Créer ou éditer un lieu de travail"
             },
-            "created": "Un nouveau Arbeitsplatz a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Arbeitsplatz avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Arbeitsplatz avec l'identifiant {{ param }} a été supprimé",
+            "created": "Un nouveau lieu de travail a été créé avec l'identifiant {{ param }}",
+            "updated": "Le lieu de travail avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le lieu de travail avec l'identifiant {{ param }} a été supprimé",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Arbeitsplatz {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer le lieu de travail {{ id }} ?"
             },
             "detail": {
-                "title": "Arbeitsplatz"
+                "title": "lieu de travail"
             },
-            "periode": "Periode",
-            "nummer": "Nummer",
-            "restzeitbedarf": "Restzeitbedarf",
-            "ruestvorgaenge": "Ruestvorgaenge",
-            "leerzeit": "Leerzeit",
-            "lohnleerkosten": "Lohnleerkosten",
-            "lohnkosten": "Lohnkosten",
-            "maschinenstillstandkosten": "Maschinenstillstandkosten",
-            "restzeitbedarf_in_bearbeitung": "Restzeitbedarf In Bearbeitung",
-            "schicht": "Schicht",
-            "ueberstunden": "Ueberstunden"
+            "periode": "période",
+            "nummer": "nombre",
+            "restzeitbedarf": "temps",
+            "ruestvorgaenge": "calages",
+            "leerzeit": "temps d'inactivité",
+            "lohnleerkosten": "Les coûts salariaux de ralenti",
+            "lohnkosten": "les coûts de main-d'œuvre",
+            "maschinenstillstandkosten": "Les coûts d'immobilisation de la machine",
+            "restzeitbedarf_in_bearbeitung": "Temps restant requis En cours",
+            "schicht": "poste de travail",
+            "ueberstunden": "heures supplémentaires"
         }
     }
 }

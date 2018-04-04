@@ -2,7 +2,7 @@
     "aimyApp": {
         "teil" : {
             "home": {
-                "title": "Teils",
+                "title": "Teile",
                 "createLabel": "Teil erstellen",
                 "createOrEditLabel": "Teil erstellen oder bearbeiten"
             },
@@ -26,7 +26,7 @@
             "sicherheitsbestand": "Sicherheitsbestand",
             "vertriebswunsch": "Vertriebswunsch",
             "gesamtproduktionsmenge": "Gesamtproduktionsmenge",
-            "direktverkaufmenge": "Direktverkaufmenge",
+            "direktverkaufmenge": "Direktverkaufsmenge",
             "direktverkaufspreis": "Direktverkaufspreis",
             "strafe": "Strafe",
             "subkomponente": "Subkomponente"

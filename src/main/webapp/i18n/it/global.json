@@ -8,12 +8,12 @@
             "entities": {
                 "main": "Entità",
                 "los": "Los",
-                "modus": "Modus",
-                "teil": "Teil",
-                "bestellung": "Bestellung",
-                "fertigungsauftrag": "Fertigungsauftrag",
-                "arbeitsplatz": "Arbeitsplatz",
-                "kennzahlen": "Kennzahlen",
+                "modus": "modo",
+                "teil": "componente",
+                "bestellung": "ordine",
+                "fertigungsauftrag": "ordine di produzione",
+                "arbeitsplatz": "sul posto di lavoro",
+                "kennzahlen": "misurare",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -38,6 +38,18 @@
                 "database": "Database",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
+
+            "periodplanning": {
+                "main": "pianificazione periodo",
+                "in-house_production": "Eigenfertigung",
+                "purchased_part": "Kaufteiledisposition",
+                "capacity_planning": "Kapazitätsplannung",
+                "period_start": "Inizio periodo",
+                "direktverkauf_und_normalverkauf": "Vendita diretta e vendita normale",
+                "abschluss": "completamento"
+
+            },
+
             "language": "Lingua"
         },
         "form": {
@@ -103,7 +115,8 @@
             "edit": "Modifica",
             "open": "Open",
             "save": "Salva",
-            "view": "Visualizza"
+            "view": "Visualizza",
+            "next": "più"
         },
         "detail": {
             "field": "Campo",

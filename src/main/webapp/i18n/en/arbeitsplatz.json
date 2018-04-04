@@ -2,30 +2,30 @@
     "aimyApp": {
         "arbeitsplatz" : {
             "home": {
-                "title": "Arbeitsplatzs",
-                "createLabel": "Create a new Arbeitsplatz",
-                "createOrEditLabel": "Create or edit a Arbeitsplatz"
+                "title": "workplaces",
+                "createLabel": "Create a new workplace",
+                "createOrEditLabel": "Create or edit a workplace"
             },
-            "created": "A new Arbeitsplatz is created with identifier {{ param }}",
-            "updated": "A Arbeitsplatz is updated with identifier {{ param }}",
-            "deleted": "A Arbeitsplatz is deleted with identifier {{ param }}",
+            "created": "A new workplace is created with identifier {{ param }}",
+            "updated": "A workplace is updated with identifier {{ param }}",
+            "deleted": "A workplace is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Arbeitsplatz {{ id }}?"
+                "question": "Are you sure you want to delete workplace {{ id }}?"
             },
             "detail": {
-                "title": "Arbeitsplatz"
+                "title": "workplace"
             },
-            "periode": "Periode",
-            "nummer": "Nummer",
-            "restzeitbedarf": "Restzeitbedarf",
-            "ruestvorgaenge": "Ruestvorgaenge",
-            "leerzeit": "Leerzeit",
-            "lohnleerkosten": "Lohnleerkosten",
-            "lohnkosten": "Lohnkosten",
-            "maschinenstillstandkosten": "Maschinenstillstandkosten",
-            "restzeitbedarf_in_bearbeitung": "Restzeitbedarf In Bearbeitung",
-            "schicht": "Schicht",
-            "ueberstunden": "Ueberstunden"
+            "periode": "period",
+            "nummer": "number",
+            "restzeitbedarf": "Time required",
+            "ruestvorgaenge": "makeready",
+            "leerzeit": "idle time",
+            "lohnleerkosten": "Wage costs of idle",
+            "lohnkosten": "labor costs",
+            "maschinenstillstandkosten": "Machine downtime costs",
+            "restzeitbedarf_in_bearbeitung": "Remaining time required in progress",
+            "schicht": "work shift",
+            "ueberstunden": "overtime"
         }
     }
 }

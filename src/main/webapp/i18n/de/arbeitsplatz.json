@@ -2,7 +2,7 @@
     "aimyApp": {
         "arbeitsplatz" : {
             "home": {
-                "title": "Arbeitsplatzs",
+                "title": "Arbeitsplätze",
                 "createLabel": "Arbeitsplatz erstellen",
                 "createOrEditLabel": "Arbeitsplatz erstellen oder bearbeiten"
             },
@@ -18,14 +18,14 @@
             "periode": "Periode",
             "nummer": "Nummer",
             "restzeitbedarf": "Restzeitbedarf",
-            "ruestvorgaenge": "Ruestvorgaenge",
+            "ruestvorgaenge": "Rüstvorgänge",
             "leerzeit": "Leerzeit",
             "lohnleerkosten": "Lohnleerkosten",
             "lohnkosten": "Lohnkosten",
             "maschinenstillstandkosten": "Maschinenstillstandkosten",
-            "restzeitbedarf_in_bearbeitung": "Restzeitbedarf In Bearbeitung",
+            "restzeitbedarf_in_bearbeitung": "Restzeitbedarf in Bearbeitung",
             "schicht": "Schicht",
-            "ueberstunden": "Ueberstunden"
+            "ueberstunden": "Überstunden"
         }
     }
 }

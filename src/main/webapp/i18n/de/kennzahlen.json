@@ -2,18 +2,18 @@
     "aimyApp": {
         "kennzahlen" : {
             "home": {
-                "title": "Kennzahlens",
-                "createLabel": "Kennzahlen erstellen",
-                "createOrEditLabel": "Kennzahlen erstellen oder bearbeiten"
+                "title": "Kennzahlen",
+                "createLabel": "Kennzahl erstellen",
+                "createOrEditLabel": "Kennzahl erstellen oder bearbeiten"
             },
-            "created": "Kennzahlen erstellt mit ID {{ param }}",
-            "updated": "Kennzahlen aktualisiert mit ID {{ param }}",
-            "deleted": "Kennzahlen gelöscht mit ID {{ param }}",
+            "created": "Kennzahl erstellt mit ID {{ param }}",
+            "updated": "Kennzahl aktualisiert mit ID {{ param }}",
+            "deleted": "Kennzahl gelöscht mit ID {{ param }}",
             "delete": {
-                "question": "Soll Kennzahlen {{ id }} wirklich dauerhaft gelöscht werden?"
+                "question": "Soll Kennzahl {{ id }} wirklich dauerhaft gelöscht werden?"
             },
             "detail": {
-                "title": "Kennzahlen"
+                "title": "Kennzahl"
             },
             "periode": "Periode",
             "name": "Name",

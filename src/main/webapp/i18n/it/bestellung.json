@@ -2,30 +2,30 @@
     "aimyApp": {
         "bestellung" : {
             "home": {
-                "title": "Bestellungs",
-                "createLabel": "Genera un nuovo Bestellung",
-                "createOrEditLabel": "Genera o modifica un Bestellung"
+                "title": "ordini",
+                "createLabel": "Genera un nuovo ordine",
+                "createOrEditLabel": "Genera o modifica un ordine"
             },
-            "created": "&Egrave; stato generato un nuovo Bestellung con identificatore {{ param }}",
-            "updated": "&Egrave; stato aggiornato Bestellung identificato da {{ param }}",
-            "deleted": "&Egrave; stato eliminato Bestellung con identificatore {{ param }}",
+            "created": "&Egrave; stato generato un nuovo ordine con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato ordine identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato ordine con identificatore {{ param }}",
             "delete": {
-                "question": "Sei sicuro di volere eliminare Bestellung {{ id }}?"
+                "question": "Sei sicuro di volere eliminare ordine {{ id }}?"
             },
             "detail": {
-                "title": "Bestellung"
+                "title": "v"
             },
-            "periode": "Periode",
-            "nummer": "Nummer",
-            "lieferzeit": "Lieferzeit",
-            "kaufmenge": "Kaufmenge",
-            "materialkosten": "Materialkosten",
-            "bestellkosten": "Bestellkosten",
-            "gesamtkosten": "Gesamtkosten",
-            "stueckkosten": "Stueckkosten",
-            "bestellstatus": "Bestellstatus",
-            "modus": "Modus",
-            "kaufteil": "Kaufteil"
+            "periode": "periodo",
+            "nummer": "numero",
+            "lieferzeit": "tempi di consegna",
+            "kaufmenge": "importo di acquisto",
+            "materialkosten": "costi dei materiali",
+            "bestellkosten": "i costi di ordinazione",
+            "gesamtkosten": "costo totale",
+            "stueckkosten": "costi unitari",
+            "bestellstatus": "ordine",
+            "modus": "modo",
+            "kaufteil": "parte acquistati"
         }
     }
 }

@@ -2,31 +2,31 @@
     "aimyApp": {
         "fertigungsauftrag" : {
             "home": {
-                "title": "Fertigungsauftrags",
-                "createLabel": "Genera un nuovo Fertigungsauftrag",
-                "createOrEditLabel": "Genera o modifica un Fertigungsauftrag"
+                "title": "contratti di costruzione",
+                "createLabel": "Genera un nuovo ordine di produzione",
+                "createOrEditLabel": "Genera o modifica un ordine di produzione"
             },
-            "created": "&Egrave; stato generato un nuovo Fertigungsauftrag con identificatore {{ param }}",
-            "updated": "&Egrave; stato aggiornato Fertigungsauftrag identificato da {{ param }}",
-            "deleted": "&Egrave; stato eliminato Fertigungsauftrag con identificatore {{ param }}",
+            "created": "&Egrave; stato generato un nuovo ordine di produzione con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato ordine di produzione identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato ordine di produzione con identificatore {{ param }}",
             "delete": {
-                "question": "Sei sicuro di volere eliminare Fertigungsauftrag {{ id }}?"
+                "question": "Sei sicuro di volere eliminare ordine di produzione {{ id }}?"
             },
             "detail": {
-                "title": "Fertigungsauftrag"
+                "title": "ordine di produzione"
             },
-            "periode": "Periode",
-            "nummer": "Nummer",
-            "auftragsmenge": "Auftragsmenge",
-            "kosten": "Kosten",
-            "durchschnittlichestueckkosten": "Durchschnittlichestueckkosten",
-            "auftragsstatus": "Auftragsstatus",
-            "begonnen": "Begonnen",
-            "beendet": "Beendet",
-            "dlzminimal": "Dlzminimal",
-            "dlzFaktor": "Dlz Faktor",
-            "bearbeitungszeitmin": "Bearbeitungszeitmin",
-            "herstellteil": "Herstellteil"
+            "periode": "periodo",
+            "nummer": "numero",
+            "auftragsmenge": "Quantità dell'ordine",
+            "kosten": "costi",
+            "durchschnittlichestueckkosten": "Costi unitari medi",
+            "auftragsstatus": "Stato dell'ordine",
+            "begonnen": "iniziato",
+            "beendet": "finito",
+            "dlzminimal": "Tempo di ciclo minimo",
+            "dlzFaktor": "Tempo di ciclo minimo fattore",
+            "bearbeitungszeitmin": "Tempo di elaborazione min",
+            "herstellteil": "Parte di produzione"
         }
     }
 }

@@ -8,12 +8,12 @@
             "entities": {
                 "main": "Entities",
                 "los": "Los",
-                "modus": "Modus",
-                "teil": "Teil",
-                "bestellung": "Bestellung",
-                "fertigungsauftrag": "Fertigungsauftrag",
-                "arbeitsplatz": "Arbeitsplatz",
-                "kennzahlen": "Kennzahlen",
+                "modus": "mode",
+                "teil": "component",
+                "bestellung": "Order",
+                "fertigungsauftrag": "production order",
+                "arbeitsplatz": "workplace",
+                "kennzahlen": "key figure",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -43,7 +43,9 @@
                 "in-house_production": "In-house production",
                 "purchased_part": "Purchased part",
                 "capacity_planning": "Capacity Planning",
-                "period_start": "Start period"
+                "period_start": "Start period",
+                "direktverkauf_und_normalverkauf": "Direct sales and normal sale",
+                "abschluss": "completion"
             },
 
 
@@ -112,7 +114,8 @@
             "edit": "Edit",
             "open": "Open",
             "save": "Save",
-            "view": "View"
+            "view": "View",
+            "next": "Next"
         },
         "detail": {
             "field": "Field",

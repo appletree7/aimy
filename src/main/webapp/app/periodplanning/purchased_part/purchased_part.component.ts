@@ -50,6 +50,7 @@ export class PurchasedPartComponent implements OnInit {
     verwendung_array : any; 
     gesamtes_array: any; 
     anfangsbestand_vorperiode: any; 
+
     //produktionsprogramm_naechste_periode: Number []; 
     //this.angangsbestand_vorperiode: any; 
     
@@ -154,6 +155,7 @@ export class PurchasedPartComponent implements OnInit {
         let purchasedpart_anzeige_array = new Array(); 
         let purchasedpart = new PurchasedPart;
         let durchlauf = 1;
+        let bruttobedarf = 0; 
           
 
         
@@ -175,7 +177,9 @@ export class PurchasedPartComponent implements OnInit {
                 purchasedpart.diskontmenge = diskontmenge_array[i];
                 diskontmenge_array.shift(); 
                 
+                purchasedpart.bruttobedarf = 0; 
                 
+                i = 0; 
                 //Bruttobedarf berechnen: 
                 for (let i = 0; i < durchlauf ; i++){
                     
@@ -183,40 +187,55 @@ export class PurchasedPartComponent implements OnInit {
                     console.log("verwendung_array[i]: "+verwendung_array[i]);
                      
                     for(let j = 0; j < 3; j++){
-                        console.log("[j]-Schleife: "+ j);
+                        //console.log("[j]-Schleife: "+ j);
                         verwendung_array[i][j]; 
                         console.log("verwendung_array[i][j]: "+ verwendung_array[i][j]);
                         
-                        for (let produkt_produktionsprogramm = 0; produkt_produktionsprogramm < 3; produkt_produktionsprogramm++){
+                        
+                        //for (let produkt_produktionsprogramm = 0; produkt_produktionsprogramm < 3; produkt_produktionsprogramm++){
+                            //console.log("Forschleife wird durchlaufen Runde: "+ produkt_produktionsprogramm );
                             //console.log("i: "+i+" j "+j+"  Produktionsprogramm-nr: "+produkt_produktionsprogramm); 
                             //console.log("verwendung_array[i][j]: "+ verwendung_array[i][j] + " Produkt_produktionsprogramm" + produktionsprogramm[produkt_produktionsprogramm] );
                             //console.log(" bruttobedarf - davor - sollte 0 sein "+x);
-                            purchasedpart.bruttobedarf = verwendung_array[i][j] * produktionsprogramm[produkt_produktionsprogramm]; 
+                            bruttobedarf = verwendung_array[i][j] * produktionsprogramm[j]; //produkt_produktionsprogramm]; 
+                            purchasedpart.bruttobedarf += bruttobedarf;
                             
-                            //console.log(" bruttobedarf: "+ purchasedpart.bruttobedarf);
-                        }       
-                    }  
-                    verwendung_array.shift();                        
-                } 
-                
-                
-                
-                
-                
-                
-                      
-            }
+                            console.log("!!!!!!!!!! bruttobedarf_pro Runde - berechnung "+ verwendung_array[i][j] + "*" +produktionsprogramm[j]);//produkt_produktionsprogramm]);
+                            console.log("!!!!!!!!!! bruttobedarf_pro Runde "+ bruttobedarf);
+ 
+                      }
+                        console.log("!!!!!!!!!!:) bruttobedarf_pro TEIL "+ purchasedpart.bruttobedarf);       
+                    //}  
+                                             
+                }
+                verwendung_array.shift(); 
 
-                            purchasedpart.bestellung = 0; 
-                            purchasedpart.art= "N";  
-                            
-          
-                            
-                            
-                            
-            purchasedpart_anzeige_array.push(purchasedpart);
+                    console.log("purchasedpart.bestand: " + purchasedpart.bestand + " purchasedpart.lieferdauer "+purchasedpart.lieferdauer +" purchasedpart.bruttobedarf "+purchasedpart.bruttobedarf)
+                    
+                    let puffer = purchasedpart.bruttobedarf*1.1;
+                    console.log("Puffer: "+puffer)
+      
+                    if (purchasedpart.bestand*purchasedpart.lieferdauer > puffer){
+                        purchasedpart.bestellung = 0; 
+                        purchasedpart.art= "-"; 
+                    }
+                    if( purchasedpart.bestand*purchasedpart.lieferdauer > purchasedpart.bruttobedarf && purchasedpart.bestand*purchasedpart.lieferdauer < puffer) {
+                        purchasedpart.bestellung = purchasedpart.bruttobedarf; 
+                        //purchasedpart.bestellung = Math.ceil(purchasedpart.bruttobedarf); 
+                        purchasedpart.art= "N"; 
+                    }
+                    if( purchasedpart.bestand*purchasedpart.lieferdauer < purchasedpart.bruttobedarf) {
+                        purchasedpart.bestellung = Math.ceil(purchasedpart.bruttobedarf); 
+                        purchasedpart.art= "F"; 
+                    }
+                    if( purchasedpart.bestand < purchasedpart.bruttobedarf) {
+                        purchasedpart.bestellung = Math.ceil(purchasedpart.bruttobedarf* Math.round(purchasedpart.lieferdauer)); 
+                        purchasedpart.art= "F"; 
+                    }    
             
-                   
+            }               
+            purchasedpart_anzeige_array.push(purchasedpart); 
+            //durchlauf = durchlauf+1;         
         });
      
         console.log("Gesamtes Array: "+ purchasedpart_anzeige_array.toString());

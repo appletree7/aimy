@@ -7,6 +7,18 @@ and open the template in the editor.
 <div> 
     <h2>
         <span jhiTranslate="capacity_planning.title">Kapazitätsplanung</span>
+        
+        <button class="btn btn-primary right"[routerLink]="['/period_start']"
+                    replaceUrl="true">
+        <span jhiTranslate="entity.action.back"> Back</span>
+        </button>
+        <button class="btn btn-primary float-right" [routerLink]="['/abschluss']"
+                    replaceUrl="true">
+            <span>
+                Weiter
+            </span>
+        </button> 
+        
     </h2>
     <jhi-alert></jhi-alert>
     <div class="row">

@@ -14,6 +14,7 @@ import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { Teil } from '../../entities/teil/teil.model';
 import { TeilService } from '../../entities/teil/teil.service';
+import {BestellungService} from '../../entities/bestellung/bestellung.service';
 import { Arbeitsplatz, ArbeitsplatzService } from '../../entities/arbeitsplatz'; 
  //Um Berechtigungen Prüfen zu können 
 //import { ITEMS_PER_PAGE, Principal, User, UserService, ResponseWrapper } from '../../shared'; 
@@ -32,12 +33,6 @@ import { ITEMS_PER_PAGE, Principal, User, UserService, ResponseWrapper } from '.
 }) 
 export class PurchasedPartComponent implements OnInit { 
     //Variablen, die ich benötige hier definieren:  
-    private kaufteilid;  
-    private bestand; 
-    private max_lieferdauer; 
-    private diskontmenge; 
-    private bestellmenge; 
-    private bestellart;
     teils: Teil[]; 
     account: any;
     arbeitsplatzs: Arbeitsplatz[];  
@@ -51,12 +46,11 @@ export class PurchasedPartComponent implements OnInit {
     gesamtes_array: any; 
     anfangsbestand_vorperiode: any; 
 
-    //produktionsprogramm_naechste_periode: Number []; 
-    //this.angangsbestand_vorperiode: any; 
     
     constructor(
         private eventManager: JhiEventManager, 
         private teilService: TeilService,
+        private bestellungService: BestellungService,
         private jhiAlertService: JhiAlertService,
         private principal: Principal
     ) {} 

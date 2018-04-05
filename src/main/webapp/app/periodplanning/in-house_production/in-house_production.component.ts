@@ -12,6 +12,7 @@ import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import { Teil, Teiltyp } from '../../entities/teil/teil.model';
 import { InHouse } from '../../entities/anzeige/in-house_production.model';
 import { TeilService } from '../../entities/teil/teil.service';
+import { BestellungService } from '../../entities/bestellung/bestellung.service';
 import { InHouseProductionService } from './in-house_production.service';
 
 import { Arbeitsplatz, ArbeitsplatzService } from '../../entities/arbeitsplatz';
@@ -37,8 +38,7 @@ export class InHouseProductionComponent implements OnInit {
     //Anmerkungen: nach DB update (Bei Entität Fertigungsaufträge - Herstellid wird auf die selbstgenerierteId referenziert. Besser wäre die Nummer anzugeben) 
                  // Bei Subkomponente sollte eine Liste angegeben werden (hier auch wieder auf ID referenziert, aber das hab ich schon im Programm umgesetzt das ist nicht so schlimm)
     
-    
-    
+
     teils: Teil[]; 
     account: any;
     arbeitsplatzs: Arbeitsplatz[];  
@@ -65,6 +65,8 @@ export class InHouseProductionComponent implements OnInit {
     //inhouse: InHouse; 
     inhouse_anzeige_array: InHouse[]; 
     
+    alte_periode: 0; 
+    
 
 
      
@@ -73,7 +75,8 @@ export class InHouseProductionComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private principal: Principal,
-        private teilService: TeilService, 
+        private teilService: TeilService,
+        private bestellungService: BestellungService,  
         private fertigungsauftragService: FertigungsauftragService,
         private route: ActivatedRoute,     
         
@@ -88,16 +91,40 @@ export class InHouseProductionComponent implements OnInit {
             .subscribe((res: ResponseWrapper) => { 
                 // if (this.teil.nummer != null && this.teil.nummer == "1"){
                 this.teils = res.json;
+                
+                
+                
  
                  // let wanted = this.teils.filter( function(teil){return (teil.nummer == '1');} );
+                
+                let alte_periode; 
+                let neue_periode;
 
                 this.wanted = this.teils.filter( function(teil){
                         
                 let teiltypen = teil.teiltyp.toString();
-                console.log(teiltypen); 
+                console.log(teiltypen);
+
+
+                if (teiltypen == 'PRODUKT' || teiltypen == 'ERZEUGNIS'){
+                  
+                    if(alte_periode == undefined){
+                        alte_periode = 0; 
+                        neue_periode = alte_periode+1; 
+                    }
                     
-                if (teiltypen == 'PRODUKT' || teiltypen == 'ERZEUGNIS')
-                    return (teil);});
+                    console.log("teil.periode" + teil.periode + " alte_periode"  + alte_periode )
+                    if (teil.periode > alte_periode){
+                        console.log("prüfung bestanden");
+                        
+                        alte_periode = teil.periode; 
+                        neue_periode = alte_periode+1;
+                        console.log(" Teil.Periode " + "alte_Periode_höchster Wert:"+ alte_periode + "neue Periode"+neue_periode);
+                    }
+
+                    return (teil);
+                 }
+                });
                 
                 // Alle Teile, die den Teiltyp "PRODUKT" und "ERZEUGNIS" besitzen, werden ausgegeben:       
                 res.json = this.wanted; 
@@ -147,7 +174,7 @@ export class InHouseProductionComponent implements OnInit {
  
              
              //Anzeige der HTML-Seite
-             this.inhouse_anzeige_array = this.anzeige_html_seite(this.wanted, this.anzahl_auftraege_in_warteliste, this.anzahl_auftraege_in_bearbeitung);
+             this.inhouse_anzeige_array = this.anzeige_html_seite(this.wanted, this.anzahl_auftraege_in_warteliste, this.anzahl_auftraege_in_bearbeitung, neue_periode);
              
                 
              console.log("MEIN AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARRRAAAAAAAAAAAAAAAAAAAAAAY: "+this.inhouse_anzeige_array.toString());
@@ -244,22 +271,10 @@ export class InHouseProductionComponent implements OnInit {
         {
             console.log("I: "+array_warteliste_eines_teils_zu_herstellteilmenge_nur_Anzahl[i]);
         }
-        
-        
-        return array_warteliste_eines_teils_zu_herstellteilmenge_nur_Anzahl; 
-        
-        
-        
+        return array_warteliste_eines_teils_zu_herstellteilmenge_nur_Anzahl;           
     };
     
-    
-    
-    
-    
-    
-    
-    
-    
+
     //Listet alle Fertigungsaufträge zu einem Herstellteil auf, die den Status "angefangen" besitzen:
     public anzahl_fertigungsauftraege_zu_herstellteil_bearbeitungsliste (wanted: Teil[], wantedfebearbeitend: Fertigungsauftrag[] ){ 
 
@@ -329,7 +344,7 @@ export class InHouseProductionComponent implements OnInit {
     
 
     
-    public anzeige_html_seite (wanted: Teil[], anzahl_auftraege_in_warteliste: any, anzahl_auftraege_in_bearbeitung: any) {
+    public anzeige_html_seite (wanted: Teil[], anzahl_auftraege_in_warteliste: any, anzahl_auftraege_in_bearbeitung: any, neue_periode: any) {
         
         console.log("Funktion wird aufgerufen");
         
@@ -351,6 +366,7 @@ export class InHouseProductionComponent implements OnInit {
             let inhouse = new InHouse;
  
             inhouse.nummer = teil.nummer;
+            //inhouse.periode = neue_periode; 
             
             if (teil.nummer == "1" || teil.nummer == "2" || teil.nummer == "3"){
                 console.log(" Sollte nur bei P1, P2, P3 durchlaufen werden! " + teil.vertriebswunsch);
@@ -517,5 +533,43 @@ export class InHouseProductionComponent implements OnInit {
             
             
          };
+         
+       
+    public save() {
+        //Anpassen der aktuellen Teile
+        this.saveTeil();
+        //Neue_Bestellungen_anlegen
+        this.saveBestellung();
+        //this.isSaving = true;
+        //this.message = 'Speicherung der Daten erfolgreich';
+        
+    };  
+    
+    public saveTeil(){
+     
+        
+        
+        
+        
+        this.inhouse_anzeige_array.forEach(function (inhouse){
+            
+        
+        });
+        
+    }
+    public saveBestellung(){
+        this.inhouse_anzeige_array.forEach(function (inhouse){
+            
+        
+        });
+        
+    }        
+      
+         
+        
+         
+         
+         
+         
              
 }; 

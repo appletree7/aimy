@@ -44,7 +44,6 @@ public class CacheConfiguration {
             cm.createCache(com.ibsys2.aimy.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.ibsys2.aimy.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.ibsys2.aimy.domain.User.class.getName() + ".authorities", jcacheConfiguration);
-            cm.createCache(com.ibsys2.aimy.domain.Los.class.getName(), jcacheConfiguration);
             cm.createCache(com.ibsys2.aimy.domain.Modus.class.getName(), jcacheConfiguration);
             cm.createCache(com.ibsys2.aimy.domain.Teil.class.getName(), jcacheConfiguration);
             cm.createCache(com.ibsys2.aimy.domain.Teil.class.getName() + ".fertigungsauftrags", jcacheConfiguration);

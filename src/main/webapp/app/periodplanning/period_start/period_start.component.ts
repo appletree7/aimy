@@ -11,7 +11,6 @@ import {BestellungService} from '../../entities/bestellung';
 import {ArbeitsplatzService} from '../../entities/arbeitsplatz';
 import {Fertigungsauftrag} from '../../entities/fertigungsauftrag';
 import {Auftragstatus, FertigungsauftragService} from '../../entities/fertigungsauftrag';
-import {Los, LosService} from '../../entities/los';
 import {Modus, ModusService} from '../../entities/modus';
 import {Kennzahlen, KennzahlenService} from '../../entities/kennzahlen';
 
@@ -29,8 +28,6 @@ export class PeriodStartComponent implements OnInit {
     arbeitsplaetze = [];
     fertigungsauftrag: Fertigungsauftrag;
     fertigungsauftraege = [];
-    los: Los;
-    lose: Los[];
     modus: Modus;
     moduse = [];
     kennzahl: Kennzahlen;
@@ -49,7 +46,6 @@ export class PeriodStartComponent implements OnInit {
         private bestellungService: BestellungService,
         private arbeitsplatzService: ArbeitsplatzService,
         private fertigungsauftragService: FertigungsauftragService,
-        private losService: LosService,
         private modusService: ModusService,
         private kennzahlService: KennzahlenService,
         private jhiAlertService: JhiAlertService,
@@ -90,7 +86,6 @@ export class PeriodStartComponent implements OnInit {
             this.saveModus();
             this.saveTeil();
             this.saveArbeitsplatz();
-            // this.saveLos();
             this.saveKennzahl();
 
             this.isSaving = true;
@@ -619,49 +614,6 @@ export class PeriodStartComponent implements OnInit {
 
     }
 
-    saveLos() {
-
-        let criteria = [
-            {key: 'periode.equals', value: this.periode}
-        ];
-
-        this.fertigungsauftragService.query({
-            size: 1000000,
-            criteria
-        })
-            .subscribe((res: ResponseWrapper) => {
-                this.fertigungsauftraege = res.json;
-                if (this.fertigungsauftraege.length !== 0 && this.fertigungsauftraege.length !== undefined) {
-                    let i;
-                    let j;
-                    for (i = 0; i < this.fertigungsauftraege.length; i++) {
-                        const lose = this.xml.getElementsByTagName('completedorders')[0].getElementsByTagName('order')[i].getElementsByTagName('batch');
-                        this.losService.query()
-                            .subscribe((response: ResponseWrapper) => {
-                                this.lose = response.json;
-                                for (j = 0; j < lose.length; j++) {
-                                    if (this.lose !== undefined && this.lose.length !== 0
-                                        && this.lose[j].nummer !== undefined && this.lose[j].periode !== undefined) {
-                                        /*this.los = this.lose.find((los) => los.nummer === (parseInt(lose[j].getAttribute('id'), 10))
-                                            && (los.periode === this.periode) && (los.fertigungsauftrag.id === this.fertigungsauftrag.id));*/
-                                        this.los.menge = parseInt(lose[j].getAttribute('amount'), 10);
-                                        this.los.durchlaufzeit = parseInt(lose[j].getAttribute('cycletime'), 10);
-                                        this.los.kosten = parseFloat(lose[j].getAttribute('cost'));
-                                        this.losService.update(this.los).subscribe((respond: Los) =>
-                                            console.log(respond), () => this.onSaveError());
-                                    } else {
-                                        this.los = new Los(undefined, this.periode, parseInt(lose[j].getAttribute('id'), 10),
-                                            parseInt(lose[j].getAttribute('amount'), 10), parseInt(lose[j].getAttribute('cycletime'), 10),
-                                            parseFloat(lose[j].getAttribute('cost')));
-                                        this.losService.create(this.los).subscribe((respond: Los) =>
-                                            console.log(respond), () => this.onSaveError());
-                                    }
-                                }
-                            }, (response: ResponseWrapper) => this.onError(response.json));
-                    }
-                }
-        }, (res: ResponseWrapper) => this.onError(res.json));
-    }
     saveKennzahl() {
 
         const capacity = this.xml.getElementsByTagName('result')[0].getElementsByTagName('general')[0].getElementsByTagName('capacity');

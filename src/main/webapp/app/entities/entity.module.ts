@@ -1,6 +1,5 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-import { AimyLosModule } from './los/los.module';
 import { AimyModusModule } from './modus/modus.module';
 import { AimyTeilModule } from './teil/teil.module';
 import { AimyBestellungModule } from './bestellung/bestellung.module';
@@ -11,7 +10,6 @@ import { AimyKennzahlenModule } from './kennzahlen/kennzahlen.module';
 
 @NgModule({
     imports: [
-        AimyLosModule,
         AimyModusModule,
         AimyTeilModule,
         AimyBestellungModule,

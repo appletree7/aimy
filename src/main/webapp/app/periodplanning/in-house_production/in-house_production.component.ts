@@ -13,6 +13,7 @@ import { Teil, Teiltyp } from '../../entities/teil/teil.model';
 import { InHouse } from '../../entities/anzeige/in-house_production.model';
 import { TeilService } from '../../entities/teil/teil.service';
 import { InHouseProductionService } from './in-house_production.service';
+import { BestellungService } from '../../entities/bestellung/bestellung.service'; 
 
 import { Arbeitsplatz, ArbeitsplatzService } from '../../entities/arbeitsplatz';
 import { Fertigungsauftrag, FertigungsauftragService  } from '../../entities/fertigungsauftrag';
@@ -65,7 +66,7 @@ export class InHouseProductionComponent implements OnInit {
     //inhouse: InHouse;
     inhouse_anzeige_array: InHouse[];
 
-
+    alte_periode: 0;  
 
 
     constructor(
@@ -74,6 +75,7 @@ export class InHouseProductionComponent implements OnInit {
         private eventManager: JhiEventManager,
         private principal: Principal,
         private teilService: TeilService,
+        private bestellungService: BestellungService,
         private fertigungsauftragService: FertigungsauftragService,
         private route: ActivatedRoute,
 
@@ -91,13 +93,33 @@ export class InHouseProductionComponent implements OnInit {
 
                  // let wanted = this.teils.filter( function(teil){return (teil.nummer == '1');} );
 
+                let alte_periode;  
+                let neue_periode;
+
+
                 this.wanted = this.teils.filter( function(teil){
 
                 let teiltypen = teil.teiltyp.toString();
                 console.log(teiltypen);
 
-                if (teiltypen == 'PRODUKT' || teiltypen == 'ERZEUGNIS')
-                    return (teil);});
+                if (teiltypen == 'PRODUKT' || teiltypen == 'ERZEUGNIS'){
+                    if(alte_periode == undefined){ 
+                        alte_periode = 0;  
+                        neue_periode = alte_periode+1;  
+                    } 
+                    console.log("teil.periode" + teil.periode + " alte_periode"  + alte_periode ) 
+                    if (teil.periode > alte_periode){ 
+                        console.log("prüfung bestanden"); 
+                         
+                        alte_periode = teil.periode;  
+                        neue_periode = alte_periode+1; 
+                        console.log(" Teil.Periode " + "alte_Periode_höchster Wert:"+ alte_periode + "neue Periode"+neue_periode); 
+                    } 
+ 
+                    return (teil); 
+                 } 
+                }); 
+     
 
                 // Alle Teile, die den Teiltyp "PRODUKT" und "ERZEUGNIS" besitzen, werden ausgegeben:
                 res.json = this.wanted;
@@ -147,7 +169,7 @@ export class InHouseProductionComponent implements OnInit {
 
 
              //Anzeige der HTML-Seite
-             this.inhouse_anzeige_array = this.anzeige_html_seite(this.wanted, this.anzahl_auftraege_in_warteliste, this.anzahl_auftraege_in_bearbeitung);
+             this.inhouse_anzeige_array = this.anzeige_html_seite(this.wanted, this.anzahl_auftraege_in_warteliste, this.anzahl_auftraege_in_bearbeitung, neue_periode);
 
 
              console.log("MEIN AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARRRAAAAAAAAAAAAAAAAAAAAAAY: "+this.inhouse_anzeige_array.toString());
@@ -329,7 +351,7 @@ export class InHouseProductionComponent implements OnInit {
 
 
 
-    public anzeige_html_seite (wanted: Teil[], anzahl_auftraege_in_warteliste: any, anzahl_auftraege_in_bearbeitung: any) {
+    public anzeige_html_seite (wanted: Teil[], anzahl_auftraege_in_warteliste: any, anzahl_auftraege_in_bearbeitung: any, neue_periode: any) {
 
         console.log("Funktion wird aufgerufen");
 
@@ -519,5 +541,35 @@ export class InHouseProductionComponent implements OnInit {
 
 
          };
+
+
+
+             public save() { 
+        //Anpassen der aktuellen Teile 
+        this.saveTeil(); 
+        //Neue_Bestellungen_anlegen 
+        this.saveBestellung(); 
+        //this.isSaving = true; 
+        //this.message = 'Speicherung der Daten erfolgreich'; 
+         
+    };   
+     
+    public saveTeil(){ 
+      
+        this.inhouse_anzeige_array.forEach(function (inhouse){ 
+             
+         
+        }); 
+         
+    } 
+    public saveBestellung(){ 
+        this.inhouse_anzeige_array.forEach(function (inhouse){ 
+             
+         
+        }); 
+         
+    } 
+
+
 
 };

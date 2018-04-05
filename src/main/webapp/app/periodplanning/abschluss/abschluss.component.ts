@@ -46,9 +46,8 @@ export class AbschlussComponent implements OnInit, OnDestroy {
             criteria
         })
             .subscribe((res: ResponseWrapper) => {
-                this.fertigungsauftraege2 = res.json;
-                // this.fertigungsauftraege2 = new Array<Fertigungsauftrag>();
-                if (this.fertigungsauftraege2.length === 0) {
+                this.fertigungsauftraege = res.json;
+                if (this.fertigungsauftraege.length === 0) {
                     criteria = [
                         {key: 'teiltyp.in', value: 'PRODUKT'},
                         {key: 'teiltyp.in', value: 'ERZEUGNIS'},
@@ -64,12 +63,12 @@ export class AbschlussComponent implements OnInit, OnDestroy {
                             for (const teil of this.teile) {
                                 i = i + 1;
                                 this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
-                                    teil.gesamtproduktionsmenge, undefined, undefined,
+                                    parseFloat(teil.gesamtproduktionsmenge), undefined, undefined,
                                     undefined, undefined, undefined, undefined, undefined,
                                     undefined,  teil);
-                                this.fertigungsauftraege2.push(this.fertigungsauftrag);
+                                this.fertigungsauftraege.push(this.fertigungsauftrag);
                             }
-                            for (const fertigungsauftrag of this.fertigungsauftraege2) {
+                            /*for (const fertigungsauftrag of this.fertigungsauftraege) {
                                 if (fertigungsauftrag.id !== null) {
                                     this.fertigungsauftragService.update(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
                                         console.log(respond), () => this.onSaveError());
@@ -77,7 +76,7 @@ export class AbschlussComponent implements OnInit, OnDestroy {
                                     this.fertigungsauftragService.create(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
                                         console.log(respond), () => this.onSaveError());
                                 }
-                            }
+                            }*/
                         }, (response: ResponseWrapper) => this.onError(response.json));
                 }
             }, (res: ResponseWrapper) => this.onError(res.json));
@@ -153,6 +152,12 @@ export class AbschlussComponent implements OnInit, OnDestroy {
         const doc = document.implementation.createDocument('', '', null);
         const input = doc.createElement('input');
         doc.appendChild(input);
+        const qualitycontrol = doc.createElement('qualitycontrol');
+        input.appendChild(qualitycontrol);
+        qualitycontrol.setAttribute('type', 'no');
+        qualitycontrol.setAttribute('losequantity', '0');
+        qualitycontrol.setAttribute('delay', '0');
+        // console.log(qualitycontrol);
         const sellwish = doc.createElement('sellwish');
         input.appendChild(sellwish);
         for (const teil of this.teils) {
@@ -281,8 +286,8 @@ export class AbschlussComponent implements OnInit, OnDestroy {
           criteria
       })
           .subscribe((res: ResponseWrapper) => {
-              this.fertigungsauftraege2 = res.json;
-              // this.fertigungsauftraege2 = new Array<Fertigungsauftrag>();
+              // this.fertigungsauftraege = res.json;
+              this.fertigungsauftraege = [];
               criteria = [
                   {key: 'teiltyp.in', value: 'PRODUKT'},
                   {key: 'teiltyp.in', value: 'ERZEUGNIS'},
@@ -305,8 +310,8 @@ export class AbschlussComponent implements OnInit, OnDestroy {
                                           parseInt(auftragsmenge.toFixed(2), 10), undefined, undefined,
                                           undefined, undefined, undefined, undefined,
                                           undefined, undefined, teil);
-                                      this.fertigungsauftraege2.push(this.fertigungsauftrag);
-                                      this.fertigungsauftraege2.push(this.fertigungsauftrag);
+                                      this.fertigungsauftraege.push(this.fertigungsauftrag);
+                                      this.fertigungsauftraege.push(this.fertigungsauftrag);
                                   } else if (teil.nummer === 10 || teil.nummer === 11 || teil.nummer === 12
                                       || teil.nummer === 13 || teil.nummer === 14 || teil.nummer === 15
                                       || teil.nummer === 18 || teil.nummer === 19 || teil.nummer === 20) {
@@ -315,18 +320,18 @@ export class AbschlussComponent implements OnInit, OnDestroy {
                                           parseInt(auftragsmenge.toFixed(2), 10), undefined, undefined,
                                           undefined, undefined, undefined, undefined,
                                           undefined, undefined, teil);
-                                      this.fertigungsauftraege2.push(this.fertigungsauftrag);
-                                      this.fertigungsauftraege2.push(this.fertigungsauftrag);
-                                      this.fertigungsauftraege2.push(this.fertigungsauftrag);
+                                      this.fertigungsauftraege.push(this.fertigungsauftrag);
+                                      this.fertigungsauftraege.push(this.fertigungsauftrag);
+                                      this.fertigungsauftraege.push(this.fertigungsauftrag);
                                   } else {
                                       this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
                                           teil.gesamtproduktionsmenge, undefined, undefined,
                                           undefined, undefined, undefined, undefined,
                                           undefined, undefined, teil);
-                                      this.fertigungsauftraege2.push(this.fertigungsauftrag);
+                                      this.fertigungsauftraege.push(this.fertigungsauftrag);
                                   }
                               }
-                              for (const fertigungsauftrag of this.fertigungsauftraege2) {
+                              for (const fertigungsauftrag of this.fertigungsauftraege) {
                                   if (fertigungsauftrag.id !== null) {
                                       this.fertigungsauftragService.update(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
                                           console.log(respond), () => this.onSaveError());

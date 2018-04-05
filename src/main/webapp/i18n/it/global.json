@@ -38,7 +38,6 @@
                 "database": "Database",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
-
             "periodplanning": {
                 "main": "pianificazione periodo",
                 "in-house_production": "Eigenfertigung",
@@ -49,7 +48,6 @@
                 "abschluss": "completamento"
 
             },
-
             "language": "Lingua"
         },
         "form": {

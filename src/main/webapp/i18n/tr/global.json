@@ -38,7 +38,6 @@
                 "database": "Veritabanı",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
-
             "periodplanning": {
                 "main": "dönem planlaması",
                 "in-house_production": "Eigenfertigung",
@@ -49,7 +48,6 @@
                 "abschluss": "tamamlama"
 
             },
-
             "language": "Dil"
         },
         "form": {

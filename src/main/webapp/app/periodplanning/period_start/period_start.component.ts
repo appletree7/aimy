@@ -41,6 +41,7 @@ export class PeriodStartComponent implements OnInit {
     eventSubscriber: Subscription;
     aktuelleperiode: number;
     periode: number;
+    bestellungperioden = new Set();
     // maxRequestsize = Number.MAX_SAFE_INTEGER;
 
     constructor(
@@ -97,6 +98,7 @@ export class PeriodStartComponent implements OnInit {
     }
 
     saveTeilSubkomponente() {
+
         this.teilService.query({
             size: 1000000
         })
@@ -219,8 +221,14 @@ export class PeriodStartComponent implements OnInit {
     }
 
     saveTeil() {
+
+        let criteria = [
+            {key: 'periode.in', value: this.periode}
+        ];
+
             this.teilService.query({
-                size: 1000000
+                size: 1000000,
+                criteria
             })
                 .subscribe((res: ResponseWrapper) => {
                     this.teils = res.json;
@@ -290,8 +298,24 @@ export class PeriodStartComponent implements OnInit {
         }
 
      saveBestellung(moduse: Array<Modus>, kaufteile?: Array<Teil>) {
+
+         const bestellungen = this.xml.getElementsByTagName('inwardstockmovement')[0].getElementsByTagName('order');
+         let i;
+         for (i = 0; i < bestellungen.length; i++) {
+             this.bestellungperioden.add(bestellungen[i].getAttribute('orderperiod'));
+         }
+
+         const bestellungenperioden2 = Array.from(this.bestellungperioden);
+
+         console.log(bestellungenperioden2)
+
+         let criteria = [
+             {key: 'periode.in', value: bestellungenperioden2[i]}
+         ];
+
         this.bestellungService.query({
-            size: 1000000
+            size: 1000000,
+            criteria
         })
             .subscribe((res: ResponseWrapper) => {
                 this.bestellungen = res.json;
@@ -303,6 +327,7 @@ export class PeriodStartComponent implements OnInit {
                         this.bestellung = this.bestellungen.find((bestellung) => (bestellung.nummer ===
                             (parseInt(bestellungen[i].getAttribute('id'), 10))) && bestellung.periode ===
                             parseInt(bestellungen[i].getAttribute('orderperiod'), 10));
+                        console.log(bestellungen[i]);
                         this.bestellung.lieferzeit = parseInt(bestellungen[i].getAttribute('time'), 10);
                         this.bestellung.kaufmenge = parseInt(bestellungen[i].getAttribute('amount'), 10);
                         this.bestellung.materialkosten = parseFloat(bestellungen[i].getAttribute('materialcosts'));
@@ -383,8 +408,13 @@ export class PeriodStartComponent implements OnInit {
 
     saveArbeitsplatz() {
 
+        let criteria = [
+            {key: 'periode.equals', value: this.periode}
+        ];
+
         this.arbeitsplatzService.query({
-            size: 1000000
+            size: 1000000,
+            criteria
         })
             .subscribe((res: ResponseWrapper) => {
                 this.arbeitsplaetze = res.json;
@@ -420,7 +450,8 @@ export class PeriodStartComponent implements OnInit {
             }, (respond: ResponseWrapper) => this.onError(respond.json), () => {
 
         this.arbeitsplatzService.query({
-            size: 1000000
+            size: 1000000,
+            criteria
         })
             .subscribe((res: ResponseWrapper) => {
                 this.arbeitsplaetze = res.json;
@@ -482,8 +513,13 @@ export class PeriodStartComponent implements OnInit {
 
     saveFertigungsauftrag(teile?: Array<Teil>) {
 
+        let criteria = [
+            {key: 'periode.equals', value: this.periode}
+        ];
+
        this.fertigungsauftragService.query({
-           size: 1000000
+           size: 1000000,
+           criteria
        })
             .subscribe((res: ResponseWrapper) => {
                 this.fertigungsauftraege = res.json;
@@ -534,7 +570,8 @@ export class PeriodStartComponent implements OnInit {
             }, (res: ResponseWrapper) => this.onError(res.json), () => {
 
                 this.fertigungsauftragService.query({
-                    size: 1000000
+                    size: 1000000,
+                    criteria
                 })
                     .subscribe((res: ResponseWrapper) => {
                         this.fertigungsauftraege = res.json;
@@ -583,8 +620,14 @@ export class PeriodStartComponent implements OnInit {
     }
 
     saveLos() {
+
+        let criteria = [
+            {key: 'periode.equals', value: this.periode}
+        ];
+
         this.fertigungsauftragService.query({
-            size: 1000000
+            size: 1000000,
+            criteria
         })
             .subscribe((res: ResponseWrapper) => {
                 this.fertigungsauftraege = res.json;
@@ -642,9 +685,13 @@ export class PeriodStartComponent implements OnInit {
         const directsalecontractpenalty = this.xml.getElementsByTagName('result')[0].getElementsByTagName('directsale')[0].getElementsByTagName('contractpenalty');
         const marketplacesaleprofit = this.xml.getElementsByTagName('result')[0].getElementsByTagName('marketplacesale')[0].getElementsByTagName('profit');
         const summaryprofit = this.xml.getElementsByTagName('result')[0].getElementsByTagName('summary')[0].getElementsByTagName('profit');
+        let criteria = [
+            {key: 'periode.equals', value: this.periode}
+        ];
         this.kennzahlService.query(
             {
-                size: 1000000
+                size: 1000000,
+                criteria
             }
         )
             .subscribe((response: ResponseWrapper) => {

@@ -38,7 +38,6 @@
                 "database": "Datenbank",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
-
             "periodplanning": {
                 "main": "Periodenplanung",
                 "in-house_production": "Eigenfertigung",
@@ -47,10 +46,7 @@
                 "period_start": "Periode starten",
                 "direktverkauf_und_normalverkauf": "Direktverkauf und Normalverkauf",
                 "abschluss": "Abschluss"
-
             },
-
-
             "language": "Sprache"
         },
         "form": {

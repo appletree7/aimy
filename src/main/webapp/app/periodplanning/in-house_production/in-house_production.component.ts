@@ -304,10 +304,13 @@ export class InHouseProductionComponent implements OnInit {
 
              wantedfebearbeitend.forEach(function(fertigungsauftragbearbeitend){
                 console.log(fertigungsauftragbearbeitend);
-                if (teil.nummer == fertigungsauftragbearbeitend.herstellteil.id){
+                
+                // == fertigungsauftragbearbeitend.herstellteil.id
+                if (teil.nummer == fertigungsauftragbearbeitend.nummer){
 
                     console.log(teil.nummer);
-                    console.log(fertigungsauftragbearbeitend.herstellteil.id);
+                    console.log(fertigungsauftragbearbeitend.nummer);
+                    //console.log(fertigungsauftragbearbeitend.herstellteil.id);
                     console.log(fertigungsauftragbearbeitend.auftragsmenge);
 
 

@@ -1,0 +1,15 @@
+{
+    "capacity_planning": {
+        "title": "planification des capacités",
+        "table": {
+            "number": "numéro",
+            "capacity_last_period": "Capacité de la période précédente",
+            "set-up_time_last_period": "Temps d'installation période précédente (n-1)",
+            "capacity": "capacité(n)",
+            "set-up_time": "temps de réglage(n)",
+            "reqiurement_of_time": "Temps total requis(n+1)",
+            "shifts": "couches",
+            "overtime": "heures supplémentaires"
+        }
+    }
+}

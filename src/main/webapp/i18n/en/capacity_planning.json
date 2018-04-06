@@ -1,6 +1,6 @@
 {
     "capacity_planning": {
-        "title": "Kapazitätsplanung",
+        "title": "Capacity planning",
         "table": {
             "number": "number",
             "capacity_last_period": "capacity last period (n-1)",

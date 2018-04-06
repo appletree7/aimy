@@ -11,5 +11,6 @@ export class InHouse implements BaseEntity {
         public auftraege_in_warteliste?: number,
         public auftraege_in_bearbeitung?: number,
         public produktionsauftraege?: number,
+        public periode?: number
     ) {}
 }

@@ -1,0 +1,14 @@
+{
+    "in-house_production": {
+        "title": "İç üretimin düzenlemesi",
+        "table": {
+            "number": "Numara",
+            "sales_request": "Satış talebi",
+            "safety_stock": "Emniyet stoku",
+            "last_period_stock": "Önceki dönemin Stoku",
+            "waiting_orders": "Bekleme listesindeki siparişler",
+	    "orders_in_progress": "işlemede olan siparişler",
+            "production_orders": "Üretim siparişler(n+1)"
+        }
+    }
+}

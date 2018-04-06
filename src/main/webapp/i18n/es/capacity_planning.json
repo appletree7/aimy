@@ -1,0 +1,15 @@
+{
+    "capacity_planning": {
+        "title": "capacidad planificación",
+        "table": {
+            "number": "número",
+            "capacity_last_period": "Capacidad período anterior (n-1)",
+            "set-up_time_last_period": "Tiempo de preparación período anterior (n-1)",
+            "capacity": "capacidad (n)",
+            "set-up_time": "tiempo de preparación (n)",
+            "reqiurement_of_time": "Tiempo total requerido (n+1)",
+            "shifts": "capa", 
+            "overtime": "horas extraordinarias"
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "in-house_production": {
+        "title": "Planification de la production interne",
+        "table": {
+            "number": "numéro",
+            "sales_request": "désir de vente",
+            "safety_stock": "stock de sécurité",
+            "last_period_stock": "Solde de l'exercice précédent",
+            "waiting_orders": "Ordres en liste d'attente",
+	    "orders_in_progress": "Commandes en cours d'exécution",
+            "production_orders": "ordres de fabrication"
+        }
+    }
+}

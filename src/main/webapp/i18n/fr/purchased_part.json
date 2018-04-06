@@ -1,0 +1,14 @@
+{
+    "purchased_part": {
+        "title": "disposition de la partie achat",
+        "table": {
+            "number": "numéro",
+            "inventory": "inventaire",
+            "ld": "délai de livraison",
+            "need": "demande brute",
+            "delivery": "ordonner",
+            "discount": "quantité escomptée",
+            "type": "Sorte"
+        }
+    }
+}

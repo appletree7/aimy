@@ -1,0 +1,14 @@
+{
+    "purchased_part": {
+        "title": "Satınalinan parca düzenlemesi",
+        "table": {
+            "number": "Numara",
+            "inventory": "Stok",
+            "ld": "Teslim Süresi",
+            "need": "Brüt Gereksinimi",
+            "delivery": "Sipariş",
+            "discount": "Indirim Tutari",
+            "type": "Tür"
+        }
+    }
+}

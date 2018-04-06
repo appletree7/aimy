@@ -1,0 +1,15 @@
+{
+    "capacity_planning": {
+        "title": "Kapasite planlaması",
+        "table": {
+            "number": "Numara",
+            "capacity_last_period": "Önceki dönemin Kapasitesi",
+            "set-up_time_last_period": "Önceki dönemin kurulum süresi(n-1)",
+            "capacity": "Kapasite(n)",
+            "set-up_time": "Kurulum süresi(n)",
+            "reqiurement_of_time": "Gerekli olan toplan süre(n+1)",
+            "shifts": "Mesailer",
+            "overtime": "fazla Mesai"
+        }
+    }
+}

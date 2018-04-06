@@ -1,0 +1,14 @@
+{
+    "in-house_production": {
+        "title": "Disposizione della produzione interna",
+        "table": {
+            "number": "numero",
+            "sales_request": "richiesta di vendita",
+            "safety_stock": "scorta di sicurezza",
+            "last_period_stock": "inventario precedente periodo",
+            "waiting_orders": "Ordini in lista d'attesa",
+	    "orders_in_progress": "Ordini in corso",
+            "production_orders": "ordini di produzione(n+1)"
+        }
+    }
+}

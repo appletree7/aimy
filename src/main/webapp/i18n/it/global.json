@@ -40,9 +40,9 @@
             },
             "periodplanning": {
                 "main": "pianificazione periodo",
-                "in-house_production": "Eigenfertigung",
-                "purchased_part": "Kaufteiledisposition",
-                "capacity_planning": "Kapazitätsplannung",
+                "in-house_production": "la produzione di casa",
+                "purchased_part": "Acquistato parti disposizione",
+                "capacity_planning": "Capacità pianificazione",
                 "period_start": "Inizio periodo",
                 "direktverkauf_und_normalverkauf": "Vendita diretta e vendita normale",
                 "abschluss": "completamento"

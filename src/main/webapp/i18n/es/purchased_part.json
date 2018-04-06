@@ -1,0 +1,14 @@
+{
+    "purchased_part": {
+        "title": "Comprado disposición piezas",
+        "table": {
+            "number": "número",
+            "inventory": "valores",
+            "ld": "tiempo de entrega",
+            "need": "requerimiento bruto",
+            "delivery": "orden",
+            "discount": "importe de descuento",
+            "type": "especie"
+        }
+    }
+}

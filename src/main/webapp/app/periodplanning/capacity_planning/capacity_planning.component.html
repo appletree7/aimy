@@ -4,6 +4,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
+<form name="saveForm" role="form" novalidate (ngSubmit)="save()" #saveForm="ngForm">
 <div>
     <h2>
         <span jhiTranslate="capacity_planning.title">Kapazitätsplanung</span>
@@ -11,9 +12,7 @@ and open the template in the editor.
     <jhi-alert></jhi-alert>
     <div class="row">
     </div>
-        <h1>
-            <p class="lead" >Kapazitätsplanung</p>
-        </h1>
+
     <div class="table-responsive">
         <table id="capacity_planning" class="table table-striped">
              <thead>
@@ -41,4 +40,18 @@ and open the template in the editor.
             </tbody>
         </table>
     </div>
+    
+    <div class="btn-group" role="group">
+    <button type="button"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span><span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+    <button type="button" class="btn btn-primary" [routerLink]="['/abschluss']"
+                replaceUrl="true">
+        <span jhiTranslate="entity.action.next"> Weiter</span>
+    </button>
+    </div>
+    
 </div>
+</form>

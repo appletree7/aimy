@@ -1,0 +1,14 @@
+{
+    "purchased_part": {
+        "title": "Acquistato parti disposizione",
+        "table": {
+            "number": "numero",
+            "inventory": "inventario",
+            "ld": "tempi di consegna",
+            "need": "fabbisogno lordo",
+            "delivery": "ordine",
+            "discount": "importo dello sconto",
+            "type": "tipo"
+        }
+    }
+}

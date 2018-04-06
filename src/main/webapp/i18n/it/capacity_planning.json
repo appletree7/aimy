@@ -1,0 +1,15 @@
+{
+    "capacity_planning": {
+        "title": "capacità pianificazione",
+        "table": {
+            "number": "numero",
+            "capacity_last_period": "capacità precedente periodo (n-1)",
+            "set-up_time_last_period": "set-up tempo precedente periodo (n-1)",
+            "capacity": "capacità (n)",
+            "set-up_time": "tempo di setup (n)",
+            "reqiurement_of_time": "Tempo totale richiesto (n+1)",
+            "shifts": "strato", 
+            "overtime": "straordinario"
+        }
+    }
+}

@@ -11,5 +11,6 @@ export class PurchasedPart implements BaseEntity {
         public bruttobedarf?: number,
         public bestellung?: number,
         public art?: string,
+        public periode?: number
     ) {}
 }

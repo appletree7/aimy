@@ -40,9 +40,9 @@
             },
             "periodplanning": {
                 "main": "dönem planlaması",
-                "in-house_production": "Eigenfertigung",
-                "purchased_part": "Kaufteiledisposition",
-                "capacity_planning": "Kapazitätsplannung",
+                "in-house_production": "İç Üretimi",
+                "purchased_part": "Satınalinan parca düzenlemesi",
+                "capacity_planning": "Kapasite planlaması",
                 "period_start": "Başlangıç dönemi",
                 "direktverkauf_und_normalverkauf": "Doğrudan satış ve normal satış",
                 "abschluss": "tamamlama"

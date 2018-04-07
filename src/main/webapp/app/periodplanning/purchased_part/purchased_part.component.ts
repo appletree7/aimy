@@ -13,7 +13,9 @@ import { PurchasedPart } from '../../entities/anzeige/purchased_part.model';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster'; 
  
 import { Teil } from '../../entities/teil/teil.model';
+import { Bestellung } from '../../entities/bestellung/bestellung.model';
 import { TeilService } from '../../entities/teil/teil.service';
+import { BestellungService } from '../../entities/bestellung/bestellung.service';
 import { Arbeitsplatz, ArbeitsplatzService } from '../../entities/arbeitsplatz'; 
  //Um Berechtigungen Prüfen zu können 
 //import { ITEMS_PER_PAGE, Principal, User, UserService, ResponseWrapper } from '../../shared'; 
@@ -50,6 +52,9 @@ export class PurchasedPartComponent implements OnInit {
     verwendung_array : any; 
     gesamtes_array: any; 
     anfangsbestand_vorperiode: any; 
+    
+    bestellungen: Bestellung[]; 
+    
  
     //produktionsprogramm_naechste_periode: Number []; 
     //this.angangsbestand_vorperiode: any; 
@@ -57,6 +62,7 @@ export class PurchasedPartComponent implements OnInit {
     constructor(
         private eventManager: JhiEventManager, 
         private teilService: TeilService,
+        private bestellungService: BestellungService,
         private jhiAlertService: JhiAlertService,    
         private principal: Principal
     ) {} 
@@ -257,6 +263,49 @@ export class PurchasedPartComponent implements OnInit {
         
         
     }; 
+    
+    
+    
+    public save() { 
+        //Anpassen der aktuellen Teile 
+        //this.saveTeil(); 
+        //Neue_Bestellungen_anlegen 
+        this.saveBestellung(this.gesamtes_array); 
+        //this.isSaving = true; 
+        //this.message = 'Speicherung der Daten erfolgreich'; 
+         
+    };   
+     
+    public saveBestellung(gesamtes_array: any){ 
+        
+        this.bestellungService.query({
+            size: 1000000,
+        })
+            .subscribe((res: ResponseWrapper) => {
+                this.bestellungen = res.json;
+        
+                //this.bestellungen.forEach(function (bestellung) {
+                    
+                    //this.gesamtes_array.forEach(function (kaufteil) {
+                    for(let i = 0; i < gesamtes_array.length; i++){
+                        
+                        for(let i = 0; i < this.bestellungen.length; i++){
+                            
+                            console.log("this.gesamtes_array[i]:  " + this.gesamtes_array[i]);
+                        
+                            this.bestellungen[i].periode = 0 //this.gesamtes_array[i].periode,
+                            this.bestellungen[i].nummer = 0,//funktion
+                            this.bestellungen[i].kaufmenge = 0 //kaufteil.bestellung,
+                            this.bestellungen[i].nummer = 0 //kaufteil.nummer
+                        
+                        }
+
+                    }
+                //}); 
+        }, (respond: ResponseWrapper) => this.onError(respond.json));
+        
+    }
+    
      
           
 }

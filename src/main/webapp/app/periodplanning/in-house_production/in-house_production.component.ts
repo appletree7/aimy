@@ -67,6 +67,8 @@ export class InHouseProductionComponent implements OnInit {
     inhouse_anzeige_array: InHouse[];
 
     alte_periode: 0;  
+    
+    
 
 
     constructor(
@@ -549,7 +551,7 @@ export class InHouseProductionComponent implements OnInit {
 
     public save() { 
         //Anpassen der aktuellen Teile 
-        this.saveTeil(); 
+        //this.saveTeil(); 
         //Neue_Bestellungen_anlegen 
         this.saveBestellung(); 
         //this.isSaving = true; 
@@ -557,17 +559,14 @@ export class InHouseProductionComponent implements OnInit {
          
     };   
      
-    public saveTeil(){ 
-      
-        this.inhouse_anzeige_array.forEach(function (inhouse){ 
-             
-         
-        }); 
-         
-    } 
     public saveBestellung(){ 
+        
+        
+        
         this.inhouse_anzeige_array.forEach(function (inhouse){ 
              
+            
+            
          
         }); 
          

@@ -77,7 +77,7 @@ export class CapacityPlanningComponent implements OnInit {
                 .subscribe((res2: ResponseWrapper) => {
                 // if (this.teil.nummer != null && this.teil.nummer == "1"){
                     this.arbeitsplaetze = res2.json;
-                    console.log(this.arbeitsplaetze.toString());
+                    console.log("Alle arbeitsplätze: "+ this.arbeitsplaetze.toString());
 
 
                 this.fertigungsauftragService.query()
@@ -94,7 +94,10 @@ export class CapacityPlanningComponent implements OnInit {
 
 
                     if (auftragsstatuse == 'WARTEND' || auftragsstatuse == 'ANGEFANGEN')//|| auftragsstatuse == 'BEARBEITEND'
-                    return (fa_wartend_und_in_bearbeitung)});
+                    return (fa_wartend_und_in_bearbeitung)
+                    
+                    
+                    });
 
 
                     for (let i = 0; i < this.fertigungsauftraege_wartend_und_in_bearbeitung.length; i++){
@@ -102,8 +105,22 @@ export class CapacityPlanningComponent implements OnInit {
                     };
 
                     this.capacity_array = this.matrixberechnung (this.arbeitsplaetze, this.teile_erzeugnis_produkt, this.fertigungsauftraege_wartend_und_in_bearbeitung);
-
-
+                    
+                    
+                    //nach Arbeitsplätzen sortieren
+                    this.capacity_array.sort( function (a,b){                   
+                        if (a.arbeitsplatznummer > b.arbeitsplatznummer) {
+                            return 1;
+                        }
+                        if (a.arbeitsplatznummer < b.arbeitsplatznummer) {
+                         return -1;
+                        }
+                        // a muss gleich b sein
+                        return 0;         
+                    });                    
+                    
+                    
+                    
                     let durchlauf = 1;
                     let restzeitbedarf_ruestzeit_7;
                     let restzeitbedarf_ruestzeit_8;
@@ -276,6 +293,8 @@ export class CapacityPlanningComponent implements OnInit {
             zaheler_teile_ruestzeit_mulitplikator_alt_drei = 0;
 
             teile_erzeugnis_produkt.forEach(function (teil){
+                
+                console.log("teile_erzeugnis_produkt: teil-Nr: "+teil.nummer); 
 
                 if(arbeitsplatz.nummer == 1){
 
@@ -287,18 +306,33 @@ export class CapacityPlanningComponent implements OnInit {
                         }
                     }
                     ruestzeit_neu = 20 * zaheler_teile_ruestzeit_mulitplikator;
+                    
+                    
+                    if(fertigungsauftraege_wartend_und_in_bearbeitung == null){
+                        console.log("wtf");
+                    }
+                    console.log(" halooooooo  " );
 
                     //Berechnung des Rückstands der Vorperiode
                     fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
+                        
+                        console.log("fertigungsauftraege_wartend_und_in_bearbeitung"+ fa.toString());
+                        
+                        console.log("MAL ACHTEN!!!!!   fa.herstellteil: "+fa.herstellteil + "  teil.nummer: "+teil.nummer); 
                         //würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil.id == teil.id){
-                            if(teil.nummer == 49 || teil.nummer == 54 || teil.nummer == 29){
-                                erhoehung_kapbedarf_alt = fa.auftragsmenge*6;
-                                kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
-                                zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt+1;
+                        if (fa.herstellteil != null){
+                            console.log(" Herstellteil ist definiert"); 
+                            if (fa.herstellteil == teil.nummer){
+                                if(teil.nummer == 49 || teil.nummer == 54 || teil.nummer == 29){
+                                    erhoehung_kapbedarf_alt = fa.auftragsmenge*6;
+                                    
+                                    console.log("Mein neuer Kap.bedarf: "+erhoehung_kapbedarf_alt); 
+                                    
+                                    kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
+                                    zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt+1;
+                                }
                             }
                         }
-
                     });
                     ruestzeit_alt = 20*zaheler_teile_ruestzeit_mulitplikator_alt;
                     gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
@@ -358,19 +392,23 @@ export class CapacityPlanningComponent implements OnInit {
 
                         //Berechnung des alten Kap_bed.:
                         // würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil.id == teil.id){
-                            if(teil.nummer == 50 || teil.nummer == 55 || teil.nummer == 30){
-                                erhoehung_kapbedarf_alt = fa.auftragsmenge * 5;
+                        if (fa.herstellteil != null){
+                            console.log(" Herstellteil ist definiert"); 
 
-                                // Berechnung des kapazitaetsbedarf_alt:
-                                kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
+                            if (fa.herstellteil == teil.nummer){
+                                if(teil.nummer == 50 || teil.nummer == 55 || teil.nummer == 30){
+                                    erhoehung_kapbedarf_alt = fa.auftragsmenge * 5;
 
-                                // Berechnung der Rüstzeit_alt:
-                                if (teil.nummer == 50 || teil.nummer == 55){
-                                zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt + 1;
-                                }
-                                if (teil.nummer == 30){
-                                    zaheler_teile_ruestzeit_mulitplikator_alt_zwei = 1;
+                                    // Berechnung des kapazitaetsbedarf_alt:
+                                    kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
+
+                                    // Berechnung der Rüstzeit_alt:
+                                    if (teil.nummer == 50 || teil.nummer == 55){
+                                    zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt + 1;
+                                    }
+                                    if (teil.nummer == 30){
+                                        zaheler_teile_ruestzeit_mulitplikator_alt_zwei = 1;
+                                    }
                                 }
                             }
                         }
@@ -436,26 +474,26 @@ export class CapacityPlanningComponent implements OnInit {
                     fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
                         console.log("Fertigungsaufträge in Beabeitung werden jetzt durchlaufen: " );
 
-                        console.log("Fertigungsauftrag Herstellteilid: "+ fa.herstellteil.toString() );
-
                         //Berechnung des alten Kap_bed.:
                         // würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil.id == teil.id){
-                            if (teil.nummer == 56 || teil.nummer == 31){
-                                erhoehung_kapbedarf_alt = fa.auftragsmenge * 6;
-                            }
-                            if (teil.nummer == 51){
-                                erhoehung_kapbedarf_alt_zwei = fa.auftragsmenge * 5;
-                            }
-                            // Berechnung des kapazitaetsbedarf_alt:
-                            kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt + erhoehung_kapbedarf_alt_zwei;
-                            console.log("kapazitaetsbedarf_alt: " + fa.auftragsmenge );
+                        if (fa.herstellteil != null){
+                            console.log(" Herstellteil ist definiert");
+                            if (fa.herstellteil == teil.nummer){
+                                if (teil.nummer == 56 || teil.nummer == 31){
+                                    erhoehung_kapbedarf_alt = fa.auftragsmenge * 6;
+                                }
+                                if (teil.nummer == 51){
+                                    erhoehung_kapbedarf_alt_zwei = fa.auftragsmenge * 5;
+                                }
+                                // Berechnung des kapazitaetsbedarf_alt:
+                                kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt + erhoehung_kapbedarf_alt_zwei;
+                                console.log("kapazitaetsbedarf_alt: " + fa.auftragsmenge );
 
-                            // Berechnung der Rüstzeit_alt:
-                            if (teil.nummer == 51 || teil.nummer == 56 || teil.nummer == 31){
-                                zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt + 1;
+                                // Berechnung der Rüstzeit_alt:
+                                if (teil.nummer == 51 || teil.nummer == 56 || teil.nummer == 31){
+                                    zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt + 1;
+                                }
                             }
-
                         }
                     });
                     ruestzeit_alt = 20*zaheler_teile_ruestzeit_mulitplikator_alt;
@@ -517,29 +555,32 @@ export class CapacityPlanningComponent implements OnInit {
                     // Berechnung des Rückstands der Vorperiode:
                     fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
                         console.log("Fertigungsaufträge in Beabeitung werden jetzt durchlaufen: " );
-                        console.log("Fertigungsauftrag Herstellteilid: "+ fa.herstellteil.toString() );
 
                         //Berechnung des alten Kap_bed.:
                         // würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil.id == teil.id){
-                            if (teil.nummer == 1){
-                                erhoehung_kapbedarf_alt = fa.auftragsmenge * 6;
-                            }
-                            if (teil.nummer == 2 ||teil.nummer == 3){
-                                erhoehung_kapbedarf_alt_zwei = fa.auftragsmenge * 7;
-                            }
-                            // Berechnung des kapazitaetsbedarf_alt:
-                            kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt + erhoehung_kapbedarf_alt_zwei;
-                            console.log("kapazitaetsbedarf_alt: " + fa.auftragsmenge );
+                    
+                        if (fa.herstellteil != null){
+                            console.log(" Herstellteil ist definiert");
+                            if (fa.herstellteil == teil.nummer){
+                                if (teil.nummer == 1){
+                                    erhoehung_kapbedarf_alt = fa.auftragsmenge * 6;
+                                }
+                                if (teil.nummer == 2 ||teil.nummer == 3){
+                                    erhoehung_kapbedarf_alt_zwei = fa.auftragsmenge * 7;
+                                }
+                                // Berechnung des kapazitaetsbedarf_alt:
+                                kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt + erhoehung_kapbedarf_alt_zwei;
+                                console.log("kapazitaetsbedarf_alt: " + fa.auftragsmenge );
 
-                            // Berechnung der Rüstzeit_alt:
-                            if (teil.nummer == 1 || teil.nummer == 3){
-                                zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator + 1;
-                            }
-                            if (teil.nummer == 2) {
-                                zaheler_teile_ruestzeit_mulitplikator_alt_zwei = zaheler_teile_ruestzeit_mulitplikator_alt_zwei + 1;
-                            }
+                                // Berechnung der Rüstzeit_alt:
+                                if (teil.nummer == 1 || teil.nummer == 3){
+                                    zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator + 1;
+                                }
+                                if (teil.nummer == 2) {
+                                    zaheler_teile_ruestzeit_mulitplikator_alt_zwei = zaheler_teile_ruestzeit_mulitplikator_alt_zwei + 1;
+                                }
 
+                            }
                         }
                     });
                     ruestzeit_alt = 30*zaheler_teile_ruestzeit_mulitplikator_alt + 20*zaheler_teile_ruestzeit_mulitplikator_zwei ;
@@ -608,26 +649,26 @@ export class CapacityPlanningComponent implements OnInit {
                     fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
                         console.log("Fertigungsaufträge in Beabeitung werden jetzt durchlaufen: " );
 
-                        console.log("Fertigungsauftrag Herstellteilid: "+ fa.herstellteil.toString() );
-
                         //Berechnung des alten Kap_bed.:
                         // würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil.id == teil.id){
-                            if (teil.nummer == 16){
-                                erhoehung_kapbedarf_alt = fa.auftragsmenge * 2;
-                            }
-                            if (teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
-                                erhoehung_kapbedarf_alt_zwei = fa.auftragsmenge * 3;
-                            }
-                            // Berechnung des kapazitaetsbedarf_alt:
-                            kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt + erhoehung_kapbedarf_alt_zwei;
-                            console.log("kapazitaetsbedarf_alt: " + fa.auftragsmenge );
+                        if (fa.herstellteil != null){
+                            console.log(" Herstellteil ist definiert");
+                            if (fa.herstellteil == teil.nummer){
+                                if (teil.nummer == 16){
+                                    erhoehung_kapbedarf_alt = fa.auftragsmenge * 2;
+                                }
+                                if (teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
+                                    erhoehung_kapbedarf_alt_zwei = fa.auftragsmenge * 3;
+                                }
+                                // Berechnung des kapazitaetsbedarf_alt:
+                                kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt + erhoehung_kapbedarf_alt_zwei;
+                                console.log("kapazitaetsbedarf_alt: " + fa.auftragsmenge );
 
-                            // Berechnung der Rüstzeit_alt:
-                            if (teil.nummer == 16 || teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
-                                zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt + 1;
+                                // Berechnung der Rüstzeit_alt:
+                                if (teil.nummer == 16 || teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
+                                    zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt + 1;
+                                }
                             }
-
                         }
                     });
                     ruestzeit_alt = 15 * zaheler_teile_ruestzeit_mulitplikator_alt;
@@ -670,12 +711,14 @@ export class CapacityPlanningComponent implements OnInit {
                     fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
                         console.log("Fertigungsaufträge in Beabeitung werden jetzt durchlaufen: " );
 
-                        console.log("Fertigungsauftrag Herstellteilid: "+ fa.herstellteil.toString() );
                         //würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil.id == teil.id){
-                            if(teil.nummer == 10 || teil.nummer == 11 ||teil.nummer == 12 ||teil.nummer == 13 ||teil.nummer == 14 ||teil.nummer == 15){
-                                erhoehung_kapbedarf_alt = fa.auftragsmenge*2;
-                                kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
+                        if (fa.herstellteil != null){
+                            console.log(" Herstellteil ist definiert");
+                            if (fa.herstellteil == teil.nummer){
+                                if(teil.nummer == 10 || teil.nummer == 11 ||teil.nummer == 12 ||teil.nummer == 13 ||teil.nummer == 14 ||teil.nummer == 15){
+                                    erhoehung_kapbedarf_alt = fa.auftragsmenge*2;
+                                    kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
+                                }
                             }
                         }
 
@@ -721,14 +764,15 @@ export class CapacityPlanningComponent implements OnInit {
                     fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
                         console.log("Fertigungsaufträge in Beabeitung werden jetzt durchlaufen: " );
 
-                        console.log("Fertigungsauftrag Herstellteilid: "+ fa.herstellteil.toString() );
                         //würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil.id == teil.id){
+                        if (fa.herstellteil != null){
+                            console.log(" Herstellteil ist definiert");
+                        if (fa.herstellteil == teil.nummer){
                             if(teil.nummer == 10 || teil.nummer == 11 ||teil.nummer == 12 ||teil.nummer == 13 ||teil.nummer == 14 ||teil.nummer == 15){
                                 erhoehung_kapbedarf_alt = fa.auftragsmenge*3;
                                 kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
                             }
-                        }
+                        }}
 
                     });
                     ruestzeit_alt = 0;
@@ -795,21 +839,22 @@ export class CapacityPlanningComponent implements OnInit {
                     fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
                         console.log("Fertigungsaufträge in Beabeitung werden jetzt durchlaufen: " );
 
-                        console.log("Fertigungsauftrag Herstellteilid: "+ fa.herstellteil.toString() );
-
                         //Berechnung des alten Kap_bed.:
                         // würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil.id == teil.id){
-                            if (teil.nummer == 10 || teil.nummer == 13){
-                                erhoehung_kapbedarf_alt = fa.auftragsmenge * 1;
+                    if (fa.herstellteil != null){
+                            console.log(" Herstellteil ist definiert");
+                            if (fa.herstellteil == teil.nummer){
+                                if (teil.nummer == 10 || teil.nummer == 13){
+                                    erhoehung_kapbedarf_alt = fa.auftragsmenge * 1;
+                                }
+                                if (teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 14|| teil.nummer == 15){
+                                    erhoehung_kapbedarf_alt_zwei = fa.auftragsmenge * 2;
+                                }
+                                if ( teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
+                                    erhoehung_kapbedarf_alt_drei = fa.auftragsmenge * 3;
+                                }
                             }
-                            if (teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 14|| teil.nummer == 15){
-                                erhoehung_kapbedarf_alt_zwei = fa.auftragsmenge * 2;
-                            }
-                            if ( teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
-                                erhoehung_kapbedarf_alt_drei = fa.auftragsmenge * 3;
-                            }
-
+                    }
 
                             // Berechnung des kapazitaetsbedarf_alt:
                             kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt + erhoehung_kapbedarf_alt_zwei + erhoehung_kapbedarf_alt_drei;
@@ -826,7 +871,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 zaheler_teile_ruestzeit_mulitplikator_alt_drei = zaheler_teile_ruestzeit_mulitplikator_alt_drei + 1;
                             }
 
-                        }
+                        
                     });
                     ruestzeit_alt = 20 * zaheler_teile_ruestzeit_mulitplikator_alt + 15 * zaheler_teile_ruestzeit_mulitplikator_alt_zwei + 25* zaheler_teile_ruestzeit_mulitplikator_alt_drei;
                     gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
@@ -886,27 +931,29 @@ export class CapacityPlanningComponent implements OnInit {
                     fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
                         console.log("Fertigungsaufträge in Beabeitung werden jetzt durchlaufen: " );
 
-                        console.log("Fertigungsauftrag Herstellteilid: "+ fa.herstellteil.toString() );
-
                         //Berechnung des alten Kap_bed.:
                         // würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil.id == teil.id){
-                            if (teil.nummer == 10 || teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 13 || teil.nummer == 14|| teil.nummer == 15|| teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20|| teil.nummer == 26){
-                                erhoehung_kapbedarf_alt = fa.auftragsmenge * 2;
-                            }
+                        
+                        if (fa.herstellteil != null){
+                                console.log(" Herstellteil ist definiert");    
+                            if (fa.herstellteil == teil.nummer){
+                                if (teil.nummer == 10 || teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 13 || teil.nummer == 14|| teil.nummer == 15|| teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20|| teil.nummer == 26){
+                                    erhoehung_kapbedarf_alt = fa.auftragsmenge * 2;
+                                }
 
-                            // Berechnung des kapazitaetsbedarf_alt:
-                            kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
-                            console.log("kapazitaetsbedarf_alt: " + fa.auftragsmenge );
+                                // Berechnung des kapazitaetsbedarf_alt:
+                                kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
+                                console.log("kapazitaetsbedarf_alt: " + fa.auftragsmenge );
 
-                            // Berechnung der Rüstzeit_alt:
-                            if (teil.nummer == 26){
-                                zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt + 1;
-                            }
-                            if (teil.nummer == 10 || teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 13 || teil.nummer == 14|| teil.nummer == 15|| teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
-                                zaheler_teile_ruestzeit_mulitplikator_alt_zwei = zaheler_teile_ruestzeit_mulitplikator_alt_zwei + 1;
-                            }
+                                // Berechnung der Rüstzeit_alt:
+                                if (teil.nummer == 26){
+                                    zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt + 1;
+                                }
+                                if (teil.nummer == 10 || teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 13 || teil.nummer == 14|| teil.nummer == 15|| teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
+                                    zaheler_teile_ruestzeit_mulitplikator_alt_zwei = zaheler_teile_ruestzeit_mulitplikator_alt_zwei + 1;
+                                }
 
+                            }
                         }
                     });
                     ruestzeit_alt = 30 * zaheler_teile_ruestzeit_mulitplikator_alt + 20* zaheler_teile_ruestzeit_mulitplikator_alt_zwei;
@@ -971,11 +1018,11 @@ export class CapacityPlanningComponent implements OnInit {
                     fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
                         console.log("Fertigungsaufträge in Beabeitung werden jetzt durchlaufen: " );
 
-                        console.log("Fertigungsauftrag Herstellteilid: "+ fa.herstellteil.toString() );
-
                         //Berechnung des alten Kap_bed.:
                         // würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil.id == teil.id){
+                    if (fa.herstellteil != null){
+                            console.log(" Herstellteil ist definiert");
+                        if (fa.herstellteil == teil.nummer){
                             if (teil.nummer == 10 || teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 13 || teil.nummer == 14|| teil.nummer == 15){
                                 erhoehung_kapbedarf_alt = fa.auftragsmenge * 3;
                             }
@@ -996,6 +1043,7 @@ export class CapacityPlanningComponent implements OnInit {
                             }
 
                         }
+                    }
                     });
                     ruestzeit_alt = 20 * zaheler_teile_ruestzeit_mulitplikator_alt + 15* zaheler_teile_ruestzeit_mulitplikator_alt_zwei;
                     gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
@@ -1045,11 +1093,12 @@ export class CapacityPlanningComponent implements OnInit {
                 fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
                     console.log("Fertigungsaufträge in Beabeitung werden jetzt durchlaufen: " );
 
-                    console.log("Fertigungsauftrag Herstellteilid: "+ fa.herstellteil.toString() );
-
                     //Berechnung des alten Kap_bed.:
                     // würde ich sehr gerne auf teil.nummer ändern.
-                    if (fa.herstellteil.id == teil.id){
+                
+                if (fa.herstellteil != null){
+                            console.log(" Herstellteil ist definiert");
+                    if (fa.herstellteil == teil.nummer){
                         if (teil.nummer == 4 || teil.nummer == 5 || teil.nummer == 6|| teil.nummer == 7 || teil.nummer == 8|| teil.nummer == 9){
                             erhoehung_kapbedarf_alt = fa.auftragsmenge * 4;
                         }
@@ -1063,6 +1112,7 @@ export class CapacityPlanningComponent implements OnInit {
                        }
 
                     }
+                }
                 });
                     ruestzeit_alt = 20 * zaheler_teile_ruestzeit_mulitplikator_alt;
                     gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
@@ -1119,11 +1169,11 @@ export class CapacityPlanningComponent implements OnInit {
                     fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
                         console.log("Fertigungsaufträge in Beabeitung werden jetzt durchlaufen: " );
 
-                        console.log("Fertigungsauftrag Herstellteilid: "+ fa.herstellteil.toString() );
-
                         //Berechnung des alten Kap_bed.:
                         // würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil.id == teil.id){
+                    if (fa.herstellteil != null){
+                            console.log(" Herstellteil ist definiert");
+                        if (fa.herstellteil == teil.nummer){
                             if (teil.nummer == 4 || teil.nummer == 5 || teil.nummer == 6|| teil.nummer == 7 || teil.nummer == 8|| teil.nummer == 9){
                                 erhoehung_kapbedarf_alt = fa.auftragsmenge * 3;
                             }
@@ -1141,6 +1191,8 @@ export class CapacityPlanningComponent implements OnInit {
                             }
 
                         }
+                        
+                    }    
                     });
                     ruestzeit_alt = 10 * zaheler_teile_ruestzeit_mulitplikator_alt + 20* zaheler_teile_ruestzeit_mulitplikator_alt_zwei;
                     gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
@@ -1181,14 +1233,15 @@ export class CapacityPlanningComponent implements OnInit {
                     fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
                         console.log("Fertigungsaufträge in Beabeitung werden jetzt durchlaufen: " );
 
-                        console.log("Fertigungsauftrag Herstellteilid: "+ fa.herstellteil.toString() );
                         //würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil.id == teil.id){
+                    if(fa.herstellteil != null){
+                        if (fa.herstellteil == teil.nummer){
                             if(teil.nummer == 16){
                                 erhoehung_kapbedarf_alt = fa.auftragsmenge*3;
                                 kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
                             }
                         }
+                    }
 
                     });
                     ruestzeit_alt = 0;
@@ -1241,13 +1294,15 @@ export class CapacityPlanningComponent implements OnInit {
                     fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
                         console.log("Fertigungsaufträge in Beabeitung werden jetzt durchlaufen: " );
 
-                        console.log("Fertigungsauftrag Herstellteilid: "+ fa.herstellteil.toString() );
                         //würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil.id == teil.id){
-                            if(teil.nummer == 17 || teil.nummer == 26){
-                                erhoehung_kapbedarf_alt = fa.auftragsmenge*3;
-                                kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
-                                zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt+1;
+                        if (fa.herstellteil != null){
+                            console.log(" Herstellteil ist definiert");
+                            if (fa.herstellteil == teil.nummer){
+                                if(teil.nummer == 17 || teil.nummer == 26){
+                                    erhoehung_kapbedarf_alt = fa.auftragsmenge*3;
+                                    kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
+                                    zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt+1;
+                                }
                             }
                         }
 

@@ -12,8 +12,8 @@ import { PurchasedPart } from '../../entities/anzeige/purchased_part.model';
  //Wird benötigt, wenn Buttons angeklickt werden 
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster'; 
  
-import { Teil } from '../../entities/teil/teil.model';
-import { Bestellung } from '../../entities/bestellung/bestellung.model';
+import { Teil, Teiltyp } from '../../entities/teil/teil.model';
+import { Bestellung, Bestellstatus } from '../../entities/bestellung/bestellung.model';
 import { TeilService } from '../../entities/teil/teil.service';
 import { BestellungService } from '../../entities/bestellung/bestellung.service';
 import { Arbeitsplatz, ArbeitsplatzService } from '../../entities/arbeitsplatz'; 
@@ -54,6 +54,12 @@ export class PurchasedPartComponent implements OnInit {
     anfangsbestand_vorperiode: any; 
     
     bestellungen: Bestellung[]; 
+    bestellung: Bestellung; 
+    isSaving: boolean;
+    kaufteil: Teil; 
+    teiltyp: Teiltyp.KAUFTEIL; 
+    
+     kaufteil_mit_purchased_part: Teil; 
     
  
     //produktionsprogramm_naechste_periode: Number []; 
@@ -72,6 +78,7 @@ export class PurchasedPartComponent implements OnInit {
         this.principal.identity().then((account) => {
             this.account = account;
         }); 
+        this.isSaving = false;
      
            
             this.teilService.query({
@@ -145,6 +152,14 @@ export class PurchasedPartComponent implements OnInit {
               
     } 
     
+    
+    changeListener($event): void {
+        $event = this.isSaving = true;
+        //this.readFile($event.target);
+    }
+    
+    
+    
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
     };
@@ -183,6 +198,7 @@ export class PurchasedPartComponent implements OnInit {
             purchasedpart.nummer = kaufteil.nummer.toString();
             purchasedpart.bestand = kaufteil.istmenge;
             purchasedpart.bruttobedarf = 0; 
+            purchasedpart.periode = parseInt(localStorage.getItem('aktuelleperiode'), 10);
  
             for (let i = 0; i < durchlauf ; i++){
                 lieferdauer_max_array[i]; 
@@ -267,45 +283,207 @@ export class PurchasedPartComponent implements OnInit {
     
     
     public save() { 
+        
+        console.log("save() wird aufgerufen ");
+        
         //Anpassen der aktuellen Teile 
         //this.saveTeil(); 
         //Neue_Bestellungen_anlegen 
-        this.saveBestellung(this.gesamtes_array); 
-        //this.isSaving = true; 
+        this.saveBestellung(); 
+        
+        this.isSaving = true;
         //this.message = 'Speicherung der Daten erfolgreich'; 
          
     };   
      
-    public saveBestellung(gesamtes_array: any){ 
+    
+    
+    
+    
+    
+    
+    public saveBestellung(){ 
+        
+        console.log("saveBestellung()wird aufgerufen ");
         
         this.bestellungService.query({
             size: 1000000,
         })
             .subscribe((res: ResponseWrapper) => {
                 this.bestellungen = res.json;
-        
-                //this.bestellungen.forEach(function (bestellung) {
+                
                     
-                    //this.gesamtes_array.forEach(function (kaufteil) {
-                    for(let i = 0; i < gesamtes_array.length; i++){
+                    for(let i = 0; i < this.gesamtes_array.length; i++){
                         
-                        for(let i = 0; i < this.bestellungen.length; i++){
+                        console.log("this.gesamtes_array Array wird durchlaufen. "+ this.gesamtes_array[i].nummer.toString() + " bestellung "+ this.gesamtes_array[i].bestellung);
+                        
+                        this.bestellung = this.gesamtes_array.find((bestellung) => bestellung.periode === parseInt(localStorage.getItem("aktuelle Periode"))&& bestellung.nummer === this.gesamtes_array[i].nummer);
+                        if(this.bestellung !== undefined){
                             
-                            console.log("this.gesamtes_array[i]:  " + this.gesamtes_array[i]);
-                        
-                            this.bestellungen[i].periode = 0 //this.gesamtes_array[i].periode,
-                            this.bestellungen[i].nummer = 0,//funktion
-                            this.bestellungen[i].kaufmenge = 0 //kaufteil.bestellung,
-                            this.bestellungen[i].nummer = 0 //kaufteil.nummer
-                        
+                            console.log(" Bestellung ist nicht undefined ");
+                            this.bestellung.kaufmenge = 0; //this.gesamtes_array.bestellung,
+                            this.bestellung.kaufteil.id  = this.sucheKaufteil(this.bestellung);  //this.gesamtes_array // Query durchlaufen
+ 
+                            this.bestellungService.update(this.bestellung)
+                                                  .subscribe((respond: Bestellung) =>
+                            console.log(respond), () => this.onSaveError());
                         }
+                        else{
+                            
+                            if(this.gesamtes_array[i].bestellung !== 0){
+                            
+                                console.log(" Else-Schleife wird durchlaufen ");
+                                
+                                //parseInt(localStorage.getItem("aktuelle Periode"))
+                                
+                                //this.gesamtes_array[i].nummer
+                                
+                                //let kaufteil : Teil;
+                                
 
+                                this.sucheKaufteil_mit_purchased_part(this.gesamtes_array[i]);
+                                
+                                
+                                this.bestellung = new Bestellung(undefined, this.gesamtes_array[i].periode , undefined, undefined, this.gesamtes_array[i].bestellung, undefined, undefined, 
+                                                                 undefined, undefined, Bestellstatus.UNTERWEGS , undefined,  this.kaufteil_mit_purchased_part); // Kaufteil
+
+                                //parseInt(localStorage.getItem("aktuelle Periode"))
+                                console.log("Was gespeichert wird in bestellung: "+"akt.Periode: "+ this.gesamtes_array[i].periode + " Bestellung: " + this.gesamtes_array[i].bestellung +" Bestellstatus: " + Bestellstatus.UNTERWEGS.toString() + " NR. "+ this.gesamtes_array[i].nummer + "Kaufteil.id : "); 
+
+                                this.bestellungService.create(this.bestellung)
+                                                      .subscribe((respond: Bestellung) =>
+                                console.log(respond), () => this.onSaveError()); 
+
+
+                                console.log(" Teil wurde gepeichert ");  
+                            }                       
+                        }
                     }
-                //}); 
         }, (respond: ResponseWrapper) => this.onError(respond.json));
         
     }
     
+    private onSaveError() {
+        this.isSaving = false;
+    }
+    
      
+     
+     
+    public sucheKaufteil(bestellung?: Bestellung){ 
+        
+        console.log("suche Kaufteil() wird aufgerufen ");
+        
+        let kaufteil: Teil; 
+        
+        this.teilService.query({
+            size: 1000000,
+        })
+        .subscribe((res: ResponseWrapper) => {
+                this.teils = res.json;
+        
+                //this.bestellungen.forEach(function (bestellung) {
+                    
+                    //this.gesamtes_array.forEach(function (kaufteil) {
+                    for(let i = 0; i <this.teils.length; i++){
+                        
+                        if (bestellung.periode == this.teils[i].periode && bestellung.nummer == this.teils[i].nummer){
+                            if(this.bestellung !== undefined){
+                                kaufteil = this.teils[i];
+                                return kaufteil;
+                                
+                                /*
+                                this.kaufteil.teiltyp = this.teiltyp; 
+                                this.kaufteil.istmenge = undefined;
+                                this.kaufteil.startmenge = undefined; 
+                                this.kaufteil.prozentsatz = undefined;
+                                this.kaufteil.lagerpreis = undefined;
+                                this.kaufteil.lagerwert = undefined;
+                                this.kaufteil.sicherheitsbestand = undefined;
+                                this.kaufteil.vertriebswunsch = undefined;
+                                this.kaufteil.gesamtproduktionsmenge = undefined;
+                                this.kaufteil.direktverkaufmenge = undefined;
+                                this.kaufteil.strafe = undefined;
+                                this.kaufteil.subkomponentes = undefined
+                                */
+                            }
+                            
+                            /*
+                            this.teilService.update(this.kaufteil)
+                                                  .subscribe((respond: Teil) =>
+                            console.log(respond), () => this.onSaveError());
+                            */
+
+                        }else{
+                            kaufteil = undefined; 
+                            return kaufteil;
+                        }      
+                    };      
+        }, (respond: ResponseWrapper) => this.onError(respond.json));
+    }
+    
+    public sucheKaufteil_mit_purchased_part(purchased_part: PurchasedPart){ 
+        
+        console.log("sucheKaufteil_mit_purchased_part wird aufgerufen "); 
+        this.kaufteil_mit_purchased_part;
+        //kaufteil = new Teil;       
+        
+        this.teilService.query({
+            size: 1000000,
+        })
+        .subscribe((res: ResponseWrapper) => {
+                this.teils = res.json;
+        
+                //this.bestellungen.forEach(function (bestellung) {
+                    
+                    //this.gesamtes_array.forEach(function (kaufteil) {
+                    for(let i = 0; i <this.teils.length; i++){
+                        
+                        console.log("sucheKaufteil_mit_purchased_part - Forschleide wird durchlaufen "); 
+                        
+                        if (purchased_part.nummer == this.teils[i].nummer.toString()){
+                            if( this.kaufteil_mit_purchased_part !== undefined){
+                                 this.kaufteil_mit_purchased_part = this.teils[i];
+                                 /*
+                                kaufteil.teiltyp = Teiltyp.KAUFTEIL;
+                                kaufteil.istmenge = undefined;
+                                kaufteil.startmenge = undefined; 
+                                kaufteil.prozentsatz = undefined;
+                                kaufteil.lagerpreis = undefined;
+                                kaufteil.lagerwert = undefined;
+                                kaufteil.sicherheitsbestand = undefined;
+                                kaufteil.vertriebswunsch = undefined;
+                                kaufteil.gesamtproduktionsmenge = undefined;
+                                kaufteil.direktverkaufmenge = undefined;
+                                kaufteil.strafe = undefined;
+                                kaufteil.subkomponentes = undefined
+                                */
+                                
+                                return  this.kaufteil_mit_purchased_part;
+                            }
+                        }else{
+                            this.kaufteil_mit_purchased_part = undefined; 
+                            
+                            /*
+                            kaufteil.teiltyp = Teiltyp.KAUFTEIL;
+                                kaufteil.istmenge = undefined;
+                                kaufteil.startmenge = undefined; 
+                                kaufteil.prozentsatz = undefined;
+                                kaufteil.lagerpreis = undefined;
+                                kaufteil.lagerwert = undefined;
+                                kaufteil.sicherheitsbestand = undefined;
+                                kaufteil.vertriebswunsch = undefined;
+                                kaufteil.gesamtproduktionsmenge = undefined;
+                                kaufteil.direktverkaufmenge = undefined;
+                                kaufteil.strafe = undefined;
+                                kaufteil.subkomponentes = undefined
+                             */   
+                             
+                            return  this.kaufteil_mit_purchased_part;
+                        }      
+                    }      
+        }, (respond: ResponseWrapper) => this.onError(respond.json));
+    }
+        
           
 }

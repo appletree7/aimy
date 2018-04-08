@@ -66,6 +66,10 @@ export class PeriodStartComponent implements OnInit {
         this.readFile($event.target);
     }
 
+    /**
+     * Liest die Xml-Datei als String ein.
+     * @param fileinput
+     */
     readFile(fileinput: any): void {
         const reader = new FileReader();
         const file: File = fileinput.files[0];
@@ -77,6 +81,9 @@ export class PeriodStartComponent implements OnInit {
             reader.readAsText(file);
     }
 
+    /**
+     * Führt die verschiedenen Speichermethoden aus und speichert die aktuelle Periode
+     */
     save() {
         if (this.aktuelleperiode !== undefined) {
             localStorage.setItem('aktuelleperiode', this.aktuelleperiode.toString());
@@ -84,7 +91,6 @@ export class PeriodStartComponent implements OnInit {
         if (this.xml !== undefined) {
             this.periode = parseInt(this.xml.getElementsByTagName('results')[0].getAttribute('period'), 10);
             this.saveModus();
-            this.saveTeil();
             this.saveArbeitsplatz();
             this.saveKennzahl();
 
@@ -92,6 +98,9 @@ export class PeriodStartComponent implements OnInit {
         }
     }
 
+    /**
+     * Speichert die Subkomponenten zu einem Teil
+     */
     saveTeilSubkomponente() {
 
         this.teilService.query({
@@ -180,6 +189,9 @@ export class PeriodStartComponent implements OnInit {
             }, (respond: ResponseWrapper) => this.onError(respond.json));
     }
 
+    /**
+     * Speichert die 5 Bestellmodi
+     */
     saveModus() {
         this.modusService.query({
             size: 1000000
@@ -212,13 +224,16 @@ export class PeriodStartComponent implements OnInit {
                 this.modusService.create(this.modus).subscribe((respond: Modus) =>
                     console.log(respond), () => this.onSaveError());
             }
-        }, (respond: ResponseWrapper) => this.onError(respond.json), () => this.saveBestellung(this.moduse, undefined));
+        }, (respond: ResponseWrapper) => this.onError(respond.json), () => this.saveTeil(this.moduse));
     }
 
-    saveTeil() {
+    /**
+     * Speichert die Teile der aktuelle Periode
+     */
+    saveTeil(modi: Array<Modus>,) {
 
         let criteria = [
-            {key: 'periode.in', value: this.periode}
+            {key: 'periode.equals', value: this.periode}
         ];
 
             this.teilService.query({
@@ -230,10 +245,9 @@ export class PeriodStartComponent implements OnInit {
                     const teile = this.xml.getElementsByTagName('warehousestock')[0].getElementsByTagName('article');
                     let i;
                     for (i = 0; i < teile.length; i++) {
-                        if (this.teils !== undefined && this.teils.length !== 0 && (this.teils[i].nummer !== undefined ||
-                                this.teils[i].periode !== undefined)) {
-                            this.teil = this.teils.find((teil) => (teil.nummer === (parseInt(teile[i].getAttribute('id'), 10)))
-                                && (teil.periode === this.periode));
+                        this.teil = this.teils.find((teil) => (teil.nummer === (parseInt(teile[i].getAttribute('id'), 10)))
+                            && teil.periode === this.periode);
+                        if (this.teil !== undefined) {
                             if (this.teil.nummer <= 3) {
                                 this.teil.teiltyp = Teiltyp.PRODUKT;
                             } else if (((this.teil.nummer > 3) && (this.teil.nummer < 21))
@@ -261,7 +275,7 @@ export class PeriodStartComponent implements OnInit {
                                         undefined, undefined, undefined, undefined, undefined);
                             } else if (((parseInt(teile[i].getAttribute('id'), 10) > 3)
                                     && (parseInt(teile[i].getAttribute('id'), 10) < 21))
-                                || (this.teil.nummer === 26)
+                                || (parseInt(teile[i].getAttribute('id'), 10) === 26)
                                 || ((parseInt(teile[i].getAttribute('id'), 10) > 28)
                                     && (parseInt(teile[i].getAttribute('id'), 10) < 32))
                                 || ((parseInt(teile[i].getAttribute('id'), 10) > 48)
@@ -286,27 +300,44 @@ export class PeriodStartComponent implements OnInit {
                     }
                 }, (respond: ResponseWrapper) => this.onError(respond.json),
                     () => {
-                    this.saveBestellung(undefined, this.teils);
+                    this.saveBestellung(modi, this.teils);
                     this.saveTeilSubkomponente();
                     this.saveFertigungsauftrag(this.teils);
                 });
         }
 
-     saveBestellung(moduse: Array<Modus>, kaufteile?: Array<Teil>) {
+    /**
+     * Speichert die Bestellungen der aktuellen Periode
+     * @param {Array<Modus>} moduse Die Bestellmodi
+     * @param {Array<Teil>} kaufteile Die Kaufteile
+     */
+    saveBestellung(moduse: Array<Modus>, kaufteile?: Array<Teil>) {
 
-         const bestellungen = this.xml.getElementsByTagName('inwardstockmovement')[0].getElementsByTagName('order');
-         let i;
-         for (i = 0; i < bestellungen.length; i++) {
-             this.bestellungperioden.add(bestellungen[i].getAttribute('orderperiod'));
+         let criteria;
+
+         if (this.periode === 1) {
+             criteria = [
+                 {key: 'periode.in', value: this.periode}
+             ];
+         } else if (this.periode === 2) {
+             criteria = [
+                 {key: 'periode.in', value: this.periode - 1},
+                 {key: 'periode.in', value: this.periode}
+             ];
+         } else if (this.periode === 3) {
+             criteria = [
+                 {key: 'periode.in', value: this.periode - 2},
+                 {key: 'periode.in', value: this.periode - 1},
+                 {key: 'periode.in', value: this.periode}
+             ];
+         } else {
+             criteria = [
+                 {key: 'periode.in', value: this.periode - 3},
+                 {key: 'periode.in', value: this.periode - 2},
+                 {key: 'periode.in', value: this.periode - 1},
+                 {key: 'periode.in', value: this.periode}
+             ];
          }
-
-         const bestellungenperioden2 = Array.from(this.bestellungperioden);
-
-         console.log(bestellungenperioden2)
-
-         let criteria = [
-             {key: 'periode.in', value: bestellungenperioden2[i]}
-         ];
 
         this.bestellungService.query({
             size: 1000000,
@@ -317,12 +348,17 @@ export class PeriodStartComponent implements OnInit {
                 const bestellungen = this.xml.getElementsByTagName('inwardstockmovement')[0].getElementsByTagName('order');
                 let i;
                 for (i = 0; i < bestellungen.length; i++) {
-                    if (this.bestellungen !== undefined && this.bestellungen.length !== 0 && (this.bestellungen[i].nummer !== undefined
-                        || this.bestellungen[i].periode !== undefined)) {
-                        this.bestellung = this.bestellungen.find((bestellung) => (bestellung.nummer ===
-                            (parseInt(bestellungen[i].getAttribute('id'), 10))) && bestellung.periode ===
-                            parseInt(bestellungen[i].getAttribute('orderperiod'), 10));
-                        console.log(bestellungen[i]);
+                    this.bestellung = this.bestellungen.find((bestellung) => (bestellung.nummer ===
+                        (parseInt(bestellungen[i].getAttribute('id'), 10))) && bestellung.periode ===
+                        parseInt(bestellungen[i].getAttribute('orderperiod'), 10));
+                        if( kaufteile !== undefined) {
+                            this.teil = kaufteile.find((teil) => (teil.nummer === parseInt(bestellungen[i].getAttribute('article'), 10))
+                                && (teil.periode === (parseInt(bestellungen[i].getAttribute('orderperiod'), 10))));
+                        }
+                        if (moduse !== undefined){
+                            this.modus = moduse.find((modus) => (modus.id === parseInt(bestellungen[i].getAttribute('mode'), 10)));
+                        }
+                    if (this.bestellung !== undefined) {
                         this.bestellung.lieferzeit = parseInt(bestellungen[i].getAttribute('time'), 10);
                         this.bestellung.kaufmenge = parseInt(bestellungen[i].getAttribute('amount'), 10);
                         this.bestellung.materialkosten = parseFloat(bestellungen[i].getAttribute('materialcosts'));
@@ -330,77 +366,76 @@ export class PeriodStartComponent implements OnInit {
                         this.bestellung.gesamtkosten = parseFloat(bestellungen[i].getAttribute('entirecosts'));
                         this.bestellung.stueckkosten = parseFloat(bestellungen[i].getAttribute('piececosts'));
                         this.bestellung.bestellstatus = Bestellstatus.GELIEFERT;
-                        if (kaufteile !== undefined) {
-                        this.teil = kaufteile.find((teil) => (teil.nummer === parseInt(bestellungen[i].getAttribute('article'), 10))
-                            && (teil.periode === parseInt(bestellungen[i].getAttribute('orderperiod'), 10)));
-                        this.bestellung.kaufteil = this.teil;
-                        }
-                        if (moduse !== undefined) {
-                            this.modus = moduse.find((modus) => (modus.id === parseInt(bestellungen[i].getAttribute('mode'), 10)));
-                            this.bestellung.modus = this.modus;
+                        if (this.teil !== undefined) {
+                            this.bestellung.kaufteil = this.teil;
+                         } else if (this.modus !== undefined) {
+                        this.bestellung.modus = this.modus;
                         }
                         this.bestellungService.update(this.bestellung).subscribe((respond: Bestellung) =>
                             console.log(respond), () => this.onSaveError());
                     } else {
-                        if (moduse !== undefined) {
-                            this.modus = moduse.find((modus) => (modus.id === parseInt(bestellungen[i].getAttribute('mode'), 10)));
-                        }
-                        if (kaufteile !== undefined) {
-                            this.teil = kaufteile.find((teil) => (teil.nummer === parseInt(bestellungen[i].getAttribute('article'), 10))
-                                && (teil.periode === parseInt(bestellungen[i].getAttribute('orderperiod'), 10)));
-                        }
-                                this.bestellung = new Bestellung(undefined, parseInt(bestellungen[i].getAttribute('orderperiod'), 10),
-                                    parseInt(bestellungen[i].getAttribute('id'), 10), parseInt(bestellungen[i].getAttribute('time'), 10),
-                                    parseInt(bestellungen[i].getAttribute('amount'), 10), parseFloat(bestellungen[i].getAttribute('materialcosts')),
-                                    parseFloat(bestellungen[i].getAttribute('ordercosts')), parseFloat(bestellungen[i].getAttribute('entirecosts')),
-                                    parseFloat(bestellungen[i].getAttribute('piececosts')),
-                                    Bestellstatus.GELIEFERT, this.modus, this.teil);
+                        this.bestellung = new Bestellung(undefined, parseInt(bestellungen[i].getAttribute('orderperiod'), 10),
+                                parseInt(bestellungen[i].getAttribute('id'), 10), parseInt(bestellungen[i].getAttribute('time'), 10),
+                                parseInt(bestellungen[i].getAttribute('amount'), 10), parseFloat(bestellungen[i].getAttribute('materialcosts')),
+                                parseFloat(bestellungen[i].getAttribute('ordercosts')), parseFloat(bestellungen[i].getAttribute('entirecosts')),
+                                parseFloat(bestellungen[i].getAttribute('piececosts')),
+                                Bestellstatus.GELIEFERT, this.modus, this.teil);
+                        this.bestellungService.create(this.bestellung).subscribe((respond: Bestellung) =>
+                                console.log(respond), () => this.onSaveError());
+                    }
+                }
+
+            }, (respond: ResponseWrapper) => this.onError(respond.json), () =>
+
+                this.bestellungService.query({
+                    size: 1000000,
+                    criteria
+                })
+                    .subscribe((res: ResponseWrapper) => {
+                        this.bestellungen = res.json;
+                        const futurebestellungen = this.xml.getElementsByTagName('futureinwardstockmovement')[0].getElementsByTagName('order');
+                        let i;
+                        for (i = 0; i < futurebestellungen.length; i++) {
+                            this.bestellung = this.bestellungen.find((bestellung) => bestellung.nummer ===
+                                (parseInt(futurebestellungen[i].getAttribute('id'), 10)) && bestellung.periode ===
+                                parseInt(futurebestellungen[i].getAttribute('orderperiod'), 10));
+                            if (kaufteile !== undefined) {
+                                this.teil = kaufteile.find((teil) => (teil.nummer === parseInt(futurebestellungen[i].getAttribute('article'), 10))
+                                    && (teil.periode === (parseInt(futurebestellungen[i].getAttribute('orderperiod'), 10))));
+                            } else if (moduse !== undefined) {
+                                this.modus = moduse.find((modus) => (modus.id === parseInt(futurebestellungen[i].getAttribute('mode'), 10)));
+                            }
+                            if (this.bestellung !== undefined) {
+                                this.bestellung.lieferzeit = parseInt(futurebestellungen[i].getAttribute('time'), 10);
+                                this.bestellung.kaufmenge = parseInt(futurebestellungen[i].getAttribute('amount'), 10);
+                                this.bestellung.bestellstatus = Bestellstatus.UNTERWEGS;
+                                if (this.teil !== undefined) {
+                                    this.bestellung.kaufteil = this.teil;
+                                } else if (this.modus !== undefined) {
+                                    this.bestellung.modus = this.modus;
+                                }
+                                this.bestellungService.update(this.bestellung).subscribe((respond: Bestellung) =>
+                                    console.log(respond), () => this.onSaveError());
+                            } else {
+                                this.bestellung = new Bestellung(undefined, parseInt(futurebestellungen[i].getAttribute('orderperiod'), 10),
+                                    parseInt(futurebestellungen[i].getAttribute('id'), 10),
+                                    undefined, parseInt(futurebestellungen[i].getAttribute('amount'), 10),
+                                    undefined, undefined, undefined, undefined,
+                                    Bestellstatus.UNTERWEGS, this.modus, this.teil);
                                 this.bestellungService.create(this.bestellung).subscribe((respond: Bestellung) =>
                                     console.log(respond), () => this.onSaveError());
-                    }
-                }
-                const futurebestellungen = this.xml.getElementsByTagName('futureinwardstockmovement')[0].getElementsByTagName('order');
-                for (i = 0; i < futurebestellungen.length; i++) {
-                    if (this.bestellungen !== undefined && this.bestellungen.length !== 0 && (this.bestellungen[i].nummer !== undefined
-                        || this.bestellungen[i].periode !== undefined)) {
-                        this.bestellung = this.bestellungen.find((bestellung) => bestellung.nummer ===
-                            (parseInt(futurebestellungen[i].getAttribute('id'), 10)) && bestellung.periode ===
-                            parseInt(futurebestellungen[i].getAttribute('orderperiod'), 10));
-                        this.bestellung.lieferzeit = parseInt(bestellungen[i].getAttribute('time'), 10);
-                        this.bestellung.kaufmenge = parseInt(bestellungen[i].getAttribute('amount'), 10);
-                        this.bestellung.bestellstatus = Bestellstatus.UNTERWEGS;
-                        if (kaufteile !== undefined) {
-                            this.teil = kaufteile.find((teil) => (teil.nummer === parseInt(futurebestellungen[i].getAttribute('article'), 10))
-                                && (teil.periode === parseInt(futurebestellungen[i].getAttribute('orderperiod'), 10)));
-                            this.bestellung.kaufteil = this.teil;
+                            }
                         }
-                        if (moduse !== undefined) {
-                            this.modus = moduse.find((modus) => (modus.id === parseInt(bestellungen[i].getAttribute('mode'), 10)));
-                            this.bestellung.modus = this.modus;
-                        }
-                        this.bestellungService.update(this.bestellung).subscribe((respond: Bestellung) =>
-                            console.log(respond), () => this.onSaveError());
-                    } else {
-                        if (kaufteile !== undefined) {
-                            this.teil = kaufteile.find((teil) => (teil.nummer === parseInt(futurebestellungen[i].getAttribute('article'), 10))
-                                && (teil.periode === parseInt(futurebestellungen[i].getAttribute('orderperiod'), 10)));
-                        }
-                        if (moduse !== undefined) {
-                            this.modus = moduse.find((modus) => (modus.id === parseInt(bestellungen[i].getAttribute('mode'), 10)));
-                        }
-                        this.bestellung = new Bestellung(undefined, parseInt(futurebestellungen[i].getAttribute('orderperiod'), 10),
-                            parseInt(futurebestellungen[i].getAttribute('id'), 10),
-                            undefined, parseInt(futurebestellungen[i].getAttribute('amount'), 10),
-                            undefined, undefined, undefined, undefined,
-                            Bestellstatus.UNTERWEGS, this.modus, this.teil);
-                        this.bestellungService.create(this.bestellung).subscribe((respond: Bestellung) =>
-                            console.log(respond), () => this.onSaveError());
-                    }
-                }
-            }, (respond: ResponseWrapper) => this.onError(respond.json));
+
+                    }, (respond: ResponseWrapper) => this.onError(respond.json))
+
+            );
 
     }
 
+    /**
+     * Speicher die Arbeitsplätze der aktuellen Periode
+     */
     saveArbeitsplatz() {
 
         let criteria = [
@@ -417,12 +452,10 @@ export class PeriodStartComponent implements OnInit {
                 // && this.arbeitsplaetze[i].periode !== undefined
                 const arbeitsplaetze = this.xml.getElementsByTagName('idletimecosts')[0].getElementsByTagName('workplace');
                 for (i = 0; i < arbeitsplaetze.length; i++) {
-                    if (this.arbeitsplaetze !== undefined && this.arbeitsplaetze.length !== 0
-                        && (this.arbeitsplaetze[i].nummer !== undefined || this.arbeitsplaetze[i].periode !== undefined)) {
-                        // && parseInt(arbeitsplaetze[i].getAttribute("period"))
-                        this.arbeitsplatz = this.arbeitsplaetze.find((arbeitsplatz) => (arbeitsplatz.nummer ===
-                            (parseInt(arbeitsplaetze[i].getAttribute('id'), 10))) && arbeitsplatz.periode ===
-                            this.periode);
+                    this.arbeitsplatz = this.arbeitsplaetze.find((arbeitsplatz) => (arbeitsplatz.nummer ===
+                        (parseInt(arbeitsplaetze[i].getAttribute('id'), 10))) && arbeitsplatz.periode ===
+                        this.periode);
+                    if (this.arbeitsplatz !== undefined) {
                         this.arbeitsplatz.ruestvorgaenge = parseInt(arbeitsplaetze[i].getAttribute('setupevents'), 10);
                         this.arbeitsplatz.leerzeit = parseInt(arbeitsplaetze[i].getAttribute('idletime'), 10);
                         this.arbeitsplatz.lohnleerkosten = parseFloat(arbeitsplaetze[i].getAttribute('wageidletimecosts'));
@@ -453,12 +486,10 @@ export class PeriodStartComponent implements OnInit {
                 let i;
                 const arbeitsplaetze2 = this.xml.getElementsByTagName('waitinglistworkstations')[0].getElementsByTagName('workplace');
                 for ( i = 0; i < arbeitsplaetze2.length; i++) {
-                    if (this.arbeitsplaetze !== undefined && this.arbeitsplaetze.length !== 0
-                        && (this.arbeitsplaetze[i].nummer !== undefined || this.arbeitsplaetze[i].periode !== undefined)) {
-                        // && parseInt(arbeitsplaetze2[i].getAttribute("period"))
-                        this.arbeitsplatz = this.arbeitsplaetze.find((arbeitsplatz) => (arbeitsplatz.nummer ===
-                            (parseInt(arbeitsplaetze2[i].getAttribute('id'), 10))) && arbeitsplatz.periode ===
-                            this.periode);
+                    this.arbeitsplatz = this.arbeitsplaetze.find((arbeitsplatz) => (arbeitsplatz.nummer ===
+                        (parseInt(arbeitsplaetze2[i].getAttribute('id'), 10))) && arbeitsplatz.periode ===
+                        this.periode);
+                    if (this.arbeitsplatz !== undefined) {
                         this.arbeitsplatz.restzeitbedarf = parseInt(arbeitsplaetze2[i].getAttribute('timeneed'), 10);
                         this.arbeitsplatzService.update(this.arbeitsplatz).subscribe((respond: Arbeitsplatz) =>
                             console.log(respond), () => this.onSaveError());
@@ -480,14 +511,11 @@ export class PeriodStartComponent implements OnInit {
                         this.arbeitsplaetze = res.json;
                         const arbeitsplaetze3 = this.xml.getElementsByTagName('ordersinwork')[0].getElementsByTagName('workplace');
                         let i;
-                        // && this.arbeitsplaetze[i].periode !== undefined
                         for (i = 0; i < arbeitsplaetze3.length; i++) {
-                            if (this.arbeitsplaetze !== undefined && this.arbeitsplaetze.length !== 0
-                                && (this.arbeitsplaetze[i].nummer !== undefined || this.arbeitsplaetze[i].periode !== undefined)) {
-                                // && arbeitsplatz.periode === parseInt(arbeitsplaetze3[i].getAttribute("period")))
-                                this.arbeitsplatz = this.arbeitsplaetze.find((arbeitsplatz) => (arbeitsplatz.nummer ===
-                                    (parseInt(arbeitsplaetze3[i].getAttribute('id'), 10))) && arbeitsplatz.periode ===
-                                    parseInt(arbeitsplaetze3[i].getAttribute('period'), 10));
+                            this.arbeitsplatz = this.arbeitsplaetze.find((arbeitsplatz) => (arbeitsplatz.nummer ===
+                                (parseInt(arbeitsplaetze3[i].getAttribute('id'), 10))) && arbeitsplatz.periode ===
+                                parseInt(arbeitsplaetze3[i].getAttribute('period'), 10));
+                            if (this.arbeitsplatz !== undefined) {
                                 this.arbeitsplatz.restzeitbedarf_in_bearbeitung = parseInt(arbeitsplaetze3[i].getAttribute('timeneed'), 10);
                                 this.arbeitsplatzService.update(this.arbeitsplatz).subscribe((respond: Arbeitsplatz) =>
                                     console.log(respond), () => this.onSaveError());
@@ -506,11 +534,37 @@ export class PeriodStartComponent implements OnInit {
 
     }
 
+    /**
+     * Speichert die Fertigungsaufträge der aktuellen Periode
+     * @param {Array<Teil>} teile Die Bauteile
+     */
     saveFertigungsauftrag(teile?: Array<Teil>) {
 
-        let criteria = [
-            {key: 'periode.equals', value: this.periode}
-        ];
+        let criteria;
+
+        if (this.periode === 1) {
+            criteria = [
+                {key: 'periode.in', value: this.periode}
+            ];
+        } else if (this.periode === 2) {
+            criteria = [
+                {key: 'periode.in', value: this.periode - 1},
+                {key: 'periode.in', value: this.periode}
+            ];
+        } else if (this.periode === 3) {
+            criteria = [
+                {key: 'periode.in', value: this.periode - 2},
+                {key: 'periode.in', value: this.periode - 1},
+                {key: 'periode.in', value: this.periode}
+            ];
+        } else {
+            criteria = [
+                {key: 'periode.in', value: this.periode - 3},
+                {key: 'periode.in', value: this.periode - 2},
+                {key: 'periode.in', value: this.periode - 1},
+                {key: 'periode.in', value: this.periode}
+            ];
+        }
 
        this.fertigungsauftragService.query({
            size: 1000000,
@@ -521,12 +575,13 @@ export class PeriodStartComponent implements OnInit {
                 const fertigungsauftraege = this.xml.getElementsByTagName('completedorders')[0].getElementsByTagName('order');
                 let i;
                 for (i = 0; i < fertigungsauftraege.length; i++) {
-                    if (this.fertigungsauftraege !== undefined && this.fertigungsauftraege.length !== 0
-                    && this.fertigungsauftraege[i].nummer !== undefined && this.fertigungsauftraege[i].periode !== undefined) {
-                        this.fertigungsauftrag = this.fertigungsauftraege.find((fertigungsauftrag) => (fertigungsauftrag.nummer ===
-                            (parseInt(fertigungsauftraege[i].getAttribute('id'), 10))) && fertigungsauftrag.periode ===
-                            parseInt(fertigungsauftraege[i].getAttribute('period'), 10));
-                        if (this.fertigungsauftrag.begonnen !== null) {
+                    this.fertigungsauftrag = this.fertigungsauftraege.find((fertigungsauftrag) => (fertigungsauftrag.nummer ===
+                        (parseInt(fertigungsauftraege[i].getAttribute('id'), 10))) && fertigungsauftrag.periode ===
+                        parseInt(fertigungsauftraege[i].getAttribute('period'), 10));
+                    this.teil = teile.find((teil) => (teil.nummer === parseInt(fertigungsauftraege[i].getAttribute('item'), 10))
+                        && (teil.periode === parseInt(fertigungsauftraege[i].getAttribute('period'), 10)));
+                    if (this.fertigungsauftrag !== undefined) {
+                        if (this.fertigungsauftrag.begonnen !== null || this.fertigungsauftrag.begonnen !== undefined) {
                             this.fertigungsauftrag.auftragsstatus = Auftragstatus.BEENDET;
                         } else {
                             this.fertigungsauftrag.auftragsstatus = Auftragstatus.ANGEFANGEN;
@@ -534,22 +589,18 @@ export class PeriodStartComponent implements OnInit {
                         this.fertigungsauftrag.auftragsmenge = parseInt(fertigungsauftraege[i].getAttribute('quantity'), 10);
                         this.fertigungsauftrag.kosten = parseFloat(fertigungsauftraege[i].getAttribute('cost'));
                         this.fertigungsauftrag.durchschnittlichestueckkosten =  parseFloat(fertigungsauftraege[i].getAttribute('averageunitcosts'));
-                        this.teil = teile.find((teil) => (teil.nummer === parseInt(fertigungsauftraege[i].getAttribute('item'), 10))
-                            && (teil.periode === parseInt(fertigungsauftraege[i].getAttribute('period'), 10)));
-                        this.fertigungsauftrag.herstellteil = this.teil;
+                        if (this.teil !== undefined) {
+                            this.fertigungsauftrag.herstellteil = this.teil;
+                        }
                         this.fertigungsauftragService.update(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
                             console.log(respond), () => this.onSaveError());
                     } else {
-                        if (fertigungsauftraege[i].getAttribute('starttime') !== null) {
-                            this.teil = teile.find((teil) => (teil.nummer === parseInt(fertigungsauftraege[i].getAttribute('item'), 10))
-                                && (teil.periode === parseInt(fertigungsauftraege[i].getAttribute('period'), 10)));
+                        if (fertigungsauftraege[i].getAttribute('starttime') !== undefined) {
                             this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(fertigungsauftraege[i].getAttribute('period'), 10),
                                 parseInt(fertigungsauftraege[i].getAttribute('id'), 10), parseInt(fertigungsauftraege[i].getAttribute('quantity'), 10),
                                 parseFloat(fertigungsauftraege[i].getAttribute('cost')), parseFloat(fertigungsauftraege[i].getAttribute('averageunitcosts')),
                                 Auftragstatus.BEENDET, undefined, undefined, undefined, undefined, undefined, this.teil);
                         } else {
-                            this.teil = this.teils.find((teil) => (teil.nummer === parseInt(fertigungsauftraege[i].getAttribute('item'), 10))
-                                && (teil.periode === parseInt(fertigungsauftraege[i].getAttribute('period'), 10)));
                             this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(fertigungsauftraege[i].getAttribute('period'), 10),
                                 parseInt(fertigungsauftraege[i].getAttribute('id'), 10),
                                 parseInt(fertigungsauftraege[i].getAttribute('quantity'), 10),
@@ -573,13 +624,12 @@ export class PeriodStartComponent implements OnInit {
                         let i;
                         const fertigungsauftraege2 = this.xml.getElementsByTagName('cycletimes')[0].getElementsByTagName('order');
                         for (i = 0; i < fertigungsauftraege2.length; i++) {
-                            if (this.fertigungsauftraege !== undefined && this.fertigungsauftraege.length !== 0
-                                && this.fertigungsauftraege[i].nummer !== undefined && this.fertigungsauftraege[i].periode !== undefined) {
-                                this.fertigungsauftrag = this.fertigungsauftraege.find((fertigungsauftrag) => (fertigungsauftrag.nummer ===
-                                    (parseInt(fertigungsauftraege2[i].getAttribute('id'), 10))) && fertigungsauftrag.periode ===
-                                    parseInt(fertigungsauftraege2[i].getAttribute('period'), 10));
+                            this.fertigungsauftrag = this.fertigungsauftraege.find((fertigungsauftrag) => (fertigungsauftrag.nummer ===
+                                (parseInt(fertigungsauftraege2[i].getAttribute('id'), 10))) && fertigungsauftrag.periode ===
+                                parseInt(fertigungsauftraege2[i].getAttribute('period'), 10));
+                            if (this.fertigungsauftrag !== undefined) {
                                 this.fertigungsauftrag.begonnen = fertigungsauftraege2[i].getAttribute('starttime');
-                                if (this.fertigungsauftrag.begonnen !== null) {
+                                if (this.fertigungsauftrag.begonnen !== null || this.fertigungsauftrag.begonnen !== undefined) {
                                     this.fertigungsauftrag.auftragsstatus = Auftragstatus.BEENDET;
                                 } else {
                                     this.fertigungsauftrag.auftragsstatus = Auftragstatus.ANGEFANGEN;
@@ -590,7 +640,7 @@ export class PeriodStartComponent implements OnInit {
                                 this.fertigungsauftragService.update(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
                                     console.log(respond), () => this.onSaveError());
                             } else {
-                                if (fertigungsauftraege2[i].getAttribute('starttime') !== null) {
+                                if (fertigungsauftraege2[i].getAttribute('starttime') !== undefined) {
                                     this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(fertigungsauftraege2[i].getAttribute('period'), 10),
                                         undefined, undefined, undefined, undefined,
                                         Auftragstatus.BEENDET, fertigungsauftraege2[i].getAttribute('starttime'), fertigungsauftraege2[i].getAttribute('finishtime'),
@@ -614,6 +664,9 @@ export class PeriodStartComponent implements OnInit {
 
     }
 
+    /**
+     * Speichert die aktuellen Kennzahlen der aktuellen Periode
+     */
     saveKennzahl() {
 
         const capacity = this.xml.getElementsByTagName('result')[0].getElementsByTagName('general')[0].getElementsByTagName('capacity');
@@ -648,14 +701,7 @@ export class PeriodStartComponent implements OnInit {
         )
             .subscribe((response: ResponseWrapper) => {
                 this.kennzahlen = response.json;
-                    if (this.kennzahlen !== undefined && this.kennzahlen.length !== 0) {
-                       /* this.kennzahl = this.kennzahlen.find((kennzahl) => kennzahl.name === (parseInt(lose[j].getAttribute('id'), 10)) && (kennzahl.periode === this.periode));
-                        this.kennzahl.aktuell = 0;
-                        this.kennzahl.durchschnitt = 0;
-                        this.kennzahl.gesamt = 0;
-                        this.kennzahlService.update(this.kennzahl).subscribe((respond: Kennzahlen) =>
-                            console.log(respond), (respond: Response) => this.onSaveError());*/
-                    } else {
+                    if (this.kennzahlen === undefined || this.kennzahlen.length === 0) {
                         this.kennzahl = new Kennzahlen(undefined, this.periode, 'Kapazität',
                             parseFloat(capacity[0].getAttribute('current')), parseFloat(capacity[0].getAttribute('average')),
                             parseFloat(capacity[0].getAttribute('all')));
@@ -769,10 +815,17 @@ export class PeriodStartComponent implements OnInit {
             }, (response: ResponseWrapper) => this.onError(response.json));
     }
 
+    /**
+     *
+     */
     private onSaveError() {
         this.isSaving = false;
     }
 
+    /**
+     *
+     * @param error
+     */
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
     }

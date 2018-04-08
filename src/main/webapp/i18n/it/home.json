@@ -1,9 +1,6 @@
 {
     "home": {
-        "title": "Benvenuto, Java Hipster!",
-        "subtitle": "Questa è la tua home page",
-        "logged": {
-            "message": "Autenticato come \"{{username}}\"."
-        }
+        "title": "Benvenuto!",
+        "welcome": "Benvenuto, \"{{username}}\" !"
     }
 }

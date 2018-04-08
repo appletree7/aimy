@@ -1,7 +1,6 @@
 import { BaseEntity } from './../../shared';
 
 export class InHouse implements BaseEntity {
-    
     constructor(
         public id?: number,
         public nummer?: string,

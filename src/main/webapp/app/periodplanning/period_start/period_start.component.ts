@@ -101,7 +101,7 @@ export class PeriodStartComponent implements OnInit {
     /**
      * Speichert die Subkomponenten zu einem Teil
      */
-    saveTeilSubkomponente() {
+    saveTeilSubkomponente(modi: Array<Modus>) {
 
         this.teilService.query({
             size: 1000000
@@ -112,14 +112,13 @@ export class PeriodStartComponent implements OnInit {
                 for (const teil of this.teils) {
                     if (teil.nummer === 1) {
                         teilSubkomponenten = this.teils.filter((teil1) => ((teil1.nummer === 51)
-                            || (teil1.nummer === 26))
-                            && (teil1.periode === this.periode));
+                            || (teil1.nummer === 26)) && (teil1.periode === this.periode));
                         teil.subkomponentes = teilSubkomponenten;
                         this.teilService.update(teil).subscribe((respond: Teil) =>
                             console.log(respond), () => this.onSaveError());
                     } else if (teil.nummer === 2) {
                         teilSubkomponenten = this.teils.filter((teil1) => ((teil1.nummer === 56)
-                            || (teil.nummer === 26)) && (teil.periode === this.periode));
+                            || (teil1.nummer === 26)) && (teil1.periode === this.periode));
                         teil.subkomponentes = teilSubkomponenten;
                         this.teilService.update(teil).subscribe((respond: Teil) =>
                             console.log(respond), () => this.onSaveError());
@@ -186,7 +185,11 @@ export class PeriodStartComponent implements OnInit {
                             console.log(respond), () => this.onSaveError());
                     }
                 }
-            }, (respond: ResponseWrapper) => this.onError(respond.json));
+            }, (respond: ResponseWrapper) => this.onError(respond.json),
+                () => {
+                    this.saveBestellung(modi, this.teils);
+                    this.saveFertigungsauftrag(this.teils);
+                });
     }
 
     /**
@@ -230,7 +233,7 @@ export class PeriodStartComponent implements OnInit {
     /**
      * Speichert die Teile der aktuelle Periode
      */
-    saveTeil(modi: Array<Modus>,) {
+    saveTeil(modi: Array<Modus>) {
 
         let criteria = [
             {key: 'periode.equals', value: this.periode}
@@ -300,9 +303,7 @@ export class PeriodStartComponent implements OnInit {
                     }
                 }, (respond: ResponseWrapper) => this.onError(respond.json),
                     () => {
-                    this.saveBestellung(modi, this.teils);
-                    this.saveTeilSubkomponente();
-                    this.saveFertigungsauftrag(this.teils);
+                    this.saveTeilSubkomponente(modi);
                 });
         }
 
@@ -351,11 +352,11 @@ export class PeriodStartComponent implements OnInit {
                     this.bestellung = this.bestellungen.find((bestellung) => (bestellung.nummer ===
                         (parseInt(bestellungen[i].getAttribute('id'), 10))) && bestellung.periode ===
                         parseInt(bestellungen[i].getAttribute('orderperiod'), 10));
-                        if( kaufteile !== undefined) {
+                        if ( kaufteile !== undefined) {
                             this.teil = kaufteile.find((teil) => (teil.nummer === parseInt(bestellungen[i].getAttribute('article'), 10))
                                 && (teil.periode === (parseInt(bestellungen[i].getAttribute('orderperiod'), 10))));
                         }
-                        if (moduse !== undefined){
+                        if (moduse !== undefined) {
                             this.modus = moduse.find((modus) => (modus.id === parseInt(bestellungen[i].getAttribute('mode'), 10)));
                         }
                     if (this.bestellung !== undefined) {
@@ -581,21 +582,21 @@ export class PeriodStartComponent implements OnInit {
                     this.teil = teile.find((teil) => (teil.nummer === parseInt(fertigungsauftraege[i].getAttribute('item'), 10))
                         && (teil.periode === parseInt(fertigungsauftraege[i].getAttribute('period'), 10)));
                     if (this.fertigungsauftrag !== undefined) {
-                        if (this.fertigungsauftrag.begonnen !== null || this.fertigungsauftrag.begonnen !== undefined) {
+                        this.fertigungsauftrag.auftragsmenge = parseInt(fertigungsauftraege[i].getAttribute('quantity'), 10);
+                        this.fertigungsauftrag.kosten = parseFloat(fertigungsauftraege[i].getAttribute('cost'));
+                        this.fertigungsauftrag.durchschnittlichestueckkosten =  parseFloat(fertigungsauftraege[i].getAttribute('averageunitcosts'));
+                        if (this.fertigungsauftrag.begonnen !== null && this.fertigungsauftrag.begonnen !== undefined) {
                             this.fertigungsauftrag.auftragsstatus = Auftragstatus.BEENDET;
                         } else {
                             this.fertigungsauftrag.auftragsstatus = Auftragstatus.ANGEFANGEN;
                         }
-                        this.fertigungsauftrag.auftragsmenge = parseInt(fertigungsauftraege[i].getAttribute('quantity'), 10);
-                        this.fertigungsauftrag.kosten = parseFloat(fertigungsauftraege[i].getAttribute('cost'));
-                        this.fertigungsauftrag.durchschnittlichestueckkosten =  parseFloat(fertigungsauftraege[i].getAttribute('averageunitcosts'));
                         if (this.teil !== undefined) {
                             this.fertigungsauftrag.herstellteil = this.teil;
                         }
                         this.fertigungsauftragService.update(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
                             console.log(respond), () => this.onSaveError());
                     } else {
-                        if (fertigungsauftraege[i].getAttribute('starttime') !== undefined) {
+                        if (fertigungsauftraege[i].getAttribute('starttime') !== undefined && fertigungsauftraege[i].getAttribute('starttime') !== null) {
                             this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(fertigungsauftraege[i].getAttribute('period'), 10),
                                 parseInt(fertigungsauftraege[i].getAttribute('id'), 10), parseInt(fertigungsauftraege[i].getAttribute('quantity'), 10),
                                 parseFloat(fertigungsauftraege[i].getAttribute('cost')), parseFloat(fertigungsauftraege[i].getAttribute('averageunitcosts')),
@@ -629,7 +630,7 @@ export class PeriodStartComponent implements OnInit {
                                 parseInt(fertigungsauftraege2[i].getAttribute('period'), 10));
                             if (this.fertigungsauftrag !== undefined) {
                                 this.fertigungsauftrag.begonnen = fertigungsauftraege2[i].getAttribute('starttime');
-                                if (this.fertigungsauftrag.begonnen !== null || this.fertigungsauftrag.begonnen !== undefined) {
+                                if (this.fertigungsauftrag.begonnen !== null && this.fertigungsauftrag.begonnen !== undefined) {
                                     this.fertigungsauftrag.auftragsstatus = Auftragstatus.BEENDET;
                                 } else {
                                     this.fertigungsauftrag.auftragsstatus = Auftragstatus.ANGEFANGEN;
@@ -640,7 +641,7 @@ export class PeriodStartComponent implements OnInit {
                                 this.fertigungsauftragService.update(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
                                     console.log(respond), () => this.onSaveError());
                             } else {
-                                if (fertigungsauftraege2[i].getAttribute('starttime') !== undefined) {
+                                if (fertigungsauftraege2[i].getAttribute('starttime') !== undefined && fertigungsauftraege2[i].getAttribute('starttime') !== null) {
                                     this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(fertigungsauftraege2[i].getAttribute('period'), 10),
                                         undefined, undefined, undefined, undefined,
                                         Auftragstatus.BEENDET, fertigungsauftraege2[i].getAttribute('starttime'), fertigungsauftraege2[i].getAttribute('finishtime'),

@@ -155,7 +155,7 @@ export class PurchasedPartComponent implements OnInit {
     
     changeListener($event): void {
         $event = this.isSaving = true;
-        //this.readFile($event.target);
+        this.save(this.gesamtes_array);
     }
     
     
@@ -163,11 +163,7 @@ export class PurchasedPartComponent implements OnInit {
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
     };
- 
-     
-    //hier Funktionen einbauen:  
-     
-    Zuordnen_der_Felder() {} //oder kann man das oben machen?? 
+
     
     public bruttobedarf_berechnen(alle_kaufteile: Teil[], lieferdauer_max_array: any, diskontmenge_array: any, verwendung_array:Number[], produktionsprogramm: any) { 
         
@@ -282,14 +278,14 @@ export class PurchasedPartComponent implements OnInit {
     
     
     
-    public save() { 
+    public save(gesamtes_array: any) { 
         
         console.log("save() wird aufgerufen ");
         
         //Anpassen der aktuellen Teile 
         //this.saveTeil(); 
         //Neue_Bestellungen_anlegen 
-        this.saveBestellung(); 
+        this.saveBestellung(gesamtes_array); 
         
         this.isSaving = true;
         //this.message = 'Speicherung der Daten erfolgreich'; 
@@ -302,7 +298,7 @@ export class PurchasedPartComponent implements OnInit {
     
     
     
-    public saveBestellung(){ 
+    public saveBestellung(gesamtes_array: any){ 
         
         console.log("saveBestellung()wird aufgerufen ");
         
@@ -312,8 +308,20 @@ export class PurchasedPartComponent implements OnInit {
             .subscribe((res: ResponseWrapper) => {
                 this.bestellungen = res.json;
                 
+                
+                
+                this.teilService.query({
+                   size: 1000000,
+                })
+                   .subscribe((res: ResponseWrapper) => {
+                    this.teils = res.json;
+                    
+                    let j = 0; 
+                
                     
                     for(let i = 0; i < this.gesamtes_array.length; i++){
+                        
+
                         
                         console.log("this.gesamtes_array Array wird durchlaufen. "+ this.gesamtes_array[i].nummer.toString() + " bestellung "+ this.gesamtes_array[i].bestellung);
                         
@@ -322,7 +330,7 @@ export class PurchasedPartComponent implements OnInit {
                             
                             console.log(" Bestellung ist nicht undefined ");
                             this.bestellung.kaufmenge = 0; //this.gesamtes_array.bestellung,
-                            this.bestellung.kaufteil.id  = this.sucheKaufteil(this.bestellung);  //this.gesamtes_array // Query durchlaufen
+                            //this.bestellung.kaufteil.id  = this.sucheKaufteil(this.bestellung);  //this.gesamtes_array // Query durchlaufen
  
                             this.bestellungService.update(this.bestellung)
                                                   .subscribe((respond: Bestellung) =>
@@ -330,35 +338,56 @@ export class PurchasedPartComponent implements OnInit {
                         }
                         else{
                             
+                            //if(this.gesamtes_array[i].bestellung !== 0){
                             if(this.gesamtes_array[i].bestellung !== 0){
-                            
-                                console.log(" Else-Schleife wird durchlaufen ");
                                 
-                                //parseInt(localStorage.getItem("aktuelle Periode"))
-                                
-                                //this.gesamtes_array[i].nummer
-                                
-                                //let kaufteil : Teil;
-                                
+                                console.log(" Else-Schleife wird durchlaufen: " +this.gesamtes_array[i].nummer);
+   
+                                    //for(let i = 0; i <this.teils.length; i++){
+                                                         
 
-                                this.sucheKaufteil_mit_purchased_part(this.gesamtes_array[i]);
+                                        console.log("Teile - Forschleife wird durchlaufen ");
+                                        
+                                        console.log("this.gesamtes_array[i].nummer: "+this.gesamtes_array[i].nummer + "   this.teils[j].nummer.toString(): "+this.teils[i].nummer.toString() );                                                      
+                                                                                                                                                                    
+                                        // hier ist der Fehler 
                                 
-                                
-                                this.bestellung = new Bestellung(undefined, this.gesamtes_array[i].periode , undefined, undefined, this.gesamtes_array[i].bestellung, undefined, undefined, 
-                                                                 undefined, undefined, Bestellstatus.UNTERWEGS , undefined,  this.kaufteil_mit_purchased_part); // Kaufteil
+                                let j = 0;   
+                                  
+                                for (j= 0; j < this.teils.length; j++){
+                                    console.log("Durchlauf NR: "+j);
+                                    if (this.gesamtes_array[i].nummer === this.teils[j].nummer.toString()){
+                                        console.log(" In der Schleifeeeee this.gesamtes_array[i].nummer: "+this.gesamtes_array[i].nummer + "   this.teils[j].nummer.toString(): "+this.teils[j].nummer.toString() );
+                                        
+                                                    this.kaufteil_mit_purchased_part = this.teils[i];
+                                                    console.log("sollte klappen");
+                                                    j = 1000; 
+                                                    console.log("FKT beedet "+ j);
+                                                
+                                    } 
+                                    
+                                    console.log("j wird um 1 erhöht"+j);
+                                }
+                                console.log("Forschleife beendet");
+                                    this.bestellung = new Bestellung(undefined, parseInt(this.gesamtes_array[i].periode) , undefined, undefined, parseInt(this.gesamtes_array[i].bestellung), undefined, undefined, 
+                                                                     undefined, undefined, undefined , undefined,  this.kaufteil_mit_purchased_part); // Kaufteil
+                                                                                         //Bestellstatus.UNTERWEGS
+                                    //parseInt(localStorage.getItem("aktuelle Periode"))
+                                    console.log("Was gespeichert wird in bestellung: " + "akt.Periode: " + this.gesamtes_array[i].periode + " Bestellung: " + this.gesamtes_array[i].bestellung + " Bestellstatus: " + Bestellstatus.UNTERWEGS.toString() + "Kaufteil.nummer : " + this.kaufteil_mit_purchased_part.nummer); 
 
-                                //parseInt(localStorage.getItem("aktuelle Periode"))
-                                console.log("Was gespeichert wird in bestellung: "+"akt.Periode: "+ this.gesamtes_array[i].periode + " Bestellung: " + this.gesamtes_array[i].bestellung +" Bestellstatus: " + Bestellstatus.UNTERWEGS.toString() + " NR. "+ this.gesamtes_array[i].nummer + "Kaufteil.id : "); 
-
-                                this.bestellungService.create(this.bestellung)
-                                                      .subscribe((respond: Bestellung) =>
-                                console.log(respond), () => this.onSaveError()); 
+                                    this.bestellungService.create(this.bestellung)
+                                                          .subscribe((respond: Bestellung) =>
+                                    console.log(respond), () => this.onSaveError()); 
 
 
-                                console.log(" Teil wurde gepeichert ");  
-                            }                       
+                                    console.log(" Teil wurde gepeichert ");  
+                                   
+                            }
+ 
+                                                   
                         }
                     }
+        }, (respond: ResponseWrapper) => this.onError(respond.json)); 
         }, (respond: ResponseWrapper) => this.onError(respond.json));
         
     }
@@ -483,6 +512,11 @@ export class PurchasedPartComponent implements OnInit {
                         }      
                     }      
         }, (respond: ResponseWrapper) => this.onError(respond.json));
+    }
+    
+    
+    previousState() {
+        window.history.back();
     }
         
           

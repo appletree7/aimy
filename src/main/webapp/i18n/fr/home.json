@@ -1,9 +1,6 @@
 {
     "home": {
-        "title": "Bienvenue, Java Hipster !",
-        "subtitle": "Ceci est votre page d'accueil",
-        "logged": {
-            "message": "Vous êtes connecté en tant que \"{{username}}\"."
-        }
+        "title": "Bienvenue!",
+        "home.advert": "Frappez le bullseye dans la planification de la production avec Aimy!"
     }
 }

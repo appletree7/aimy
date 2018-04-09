@@ -23,11 +23,11 @@
                 <td jhiTranslate="{{'aimyApp.Teiltyp.' + teil.teiltyp}}">{{teil.teiltyp}}</td>
                 <td>{{teil.nummer}}</td>
                 <td>
-                    <div class="form-group">
-                        <input type="number" class="form-control" name="vertriebswunsch" id="field_vertriebswunsch"
-                               [(ngModel)]="teil.vertriebswunsch" required min="0" />
-                    </div>
-                </td>
+                <div class="form-group">
+                    <input type="number" class="form-control" name="vertriebswunsch" id="field_vertriebswunsch"
+                           [(ngModel)]="teil.vertriebswunsch" required min="0" />
+                </div>
+            </td>
             </tr>
             </tbody>
         </table>

@@ -1,9 +1,6 @@
 {
     "home": {
-        "title": "Welcome, Java Hipster!",
-        "subtitle": "This is your homepage",
-        "logged": {
-            "message": "You are logged in as user \"{{username}}\"."
-        }
+        "title": "Welcome!",
+        "home.advert": "Hit the bullseye in production planning with Aimy!"
     }
 }

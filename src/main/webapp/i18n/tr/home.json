@@ -1,9 +1,6 @@
 {
     "home": {
-        "title": "Merhaba, Java Hipster!",
-        "subtitle": "Burası Ana Sayfanız",
-        "logged": {
-            "message": "\"{{username}}\" olarak giriş yaptınız."
-        }
+        "title": "Merhaba!",
+        "home.advert": "Aimy ile tam isabet!"
     }
 }

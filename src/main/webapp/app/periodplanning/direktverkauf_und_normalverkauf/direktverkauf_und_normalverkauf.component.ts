@@ -16,7 +16,7 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit, OnDestroy
     isSaving: boolean;
     teil: Teil;
     teils: Teil[];
-    teile: Teil[];
+    // teile: Teil[];
     currentAccount: any;
     eventSubscriber: Subscription;
     links: any;
@@ -81,10 +81,10 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit, OnDestroy
             }
         )
             .subscribe((res: ResponseWrapper) => {
-                this.teile = res.json;
+                // this.teils = res.json;
                 for (const teil1 of this.teils) {
                     this.teil = this.teils.find((teil) => teil.nummer === teil1.nummer && teil.periode === parseInt(localStorage.getItem('aktuelleperiode'), 10));
-                    if (this.teile !== undefined) {
+                    if (this.teil !== undefined) {
                         this.teilService.update(this.teil).subscribe((respond: Teil) =>
                             console.log(respond), () => this.onSaveError());
                     } else {

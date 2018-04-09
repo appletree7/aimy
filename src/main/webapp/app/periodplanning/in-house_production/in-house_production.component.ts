@@ -38,7 +38,9 @@ export class InHouseProductionComponent implements OnInit {
                  // Bei Subkomponente sollte eine Liste angegeben werden (hier auch wieder auf ID referenziert,
     // aber das hab ich schon im Programm umgesetzt das ist nicht so schlimm)
 
+    isSaving: boolean;
     teils: Teil[];
+    teile: Teil[];
     account: any;
     arbeitsplatzs: Arbeitsplatz[];
     currentAccount: any;
@@ -80,6 +82,8 @@ export class InHouseProductionComponent implements OnInit {
         this.principal.identity().then((account) => {
             this.account = account;
         });
+
+        this.isSaving = false;
 
         this.teilService.query()
             .subscribe((res: ResponseWrapper) => {
@@ -329,7 +333,7 @@ export class InHouseProductionComponent implements OnInit {
 
             const inhouse = new InHouse;
 
-            inhouse.nummer = teil.nummer.toString();
+            inhouse.nummer = teil.nummer;
 
             if (teil.nummer === 1 || teil.nummer === 2 || teil.nummer === 3) {
                 console.log(' Sollte nur bei P1, P2, P3 durchlaufen werden! ' + teil.vertriebswunsch);
@@ -465,6 +469,8 @@ export class InHouseProductionComponent implements OnInit {
 
             inhouse.produktionsauftraege = produktionsauftraege;
 
+            inhouse.teiltyp = teil.teiltyp;
+
             console.log('!!!!!!!!! Zeile ENDE !!!!!!! ');
 
             inhouse_anzeige_array.push(inhouse);
@@ -481,18 +487,59 @@ export class InHouseProductionComponent implements OnInit {
         // Anpassen der aktuellen Teile
         // this.saveTeil();
         // Neue_Bestellungen_anlegen
-        this.saveBestellung();
+        this.saveTeil();
+        this.isSaving = true;
         // this.isSaving = true;
         // this.message = 'Speicherung der Daten erfolgreich';
 
     };
 
-    public saveBestellung() {
+    public saveTeil() {
 
-        this.inhouse_anzeige_array.forEach(function(inhouse){
+        let criteria = [
+            {key: 'teiltyp.in', value: 'PRODUKT'},
+            {key: 'teiltyp.in', value: 'ERZEUGNIS'},
+            {key: 'periode.equals', value: localStorage.getItem('aktuelleperiode')}
+        ];
 
-        });
+        this.teilService.query({
+            size: 1000000,
+            criteria
+        })
+            .subscribe((res: ResponseWrapper) => {
+                this.teile = res.json;
+                console.log(this.teile);
+                let i;
+                for (i = 0; i < this.inhouse_anzeige_array.length; i++) {
+                    this.teil = this.teile.find((teil) => (teil.nummer === this.inhouse_anzeige_array[i].nummer)
+                        && teil.periode === parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                    console.log(this.teil);
+                    if (this.teil !== undefined) {
+                        this.teil.gesamtproduktionsmenge = this.inhouse_anzeige_array[i].produktionsauftraege;
+                        this.teil.vertriebswunsch = this.inhouse_anzeige_array[i].vertriebswunsch;
+                        this.teil.sicherheitsbestand = this.inhouse_anzeige_array[i].sicherheitsbestand;
+                        this.teilService.update(this.teil).subscribe((respond: Teil) =>
+                            console.log(respond), () => this.onSaveError());
+                    } else {
+                        this.teil = new Teil(undefined, this.inhouse_anzeige_array[i].teiltyp, parseInt(localStorage.getItem('aktuelleperiode'), 10),
+                            this.teils[i].nummer, undefined, undefined, undefined, undefined,
+                            undefined, this.inhouse_anzeige_array[i].sicherheitsbestand, this.inhouse_anzeige_array[i].vertriebswunsch,
+                            this.inhouse_anzeige_array[i].produktionsauftraege, undefined, undefined,
+                            undefined, undefined);
+                        this.teilService.create(this.teil).subscribe((respond: Teil) =>
+                            console.log(respond), () => this.onSaveError());
+                    }
+                }
+            }, (respond: ResponseWrapper) => this.onError(respond.json));
 
+    }
+
+    private onSaveError() {
+        this.isSaving = false;
+    }
+
+    previousState() {
+        window.history.back();
     }
 
 };

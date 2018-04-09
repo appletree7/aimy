@@ -1,9 +1,11 @@
 import { BaseEntity } from './../../shared';
+import {Teiltyp} from "../teil";
 
 export class InHouse implements BaseEntity {
     constructor(
         public id?: number,
-        public nummer?: string,
+        public teiltyp?: Teiltyp,
+        public nummer?: number,
         public vertriebswunsch?: number,
         public sicherheitsbestand?: number,
         public bestand_vorperiode?: number,

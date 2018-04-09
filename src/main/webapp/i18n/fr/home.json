@@ -1,6 +1,6 @@
 {
     "home": {
         "title": "Bienvenue!",
-        "welcome": "Bienvenue, \"{{username}}\" !"
+        "home.advert": "Frappez le bullseye dans la planification de la production avec Aimy!"
     }
 }

@@ -1,6 +1,6 @@
 {
     "home": {
         "title": "Merhaba!",
-        "welcome": "Merhaba, \"{{username}}\" !"
+        "home.advert": "Aimy ile tam isabet!"
     }
 }

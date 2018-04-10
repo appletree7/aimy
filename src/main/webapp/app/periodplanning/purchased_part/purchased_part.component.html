@@ -1,5 +1,5 @@
 <form name="saveForm" role="form" novalidate (ngSubmit)="save()" #saveForm="ngForm">
-<div> 
+<div>
     <h2>
         <span jhiTranslate="purchased_part.title">Kaufteildisposition</span>
     </h2>
@@ -9,51 +9,51 @@
 
     <div class="table-responsive">
         <table id="purchase_part" class="table table-striped">
-             <thead> 
-                <tr> 
-                        <th class="text-center" jhiTranslate="purchased_part.table.number">Nummer</th> 
-                        <th class="text-center" jhiTranslate="purchased_part.table.inventory">Bestand</th> 
+             <thead>
+                <tr>
+                        <th class="text-center" jhiTranslate="purchased_part.table.number">Nummer</th>
+                        <th class="text-center" jhiTranslate="purchased_part.table.inventory">Bestand</th>
                         <th class="text-center" jhiTranslate="purchased_part.table.ld">Lieferdauer(max)</th>
                         <th class="text-center" jhiTranslate="purchased_part.table.discount">Discount</th>
-                        <th class="text-center" jhiTranslate="purchased_part.table.need">Bruttobedarf (n+1)</th> 
+                        <th class="text-center" jhiTranslate="purchased_part.table.need">Bruttobedarf (n+1)</th>
                         <th class="text-center" jhiTranslate="purchased_part.table.delivery">Bestellung</th>
                         <th class="text-center" jhiTranslate="purchased_part.table.type">Art</th>
-                </tr> 
-            </thead> 
-            <tbody> 
-                        <tr *ngFor="let element of gesamtes_array; trackBy: trackId">     
+                </tr>
+            </thead>
+            <tbody>
+                        <tr *ngFor="let element of gesamtes_array">
                         <td class="text-center">{{element.nummer}}</td>
                         <td class="text-center">{{element.bestand}}</td>
                         <td class="text-center">{{element.lieferdauer}}</td>
-                        <td class="text-center">{{element.diskontmenge}}</td>            
+                        <td class="text-center">{{element.diskontmenge}}</td>
                         <td class="text-center">{{element.bruttobedarf}}</td>
                         <td class="text-center">{{element.bestellung}}</td>
                         <td class="text-center">{{element.art}}</td>
-                
-            </tbody> 
+
+            </tbody>
         </table>
     </div>
-    
+
     <div class="btn-group" role="group">
     <button type="button"
             (click)="previousState()"
             class="btn btn-info">
         <span class="fa fa-arrow-left"></span><span jhiTranslate="entity.action.back"> Back</span>
     </button>
-    <!--    
+    <!--
     <button type="button" class="btn btn-primary" [routerLink]="['/capacity_planning']"
                 replaceUrl="true">
         <span jhiTranslate="entity.action.next"> Weiter</span>
     </button>
     -->
-    
+
     <button type="submit" [disabled]="saveForm.form.invalid || isSaving" class="btn btn-primary">
      <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
     </button>
-    
-    
+
+
     </div>
-</div> 
+</div>
 </form>
 
 

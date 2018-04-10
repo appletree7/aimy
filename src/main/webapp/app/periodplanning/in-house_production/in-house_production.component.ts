@@ -85,8 +85,17 @@ export class InHouseProductionComponent implements OnInit {
 
         this.isSaving = false;
 
-        this.teilService.query()
-            .subscribe((res: ResponseWrapper) => {
+
+        let criteria = [
+            {key: 'teiltyp.in', value: 'PRODUKT'},
+            {key: 'teiltyp.in', value: 'ERZEUGNIS'},
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
+        ];
+
+        this.teilService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((res: ResponseWrapper) => {
                 // if (this.teil.nummer != null && this.teil.nummer == "1"){
                 this.teils = res.json;
 
@@ -121,9 +130,10 @@ export class InHouseProductionComponent implements OnInit {
                 res.json = this.wanted;
                 // console.log(this.wanted);
 
-            // Aufsuchen aller Fertigungsaufträge
-            this.fertigungsauftragService.query()
-            .subscribe((res2: ResponseWrapper) => {
+                // Aufsuchen aller Fertigungsaufträge
+                this.fertigungsauftragService.query({
+                    // size: 1000000
+                }).subscribe((res2: ResponseWrapper) => {
 
             this.fertigungsauftraege = res2.json;
 

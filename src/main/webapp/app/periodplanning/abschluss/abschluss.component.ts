@@ -157,7 +157,6 @@ export class AbschlussComponent implements OnInit, OnDestroy {
         qualitycontrol.setAttribute('type', 'no');
         qualitycontrol.setAttribute('losequantity', '0');
         qualitycontrol.setAttribute('delay', '0');
-        // console.log(qualitycontrol);
         const sellwish = doc.createElement('sellwish');
         input.appendChild(sellwish);
         for (const teil of this.teils) {
@@ -169,9 +168,9 @@ export class AbschlussComponent implements OnInit, OnDestroy {
                 item.setAttribute('article', '');
             }
             if (teil.vertriebswunsch !== null) {
-                item.setAttribute('article', teil.vertriebswunsch.toString());
+                item.setAttribute('quantity', teil.vertriebswunsch.toString());
             } else {
-                item.setAttribute('article', '');
+                item.setAttribute('quantity', '0');
             }
         }
         const selldirect = doc.createElement('selldirect');
@@ -187,56 +186,52 @@ export class AbschlussComponent implements OnInit, OnDestroy {
             if (teil.direktverkaufmenge !== null) {
                 item2.setAttribute('quantity', teil.direktverkaufmenge.toString());
             } else {
-                item2.setAttribute('quantity', '');
+                item2.setAttribute('quantity', '0');
             }
             if (teil.direktverkaufspreis !== null) {
                 item2.setAttribute('price', teil.direktverkaufspreis.toString());
             } else {
-                item2.setAttribute('price', '');
+                item2.setAttribute('price', '0');
             }
             if (teil.strafe !== null) {
                 item2.setAttribute('penalty', teil.strafe.toString());
             } else {
-                item2.setAttribute('penalty', '');
+                item2.setAttribute('penalty', '0');
             }
         }
         const orderlist = doc.createElement('orderlist');
         input.appendChild(orderlist);
         for (const bestellung of this.bestellungen) {
-            const order = doc.createElement('order');
-            orderlist.appendChild(order);
-            this.teil = this.teile.find((teil) => (teil.id === bestellung.kaufteil.id));
-            if (this.teil.nummer !== null || this.teil.nummer !== undefined) {
-                order.setAttribute('article', this.teil.nummer.toString());
-            } else {
-                order.setAttribute('article', '');
-            }
-            if (bestellung.kaufmenge !== null) {
-                order.setAttribute('quantity', bestellung.kaufmenge.toString())
-            } else {
-                order.setAttribute('quantity', '')
-            }
-            if (bestellung.modus !== null) {
-                order.setAttribute('modus',  bestellung.modus.id.toString());
-            } else {
-                order.setAttribute('modus',  '');
+            if (bestellung.kaufmenge !== 0 && bestellung.auftragsmenge !== null) {
+                const order = doc.createElement('order');
+                orderlist.appendChild(order);
+                this.teil = this.teile.find((teil) => (teil.id === bestellung.kaufteil.id));
+                if (this.teil.nummer !== null || this.teil.nummer !== undefined) {
+                    order.setAttribute('article', this.teil.nummer.toString());
+                } else {
+                    order.setAttribute('article', '');
+                }
+                    order.setAttribute('quantity', bestellung.kaufmenge.toString())
+                if (bestellung.modus !== null) {
+                    order.setAttribute('modus', bestellung.modus.id.toString());
+                } else {
+                    order.setAttribute('modus', '');
+                }
             }
         }
         const productionlist = doc.createElement('productionlist');
         input.appendChild(productionlist);
         for (const fertigungsauftrag of this.fertigungsauftraege) {
-            const production = doc.createElement('production');
-            productionlist.appendChild(production);
-            this.teil = this.teile.find((teil) => (teil.id === fertigungsauftrag.herstellteil.id));
-            if (this.teil.nummer !== null || this.teil.nummer !== undefined) {
-                production.setAttribute('article', this.teil.nummer.toString());
-            } else {
-                production.setAttribute('article', '');
-            }
-            if (fertigungsauftrag.auftragsmenge !== null) {
-                production.setAttribute('quantity', fertigungsauftrag.auftragsmenge.toString());
-            } else {
-                production.setAttribute('quantity', '');
+            if (fertigungsauftrag.auftragsmenge !== 0 && fertigungsauftrag.auftragsmenge !== null) {
+                const production = doc.createElement('production');
+                productionlist.appendChild(production);
+                this.teil = this.teile.find((teil) => (teil.id === fertigungsauftrag.herstellteil.id));
+                if (this.teil.nummer !== null || this.teil.nummer !== undefined) {
+                    production.setAttribute('article', this.teil.nummer.toString());
+                } else {
+                    production.setAttribute('article', '');
+                }
+                    production.setAttribute('quantity', fertigungsauftrag.auftragsmenge.toString());
             }
         }
         const workingtimelist = doc.createElement('workingtimelist');
@@ -286,66 +281,73 @@ export class AbschlussComponent implements OnInit, OnDestroy {
           criteria
       })
           .subscribe((res: ResponseWrapper) => {
-              // this.fertigungsauftraege = res.json;
+              this.fertigungsauftraege2 = res.json;
               this.fertigungsauftraege = [];
-              criteria = [
-                  {key: 'teiltyp.in', value: 'PRODUKT'},
-                  {key: 'teiltyp.in', value: 'ERZEUGNIS'},
-                  {key: 'periode.equals', value: localStorage.getItem('aktuelleperiode')}
-              ];
+
+              if (this.fertigungsauftraege2.length === 0) {
+                  criteria = [
+                      {key: 'teiltyp.in', value: 'PRODUKT'},
+                      {key: 'teiltyp.in', value: 'ERZEUGNIS'},
+                      {key: 'periode.equals', value: localStorage.getItem('aktuelleperiode')}
+                  ];
                   this.teilService.query({
                       size: 1000000,
                       criteria
-                  })
-                      .subscribe((response: ResponseWrapper) => {
-                          this.teile = response.json;
-                              let i = 0;
-                              for (const teil of this.teile) {
-                                  i = i + 1;
-                                  if (teil.nummer === 17 || teil.nummer === 26 || teil.nummer === 4
-                                      || teil.nummer === 5 || teil.nummer === 6 || teil.nummer === 7
-                                      || teil.nummer === 8 || teil.nummer === 9) {
-                                      const auftragsmenge = teil.gesamtproduktionsmenge / 2;
-                                      this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
-                                          parseInt(auftragsmenge.toFixed(2), 10), undefined, undefined,
-                                          undefined, undefined, undefined, undefined,
-                                          undefined, undefined, teil);
-                                      this.fertigungsauftraege.push(this.fertigungsauftrag);
-                                      this.fertigungsauftraege.push(this.fertigungsauftrag);
-                                  } else if (teil.nummer === 10 || teil.nummer === 11 || teil.nummer === 12
-                                      || teil.nummer === 13 || teil.nummer === 14 || teil.nummer === 15
-                                      || teil.nummer === 18 || teil.nummer === 19 || teil.nummer === 20) {
-                                      const auftragsmenge = teil.gesamtproduktionsmenge / 3;
-                                      this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
-                                          parseInt(auftragsmenge.toFixed(2), 10), undefined, undefined,
-                                          undefined, undefined, undefined, undefined,
-                                          undefined, undefined, teil);
-                                      this.fertigungsauftraege.push(this.fertigungsauftrag);
-                                      this.fertigungsauftraege.push(this.fertigungsauftrag);
-                                      this.fertigungsauftraege.push(this.fertigungsauftrag);
-                                  } else {
-                                      this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
-                                          teil.gesamtproduktionsmenge, undefined, undefined,
-                                          undefined, undefined, undefined, undefined,
-                                          undefined, undefined, teil);
-                                      this.fertigungsauftraege.push(this.fertigungsauftrag);
-                                  }
-                              }
-                              for (const fertigungsauftrag of this.fertigungsauftraege) {
-                                  if (fertigungsauftrag.id !== null) {
-                                      this.fertigungsauftragService.update(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
-                                          console.log(respond), () => this.onSaveError());
-                                  } else {
-                                      this.fertigungsauftragService.create(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
-                                          console.log(respond), () => this.onSaveError());
-                                  }
-                              }
-                      }, (response: ResponseWrapper) => this.onError(response.json));
+                  }).subscribe((response: ResponseWrapper) => {
+                      this.teile = response.json;
+                      let i = 0;
+                      for (const teil of this.teile) {
+                          i = i + 1;
+                          if (teil.nummer === 17 || teil.nummer === 26 || teil.nummer === 4
+                              || teil.nummer === 5 || teil.nummer === 6 || teil.nummer === 7
+                              || teil.nummer === 8 || teil.nummer === 9) {
+                              const auftragsmenge = teil.gesamtproduktionsmenge / 2;
+                              this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
+                                  parseInt(auftragsmenge.toFixed(2), 10), undefined, undefined,
+                                  undefined, undefined, undefined, undefined,
+                                  undefined, undefined, teil);
+                              this.fertigungsauftraege.push(this.fertigungsauftrag);
+                              this.fertigungsauftraege.push(this.fertigungsauftrag);
+                          } else if (teil.nummer === 10 || teil.nummer === 11 || teil.nummer === 12
+                              || teil.nummer === 13 || teil.nummer === 14 || teil.nummer === 15
+                              || teil.nummer === 18 || teil.nummer === 19 || teil.nummer === 20) {
+                              const auftragsmenge = teil.gesamtproduktionsmenge / 3;
+                              this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
+                                  parseInt(auftragsmenge.toFixed(2), 10), undefined, undefined,
+                                  undefined, undefined, undefined, undefined,
+                                  undefined, undefined, teil);
+                              this.fertigungsauftraege.push(this.fertigungsauftrag);
+                              this.fertigungsauftraege.push(this.fertigungsauftrag);
+                              this.fertigungsauftraege.push(this.fertigungsauftrag);
+                          } else {
+                              this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
+                                  teil.gesamtproduktionsmenge, undefined, undefined,
+                                  undefined, undefined, undefined, undefined,
+                                  undefined, undefined, teil);
+                              this.fertigungsauftraege.push(this.fertigungsauftrag);
+                          }
+                      }
+
+                      for (const fertigungsauftrag of this.fertigungsauftraege) {
+                          if (fertigungsauftrag.id !== undefined) {
+                              this.fertigungsauftragService.update(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
+                                  console.log(respond), () => this.onSaveError());
+                          } else {
+                              this.fertigungsauftragService.create(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
+                                  console.log(respond), () => this.onSaveError());
+                          }
+                      }
+
+                  }, (response: ResponseWrapper) => this.onError(response.json));
+
+              }
+
           }, (res: ResponseWrapper) => this.onError(res.json));
 
       criteria = [
           {key: 'periode.equals', value: localStorage.getItem('aktuelleperiode')}
       ];
+
       this.fertigungsauftragService.query({
           size: 1000000,
           criteria

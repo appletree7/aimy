@@ -1,7 +1,7 @@
 {
     "direktverkauf_und_normalverkauf": {
-        "title": "Direktverkauf und Normalverkauf",
-        "normalverkauf": "Normalverkauf",
-        "direktverkauf": "Direktverkauf"
+        "title": "doğrudan satış ve Normal satış",
+        "normalverkauf": "Normal satış",
+        "direktverkauf": "doğrudan satış"
     }
 }

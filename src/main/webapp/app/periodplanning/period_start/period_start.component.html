@@ -1,9 +1,9 @@
 <form name="saveForm" role="form" novalidate (ngSubmit)="save()" #saveForm="ngForm">
     <div>
       <h2>
-          <span jhitranslate="period_start.title">Starte Periode</span>
+          <span jhiTranslate="period_start.title">Starte Periode</span>
       </h2>
-        <h4>Wähle die zu planende Periode aus:</h4>
+        <h4 jhiTranslate="period_start.newperiod">Wähle die zu planende Periode aus:</h4>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.teil.periode" for="field_aktuelleperiode">Periode</label>
             <input type="number" class="form-control" aria-labelledby="Aktuelle Periode" name="aktuelleperiode" id="field_aktuelleperiode"
@@ -24,7 +24,7 @@
             </div>
         </div>
       <jhi-alert></jhi-alert>
-        <p class="lead">Wähle die Datei aus um die Eingabedaten aus der Datei zu erhalten: </p>
+        <p class="lead" jhiTranslate="period_start.file">Wähle die Datei aus um die Eingabedaten aus der Datei zu erhalten:</p>
       <div class="form-group">
         <input type="file" class="form-control-file" name="text" id="file" accept="text/xml" aria-labelledby="Dateiimport der Planungsdaten"
                (change)="changeListener($event)"/>

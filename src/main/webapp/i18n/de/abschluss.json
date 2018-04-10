@@ -1,5 +1,10 @@
 {
     "abschluss": {
-        "title": "Abschluss"
+        "title": "Abschluss",
+        "normalverkauf": "Normalverkauf",
+        "direktverkauf": "Direktverkauf",
+        "bestellung": "Bestellungen",
+        "auftrag": "Produktionsaufträge",
+        "kappa": "Kapazitätsplan"
     }
 }

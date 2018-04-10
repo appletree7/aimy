@@ -1,9 +1,7 @@
 {
-    "aimyApp": {
         "direktverkauf_und_normalverkauf": {
             "title": "Direct sales and normal sales",
             "normalverkauf": "Normal sales",
             "direktverkauf": "Direct sales"
         }
-    }
 }

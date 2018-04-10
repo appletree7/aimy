@@ -1,11 +1,11 @@
 <form name="saveForm" role="form" novalidate (ngSubmit)="save()" #saveForm="ngForm">
     <div>
         <h2>
-            <span jhitranslate="aimyApp.direktverkauf_und_normalverkauf.title">Direktverkauf und Normalverkauf</span>
+            <span jhiTranslate="direktverkauf_und_normalverkauf.title">Direktverkauf und Normalverkauf</span>
         </h2>
         <jhi-alert></jhi-alert>
         <div>
-            <p class="lead"><span jhitranslate="direktverkauf_und_normalverkauf.normalverkauf">Normalverkauf</span></p>
+            <p class="lead"><span jhiTranslate="direktverkauf_und_normalverkauf.normalverkauf">Normalverkauf</span></p>
         </div>
     </div>
     <div class="table-responsive" *ngIf="teils">
@@ -33,7 +33,7 @@
         </table>
     </div>
     <div>
-        <p class="lead"><span jhitranslate="direktverkauf_und_normalverkauf.direktverkauf">Direktverkauf</span></p>
+        <p class="lead"><span jhiTranslate="direktverkauf_und_normalverkauf.direktverkauf">Direktverkauf</span></p>
     </div>
     </div>
     <div class="table-responsive" *ngIf="teils">

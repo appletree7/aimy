@@ -1,10 +1,10 @@
 <div>
     <h2>
-        <span jhitranslate="abschluss.title">Abschluss</span>
+        <span jhiTranslate="abschluss.title">Abschluss</span>
     </h2>
     <jhi-alert></jhi-alert>
     <div>
-        <p class="lead">Normalverkauf</p>
+        <p class="lead" jhiTranslate="abschluss.normalverkauf">Normalverkauf</p>
     </div>
     <div class="table-responsive" *ngIf="teils">
     <table class="table table-striped">
@@ -43,7 +43,7 @@
     </table>
 </div>
     <div>
-        <p class="lead">Direktverkauf</p>
+        <p class="lead" jhiTranslate="abschluss.direktverkauf">Direktverkauf</p>
     </div>
     <div class="table-responsive" *ngIf="teils">
         <table class="table table-striped">
@@ -58,7 +58,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let teil of teils ;trackBy: trackId">
-                <td>{{teil.teiltyp}}</td>
+                <td jhiTranslate="{{'aimyApp.Teiltyp.' + teil.teiltyp}}">{{teil.teiltyp}}</td>
                 <td>{{teil.nummer}}</td>
                 <td>{{teil.direktverkaufmenge}}</td>
                 <td>{{teil.direktverkaufspreis}}</td>
@@ -85,7 +85,7 @@
         </table>
     </div>
     <div>
-        <p class="lead">Bestellungen</p>
+        <p class="lead"jhiTranslate="abschluss.bestellung">Bestellungen</p>
     </div>
     <div class="table-responsive" *ngIf="bestellungen">
         <table class="table table-striped">
@@ -126,7 +126,7 @@
         </table>
     </div>
     <div>
-        <p class="lead">Produktionsaufträge</p>
+        <p class="lead" jhiTranslate="abschluss.auftrag">Produktionsaufträge</p>
     </div>
     <div class="table-responsive" *ngIf="fertigungsauftraege">
         <table class="table table-striped">
@@ -178,7 +178,7 @@
         </table>
     </div>
     <div>
-        <p class="lead">Kapazitätsplan</p>
+        <p class="lead" jhiTranslate="abschluss.kappa">Kapazitätsplan</p>
     </div>
     <div class="table-responsive" *ngIf="arbeitsplaetze">
         <table class="table table-striped">

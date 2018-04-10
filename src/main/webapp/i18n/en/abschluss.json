@@ -1,5 +1,10 @@
 {
     "abschluss": {
-        "title": "conclusion"
+        "title": "conclusion",
+        "normalverkauf": "Normal sales",
+        "direktverkauf": "Direct sales",
+        "bestellung": "orders",
+        "auftrag": "production orders",
+        "kappa": "capacity plan"
     }
 }

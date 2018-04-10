@@ -1,5 +1,7 @@
 {
     "period_start": {
-        "title": "période de démarrage"
+        "title": "période de démarrage",
+        "newperiod": "Sélectionnez la période à planifier:",
+        "file": "Sélectionnez le fichier pour obtenir les données d'entrée du fichier:"
     }
 }

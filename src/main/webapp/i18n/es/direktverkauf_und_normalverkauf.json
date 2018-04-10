@@ -1,7 +1,7 @@
 {
     "direktverkauf_und_normalverkauf": {
-        "title": "Direktverkauf und Normalverkauf",
-        "normalverkauf": "Normalverkauf",
-        "direktverkauf": "Direktverkauf"
+        "title": "ventas directas y venta normales",
+        "normalverkauf": "venta normales",
+        "direktverkauf": "ventas directas"
     }
 }

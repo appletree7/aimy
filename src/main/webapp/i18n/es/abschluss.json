@@ -1,5 +1,10 @@
 {
     "abschluss": {
-        "title": "terminación"
+        "title": "terminación",
+        "normalverkauf": "venta normales",
+        "direktverkauf": "ventas directas",
+        "bestellung": "pedidos",
+        "auftrag": "órdenes de producción",
+        "kappa": "plan de capacidad"
     }
 }

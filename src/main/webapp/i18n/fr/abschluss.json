@@ -1,5 +1,10 @@
 {
     "abschluss": {
-        "title": "achèvement"
+        "title": "achèvement",
+        "normalverkauf": "vente normale",
+        "direktverkauf": "vente directe",
+        "bestellung": "ordres",
+        "auftrag": "commandes de production",
+        "kappa": "lan de capacité"
     }
 }

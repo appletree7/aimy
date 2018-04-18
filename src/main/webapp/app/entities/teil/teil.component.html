@@ -21,11 +21,22 @@
             <th jhiSortBy="periode"><span jhiTranslate="aimyApp.teil.periode">Periode</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="nummer"><span jhiTranslate="aimyApp.teil.nummer">Nummer</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="istmenge"><span jhiTranslate="aimyApp.teil.istmenge">Istmenge</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="startmenge"><span jhiTranslate="aimyApp.teil.startmenge">Startmenge</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="prozentsatz"><span jhiTranslate="aimyApp.teil.prozentsatz">Prozentsatz</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="lagerpreis"><span jhiTranslate="aimyApp.teil.lagerpreis">Lagerpreis</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="lagerwert"><span jhiTranslate="aimyApp.teil.lagerwert">Lagerwert</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="sicherheitsbestand"><span jhiTranslate="aimyApp.teil.sicherheitsbestand">Sicherheitsbestand</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="vertriebswunsch"><span jhiTranslate="aimyApp.teil.vertriebswunsch">Vertriebswunsch</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="vertriebswunsch_naechste"><span jhiTranslate="aimyApp.teil.vertriebswunsch_naechste">Vertriebswunsch Naechste</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="vertriebswunsch_uebernaechste"><span jhiTranslate="aimyApp.teil.vertriebswunsch_uebernaechste">Vertriebswunsch Uebernaechste</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="vertriebswunsch_ueberuebernaechste"><span jhiTranslate="aimyApp.teil.vertriebswunsch_ueberuebernaechste">Vertriebswunsch Ueberuebernaechste</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="gesamtproduktionsmenge"><span jhiTranslate="aimyApp.teil.gesamtproduktionsmenge">Gesamtproduktionsmenge</span> <span class="fa fa-sort"></span></th>
-                <th></th>
+            <th jhiSortBy="direktverkaufmenge"><span jhiTranslate="aimyApp.teil.direktverkaufmenge">Direktverkaufmenge</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="direktverkaufspreis"><span jhiTranslate="aimyApp.teil.direktverkaufspreis">Direktverkaufspreis</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="strafe"><span jhiTranslate="aimyApp.teil.strafe">Strafe</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="warteliste_menge"><span jhiTranslate="aimyApp.teil.warteliste_menge">Warteliste Menge</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="inBearbeitung_menge"><span jhiTranslate="aimyApp.teil.inBearbeitung_menge">In Bearbeitung Menge</span> <span class="fa fa-sort"></span></th>
+            <th></th>
             </tr>
             </thead>
             <tbody>
@@ -35,10 +46,21 @@
                 <td>{{teil.periode}}</td>
                 <td>{{teil.nummer}}</td>
                 <td>{{teil.istmenge}}</td>
+                <td>{{teil.startmenge}}</td>
+                <td>{{teil.prozentsatz}}</td>
                 <td>{{teil.lagerpreis}}</td>
                 <td>{{teil.lagerwert}}</td>
+                <td>{{teil.sicherheitsbestand}}</td>
                 <td>{{teil.vertriebswunsch}}</td>
+                <td>{{teil.vertriebswunsch_naechste}}</td>
+                <td>{{teil.vertriebswunsch_uebernaechste}}</td>
+                <td>{{teil.vertriebswunsch_ueberuebernaechste}}</td>
                 <td>{{teil.gesamtproduktionsmenge}}</td>
+                <td>{{teil.direktverkaufmenge}}</td>
+                <td>{{teil.direktverkaufspreis}}</td>
+                <td>{{teil.strafe}}</td>
+                <td>{{teil.warteliste_menge}}</td>
+                <td>{{teil.inBearbeitung_menge}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

@@ -12,7 +12,9 @@
              <thead>
                 <tr>
                         <th class="text-center" jhiTranslate="in-house_production.table.number">Nummer</th>
-                        <th class="text-center" jhiTranslate="in-house_production.table.sales_request">"Vertriebswunsch</th>
+                        <th class="text-center" jhiTranslate="in-house_production.table.sales_request">Vertriebswunsch</th>
+                        <th class="text-center">Direktverkaufsmenge</th>
+                        <th class="text-center">Warteliste Subkomponente</th>
                         <th class="text-center" jhiTranslate="in-house_production.table.safety_stock">Sicherheitsbestand</th>
                         <th class="text-center" jhiTranslate="in-house_production.table.last_period_stock">Bestand Vorperiode</th>
                         <th class="text-center" jhiTranslate="in-house_production.table.waiting_orders">Aufträge in Warteliste</th>
@@ -24,13 +26,21 @@
                 <tr *ngFor="let element of inhouse_anzeige_array">
                 <td class="text-center">{{element.nummer}}</td>
                 <td class="text-center">{{element.vertriebswunsch}}</td>
+                    <td class="text-center">{{element.direktverkaufsmenge}}</td>
+                    <td class="text-center">{{element.warteliste_subkomponente}}</td>
                    <!-- <td>
                         <div class="form-group">
                             <input type="number" class="form-control" name="vertriebswunsch" id="field_vertriebswunsch"
                                    [(ngModel)]="element.sicherheitsbestand" required min="0" />
                         </div>
                     </td>-->
-                    <td class="text-center">{{element.sicherheitsbestand}}</td>
+                    <td>
+                        <div class="form-group">
+                            <input type="number" class="form-control" name="sicherheitsbestand" id="sicherheitsbestand"
+                                   [(ngModel)]="element.sicherheitsbestand" required min="0" />
+                        </div>
+                    </td>
+                  <!--  <td class="text-center">{{element.sicherheitsbestand}}</td>-->
                 <td class="text-center">{{element.bestand_vorperiode}}</td>
                 <td class="text-center">{{element.auftraege_in_warteliste}}</td>
                 <td class="text-center">{{element.auftraege_in_bearbeitung}}</td>
@@ -47,6 +57,9 @@
             class="btn btn-info">
         <span class="fa fa-arrow-left"></span><span jhiTranslate="entity.action.back"> Back</span>
     </button>
+        <button type="button" class="btn btn-primary" (click)="berechneProduktionsauftraege()">
+          <span>Berechnen</span>
+        </button>
         <button type="submit" [disabled]="saveForm.form.invalid || isSaving" class="btn btn-primary">
             <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
         </button>

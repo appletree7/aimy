@@ -164,6 +164,51 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.vertriebswunsch_naechste" for="field_vertriebswunsch_naechste">Vertriebswunsch Naechste</label>
+            <input type="number" class="form-control" name="vertriebswunsch_naechste" id="field_vertriebswunsch_naechste"
+                [(ngModel)]="teil.vertriebswunsch_naechste" min="0" />
+            <div [hidden]="!(editForm.controls.vertriebswunsch_naechste?.dirty && editForm.controls.vertriebswunsch_naechste?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.vertriebswunsch_naechste?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.vertriebswunsch_naechste?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.vertriebswunsch_uebernaechste" for="field_vertriebswunsch_uebernaechste">Vertriebswunsch Uebernaechste</label>
+            <input type="number" class="form-control" name="vertriebswunsch_uebernaechste" id="field_vertriebswunsch_uebernaechste"
+                [(ngModel)]="teil.vertriebswunsch_uebernaechste" min="0" />
+            <div [hidden]="!(editForm.controls.vertriebswunsch_uebernaechste?.dirty && editForm.controls.vertriebswunsch_uebernaechste?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.vertriebswunsch_uebernaechste?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.vertriebswunsch_uebernaechste?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.vertriebswunsch_ueberuebernaechste" for="field_vertriebswunsch_ueberuebernaechste">Vertriebswunsch Ueberuebernaechste</label>
+            <input type="number" class="form-control" name="vertriebswunsch_ueberuebernaechste" id="field_vertriebswunsch_ueberuebernaechste"
+                [(ngModel)]="teil.vertriebswunsch_ueberuebernaechste" min="0" />
+            <div [hidden]="!(editForm.controls.vertriebswunsch_ueberuebernaechste?.dirty && editForm.controls.vertriebswunsch_ueberuebernaechste?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.vertriebswunsch_ueberuebernaechste?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.vertriebswunsch_ueberuebernaechste?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.teil.gesamtproduktionsmenge" for="field_gesamtproduktionsmenge">Gesamtproduktionsmenge</label>
             <input type="number" class="form-control" name="gesamtproduktionsmenge" id="field_gesamtproduktionsmenge"
                 [(ngModel)]="teil.gesamtproduktionsmenge" min="0" />
@@ -219,6 +264,36 @@
                 </small>
                 <small class="form-text text-danger"
                     [hidden]="!editForm.controls.strafe?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.warteliste_menge" for="field_warteliste_menge">Warteliste Menge</label>
+            <input type="number" class="form-control" name="warteliste_menge" id="field_warteliste_menge"
+                [(ngModel)]="teil.warteliste_menge" min="0" />
+            <div [hidden]="!(editForm.controls.warteliste_menge?.dirty && editForm.controls.warteliste_menge?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.warteliste_menge?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.warteliste_menge?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.teil.inBearbeitung_menge" for="field_inBearbeitung_menge">In Bearbeitung Menge</label>
+            <input type="number" class="form-control" name="inBearbeitung_menge" id="field_inBearbeitung_menge"
+                [(ngModel)]="teil.inBearbeitung_menge" min="0" />
+            <div [hidden]="!(editForm.controls.inBearbeitung_menge?.dirty && editForm.controls.inBearbeitung_menge?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.inBearbeitung_menge?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.inBearbeitung_menge?.errors?.number" jhiTranslate="entity.validation.number">
                     This field should be a number.
                 </small>
             </div>

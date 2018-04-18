@@ -71,6 +71,18 @@ public class Teil implements Serializable {
     private Integer vertriebswunsch;
 
     @Min(value = 0)
+    @Column(name = "vertriebswunsch_naechste")
+    private Integer vertriebswunsch_naechste;
+
+    @Min(value = 0)
+    @Column(name = "vertriebswunsch_uebernaechste")
+    private Integer vertriebswunsch_uebernaechste;
+
+    @Min(value = 0)
+    @Column(name = "vertriebswunsch_ueberuebernaechste")
+    private Integer vertriebswunsch_ueberuebernaechste;
+
+    @Min(value = 0)
     @Column(name = "gesamtproduktionsmenge")
     private Integer gesamtproduktionsmenge;
 
@@ -85,6 +97,14 @@ public class Teil implements Serializable {
     @DecimalMin(value = "0")
     @Column(name = "strafe")
     private Double strafe;
+
+    @Min(value = 0)
+    @Column(name = "warteliste_menge")
+    private Integer warteliste_menge;
+
+    @Min(value = 0)
+    @Column(name = "in_bearbeitung_menge")
+    private Integer inBearbeitung_menge;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -232,6 +252,45 @@ public class Teil implements Serializable {
         this.vertriebswunsch = vertriebswunsch;
     }
 
+    public Integer getVertriebswunsch_naechste() {
+        return vertriebswunsch_naechste;
+    }
+
+    public Teil vertriebswunsch_naechste(Integer vertriebswunsch_naechste) {
+        this.vertriebswunsch_naechste = vertriebswunsch_naechste;
+        return this;
+    }
+
+    public void setVertriebswunsch_naechste(Integer vertriebswunsch_naechste) {
+        this.vertriebswunsch_naechste = vertriebswunsch_naechste;
+    }
+
+    public Integer getVertriebswunsch_uebernaechste() {
+        return vertriebswunsch_uebernaechste;
+    }
+
+    public Teil vertriebswunsch_uebernaechste(Integer vertriebswunsch_uebernaechste) {
+        this.vertriebswunsch_uebernaechste = vertriebswunsch_uebernaechste;
+        return this;
+    }
+
+    public void setVertriebswunsch_uebernaechste(Integer vertriebswunsch_uebernaechste) {
+        this.vertriebswunsch_uebernaechste = vertriebswunsch_uebernaechste;
+    }
+
+    public Integer getVertriebswunsch_ueberuebernaechste() {
+        return vertriebswunsch_ueberuebernaechste;
+    }
+
+    public Teil vertriebswunsch_ueberuebernaechste(Integer vertriebswunsch_ueberuebernaechste) {
+        this.vertriebswunsch_ueberuebernaechste = vertriebswunsch_ueberuebernaechste;
+        return this;
+    }
+
+    public void setVertriebswunsch_ueberuebernaechste(Integer vertriebswunsch_ueberuebernaechste) {
+        this.vertriebswunsch_ueberuebernaechste = vertriebswunsch_ueberuebernaechste;
+    }
+
     public Integer getGesamtproduktionsmenge() {
         return gesamtproduktionsmenge;
     }
@@ -282,6 +341,32 @@ public class Teil implements Serializable {
 
     public void setStrafe(Double strafe) {
         this.strafe = strafe;
+    }
+
+    public Integer getWarteliste_menge() {
+        return warteliste_menge;
+    }
+
+    public Teil warteliste_menge(Integer warteliste_menge) {
+        this.warteliste_menge = warteliste_menge;
+        return this;
+    }
+
+    public void setWarteliste_menge(Integer warteliste_menge) {
+        this.warteliste_menge = warteliste_menge;
+    }
+
+    public Integer getInBearbeitung_menge() {
+        return inBearbeitung_menge;
+    }
+
+    public Teil inBearbeitung_menge(Integer inBearbeitung_menge) {
+        this.inBearbeitung_menge = inBearbeitung_menge;
+        return this;
+    }
+
+    public void setInBearbeitung_menge(Integer inBearbeitung_menge) {
+        this.inBearbeitung_menge = inBearbeitung_menge;
     }
 
     public Set<Teil> getSubkomponentes() {
@@ -342,10 +427,15 @@ public class Teil implements Serializable {
             ", lagerwert='" + getLagerwert() + "'" +
             ", sicherheitsbestand='" + getSicherheitsbestand() + "'" +
             ", vertriebswunsch='" + getVertriebswunsch() + "'" +
+            ", vertriebswunsch_naechste='" + getVertriebswunsch_naechste() + "'" +
+            ", vertriebswunsch_uebernaechste='" + getVertriebswunsch_uebernaechste() + "'" +
+            ", vertriebswunsch_ueberuebernaechste='" + getVertriebswunsch_ueberuebernaechste() + "'" +
             ", gesamtproduktionsmenge='" + getGesamtproduktionsmenge() + "'" +
             ", direktverkaufmenge='" + getDirektverkaufmenge() + "'" +
             ", direktverkaufspreis='" + getDirektverkaufspreis() + "'" +
             ", strafe='" + getStrafe() + "'" +
+            ", warteliste_menge='" + getWarteliste_menge() + "'" +
+            ", inBearbeitung_menge='" + getInBearbeitung_menge() + "'" +
             "}";
     }
 }

@@ -89,6 +89,30 @@
             ],
             "fieldValidateRulesMin": 0
         },
+		{
+            "fieldName": "vertriebswunsch_naechste",
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+		{
+            "fieldName": "vertriebswunsch_uebernaechste",
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+		{
+            "fieldName": "vertriebswunsch_ueberuebernaechste",
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
         {
             "fieldName": "gesamtproduktionsmenge",
             "fieldType": "Integer",
@@ -116,6 +140,22 @@
         {
             "fieldName": "strafe",
             "fieldType": "Double",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+		{
+            "fieldName": "warteliste_menge",
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+		{
+            "fieldName": "inBearbeitung_menge",
+            "fieldType": "Integer",
 			"fieldValidateRules": [
                 "min"
             ],

@@ -62,6 +62,18 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="vertriebswunsch_naechste" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="vertriebswunsch_uebernaechste" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="vertriebswunsch_ueberuebernaechste" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="gesamtproduktionsmenge" type="integer">
                 <constraints nullable="true" />
             </column>
@@ -75,6 +87,14 @@
             </column>
 
             <column name="strafe" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="warteliste_menge" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="in_bearbeitung_menge" type="integer">
                 <constraints nullable="true" />
             </column>
 

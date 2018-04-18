@@ -73,6 +73,15 @@ public class TeilResourceIntTest {
     private static final Integer DEFAULT_VERTRIEBSWUNSCH = 0;
     private static final Integer UPDATED_VERTRIEBSWUNSCH = 1;
 
+    private static final Integer DEFAULT_VERTRIEBSWUNSCH_NAECHSTE = 0;
+    private static final Integer UPDATED_VERTRIEBSWUNSCH_NAECHSTE = 1;
+
+    private static final Integer DEFAULT_VERTRIEBSWUNSCH_UEBERNAECHSTE = 0;
+    private static final Integer UPDATED_VERTRIEBSWUNSCH_UEBERNAECHSTE = 1;
+
+    private static final Integer DEFAULT_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE = 0;
+    private static final Integer UPDATED_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE = 1;
+
     private static final Integer DEFAULT_GESAMTPRODUKTIONSMENGE = 0;
     private static final Integer UPDATED_GESAMTPRODUKTIONSMENGE = 1;
 
@@ -84,6 +93,12 @@ public class TeilResourceIntTest {
 
     private static final Double DEFAULT_STRAFE = 0D;
     private static final Double UPDATED_STRAFE = 1D;
+
+    private static final Integer DEFAULT_WARTELISTE_MENGE = 0;
+    private static final Integer UPDATED_WARTELISTE_MENGE = 1;
+
+    private static final Integer DEFAULT_IN_BEARBEITUNG_MENGE = 0;
+    private static final Integer UPDATED_IN_BEARBEITUNG_MENGE = 1;
 
     @Autowired
     private TeilRepository teilRepository;
@@ -139,10 +154,15 @@ public class TeilResourceIntTest {
             .lagerwert(DEFAULT_LAGERWERT)
             .sicherheitsbestand(DEFAULT_SICHERHEITSBESTAND)
             .vertriebswunsch(DEFAULT_VERTRIEBSWUNSCH)
+            .vertriebswunsch_naechste(DEFAULT_VERTRIEBSWUNSCH_NAECHSTE)
+            .vertriebswunsch_uebernaechste(DEFAULT_VERTRIEBSWUNSCH_UEBERNAECHSTE)
+            .vertriebswunsch_ueberuebernaechste(DEFAULT_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE)
             .gesamtproduktionsmenge(DEFAULT_GESAMTPRODUKTIONSMENGE)
             .direktverkaufmenge(DEFAULT_DIREKTVERKAUFMENGE)
             .direktverkaufspreis(DEFAULT_DIREKTVERKAUFSPREIS)
-            .strafe(DEFAULT_STRAFE);
+            .strafe(DEFAULT_STRAFE)
+            .warteliste_menge(DEFAULT_WARTELISTE_MENGE)
+            .inBearbeitung_menge(DEFAULT_IN_BEARBEITUNG_MENGE);
         return teil;
     }
 
@@ -176,10 +196,15 @@ public class TeilResourceIntTest {
         assertThat(testTeil.getLagerwert()).isEqualTo(DEFAULT_LAGERWERT);
         assertThat(testTeil.getSicherheitsbestand()).isEqualTo(DEFAULT_SICHERHEITSBESTAND);
         assertThat(testTeil.getVertriebswunsch()).isEqualTo(DEFAULT_VERTRIEBSWUNSCH);
+        assertThat(testTeil.getVertriebswunsch_naechste()).isEqualTo(DEFAULT_VERTRIEBSWUNSCH_NAECHSTE);
+        assertThat(testTeil.getVertriebswunsch_uebernaechste()).isEqualTo(DEFAULT_VERTRIEBSWUNSCH_UEBERNAECHSTE);
+        assertThat(testTeil.getVertriebswunsch_ueberuebernaechste()).isEqualTo(DEFAULT_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE);
         assertThat(testTeil.getGesamtproduktionsmenge()).isEqualTo(DEFAULT_GESAMTPRODUKTIONSMENGE);
         assertThat(testTeil.getDirektverkaufmenge()).isEqualTo(DEFAULT_DIREKTVERKAUFMENGE);
         assertThat(testTeil.getDirektverkaufspreis()).isEqualTo(DEFAULT_DIREKTVERKAUFSPREIS);
         assertThat(testTeil.getStrafe()).isEqualTo(DEFAULT_STRAFE);
+        assertThat(testTeil.getWarteliste_menge()).isEqualTo(DEFAULT_WARTELISTE_MENGE);
+        assertThat(testTeil.getInBearbeitung_menge()).isEqualTo(DEFAULT_IN_BEARBEITUNG_MENGE);
     }
 
     @Test
@@ -258,10 +283,15 @@ public class TeilResourceIntTest {
             .andExpect(jsonPath("$.[*].lagerwert").value(hasItem(DEFAULT_LAGERWERT.doubleValue())))
             .andExpect(jsonPath("$.[*].sicherheitsbestand").value(hasItem(DEFAULT_SICHERHEITSBESTAND)))
             .andExpect(jsonPath("$.[*].vertriebswunsch").value(hasItem(DEFAULT_VERTRIEBSWUNSCH)))
+            .andExpect(jsonPath("$.[*].vertriebswunsch_naechste").value(hasItem(DEFAULT_VERTRIEBSWUNSCH_NAECHSTE)))
+            .andExpect(jsonPath("$.[*].vertriebswunsch_uebernaechste").value(hasItem(DEFAULT_VERTRIEBSWUNSCH_UEBERNAECHSTE)))
+            .andExpect(jsonPath("$.[*].vertriebswunsch_ueberuebernaechste").value(hasItem(DEFAULT_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE)))
             .andExpect(jsonPath("$.[*].gesamtproduktionsmenge").value(hasItem(DEFAULT_GESAMTPRODUKTIONSMENGE)))
             .andExpect(jsonPath("$.[*].direktverkaufmenge").value(hasItem(DEFAULT_DIREKTVERKAUFMENGE)))
             .andExpect(jsonPath("$.[*].direktverkaufspreis").value(hasItem(DEFAULT_DIREKTVERKAUFSPREIS.doubleValue())))
-            .andExpect(jsonPath("$.[*].strafe").value(hasItem(DEFAULT_STRAFE.doubleValue())));
+            .andExpect(jsonPath("$.[*].strafe").value(hasItem(DEFAULT_STRAFE.doubleValue())))
+            .andExpect(jsonPath("$.[*].warteliste_menge").value(hasItem(DEFAULT_WARTELISTE_MENGE)))
+            .andExpect(jsonPath("$.[*].inBearbeitung_menge").value(hasItem(DEFAULT_IN_BEARBEITUNG_MENGE)));
     }
 
     @Test
@@ -285,10 +315,15 @@ public class TeilResourceIntTest {
             .andExpect(jsonPath("$.lagerwert").value(DEFAULT_LAGERWERT.doubleValue()))
             .andExpect(jsonPath("$.sicherheitsbestand").value(DEFAULT_SICHERHEITSBESTAND))
             .andExpect(jsonPath("$.vertriebswunsch").value(DEFAULT_VERTRIEBSWUNSCH))
+            .andExpect(jsonPath("$.vertriebswunsch_naechste").value(DEFAULT_VERTRIEBSWUNSCH_NAECHSTE))
+            .andExpect(jsonPath("$.vertriebswunsch_uebernaechste").value(DEFAULT_VERTRIEBSWUNSCH_UEBERNAECHSTE))
+            .andExpect(jsonPath("$.vertriebswunsch_ueberuebernaechste").value(DEFAULT_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE))
             .andExpect(jsonPath("$.gesamtproduktionsmenge").value(DEFAULT_GESAMTPRODUKTIONSMENGE))
             .andExpect(jsonPath("$.direktverkaufmenge").value(DEFAULT_DIREKTVERKAUFMENGE))
             .andExpect(jsonPath("$.direktverkaufspreis").value(DEFAULT_DIREKTVERKAUFSPREIS.doubleValue()))
-            .andExpect(jsonPath("$.strafe").value(DEFAULT_STRAFE.doubleValue()));
+            .andExpect(jsonPath("$.strafe").value(DEFAULT_STRAFE.doubleValue()))
+            .andExpect(jsonPath("$.warteliste_menge").value(DEFAULT_WARTELISTE_MENGE))
+            .andExpect(jsonPath("$.inBearbeitung_menge").value(DEFAULT_IN_BEARBEITUNG_MENGE));
     }
 
     @Test
@@ -845,6 +880,204 @@ public class TeilResourceIntTest {
 
     @Test
     @Transactional
+    public void getAllTeilsByVertriebswunsch_naechsteIsEqualToSomething() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where vertriebswunsch_naechste equals to DEFAULT_VERTRIEBSWUNSCH_NAECHSTE
+        defaultTeilShouldBeFound("vertriebswunsch_naechste.equals=" + DEFAULT_VERTRIEBSWUNSCH_NAECHSTE);
+
+        // Get all the teilList where vertriebswunsch_naechste equals to UPDATED_VERTRIEBSWUNSCH_NAECHSTE
+        defaultTeilShouldNotBeFound("vertriebswunsch_naechste.equals=" + UPDATED_VERTRIEBSWUNSCH_NAECHSTE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByVertriebswunsch_naechsteIsInShouldWork() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where vertriebswunsch_naechste in DEFAULT_VERTRIEBSWUNSCH_NAECHSTE or UPDATED_VERTRIEBSWUNSCH_NAECHSTE
+        defaultTeilShouldBeFound("vertriebswunsch_naechste.in=" + DEFAULT_VERTRIEBSWUNSCH_NAECHSTE + "," + UPDATED_VERTRIEBSWUNSCH_NAECHSTE);
+
+        // Get all the teilList where vertriebswunsch_naechste equals to UPDATED_VERTRIEBSWUNSCH_NAECHSTE
+        defaultTeilShouldNotBeFound("vertriebswunsch_naechste.in=" + UPDATED_VERTRIEBSWUNSCH_NAECHSTE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByVertriebswunsch_naechsteIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where vertriebswunsch_naechste is not null
+        defaultTeilShouldBeFound("vertriebswunsch_naechste.specified=true");
+
+        // Get all the teilList where vertriebswunsch_naechste is null
+        defaultTeilShouldNotBeFound("vertriebswunsch_naechste.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByVertriebswunsch_naechsteIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where vertriebswunsch_naechste greater than or equals to DEFAULT_VERTRIEBSWUNSCH_NAECHSTE
+        defaultTeilShouldBeFound("vertriebswunsch_naechste.greaterOrEqualThan=" + DEFAULT_VERTRIEBSWUNSCH_NAECHSTE);
+
+        // Get all the teilList where vertriebswunsch_naechste greater than or equals to UPDATED_VERTRIEBSWUNSCH_NAECHSTE
+        defaultTeilShouldNotBeFound("vertriebswunsch_naechste.greaterOrEqualThan=" + UPDATED_VERTRIEBSWUNSCH_NAECHSTE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByVertriebswunsch_naechsteIsLessThanSomething() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where vertriebswunsch_naechste less than or equals to DEFAULT_VERTRIEBSWUNSCH_NAECHSTE
+        defaultTeilShouldNotBeFound("vertriebswunsch_naechste.lessThan=" + DEFAULT_VERTRIEBSWUNSCH_NAECHSTE);
+
+        // Get all the teilList where vertriebswunsch_naechste less than or equals to UPDATED_VERTRIEBSWUNSCH_NAECHSTE
+        defaultTeilShouldBeFound("vertriebswunsch_naechste.lessThan=" + UPDATED_VERTRIEBSWUNSCH_NAECHSTE);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllTeilsByVertriebswunsch_uebernaechsteIsEqualToSomething() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where vertriebswunsch_uebernaechste equals to DEFAULT_VERTRIEBSWUNSCH_UEBERNAECHSTE
+        defaultTeilShouldBeFound("vertriebswunsch_uebernaechste.equals=" + DEFAULT_VERTRIEBSWUNSCH_UEBERNAECHSTE);
+
+        // Get all the teilList where vertriebswunsch_uebernaechste equals to UPDATED_VERTRIEBSWUNSCH_UEBERNAECHSTE
+        defaultTeilShouldNotBeFound("vertriebswunsch_uebernaechste.equals=" + UPDATED_VERTRIEBSWUNSCH_UEBERNAECHSTE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByVertriebswunsch_uebernaechsteIsInShouldWork() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where vertriebswunsch_uebernaechste in DEFAULT_VERTRIEBSWUNSCH_UEBERNAECHSTE or UPDATED_VERTRIEBSWUNSCH_UEBERNAECHSTE
+        defaultTeilShouldBeFound("vertriebswunsch_uebernaechste.in=" + DEFAULT_VERTRIEBSWUNSCH_UEBERNAECHSTE + "," + UPDATED_VERTRIEBSWUNSCH_UEBERNAECHSTE);
+
+        // Get all the teilList where vertriebswunsch_uebernaechste equals to UPDATED_VERTRIEBSWUNSCH_UEBERNAECHSTE
+        defaultTeilShouldNotBeFound("vertriebswunsch_uebernaechste.in=" + UPDATED_VERTRIEBSWUNSCH_UEBERNAECHSTE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByVertriebswunsch_uebernaechsteIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where vertriebswunsch_uebernaechste is not null
+        defaultTeilShouldBeFound("vertriebswunsch_uebernaechste.specified=true");
+
+        // Get all the teilList where vertriebswunsch_uebernaechste is null
+        defaultTeilShouldNotBeFound("vertriebswunsch_uebernaechste.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByVertriebswunsch_uebernaechsteIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where vertriebswunsch_uebernaechste greater than or equals to DEFAULT_VERTRIEBSWUNSCH_UEBERNAECHSTE
+        defaultTeilShouldBeFound("vertriebswunsch_uebernaechste.greaterOrEqualThan=" + DEFAULT_VERTRIEBSWUNSCH_UEBERNAECHSTE);
+
+        // Get all the teilList where vertriebswunsch_uebernaechste greater than or equals to UPDATED_VERTRIEBSWUNSCH_UEBERNAECHSTE
+        defaultTeilShouldNotBeFound("vertriebswunsch_uebernaechste.greaterOrEqualThan=" + UPDATED_VERTRIEBSWUNSCH_UEBERNAECHSTE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByVertriebswunsch_uebernaechsteIsLessThanSomething() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where vertriebswunsch_uebernaechste less than or equals to DEFAULT_VERTRIEBSWUNSCH_UEBERNAECHSTE
+        defaultTeilShouldNotBeFound("vertriebswunsch_uebernaechste.lessThan=" + DEFAULT_VERTRIEBSWUNSCH_UEBERNAECHSTE);
+
+        // Get all the teilList where vertriebswunsch_uebernaechste less than or equals to UPDATED_VERTRIEBSWUNSCH_UEBERNAECHSTE
+        defaultTeilShouldBeFound("vertriebswunsch_uebernaechste.lessThan=" + UPDATED_VERTRIEBSWUNSCH_UEBERNAECHSTE);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllTeilsByVertriebswunsch_ueberuebernaechsteIsEqualToSomething() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where vertriebswunsch_ueberuebernaechste equals to DEFAULT_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE
+        defaultTeilShouldBeFound("vertriebswunsch_ueberuebernaechste.equals=" + DEFAULT_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE);
+
+        // Get all the teilList where vertriebswunsch_ueberuebernaechste equals to UPDATED_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE
+        defaultTeilShouldNotBeFound("vertriebswunsch_ueberuebernaechste.equals=" + UPDATED_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByVertriebswunsch_ueberuebernaechsteIsInShouldWork() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where vertriebswunsch_ueberuebernaechste in DEFAULT_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE or UPDATED_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE
+        defaultTeilShouldBeFound("vertriebswunsch_ueberuebernaechste.in=" + DEFAULT_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE + "," + UPDATED_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE);
+
+        // Get all the teilList where vertriebswunsch_ueberuebernaechste equals to UPDATED_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE
+        defaultTeilShouldNotBeFound("vertriebswunsch_ueberuebernaechste.in=" + UPDATED_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByVertriebswunsch_ueberuebernaechsteIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where vertriebswunsch_ueberuebernaechste is not null
+        defaultTeilShouldBeFound("vertriebswunsch_ueberuebernaechste.specified=true");
+
+        // Get all the teilList where vertriebswunsch_ueberuebernaechste is null
+        defaultTeilShouldNotBeFound("vertriebswunsch_ueberuebernaechste.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByVertriebswunsch_ueberuebernaechsteIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where vertriebswunsch_ueberuebernaechste greater than or equals to DEFAULT_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE
+        defaultTeilShouldBeFound("vertriebswunsch_ueberuebernaechste.greaterOrEqualThan=" + DEFAULT_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE);
+
+        // Get all the teilList where vertriebswunsch_ueberuebernaechste greater than or equals to UPDATED_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE
+        defaultTeilShouldNotBeFound("vertriebswunsch_ueberuebernaechste.greaterOrEqualThan=" + UPDATED_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByVertriebswunsch_ueberuebernaechsteIsLessThanSomething() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where vertriebswunsch_ueberuebernaechste less than or equals to DEFAULT_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE
+        defaultTeilShouldNotBeFound("vertriebswunsch_ueberuebernaechste.lessThan=" + DEFAULT_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE);
+
+        // Get all the teilList where vertriebswunsch_ueberuebernaechste less than or equals to UPDATED_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE
+        defaultTeilShouldBeFound("vertriebswunsch_ueberuebernaechste.lessThan=" + UPDATED_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllTeilsByGesamtproduktionsmengeIsEqualToSomething() throws Exception {
         // Initialize the database
         teilRepository.saveAndFlush(teil);
@@ -1055,6 +1288,138 @@ public class TeilResourceIntTest {
 
     @Test
     @Transactional
+    public void getAllTeilsByWarteliste_mengeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where warteliste_menge equals to DEFAULT_WARTELISTE_MENGE
+        defaultTeilShouldBeFound("warteliste_menge.equals=" + DEFAULT_WARTELISTE_MENGE);
+
+        // Get all the teilList where warteliste_menge equals to UPDATED_WARTELISTE_MENGE
+        defaultTeilShouldNotBeFound("warteliste_menge.equals=" + UPDATED_WARTELISTE_MENGE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByWarteliste_mengeIsInShouldWork() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where warteliste_menge in DEFAULT_WARTELISTE_MENGE or UPDATED_WARTELISTE_MENGE
+        defaultTeilShouldBeFound("warteliste_menge.in=" + DEFAULT_WARTELISTE_MENGE + "," + UPDATED_WARTELISTE_MENGE);
+
+        // Get all the teilList where warteliste_menge equals to UPDATED_WARTELISTE_MENGE
+        defaultTeilShouldNotBeFound("warteliste_menge.in=" + UPDATED_WARTELISTE_MENGE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByWarteliste_mengeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where warteliste_menge is not null
+        defaultTeilShouldBeFound("warteliste_menge.specified=true");
+
+        // Get all the teilList where warteliste_menge is null
+        defaultTeilShouldNotBeFound("warteliste_menge.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByWarteliste_mengeIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where warteliste_menge greater than or equals to DEFAULT_WARTELISTE_MENGE
+        defaultTeilShouldBeFound("warteliste_menge.greaterOrEqualThan=" + DEFAULT_WARTELISTE_MENGE);
+
+        // Get all the teilList where warteliste_menge greater than or equals to UPDATED_WARTELISTE_MENGE
+        defaultTeilShouldNotBeFound("warteliste_menge.greaterOrEqualThan=" + UPDATED_WARTELISTE_MENGE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByWarteliste_mengeIsLessThanSomething() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where warteliste_menge less than or equals to DEFAULT_WARTELISTE_MENGE
+        defaultTeilShouldNotBeFound("warteliste_menge.lessThan=" + DEFAULT_WARTELISTE_MENGE);
+
+        // Get all the teilList where warteliste_menge less than or equals to UPDATED_WARTELISTE_MENGE
+        defaultTeilShouldBeFound("warteliste_menge.lessThan=" + UPDATED_WARTELISTE_MENGE);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllTeilsByInBearbeitung_mengeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where inBearbeitung_menge equals to DEFAULT_IN_BEARBEITUNG_MENGE
+        defaultTeilShouldBeFound("inBearbeitung_menge.equals=" + DEFAULT_IN_BEARBEITUNG_MENGE);
+
+        // Get all the teilList where inBearbeitung_menge equals to UPDATED_IN_BEARBEITUNG_MENGE
+        defaultTeilShouldNotBeFound("inBearbeitung_menge.equals=" + UPDATED_IN_BEARBEITUNG_MENGE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByInBearbeitung_mengeIsInShouldWork() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where inBearbeitung_menge in DEFAULT_IN_BEARBEITUNG_MENGE or UPDATED_IN_BEARBEITUNG_MENGE
+        defaultTeilShouldBeFound("inBearbeitung_menge.in=" + DEFAULT_IN_BEARBEITUNG_MENGE + "," + UPDATED_IN_BEARBEITUNG_MENGE);
+
+        // Get all the teilList where inBearbeitung_menge equals to UPDATED_IN_BEARBEITUNG_MENGE
+        defaultTeilShouldNotBeFound("inBearbeitung_menge.in=" + UPDATED_IN_BEARBEITUNG_MENGE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByInBearbeitung_mengeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where inBearbeitung_menge is not null
+        defaultTeilShouldBeFound("inBearbeitung_menge.specified=true");
+
+        // Get all the teilList where inBearbeitung_menge is null
+        defaultTeilShouldNotBeFound("inBearbeitung_menge.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByInBearbeitung_mengeIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where inBearbeitung_menge greater than or equals to DEFAULT_IN_BEARBEITUNG_MENGE
+        defaultTeilShouldBeFound("inBearbeitung_menge.greaterOrEqualThan=" + DEFAULT_IN_BEARBEITUNG_MENGE);
+
+        // Get all the teilList where inBearbeitung_menge greater than or equals to UPDATED_IN_BEARBEITUNG_MENGE
+        defaultTeilShouldNotBeFound("inBearbeitung_menge.greaterOrEqualThan=" + UPDATED_IN_BEARBEITUNG_MENGE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTeilsByInBearbeitung_mengeIsLessThanSomething() throws Exception {
+        // Initialize the database
+        teilRepository.saveAndFlush(teil);
+
+        // Get all the teilList where inBearbeitung_menge less than or equals to DEFAULT_IN_BEARBEITUNG_MENGE
+        defaultTeilShouldNotBeFound("inBearbeitung_menge.lessThan=" + DEFAULT_IN_BEARBEITUNG_MENGE);
+
+        // Get all the teilList where inBearbeitung_menge less than or equals to UPDATED_IN_BEARBEITUNG_MENGE
+        defaultTeilShouldBeFound("inBearbeitung_menge.lessThan=" + UPDATED_IN_BEARBEITUNG_MENGE);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllTeilsBySubkomponenteIsEqualToSomething() throws Exception {
         // Initialize the database
         Teil subkomponente = TeilResourceIntTest.createEntity(em);
@@ -1089,10 +1454,15 @@ public class TeilResourceIntTest {
             .andExpect(jsonPath("$.[*].lagerwert").value(hasItem(DEFAULT_LAGERWERT.doubleValue())))
             .andExpect(jsonPath("$.[*].sicherheitsbestand").value(hasItem(DEFAULT_SICHERHEITSBESTAND)))
             .andExpect(jsonPath("$.[*].vertriebswunsch").value(hasItem(DEFAULT_VERTRIEBSWUNSCH)))
+            .andExpect(jsonPath("$.[*].vertriebswunsch_naechste").value(hasItem(DEFAULT_VERTRIEBSWUNSCH_NAECHSTE)))
+            .andExpect(jsonPath("$.[*].vertriebswunsch_uebernaechste").value(hasItem(DEFAULT_VERTRIEBSWUNSCH_UEBERNAECHSTE)))
+            .andExpect(jsonPath("$.[*].vertriebswunsch_ueberuebernaechste").value(hasItem(DEFAULT_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE)))
             .andExpect(jsonPath("$.[*].gesamtproduktionsmenge").value(hasItem(DEFAULT_GESAMTPRODUKTIONSMENGE)))
             .andExpect(jsonPath("$.[*].direktverkaufmenge").value(hasItem(DEFAULT_DIREKTVERKAUFMENGE)))
             .andExpect(jsonPath("$.[*].direktverkaufspreis").value(hasItem(DEFAULT_DIREKTVERKAUFSPREIS.doubleValue())))
-            .andExpect(jsonPath("$.[*].strafe").value(hasItem(DEFAULT_STRAFE.doubleValue())));
+            .andExpect(jsonPath("$.[*].strafe").value(hasItem(DEFAULT_STRAFE.doubleValue())))
+            .andExpect(jsonPath("$.[*].warteliste_menge").value(hasItem(DEFAULT_WARTELISTE_MENGE)))
+            .andExpect(jsonPath("$.[*].inBearbeitung_menge").value(hasItem(DEFAULT_IN_BEARBEITUNG_MENGE)));
     }
 
     /**
@@ -1136,10 +1506,15 @@ public class TeilResourceIntTest {
             .lagerwert(UPDATED_LAGERWERT)
             .sicherheitsbestand(UPDATED_SICHERHEITSBESTAND)
             .vertriebswunsch(UPDATED_VERTRIEBSWUNSCH)
+            .vertriebswunsch_naechste(UPDATED_VERTRIEBSWUNSCH_NAECHSTE)
+            .vertriebswunsch_uebernaechste(UPDATED_VERTRIEBSWUNSCH_UEBERNAECHSTE)
+            .vertriebswunsch_ueberuebernaechste(UPDATED_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE)
             .gesamtproduktionsmenge(UPDATED_GESAMTPRODUKTIONSMENGE)
             .direktverkaufmenge(UPDATED_DIREKTVERKAUFMENGE)
             .direktverkaufspreis(UPDATED_DIREKTVERKAUFSPREIS)
-            .strafe(UPDATED_STRAFE);
+            .strafe(UPDATED_STRAFE)
+            .warteliste_menge(UPDATED_WARTELISTE_MENGE)
+            .inBearbeitung_menge(UPDATED_IN_BEARBEITUNG_MENGE);
 
         restTeilMockMvc.perform(put("/api/teils")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -1160,10 +1535,15 @@ public class TeilResourceIntTest {
         assertThat(testTeil.getLagerwert()).isEqualTo(UPDATED_LAGERWERT);
         assertThat(testTeil.getSicherheitsbestand()).isEqualTo(UPDATED_SICHERHEITSBESTAND);
         assertThat(testTeil.getVertriebswunsch()).isEqualTo(UPDATED_VERTRIEBSWUNSCH);
+        assertThat(testTeil.getVertriebswunsch_naechste()).isEqualTo(UPDATED_VERTRIEBSWUNSCH_NAECHSTE);
+        assertThat(testTeil.getVertriebswunsch_uebernaechste()).isEqualTo(UPDATED_VERTRIEBSWUNSCH_UEBERNAECHSTE);
+        assertThat(testTeil.getVertriebswunsch_ueberuebernaechste()).isEqualTo(UPDATED_VERTRIEBSWUNSCH_UEBERUEBERNAECHSTE);
         assertThat(testTeil.getGesamtproduktionsmenge()).isEqualTo(UPDATED_GESAMTPRODUKTIONSMENGE);
         assertThat(testTeil.getDirektverkaufmenge()).isEqualTo(UPDATED_DIREKTVERKAUFMENGE);
         assertThat(testTeil.getDirektverkaufspreis()).isEqualTo(UPDATED_DIREKTVERKAUFSPREIS);
         assertThat(testTeil.getStrafe()).isEqualTo(UPDATED_STRAFE);
+        assertThat(testTeil.getWarteliste_menge()).isEqualTo(UPDATED_WARTELISTE_MENGE);
+        assertThat(testTeil.getInBearbeitung_menge()).isEqualTo(UPDATED_IN_BEARBEITUNG_MENGE);
     }
 
     @Test

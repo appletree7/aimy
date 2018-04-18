@@ -13,6 +13,7 @@ import {Fertigungsauftrag} from '../../entities/fertigungsauftrag';
 import {Auftragstatus, FertigungsauftragService} from '../../entities/fertigungsauftrag';
 import {Modus, ModusService} from '../../entities/modus';
 import {Kennzahlen, KennzahlenService} from '../../entities/kennzahlen';
+import {reduce} from "rxjs/operator/reduce";
 
 @Component({
     selector: 'jhi-period-start',
@@ -51,8 +52,7 @@ export class PeriodStartComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private principal: Principal
-    ) {
-    }
+    ) {}
 
     ngOnInit() {
         this.principal.identity().then((account) => {
@@ -246,6 +246,9 @@ export class PeriodStartComponent implements OnInit {
                 .subscribe((res: ResponseWrapper) => {
                     this.teils = res.json;
                     const teile = this.xml.getElementsByTagName('warehousestock')[0].getElementsByTagName('article');
+                    const inBearbeitung = this.xml.getElementsByTagName('ordersinwork')[0].getElementsByTagName('workplace');
+                    const workplace = this.xml.getElementsByTagName('waitinglistworkstations')[0].getElementsByTagName('workplace');
+                    const missingpart = this.xml.getElementsByTagName('waitingliststock')[0].getElementsByTagName('missingpart');
                     let i;
                     for (i = 0; i < teile.length; i++) {
                         this.teil = this.teils.find((teil) => (teil.nummer === (parseInt(teile[i].getAttribute('id'), 10)))
@@ -267,6 +270,34 @@ export class PeriodStartComponent implements OnInit {
                             this.teil.prozentsatz = parseFloat(teile[i].getAttribute('pct'));
                             this.teil.lagerpreis = parseFloat(teile[i].getAttribute('price'));
                             this.teil.lagerwert = parseFloat(teile[i].getAttribute('stockvalue'));
+                            let j;
+                            for (j = 0; j < inBearbeitung.length; j++) {
+                                if (this.teil.nummer === parseInt(inBearbeitung[j].getAttribute('item'), 10)) {
+                                    this.teil.inBearbeitung_menge = parseInt(inBearbeitung[j].getAttribute('amount'), 10);
+                                }
+                            }
+                            let k;
+                            let wartelistesameteil = [];
+                            for (k = 0; k < workplace.length; k++) {
+                                let waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
+                                let l;
+                                for (l = 0; l < waitinglistworkstation.length; l++) {
+                                    if (this.teil.nummer === parseInt(waitinglistworkstation[l].getAttribute('item'), 10)) {
+                                        wartelistesameteil.push(parseInt(waitinglistworkstation[l].getAttribute('amount'), 10))
+                                    }
+                                }
+                            }
+                            let m;
+                            for (m = 0; m < missingpart.length; m++) {
+                                let waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
+                                let n;
+                                for (n = 0; n < waitinglistmaterial.length; n++) {
+                                    if (this.teil.nummer === parseInt(waitinglistmaterial[n].getAttribute('item'), 10)) {
+                                        wartelistesameteil.push(parseInt(waitinglistmaterial[n].getAttribute('amount'), 10))
+                                    }
+                                }
+                            }
+                            this.teil.warteliste_menge = wartelistesameteil.reduce((a,b) => a +b, 0);
                             this.teilService.update(this.teil).subscribe((respond: Teil) =>
                                 console.log(respond), () => this.onSaveError());
                         } else {
@@ -275,7 +306,37 @@ export class PeriodStartComponent implements OnInit {
                                         parseInt(teile[i].getAttribute('amount'), 10), parseInt(teile[i].getAttribute('startamount'), 10),
                                         parseFloat(teile[i].getAttribute('pct')), parseFloat(teile[i].getAttribute('price')),
                                         parseFloat(teile[i].getAttribute('stockvalue')), undefined, undefined,
+                                        undefined, undefined,
+                                        undefined, undefined, undefined,
                                         undefined, undefined, undefined, undefined, undefined);
+                                let j;
+                                for (j = 0; j < inBearbeitung.length; j++) {
+                                    if (this.teil.nummer === parseInt(inBearbeitung[j].getAttribute('item'), 10)) {
+                                        this.teil.inBearbeitung_menge = parseInt(inBearbeitung[j].getAttribute('amount'), 10);
+                                    }
+                                }
+                                let k;
+                                let wartelistesameteil = [];
+                                for (k = 0; k < workplace.length; k++) {
+                                    let waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
+                                    let l;
+                                    for (l = 0; l < waitinglistworkstation.length; l++) {
+                                        if (this.teil.nummer === parseInt(waitinglistworkstation[l].getAttribute('item'), 10)) {
+                                            wartelistesameteil.push(parseInt(waitinglistworkstation[l].getAttribute('amount'), 10))
+                                        }
+                                    }
+                                }
+                                let m;
+                                for (m = 0; m < missingpart.length; m++) {
+                                    let waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
+                                    let n;
+                                    for (n = 0; n < waitinglistmaterial.length; n++) {
+                                        if (this.teil.nummer === parseInt(waitinglistmaterial[n].getAttribute('item'), 10)) {
+                                            wartelistesameteil.push(parseInt(waitinglistmaterial[n].getAttribute('amount'), 10))
+                                        }
+                                    }
+                                }
+                                this.teil.warteliste_menge = wartelistesameteil.reduce((a,b) => a +b, 0);
                             } else if (((parseInt(teile[i].getAttribute('id'), 10) > 3)
                                     && (parseInt(teile[i].getAttribute('id'), 10) < 21))
                                 || (parseInt(teile[i].getAttribute('id'), 10) === 26)
@@ -289,13 +350,71 @@ export class PeriodStartComponent implements OnInit {
                                         parseInt(teile[i].getAttribute('amount'), 10), parseInt(teile[i].getAttribute('startamount'), 10),
                                         parseFloat(teile[i].getAttribute('pct')), parseFloat(teile[i].getAttribute('price')),
                                         parseFloat(teile[i].getAttribute('stockvalue')), undefined, undefined,
-                                        undefined, undefined, undefined, undefined, undefined);
+                                        undefined, undefined, undefined,
+                                        undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+                                let j;
+                                for (j = 0; j < inBearbeitung.length; j++) {
+                                    if (this.teil.nummer === parseInt(inBearbeitung[j].getAttribute('item'), 10)) {
+                                        this.teil.inBearbeitung_menge = parseInt(inBearbeitung[j].getAttribute('amount'), 10);
+                                    }
+                                }
+                                let k;
+                                let wartelistesameteil = [];
+                                for (k = 0; k < workplace.length; k++) {
+                                    let waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
+                                    let l;
+                                    for (l = 0; l < waitinglistworkstation.length; l++) {
+                                        if (this.teil.nummer === parseInt(waitinglistworkstation[l].getAttribute('item'), 10)) {
+                                            wartelistesameteil.push(parseInt(waitinglistworkstation[l].getAttribute('amount'), 10))
+                                        }
+                                    }
+                                }
+                                let m;
+                                for (m = 0; m < missingpart.length; m++) {
+                                    let waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
+                                    let n;
+                                    for (n = 0; n < waitinglistmaterial.length; n++) {
+                                        if (this.teil.nummer === parseInt(waitinglistmaterial[n].getAttribute('item'), 10)) {
+                                            wartelistesameteil.push(parseInt(waitinglistmaterial[n].getAttribute('amount'), 10))
+                                        }
+                                    }
+                                }
+                                this.teil.warteliste_menge = wartelistesameteil.reduce((a,b) => a +b, 0);
                             } else {
                                     this.teil = new Teil(undefined, Teiltyp.KAUFTEIL, this.periode , parseInt(teile[i].getAttribute('id'), 10),
                                         parseInt(teile[i].getAttribute('amount'), 10), parseInt(teile[i].getAttribute('startamount'), 10),
                                         parseFloat(teile[i].getAttribute('pct')), parseFloat(teile[i].getAttribute('price')),
                                         parseFloat(teile[i].getAttribute('stockvalue')), undefined, undefined,
-                                        undefined, undefined, undefined, undefined,  undefined)
+                                        undefined, undefined, undefined,
+                                        undefined,  undefined, undefined, undefined, undefined, undefined, undefined);
+                                let j;
+                                for (j = 0; j < inBearbeitung.length; j++) {
+                                    if (this.teil.nummer === parseInt(inBearbeitung[j].getAttribute('item'), 10)) {
+                                        this.teil.inBearbeitung_menge = parseInt(inBearbeitung[j].getAttribute('amount'), 10);
+                                    }
+                                }
+                                let k;
+                                let wartelistesameteil = [];
+                                for (k = 0; k < workplace.length; k++) {
+                                    let waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
+                                    let l;
+                                    for (l = 0; l < waitinglistworkstation.length; l++) {
+                                        if (this.teil.nummer === parseInt(waitinglistworkstation[l].getAttribute('item'), 10)) {
+                                            wartelistesameteil.push(parseInt(waitinglistworkstation[l].getAttribute('amount'), 10))
+                                        }
+                                    }
+                                }
+                                let m;
+                                for (m = 0; m < missingpart.length; m++) {
+                                    let waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
+                                    let n;
+                                    for (n = 0; n < waitinglistmaterial.length; n++) {
+                                        if (this.teil.nummer === parseInt(waitinglistmaterial[n].getAttribute('item'), 10)) {
+                                            wartelistesameteil.push(parseInt(waitinglistmaterial[n].getAttribute('amount'), 10))
+                                        }
+                                    }
+                                }
+                                this.teil.warteliste_menge = wartelistesameteil.reduce((a,b) => a +b, 0);
                             }
                             this.teilService.create(this.teil).subscribe((respond: Teil) =>
                                 console.log(respond), () => this.onSaveError());

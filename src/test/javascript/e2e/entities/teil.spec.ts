@@ -54,6 +54,12 @@ describe('Teil e2e test', () => {
         expect(teilDialogPage.getSicherheitsbestandInput()).toMatch('5');
         teilDialogPage.setVertriebswunschInput('5');
         expect(teilDialogPage.getVertriebswunschInput()).toMatch('5');
+        teilDialogPage.setVertriebswunsch_naechsteInput('5');
+        expect(teilDialogPage.getVertriebswunsch_naechsteInput()).toMatch('5');
+        teilDialogPage.setVertriebswunsch_uebernaechsteInput('5');
+        expect(teilDialogPage.getVertriebswunsch_uebernaechsteInput()).toMatch('5');
+        teilDialogPage.setVertriebswunsch_ueberuebernaechsteInput('5');
+        expect(teilDialogPage.getVertriebswunsch_ueberuebernaechsteInput()).toMatch('5');
         teilDialogPage.setGesamtproduktionsmengeInput('5');
         expect(teilDialogPage.getGesamtproduktionsmengeInput()).toMatch('5');
         teilDialogPage.setDirektverkaufmengeInput('5');
@@ -62,6 +68,10 @@ describe('Teil e2e test', () => {
         expect(teilDialogPage.getDirektverkaufspreisInput()).toMatch('5');
         teilDialogPage.setStrafeInput('5');
         expect(teilDialogPage.getStrafeInput()).toMatch('5');
+        teilDialogPage.setWarteliste_mengeInput('5');
+        expect(teilDialogPage.getWarteliste_mengeInput()).toMatch('5');
+        teilDialogPage.setInBearbeitung_mengeInput('5');
+        expect(teilDialogPage.getInBearbeitung_mengeInput()).toMatch('5');
         // teilDialogPage.subkomponenteSelectLastOption();
         teilDialogPage.save();
         expect(teilDialogPage.getSaveButton().isPresent()).toBeFalsy();
@@ -99,10 +109,15 @@ export class TeilDialogPage {
     lagerwertInput = element(by.css('input#field_lagerwert'));
     sicherheitsbestandInput = element(by.css('input#field_sicherheitsbestand'));
     vertriebswunschInput = element(by.css('input#field_vertriebswunsch'));
+    vertriebswunsch_naechsteInput = element(by.css('input#field_vertriebswunsch_naechste'));
+    vertriebswunsch_uebernaechsteInput = element(by.css('input#field_vertriebswunsch_uebernaechste'));
+    vertriebswunsch_ueberuebernaechsteInput = element(by.css('input#field_vertriebswunsch_ueberuebernaechste'));
     gesamtproduktionsmengeInput = element(by.css('input#field_gesamtproduktionsmenge'));
     direktverkaufmengeInput = element(by.css('input#field_direktverkaufmenge'));
     direktverkaufspreisInput = element(by.css('input#field_direktverkaufspreis'));
     strafeInput = element(by.css('input#field_strafe'));
+    warteliste_mengeInput = element(by.css('input#field_warteliste_menge'));
+    inBearbeitung_mengeInput = element(by.css('input#field_inBearbeitung_menge'));
     subkomponenteSelect = element(by.css('select#field_subkomponente'));
 
     getModalTitle() {
@@ -192,6 +207,30 @@ export class TeilDialogPage {
         return this.vertriebswunschInput.getAttribute('value');
     }
 
+    setVertriebswunsch_naechsteInput = function (vertriebswunsch_naechste) {
+        this.vertriebswunsch_naechsteInput.sendKeys(vertriebswunsch_naechste);
+    }
+
+    getVertriebswunsch_naechsteInput = function () {
+        return this.vertriebswunsch_naechsteInput.getAttribute('value');
+    }
+
+    setVertriebswunsch_uebernaechsteInput = function (vertriebswunsch_uebernaechste) {
+        this.vertriebswunsch_uebernaechsteInput.sendKeys(vertriebswunsch_uebernaechste);
+    }
+
+    getVertriebswunsch_uebernaechsteInput = function () {
+        return this.vertriebswunsch_uebernaechsteInput.getAttribute('value');
+    }
+
+    setVertriebswunsch_ueberuebernaechsteInput = function (vertriebswunsch_ueberuebernaechste) {
+        this.vertriebswunsch_ueberuebernaechsteInput.sendKeys(vertriebswunsch_ueberuebernaechste);
+    }
+
+    getVertriebswunsch_ueberuebernaechsteInput = function () {
+        return this.vertriebswunsch_ueberuebernaechsteInput.getAttribute('value');
+    }
+
     setGesamtproduktionsmengeInput = function (gesamtproduktionsmenge) {
         this.gesamtproduktionsmengeInput.sendKeys(gesamtproduktionsmenge);
     }
@@ -222,6 +261,22 @@ export class TeilDialogPage {
 
     getStrafeInput = function () {
         return this.strafeInput.getAttribute('value');
+    }
+
+    setWarteliste_mengeInput = function (warteliste_menge) {
+        this.warteliste_mengeInput.sendKeys(warteliste_menge);
+    }
+
+    getWarteliste_mengeInput = function () {
+        return this.warteliste_mengeInput.getAttribute('value');
+    }
+
+    setInBearbeitung_mengeInput = function (inBearbeitung_menge) {
+        this.inBearbeitung_mengeInput.sendKeys(inBearbeitung_menge);
+    }
+
+    getInBearbeitung_mengeInput = function () {
+        return this.inBearbeitung_mengeInput.getAttribute('value');
     }
 
     subkomponenteSelectLastOption = function () {

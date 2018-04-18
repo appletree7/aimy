@@ -103,6 +103,15 @@ public class TeilQueryService extends QueryService<Teil> {
             if (criteria.getVertriebswunsch() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getVertriebswunsch(), Teil_.vertriebswunsch));
             }
+            if (criteria.getVertriebswunsch_naechste() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getVertriebswunsch_naechste(), Teil_.vertriebswunsch_naechste));
+            }
+            if (criteria.getVertriebswunsch_uebernaechste() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getVertriebswunsch_uebernaechste(), Teil_.vertriebswunsch_uebernaechste));
+            }
+            if (criteria.getVertriebswunsch_ueberuebernaechste() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getVertriebswunsch_ueberuebernaechste(), Teil_.vertriebswunsch_ueberuebernaechste));
+            }
             if (criteria.getGesamtproduktionsmenge() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getGesamtproduktionsmenge(), Teil_.gesamtproduktionsmenge));
             }
@@ -114,6 +123,12 @@ public class TeilQueryService extends QueryService<Teil> {
             }
             if (criteria.getStrafe() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getStrafe(), Teil_.strafe));
+            }
+            if (criteria.getWarteliste_menge() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getWarteliste_menge(), Teil_.warteliste_menge));
+            }
+            if (criteria.getInBearbeitung_menge() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getInBearbeitung_menge(), Teil_.inBearbeitung_menge));
             }
             if (criteria.getSubkomponenteId() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getSubkomponenteId(), Teil_.subkomponentes, Teil_.id));

@@ -62,11 +62,13 @@ export class AbschlussComponent implements OnInit, OnDestroy {
                             let i = 0;
                             for (const teil of this.teile) {
                                 i = i + 1;
-                                this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
-                                    parseFloat(teil.gesamtproduktionsmenge), undefined, undefined,
-                                    undefined, undefined, undefined, undefined, undefined,
-                                    undefined,  teil);
-                                this.fertigungsauftraege.push(this.fertigungsauftrag);
+                                if (teil.gesamtproduktionsmenge > 0) {
+                                    this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
+                                        parseFloat(teil.gesamtproduktionsmenge), undefined, undefined,
+                                        undefined, undefined, undefined, undefined, undefined,
+                                        undefined, teil);
+                                    this.fertigungsauftraege.push(this.fertigungsauftrag);
+                                }
                             }
                             /*for (const fertigungsauftrag of this.fertigungsauftraege) {
                                 if (fertigungsauftrag.id !== null) {

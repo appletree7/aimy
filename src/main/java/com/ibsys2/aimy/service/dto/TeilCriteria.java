@@ -55,6 +55,12 @@ public class TeilCriteria implements Serializable {
 
     private IntegerFilter vertriebswunsch;
 
+    private IntegerFilter vertriebswunsch_naechste;
+
+    private IntegerFilter vertriebswunsch_uebernaechste;
+
+    private IntegerFilter vertriebswunsch_ueberuebernaechste;
+
     private IntegerFilter gesamtproduktionsmenge;
 
     private IntegerFilter direktverkaufmenge;
@@ -62,6 +68,10 @@ public class TeilCriteria implements Serializable {
     private DoubleFilter direktverkaufspreis;
 
     private DoubleFilter strafe;
+
+    private IntegerFilter warteliste_menge;
+
+    private IntegerFilter inBearbeitung_menge;
 
     private LongFilter subkomponenteId;
 
@@ -156,6 +166,30 @@ public class TeilCriteria implements Serializable {
         this.vertriebswunsch = vertriebswunsch;
     }
 
+    public IntegerFilter getVertriebswunsch_naechste() {
+        return vertriebswunsch_naechste;
+    }
+
+    public void setVertriebswunsch_naechste(IntegerFilter vertriebswunsch_naechste) {
+        this.vertriebswunsch_naechste = vertriebswunsch_naechste;
+    }
+
+    public IntegerFilter getVertriebswunsch_uebernaechste() {
+        return vertriebswunsch_uebernaechste;
+    }
+
+    public void setVertriebswunsch_uebernaechste(IntegerFilter vertriebswunsch_uebernaechste) {
+        this.vertriebswunsch_uebernaechste = vertriebswunsch_uebernaechste;
+    }
+
+    public IntegerFilter getVertriebswunsch_ueberuebernaechste() {
+        return vertriebswunsch_ueberuebernaechste;
+    }
+
+    public void setVertriebswunsch_ueberuebernaechste(IntegerFilter vertriebswunsch_ueberuebernaechste) {
+        this.vertriebswunsch_ueberuebernaechste = vertriebswunsch_ueberuebernaechste;
+    }
+
     public IntegerFilter getGesamtproduktionsmenge() {
         return gesamtproduktionsmenge;
     }
@@ -188,6 +222,22 @@ public class TeilCriteria implements Serializable {
         this.strafe = strafe;
     }
 
+    public IntegerFilter getWarteliste_menge() {
+        return warteliste_menge;
+    }
+
+    public void setWarteliste_menge(IntegerFilter warteliste_menge) {
+        this.warteliste_menge = warteliste_menge;
+    }
+
+    public IntegerFilter getInBearbeitung_menge() {
+        return inBearbeitung_menge;
+    }
+
+    public void setInBearbeitung_menge(IntegerFilter inBearbeitung_menge) {
+        this.inBearbeitung_menge = inBearbeitung_menge;
+    }
+
     public LongFilter getSubkomponenteId() {
         return subkomponenteId;
     }
@@ -210,10 +260,15 @@ public class TeilCriteria implements Serializable {
                 (lagerwert != null ? "lagerwert=" + lagerwert + ", " : "") +
                 (sicherheitsbestand != null ? "sicherheitsbestand=" + sicherheitsbestand + ", " : "") +
                 (vertriebswunsch != null ? "vertriebswunsch=" + vertriebswunsch + ", " : "") +
+                (vertriebswunsch_naechste != null ? "vertriebswunsch_naechste=" + vertriebswunsch_naechste + ", " : "") +
+                (vertriebswunsch_uebernaechste != null ? "vertriebswunsch_uebernaechste=" + vertriebswunsch_uebernaechste + ", " : "") +
+                (vertriebswunsch_ueberuebernaechste != null ? "vertriebswunsch_ueberuebernaechste=" + vertriebswunsch_ueberuebernaechste + ", " : "") +
                 (gesamtproduktionsmenge != null ? "gesamtproduktionsmenge=" + gesamtproduktionsmenge + ", " : "") +
                 (direktverkaufmenge != null ? "direktverkaufmenge=" + direktverkaufmenge + ", " : "") +
                 (direktverkaufspreis != null ? "direktverkaufspreis=" + direktverkaufspreis + ", " : "") +
                 (strafe != null ? "strafe=" + strafe + ", " : "") +
+                (warteliste_menge != null ? "warteliste_menge=" + warteliste_menge + ", " : "") +
+                (inBearbeitung_menge != null ? "inBearbeitung_menge=" + inBearbeitung_menge + ", " : "") +
                 (subkomponenteId != null ? "subkomponenteId=" + subkomponenteId + ", " : "") +
             "}";
     }

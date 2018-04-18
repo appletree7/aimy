@@ -108,15 +108,15 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit, OnDestroy
         if (this.teils === undefined || this.teils.length === 0) {
             this.teil = new Teil(undefined, Teiltyp.PRODUKT, parseInt(localStorage.getItem('aktuelleperiode'), 10), 1, undefined, undefined, undefined,
                 undefined, undefined, undefined, undefined, undefined, undefined, undefined,
-                undefined, undefined);
+                undefined, undefined, undefined, undefined, undefined, undefined, undefined);
             this.teils.push(this.teil);
             this.teil = new Teil(undefined, Teiltyp.PRODUKT, parseInt(localStorage.getItem('aktuelleperiode'), 10), 2, undefined, undefined, undefined,
                 undefined, undefined, undefined, undefined, undefined, undefined, undefined,
-                undefined, undefined);
+                undefined, undefined, undefined, undefined, undefined, undefined, undefined);
             this.teils.push(this.teil);
             this.teil = new Teil(undefined, Teiltyp.PRODUKT, parseInt(localStorage.getItem('aktuelleperiode'), 10), 3, undefined, undefined, undefined,
                 undefined, undefined, undefined, undefined, undefined, undefined, undefined,
-                undefined, undefined);
+                undefined, undefined, undefined, undefined, undefined, undefined, undefined);
             this.teils.push(this.teil);
         }
     }

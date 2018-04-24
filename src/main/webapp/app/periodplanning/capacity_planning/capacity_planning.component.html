@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<form name="saveForm" role="form" novalidate (ngSubmit)="save()" #saveForm="ngForm">
+<form name="saveForm" role="form" novalidate (ngSubmit)="saveArbeitsplatz()" #saveForm="ngForm">
 <div>
     <h2>
         <span jhiTranslate="capacity_planning.title">Kapazitätsplanung</span>
@@ -28,7 +22,7 @@ and open the template in the editor.
                 </tr>
             </thead>
             <tbody>
-                        <tr *ngFor="let capacity of capacity_array">
+                        <tr *ngFor="let capacity of capacity_array|orderBy:'arbeitsplatznummer'">
                         <td class="text-center">{{capacity.arbeitsplatznummer}}</td>
                         <td class="text-center">{{capacity.kapazitaetsbedarf_alt}}</td>
                         <td class="text-center">{{capacity.ruestzeit_alt}}</td>
@@ -40,18 +34,21 @@ and open the template in the editor.
             </tbody>
         </table>
     </div>
-    
+
     <div class="btn-group" role="group">
     <button type="button"
             (click)="previousState()"
             class="btn btn-info">
         <span class="fa fa-arrow-left"></span><span jhiTranslate="entity.action.back"> Back</span>
     </button>
+        <button type="submit" [disabled]="saveForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
     <button type="button" class="btn btn-primary" [routerLink]="['/abschluss']"
                 replaceUrl="true">
         <span jhiTranslate="entity.action.next"> Weiter</span>
     </button>
     </div>
-    
+
 </div>
 </form>

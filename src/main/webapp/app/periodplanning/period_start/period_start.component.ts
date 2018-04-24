@@ -13,7 +13,6 @@ import {Fertigungsauftrag} from '../../entities/fertigungsauftrag';
 import {Auftragstatus, FertigungsauftragService} from '../../entities/fertigungsauftrag';
 import {Modus, ModusService} from '../../entities/modus';
 import {Kennzahlen, KennzahlenService} from '../../entities/kennzahlen';
-import {reduce} from "rxjs/operator/reduce";
 
 @Component({
     selector: 'jhi-period-start',
@@ -39,7 +38,6 @@ export class PeriodStartComponent implements OnInit {
     eventSubscriber: Subscription;
     aktuelleperiode: number;
     periode: number;
-    bestellungperioden = new Set();
     // maxRequestsize = Number.MAX_SAFE_INTEGER;
 
     constructor(
@@ -201,27 +199,27 @@ export class PeriodStartComponent implements OnInit {
         }).subscribe((res: ResponseWrapper) => {
             this.moduse = res.json;
             if (this.moduse.length === 0) {
-                this.modus = new Modus(undefined, 'Sonderbestellung', 1.0, 0.1,
+                this.modus = new Modus(undefined, 1, 'Sonderbestellung', 1.0, 0.1,
                 0.4, 0.0, 1.0, 0.0, 2.5,
                     1.0, 2.0);
                 this.modusService.create(this.modus).subscribe((respond: Modus) =>
                     console.log(respond), () => this.onSaveError());
-                this.modus = new Modus(undefined, 'Billiganbieter', 3.0, 0.5, 1.3,
+                this.modus = new Modus(undefined, 2, 'Billiganbieter', 3.0, 0.5, 1.3,
                     2.0, 0.9, 10.0, 0.8,
                     0.8, 0.8);
                 this.modusService.create(this.modus).subscribe((respond: Modus) =>
                     console.log(respond), () => this.onSaveError());
-                this.modus = new Modus(undefined, 'JIT ', 0.0, 0.0,
+                this.modus = new Modus(undefined, 3, 'JIT ', 0.0, 0.0,
                     0.5, 0.0, 1.0, 0.0, 1.2,
                     1.0, 3.0);
                 this.modusService.create(this.modus).subscribe((respond: Modus) =>
                     console.log(respond), () => this.onSaveError());
-                this.modus = new Modus(undefined, 'Eil ', 0.0, 0.0,
+                this.modus = new Modus(undefined, 4, 'Eil ', 0.0, 0.0,
                     0.5, 0.0, 1.0, 0.0, 1.0,
                     1.0, 10.0);
                 this.modusService.create(this.modus).subscribe((respond: Modus) =>
                     console.log(respond), () => this.onSaveError());
-                this.modus = new Modus(undefined, 'Normal ', 0.0, 0.0,
+                this.modus = new Modus(undefined, 5, 'Normal ', 0.0, 0.0,
                     1.0, 1.0, 1.0, 0.0, 1.0,
                     0.9, 1.0);
                 this.modusService.create(this.modus).subscribe((respond: Modus) =>
@@ -235,7 +233,7 @@ export class PeriodStartComponent implements OnInit {
      */
     saveTeil(modi: Array<Modus>) {
 
-        let criteria = [
+        const criteria = [
             {key: 'periode.equals', value: this.periode}
         ];
 
@@ -277,9 +275,9 @@ export class PeriodStartComponent implements OnInit {
                                 }
                             }
                             let k;
-                            let wartelistesameteil = [];
+                            const wartelistesameteil = [];
                             for (k = 0; k < workplace.length; k++) {
-                                let waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
+                                const waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
                                 let l;
                                 for (l = 0; l < waitinglistworkstation.length; l++) {
                                     if (this.teil.nummer === parseInt(waitinglistworkstation[l].getAttribute('item'), 10)) {
@@ -289,7 +287,7 @@ export class PeriodStartComponent implements OnInit {
                             }
                             let m;
                             for (m = 0; m < missingpart.length; m++) {
-                                let waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
+                                const waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
                                 let n;
                                 for (n = 0; n < waitinglistmaterial.length; n++) {
                                     if (this.teil.nummer === parseInt(waitinglistmaterial[n].getAttribute('item'), 10)) {
@@ -297,7 +295,7 @@ export class PeriodStartComponent implements OnInit {
                                     }
                                 }
                             }
-                            this.teil.warteliste_menge = wartelistesameteil.reduce((a,b) => a +b, 0);
+                            this.teil.warteliste_menge = wartelistesameteil.reduce((a, b) => a + b, 0);
                             this.teilService.update(this.teil).subscribe((respond: Teil) =>
                                 console.log(respond), () => this.onSaveError());
                         } else {
@@ -316,9 +314,9 @@ export class PeriodStartComponent implements OnInit {
                                     }
                                 }
                                 let k;
-                                let wartelistesameteil = [];
+                                const wartelistesameteil = [];
                                 for (k = 0; k < workplace.length; k++) {
-                                    let waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
+                                    const waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
                                     let l;
                                     for (l = 0; l < waitinglistworkstation.length; l++) {
                                         if (this.teil.nummer === parseInt(waitinglistworkstation[l].getAttribute('item'), 10)) {
@@ -328,7 +326,7 @@ export class PeriodStartComponent implements OnInit {
                                 }
                                 let m;
                                 for (m = 0; m < missingpart.length; m++) {
-                                    let waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
+                                    const waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
                                     let n;
                                     for (n = 0; n < waitinglistmaterial.length; n++) {
                                         if (this.teil.nummer === parseInt(waitinglistmaterial[n].getAttribute('item'), 10)) {
@@ -336,7 +334,7 @@ export class PeriodStartComponent implements OnInit {
                                         }
                                     }
                                 }
-                                this.teil.warteliste_menge = wartelistesameteil.reduce((a,b) => a +b, 0);
+                                this.teil.warteliste_menge = wartelistesameteil.reduce((a, b) => a + b, 0);
                             } else if (((parseInt(teile[i].getAttribute('id'), 10) > 3)
                                     && (parseInt(teile[i].getAttribute('id'), 10) < 21))
                                 || (parseInt(teile[i].getAttribute('id'), 10) === 26)
@@ -359,9 +357,9 @@ export class PeriodStartComponent implements OnInit {
                                     }
                                 }
                                 let k;
-                                let wartelistesameteil = [];
+                                const wartelistesameteil = [];
                                 for (k = 0; k < workplace.length; k++) {
-                                    let waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
+                                    const waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
                                     let l;
                                     for (l = 0; l < waitinglistworkstation.length; l++) {
                                         if (this.teil.nummer === parseInt(waitinglistworkstation[l].getAttribute('item'), 10)) {
@@ -371,7 +369,7 @@ export class PeriodStartComponent implements OnInit {
                                 }
                                 let m;
                                 for (m = 0; m < missingpart.length; m++) {
-                                    let waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
+                                    const waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
                                     let n;
                                     for (n = 0; n < waitinglistmaterial.length; n++) {
                                         if (this.teil.nummer === parseInt(waitinglistmaterial[n].getAttribute('item'), 10)) {
@@ -379,7 +377,7 @@ export class PeriodStartComponent implements OnInit {
                                         }
                                     }
                                 }
-                                this.teil.warteliste_menge = wartelistesameteil.reduce((a,b) => a +b, 0);
+                                this.teil.warteliste_menge = wartelistesameteil.reduce((a, b) => a + b, 0);
                             } else {
                                     this.teil = new Teil(undefined, Teiltyp.KAUFTEIL, this.periode , parseInt(teile[i].getAttribute('id'), 10),
                                         parseInt(teile[i].getAttribute('amount'), 10), parseInt(teile[i].getAttribute('startamount'), 10),
@@ -394,9 +392,9 @@ export class PeriodStartComponent implements OnInit {
                                     }
                                 }
                                 let k;
-                                let wartelistesameteil = [];
+                                const wartelistesameteil = [];
                                 for (k = 0; k < workplace.length; k++) {
-                                    let waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
+                                    const waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
                                     let l;
                                     for (l = 0; l < waitinglistworkstation.length; l++) {
                                         if (this.teil.nummer === parseInt(waitinglistworkstation[l].getAttribute('item'), 10)) {
@@ -406,7 +404,7 @@ export class PeriodStartComponent implements OnInit {
                                 }
                                 let m;
                                 for (m = 0; m < missingpart.length; m++) {
-                                    let waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
+                                    const waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
                                     let n;
                                     for (n = 0; n < waitinglistmaterial.length; n++) {
                                         if (this.teil.nummer === parseInt(waitinglistmaterial[n].getAttribute('item'), 10)) {
@@ -414,7 +412,7 @@ export class PeriodStartComponent implements OnInit {
                                         }
                                     }
                                 }
-                                this.teil.warteliste_menge = wartelistesameteil.reduce((a,b) => a +b, 0);
+                                this.teil.warteliste_menge = wartelistesameteil.reduce((a, b) => a + b, 0);
                             }
                             this.teilService.create(this.teil).subscribe((respond: Teil) =>
                                 console.log(respond), () => this.onSaveError());
@@ -558,7 +556,7 @@ export class PeriodStartComponent implements OnInit {
      */
     saveArbeitsplatz() {
 
-        let criteria = [
+        const criteria = [
             {key: 'periode.equals', value: this.periode}
         ];
 
@@ -810,7 +808,7 @@ export class PeriodStartComponent implements OnInit {
         const directsalecontractpenalty = this.xml.getElementsByTagName('result')[0].getElementsByTagName('directsale')[0].getElementsByTagName('contractpenalty');
         const marketplacesaleprofit = this.xml.getElementsByTagName('result')[0].getElementsByTagName('marketplacesale')[0].getElementsByTagName('profit');
         const summaryprofit = this.xml.getElementsByTagName('result')[0].getElementsByTagName('summary')[0].getElementsByTagName('profit');
-        let criteria = [
+        const criteria = [
             {key: 'periode.equals', value: this.periode}
         ];
         this.kennzahlService.query(

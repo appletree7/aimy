@@ -2,12 +2,18 @@
     "fluentMethods": true,
     "relationships": [],
     "fields": [
+		{
+            "fieldName": "nummer",
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "required",
+				"min"
+            ],
+			"fieldValidateRulesMin": 1
+        },
         {
             "fieldName": "name",
-            "fieldType": "String",
-			"fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "String"
         },
         {
             "fieldName": "bearbeitungsfaktor",

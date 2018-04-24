@@ -1,17 +1,16 @@
-import { BaseEntity } from './../../shared';
+import { BaseEntity } from '../../shared';
 
 export class PurchasedPart implements BaseEntity {
-    
+
     constructor(
         public id?: number,
-        public nummer?: string,
+        public nummer?: number,
         public bestand?: number,
-        public lieferdauer?: number,
         public diskontmenge?: number,
-        public bruttobedarf?: number,
-        public bestellung?: number,
-        public art?: string,
+        public lagerreichweite?: number,
+        public durchschnittbedarf?: number,
         public periode?: number,
-        public modus_id? : number
+        public sicherheitsbestand?: number,
+        public bestellpunkt?: number
     ) {}
 }

@@ -28,6 +28,8 @@ public class ModusCriteria implements Serializable {
 
     private LongFilter id;
 
+    private IntegerFilter nummer;
+
     private StringFilter name;
 
     private DoubleFilter bearbeitungsfaktor;
@@ -57,6 +59,14 @@ public class ModusCriteria implements Serializable {
 
     public void setId(LongFilter id) {
         this.id = id;
+    }
+
+    public IntegerFilter getNummer() {
+        return nummer;
+    }
+
+    public void setNummer(IntegerFilter nummer) {
+        this.nummer = nummer;
     }
 
     public StringFilter getName() {
@@ -143,6 +153,7 @@ public class ModusCriteria implements Serializable {
     public String toString() {
         return "ModusCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
+                (nummer != null ? "nummer=" + nummer + ", " : "") +
                 (name != null ? "name=" + name + ", " : "") +
                 (bearbeitungsfaktor != null ? "bearbeitungsfaktor=" + bearbeitungsfaktor + ", " : "") +
                 (bearbeitungsabweichung != null ? "bearbeitungsabweichung=" + bearbeitungsabweichung + ", " : "") +

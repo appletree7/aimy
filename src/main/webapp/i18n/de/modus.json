@@ -15,6 +15,7 @@
             "detail": {
                 "title": "Modus"
             },
+            "nummer": "Nummer",
             "name": "Name",
             "bearbeitungsfaktor": "Bearbeitungsfaktor",
             "bearbeitungsabweichung": "Bearbeitungsabweichung",

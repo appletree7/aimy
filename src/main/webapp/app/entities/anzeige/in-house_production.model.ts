@@ -1,5 +1,5 @@
-import { BaseEntity } from './../../shared';
-import {Teiltyp} from "../teil";
+import { BaseEntity } from '../../shared';
+import {Teiltyp} from '../teil';
 
 export class InHouse implements BaseEntity {
     constructor(

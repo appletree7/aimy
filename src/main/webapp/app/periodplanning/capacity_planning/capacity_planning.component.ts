@@ -1,45 +1,36 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute,  Router, Params } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
-//Referenz zu einem bereits offenem Fenster - um Instanzen zu übergeben, die in diesem Fenster befüllt werden
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
- //Wird benötigt, wenn Buttons angeklickt werden
-import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
-import { Teil, Teiltyp } from '../../entities/teil/teil.model';
+import { Component, OnInit } from '@angular/core';
+// import { Subscription } from 'rxjs/Rx';
+
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { Teil, Teiltyp } from '../../entities/teil';
 import {Capacity} from '../../entities/anzeige/capacity_planning.model';
-import { TeilService } from '../../entities/teil/teil.service';
+import { TeilService } from '../../entities/teil';
 import { Arbeitsplatz, ArbeitsplatzService } from '../../entities/arbeitsplatz';
 import { Fertigungsauftrag, FertigungsauftragService  } from '../../entities/fertigungsauftrag';
-//Um Berechtigungen Prüfen zu können
-import { ITEMS_PER_PAGE, Principal, User, UserService, ResponseWrapper } from '../../shared';
-
- //import { KaufteileService } from './kaufteile.service';
- //import { userService } from './kaufteile.service';
+import {Principal, ResponseWrapper} from '../../shared';
+import {Observable} from 'rxjs/Rx';
 
 @Component({
-    selector: 'jhi-capacity_planning',
-     //Auswahlmenue in der Navigationsleiste
+    selector: 'jhi-capacity-planning',
     templateUrl: './capacity_planning.component.html',
-     //Fenstergröße --> hier: Standard
-     //styles: []
 })
 export class CapacityPlanningComponent implements OnInit {
-    //Variablen, die ich benötige hier definieren:
 
+    isSaving: boolean;
     teils: Teil[];
-    teile_erzeugnis_produkt;
+    teil: Teil;
     account: any;
+    arbeitsplatz: Arbeitsplatz;
+    capacity: Capacity;
     arbeitsplaetze: Arbeitsplatz[];
+    arbeitsplaetze_vorperiode: Arbeitsplatz[];
     currentAccount: any;
-    eventSubscriber: Subscription;
-    fertigungsauftraege_wartend_und_in_bearbeitung: Fertigungsauftrag[];
     fertigungsauftraege: Fertigungsauftrag[];
-    capacity_array: Capacity[];
+    fertigungsauftraege_alt: Fertigungsauftrag[];
+    ruestvorgaenge_teil_array_neu = [];
+    ruestvorgaenge_teil_array_alt = [];
 
-
-
+    capacity_array = [];
 
     constructor(
         private eventManager: JhiEventManager,
@@ -47,191 +38,94 @@ export class CapacityPlanningComponent implements OnInit {
         private principal: Principal,
         private teilService: TeilService,
         private fertigungsauftragService: FertigungsauftragService,
-        private arbeitsplatzService: ArbeitsplatzService,
-        private route: ActivatedRoute,
-
-    ){}
+        private arbeitsplatzService: ArbeitsplatzService
+    ) {}
 
     ngOnInit() {
         this.principal.identity().then((account) => {
             this.account = account;
         });
 
-        this.teilService.query()
-            .subscribe((res: ResponseWrapper) => {
-                this.teils = res.json;
-                this.teile_erzeugnis_produkt = this.teils.filter( function(teil){
-                let teiltypen = teil.teiltyp.toString();
-                console.log(teiltypen);
+        this.isSaving = false;
 
-                if (teiltypen == 'PRODUKT' || teiltypen == 'ERZEUGNIS'){
-                    if(teil.nummer == 54 || teil.nummer == 54 || teil.nummer == 54){
-                        console.log(" Teil enthalten!!! Teile-Nr: "+teil.nummer);
-                    }
+        const criteria = [
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
+        ];
 
-                    return (teil);
+        this.arbeitsplatzService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((res: ResponseWrapper) => {
+            this.arbeitsplaetze = res.json;
+            if (this.arbeitsplaetze.length === 0) {
+                this.capacity = new Capacity(undefined, 1, undefined, undefined,
+                    undefined, undefined, undefined, undefined, undefined,
+                     parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                this.capacity_array.push(this.capacity);
+                this.capacity = new Capacity(undefined, 2, undefined, undefined,
+                    undefined, undefined, undefined, undefined, undefined,
+                    parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                this.capacity_array.push(this.capacity);
+                this.capacity = new Capacity(undefined, 3, undefined, undefined,
+                    undefined, undefined, undefined, undefined, undefined,
+                    parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                this.capacity_array.push(this.capacity);
+                this.capacity = new Capacity(undefined, 4, undefined, undefined,
+                    undefined, undefined, undefined, undefined, undefined,
+                    parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                this.capacity_array.push(this.capacity);
+                this.capacity = new Capacity(undefined, 6, undefined, undefined,
+                    undefined, undefined, undefined, undefined, undefined,
+                    parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                this.capacity_array.push(this.capacity);
+                this.capacity = new Capacity(undefined, 7, undefined, undefined,
+                    undefined, undefined, undefined, undefined, undefined,
+                    parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                this.capacity_array.push(this.capacity);
+                this.capacity = new Capacity(undefined, 8, undefined, undefined,
+                    undefined, undefined, undefined, undefined, undefined,
+                    parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                this.capacity_array.push(this.capacity);
+                this.capacity = new Capacity(undefined, 9, undefined, undefined,
+                    undefined, undefined, undefined, undefined, undefined,
+                    parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                this.capacity_array.push(this.capacity);
+                this.capacity = new Capacity(undefined, 10, undefined, undefined,
+                    undefined, undefined, undefined, undefined, undefined,
+                    parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                this.capacity_array.push(this.capacity);
+                this.capacity = new Capacity(undefined, 11, undefined, undefined,
+                    undefined, undefined, undefined, undefined, undefined,
+                    parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                this.capacity_array.push(this.capacity);
+                this.capacity = new Capacity(undefined, 12, undefined, undefined,
+                    undefined, undefined, undefined, undefined, undefined,
+                    parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                this.capacity_array.push(this.capacity);
+                this.capacity = new Capacity(undefined, 13, undefined, undefined,
+                    undefined, undefined, undefined, undefined, undefined,
+                    parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                this.capacity_array.push(this.capacity);
+                this.capacity = new Capacity(undefined, 14, undefined, undefined,
+                    undefined, undefined, undefined, undefined, undefined,
+                    parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                this.capacity_array.push(this.capacity);
+                this.capacity = new Capacity(undefined, 15, undefined, undefined,
+                    undefined, undefined, undefined, undefined, undefined,
+                    parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                this.capacity_array.push(this.capacity);
+            } else {
+                for (const arbeitsplatz of this.arbeitsplaetze) {
+                    this.capacity_array.push(
+                        new Capacity(undefined, arbeitsplatz.nummer, undefined, undefined,
+                            undefined, undefined, undefined, undefined, undefined,
+                            arbeitsplatz.periode));
                 }
-                });
-                // Alle Teile, die den Teiltyp "PRODUKT" und "ERZEUGNIS" besitzen, werden ausgegeben:
-                res.json = this.teile_erzeugnis_produkt;
-                console.log(this.teile_erzeugnis_produkt);
+            }
 
+            this.berechneSichtundUeberstunden();
 
-                this.arbeitsplatzService.query()
-                .subscribe((res2: ResponseWrapper) => {
-                // if (this.teil.nummer != null && this.teil.nummer == "1"){
-                    this.arbeitsplaetze = res2.json;
-                    console.log("Alle arbeitsplätze: "+ this.arbeitsplaetze.toString());
-
-
-                this.fertigungsauftragService.query()
-                .subscribe((res3: ResponseWrapper) => {
-
-                    this.fertigungsauftraege = res3.json;
-                    console.log("Fertigungsaufträge: "+this.fertigungsauftraege);
-
-                    //sucht alle fertigungsaufträge raus, die den Status "wartend" und "bearbeitend" haben
-                    this.fertigungsauftraege_wartend_und_in_bearbeitung = this.fertigungsauftraege.filter(function(fa_wartend_und_in_bearbeitung){
-
-                    let auftragsstatuse = fa_wartend_und_in_bearbeitung.auftragsstatus.toString();
-                    //console.log(auftragsstatuse);
-
-
-                    if (auftragsstatuse == 'WARTEND' || auftragsstatuse == 'ANGEFANGEN')//|| auftragsstatuse == 'BEARBEITEND'
-                    return (fa_wartend_und_in_bearbeitung)
-
-
-                    });
-
-
-                    for (let i = 0; i < this.fertigungsauftraege_wartend_und_in_bearbeitung.length; i++){
-                        console.log(" Aufträge wartend und in Bearbeitung  "+ this.fertigungsauftraege_wartend_und_in_bearbeitung[i].toString());
-                    };
-
-                    this.capacity_array = this.matrixberechnung (this.arbeitsplaetze, this.teile_erzeugnis_produkt, this.fertigungsauftraege_wartend_und_in_bearbeitung);
-
-
-                    //nach Arbeitsplätzen sortieren
-                    this.capacity_array.sort( function (a,b){
-                        if (a.arbeitsplatznummer > b.arbeitsplatznummer) {
-                            return 1;
-                        }
-                        if (a.arbeitsplatznummer < b.arbeitsplatznummer) {
-                         return -1;
-                        }
-                        // a muss gleich b sein
-                        return 0;
-                    });
-
-
-                    /*
-                    let durchlauf = 1;
-                    let restzeitbedarf_ruestzeit_7;
-                    let restzeitbedarf_ruestzeit_8;
-                    let restzeitbedarf_ruestzeit_9_15
-                    let restzeitbedarf_ruestzeit_11;
-                    let restzeitbedarf_ruestzeit_12;
-                    let restzeitbedarf_ruestzeit_6;
-
-                    let restzeitbedarf_kapazitaet_7;
-                    let restzeitbedarf_kapazitaet_8;
-                    let restzeitbedarf_kapazitaet_9_15
-                    let restzeitbedarf_kapazitaet_11;
-                    let restzeitbedarf_kapazitaet_12;
-                    let restzeitbedarf_kapazitaet_6;
-
-                    for (let i = 0; i < 6; i++){
-                        this.capacity_array.forEach(function (arbeitsplatz){
-
-                            console.log("Durchlauf: " + durchlauf + "  Arbeitsplatz:" + arbeitsplatz.arbeitsplatznummer +
-                             "    kapazitaetsbedarf_alt:" + arbeitsplatz.kapazitaetsbedarf_alt.toString() +
-                            + " rarbeitsplatz.ruestzeit_alt:  " + arbeitsplatz.ruestzeit_alt.toString()
-                            + "  arbeitsplatz.gesamter_kapazitaetsbedarf: " + arbeitsplatz.gesamter_kapazitaetsbedarf.toString());
-
-
-                        if(durchlauf == 1){
-                            if (arbeitsplatz.arbeitsplatznummer == 10){
-                                restzeitbedarf_kapazitaet_11 = arbeitsplatz.kapazitaetsbedarf_alt;
-                                console.log("Restzeit- Kap : "+ restzeitbedarf_kapazitaet_11);
-                                restzeitbedarf_ruestzeit_11 = arbeitsplatz.ruestzeit_alt;
-                                console.log("Restzeit - Rüstzeit: "+ arbeitsplatz.ruestzeit_alt);
-                            }
-                            if (arbeitsplatz.arbeitsplatznummer == 13){
-                                restzeitbedarf_kapazitaet_12 = arbeitsplatz.kapazitaetsbedarf_alt;
-                                restzeitbedarf_ruestzeit_12 = arbeitsplatz.ruestzeit_alt;
-                            }
-                            if (arbeitsplatz.arbeitsplatznummer == 6){
-                                restzeitbedarf_kapazitaet_6 = arbeitsplatz.kapazitaetsbedarf_alt;
-                                restzeitbedarf_ruestzeit_6 = arbeitsplatz.ruestzeit_alt;
-                            }
-                        }
-                        if(durchlauf == 2){
-                            if (arbeitsplatz.arbeitsplatznummer == 11){
-                                console.log("Zweiter Durchlauf für ABPL 11 durchlaufen");
-                                arbeitsplatz.kapazitaetsbedarf_alt = arbeitsplatz.kapazitaetsbedarf_alt + restzeitbedarf_kapazitaet_11;
-                                arbeitsplatz.ruestzeit_alt = arbeitsplatz.ruestzeit_alt + restzeitbedarf_ruestzeit_11;
-                                arbeitsplatz.gesamter_kapazitaetsbedarf = arbeitsplatz.kapazitaetsbedarf_neu + arbeitsplatz.ruestzeit_neu + arbeitsplatz.kapazitaetsbedarf_alt + arbeitsplatz.ruestzeit_alt;
-                            }
-                            if (arbeitsplatz.arbeitsplatznummer == 12){
-                                arbeitsplatz.kapazitaetsbedarf_alt = arbeitsplatz.kapazitaetsbedarf_alt + restzeitbedarf_kapazitaet_12;
-                                arbeitsplatz.ruestzeit_alt = arbeitsplatz.ruestzeit_alt + restzeitbedarf_ruestzeit_12;
-                                arbeitsplatz.gesamter_kapazitaetsbedarf = arbeitsplatz.kapazitaetsbedarf_neu + arbeitsplatz.ruestzeit_neu + arbeitsplatz.kapazitaetsbedarf_alt + arbeitsplatz.ruestzeit_alt;
-                                restzeitbedarf_kapazitaet_8 = arbeitsplatz.kapazitaetsbedarf_alt;
-                                restzeitbedarf_ruestzeit_8 = arbeitsplatz.ruestzeit_alt;
-                                console.log("Arbeitsplatz 12: restzeitbedarf_kapazitaet_8: "+restzeitbedarf_kapazitaet_8 +"   restzeitbedarf_ruestzeit_8:  " +restzeitbedarf_ruestzeit_8);
-                            }
-                            if (arbeitsplatz.arbeitsplatznummer == 14){
-                                arbeitsplatz.kapazitaetsbedarf_alt = arbeitsplatz.kapazitaetsbedarf_alt + restzeitbedarf_kapazitaet_6;
-                                arbeitsplatz.ruestzeit_alt = arbeitsplatz.ruestzeit_alt + restzeitbedarf_ruestzeit_6;
-                                arbeitsplatz.gesamter_kapazitaetsbedarf = arbeitsplatz.kapazitaetsbedarf_neu + arbeitsplatz.ruestzeit_neu + arbeitsplatz.kapazitaetsbedarf_alt + arbeitsplatz.ruestzeit_alt;
-                                console.log("Arbeitsplatz 14: restzeitbedarf_kapazitaet_6: "+restzeitbedarf_kapazitaet_6 +"   restzeitbedarf_ruestzeit_6:  " +restzeitbedarf_ruestzeit_6);
-                            }
-                        }
-                        if(durchlauf == 3){
-                            if (arbeitsplatz.arbeitsplatznummer == 8){
-                                arbeitsplatz.kapazitaetsbedarf_alt = arbeitsplatz.kapazitaetsbedarf_alt + restzeitbedarf_kapazitaet_6 + restzeitbedarf_kapazitaet_8;
-                                arbeitsplatz.ruestzeit_alt = arbeitsplatz.ruestzeit_alt + restzeitbedarf_kapazitaet_6 + restzeitbedarf_ruestzeit_8;
-                                arbeitsplatz.gesamter_kapazitaetsbedarf = arbeitsplatz.kapazitaetsbedarf_neu + arbeitsplatz.ruestzeit_neu + arbeitsplatz.kapazitaetsbedarf_alt + arbeitsplatz.ruestzeit_alt;
-                                console.log("Arbeitsplatz 8: arbeitsplatz.kapazitaetsbedarf_alt: "+arbeitsplatz.kapazitaetsbedarf_alt +"   rarbeitsplatz.ruestzeit_alt:  " + arbeitsplatz.ruestzeit_alt + "  arbeitsplatz.gesamter_kapazitaetsbedarf: " +arbeitsplatz.gesamter_kapazitaetsbedarf);
-                                restzeitbedarf_kapazitaet_7 = arbeitsplatz.kapazitaetsbedarf_alt;
-                                restzeitbedarf_ruestzeit_7 = arbeitsplatz.ruestzeit_alt;
-                            }
-                        }
-                        if(durchlauf == 4){
-                            if (arbeitsplatz.arbeitsplatznummer == 7){
-                                arbeitsplatz.kapazitaetsbedarf_alt = arbeitsplatz.kapazitaetsbedarf_alt + restzeitbedarf_kapazitaet_7;
-                                arbeitsplatz.ruestzeit_alt = arbeitsplatz.ruestzeit_alt + restzeitbedarf_ruestzeit_7;
-                                arbeitsplatz.gesamter_kapazitaetsbedarf = arbeitsplatz.kapazitaetsbedarf_neu + arbeitsplatz.ruestzeit_neu + arbeitsplatz.kapazitaetsbedarf_alt + arbeitsplatz.ruestzeit_alt;
-                                restzeitbedarf_kapazitaet_9_15 = arbeitsplatz.kapazitaetsbedarf_alt;
-                                restzeitbedarf_ruestzeit_9_15 = arbeitsplatz.ruestzeit_alt;
-                            }
-                        }
-                        if(durchlauf == 5){
-                            if (arbeitsplatz.arbeitsplatznummer == 9){
-                                arbeitsplatz.kapazitaetsbedarf_alt = arbeitsplatz.kapazitaetsbedarf_alt + restzeitbedarf_kapazitaet_9_15;
-                                arbeitsplatz.ruestzeit_alt = arbeitsplatz.ruestzeit_alt + restzeitbedarf_ruestzeit_9_15;
-                                arbeitsplatz.gesamter_kapazitaetsbedarf = arbeitsplatz.kapazitaetsbedarf_neu + arbeitsplatz.ruestzeit_neu + arbeitsplatz.kapazitaetsbedarf_alt + arbeitsplatz.ruestzeit_alt;
-                            }
-                            if (arbeitsplatz.arbeitsplatznummer == 15){
-                                arbeitsplatz.kapazitaetsbedarf_alt = arbeitsplatz.kapazitaetsbedarf_alt + restzeitbedarf_kapazitaet_9_15;
-                                arbeitsplatz.ruestzeit_alt = arbeitsplatz.ruestzeit_alt + restzeitbedarf_ruestzeit_9_15;
-                                arbeitsplatz.gesamter_kapazitaetsbedarf = arbeitsplatz.kapazitaetsbedarf_neu + arbeitsplatz.ruestzeit_neu + arbeitsplatz.kapazitaetsbedarf_alt + arbeitsplatz.ruestzeit_alt;
-                            }
-
-                        }
-                    });
-                        durchlauf = durchlauf+1;
-                    }
-
-
-                    */
-
-                    res3.json = this.fertigungsauftraege_wartend_und_in_bearbeitung;
-                    //res3.json = this.capacity_array;
-
-                },(res3: ResponseWrapper) => this.onError(res3.json));
-                },(res2: ResponseWrapper) => this.onError(res2.json));
-                },(res : ResponseWrapper) => this.onError(res.json));
+        }, (res: ResponseWrapper) => this.onError(res.json));
 
     };
 
@@ -239,938 +133,819 @@ export class CapacityPlanningComponent implements OnInit {
         this.jhiAlertService.error(error.message, null, null);
     }
 
+    async berechneKapzitaetsbedarfneu() {
 
-    public matrixberechnung (arbeitsplaetze: Arbeitsplatz[], teile_erzeugnis_produkt: Teil[], fertigungsauftraege_wartend_und_in_bearbeitung: Fertigungsauftrag[]){
+        const criteria = [
+            {key: 'teiltyp.in', value: 'PRODUKT'},
+            {key: 'teiltyp.in', value: 'ERZEUGNIS'},
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
+        ];
 
-        console.log("Funktion wird aufgerufen");
-        let kapazitaetsbedarf_neu;
-        let zaheler_teile_ruestzeit_mulitplikator;
-        let erhoehung;
-        let anzeige;
-        let ruestzeit_neu;
-        let gesamt_kapazitaet_pro_arbeitsplatz;
-        let kapazitaetsbedarf_alt;
-        let ruestzeit_alt;
-        let erhoehung_kapbedarf_alt;
-        let zaheler_teile_ruestzeit_mulitplikator_alt;
-        let zaheler_teile_ruestzeit_mulitplikator_zwei;
-        let erhoehung_zwei;
-        let erhoehung_kapbedarf_alt_zwei;
-        let ueberstunden_pro_tag;
-        let schichten;
-        let capacity = new Capacity;
-        let capacity_array = new Array;
-        let ueberstunden;
-        let erhoehung_drei;
-        let zaheler_teile_ruestzeit_mulitplikator_drei;
-        let erhoehung_kapbedarf_alt_drei;
-        let zaheler_teile_ruestzeit_mulitplikator_alt_zwei;
-        let zaheler_teile_ruestzeit_mulitplikator_alt_drei;
+        this.teilService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((res: ResponseWrapper) => {
+            this.teils = res.json;
 
+            for (let i = 0; i < this.capacity_array.length; i++) {
 
-            //muss man am Schull rauslöschen, aber grad ists praktisch zu sehen, obs was rechnet:
+                const kapazitaetsbedarf_arbeitsplatz = [];
 
+                for (let j = 0; j < this.teils.length; j++) {
 
+                    if (this.capacity_array[i].arbeitsplatznummer === 1) {
 
-        arbeitsplaetze.forEach(function (arbeitsplatz){
-            console.log("Arbeitsplatz " + arbeitsplatz.nummer.toString());
-
-            //initalisieren der Variablen, damit sie nicht undefined sind.
-            let capacity = new Capacity;
-            kapazitaetsbedarf_neu = 0;
-            ruestzeit_neu = 0;
-            zaheler_teile_ruestzeit_mulitplikator = 0;
-            gesamt_kapazitaet_pro_arbeitsplatz = 0;
-            kapazitaetsbedarf_alt = 0;
-            ruestzeit_alt = 0;
-            erhoehung_kapbedarf_alt = 0;
-            zaheler_teile_ruestzeit_mulitplikator_alt = 0;
-            zaheler_teile_ruestzeit_mulitplikator_zwei = 0;
-            erhoehung_zwei = 0;
-            erhoehung_kapbedarf_alt_zwei = 0;
-            ueberstunden_pro_tag = 0;
-            schichten = 1;
-            ueberstunden = 0;
-            erhoehung_drei = 0;
-            zaheler_teile_ruestzeit_mulitplikator_drei = 0;
-            erhoehung_kapbedarf_alt_drei = 0;
-            zaheler_teile_ruestzeit_mulitplikator_alt_zwei = 0;
-            zaheler_teile_ruestzeit_mulitplikator_alt_drei = 0;
-
-            teile_erzeugnis_produkt.forEach(function (teil){
-
-                if(arbeitsplatz.nummer == 1){
-
-
-                    if(teil.nummer == 49 || teil.nummer == 54 || teil.nummer == 29) {
-
-                        erhoehung = teil.istmenge * 6;
-                        kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung;
-                        console.log("arbeitsplatz 1111111111111111" +" teil.istmenge " + teil.istmenge + " kapazitaetsbedarf_neu "+kapazitaetsbedarf_neu);
-                        if (teil.istmenge != 0){
-                            zaheler_teile_ruestzeit_mulitplikator = zaheler_teile_ruestzeit_mulitplikator + 1;
+                        if (this.teils[j].nummer === 49 || this.teils[j].nummer === 54 || this.teils[j].nummer === 29) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 6);
                         }
-                    }
-                    ruestzeit_neu = 20 * zaheler_teile_ruestzeit_mulitplikator;
 
+                        this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
 
-                    //Berechnung des Rückstands der Vorperiode
-                    fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
-
-                        //würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil != null){
-                            if (fa.herstellteil == teil.nummer){
-                                if(teil.nummer == 49 || teil.nummer == 54 || teil.nummer == 29){
-                                    erhoehung_kapbedarf_alt = fa.auftragsmenge*6;
-
-                                    kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
-                                    zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt+1;
-                                }
-                            }
-                        }
-                    });
-                    ruestzeit_alt = 20*zaheler_teile_ruestzeit_mulitplikator_alt;
-                    gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
-
-                    if(gesamt_kapazitaet_pro_arbeitsplatz > 2400){
-                        schichten = (gesamt_kapazitaet_pro_arbeitsplatz/2400);
-                        schichten = parseInt(schichten);
-                        ueberstunden = gesamt_kapazitaet_pro_arbeitsplatz - schichten*2400;
-                        ueberstunden_pro_tag = ueberstunden/5;
                     }
 
-                    capacity.arbeitsplatznummer = arbeitsplatz.nummer;
-                    capacity.kapazitaetsbedarf_neu = kapazitaetsbedarf_neu;
-                    capacity.ruestzeit_neu = ruestzeit_neu;
-                    capacity.kapazitaetsbedarf_alt = kapazitaetsbedarf_alt;
-                    capacity.ruestzeit_alt = ruestzeit_alt;
-                    capacity.gesamter_kapazitaetsbedarf = gesamt_kapazitaet_pro_arbeitsplatz;
-                    capacity.schichten = schichten;
-                    capacity.ueberstunden = ueberstunden_pro_tag;
+                    if (this.capacity_array[i].arbeitsplatznummer === 2) {
+
+                        if (this.teils[j].nummer === 50 || this.teils[j].nummer === 55 || this.teils[j].nummer === 30) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 5);
+                        }
+
+                        this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 3) {
+
+                        if (this.teils[j].nummer === 31 || this.teils[j].nummer === 56) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 6);
+                        }
+
+                        if (this.teils[j].nummer === 51) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 5);
+                        }
+
+                        this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 4) {
+
+                        if (this.teils[j].nummer === 2 || this.teils[j].nummer === 3) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 7);
+                        }
+
+                        if (this.teils[j].nummer === 1) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 6);
+                        }
+
+                        this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 6) {
+
+                        if (this.teils[j].nummer === 18 || this.teils[j].nummer === 19 || this.teils[j].nummer === 20) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 3);
+                        }
+
+                        if (this.teils[j].nummer === 16) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 2);
+                        }
+
+                        this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 7) {
+
+                        if (this.teils[j].nummer === 10 || this.teils[j].nummer === 11 || this.teils[j].nummer === 12
+                            || this.teils[j].nummer === 13 || this.teils[j].nummer === 14 || this.teils[j].nummer === 15
+                            || this.teils[j].nummer === 18 || this.teils[j].nummer === 19 || this.teils[j].nummer === 20
+                            || this.teils[j].nummer === 26) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 2);
+                        }
+
+                        this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 8) {
+
+                        if (this.teils[j].nummer === 10 || this.teils[j].nummer === 13) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge);
+                        }
+
+                        if (this.teils[j].nummer === 11 || this.teils[j].nummer === 12
+                            || this.teils[j].nummer === 14 || this.teils[j].nummer === 15) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 2);
+                        }
+
+                        if (this.teils[j].nummer === 18 || this.teils[j].nummer === 19 || this.teils[j].nummer === 20) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 3);
+                        }
+
+                        this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 9) {
+
+                        if (this.teils[j].nummer === 10 || this.teils[j].nummer === 11 || this.teils[j].nummer === 12 ||
+                            this.teils[j].nummer === 13 || this.teils[j].nummer === 14 || this.teils[j].nummer === 15) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 3);
+                        }
+
+                        if (this.teils[j].nummer === 18 || this.teils[j].nummer === 19 || this.teils[j].nummer === 20) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 2);
+                        }
+
+                        this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 10) {
+
+                        if (this.teils[j].nummer === 4 || this.teils[j].nummer === 5 || this.teils[j].nummer === 6
+                            || this.teils[j].nummer === 7 || this.teils[j].nummer === 8 || this.teils[j].nummer === 9) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 4);
+                        }
+
+                        this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 11) {
+
+                        if (this.teils[j].nummer === 4 || this.teils[j].nummer === 5 || this.teils[j].nummer === 6
+                            || this.teils[j].nummer === 7 || this.teils[j].nummer === 8 || this.teils[j].nummer === 9) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 3);
+                        }
+
+                        this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 12) {
+
+                        if (this.teils[j].nummer === 10 || this.teils[j].nummer === 11 || this.teils[j].nummer === 12
+                            || this.teils[j].nummer === 13 || this.teils[j].nummer === 14 || this.teils[j].nummer === 15) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 3);
+                        }
+
+                        this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 13) {
+
+                        if (this.teils[j].nummer === 10 || this.teils[j].nummer === 11 || this.teils[j].nummer === 12
+                            || this.teils[j].nummer === 13 || this.teils[j].nummer === 14 || this.teils[j].nummer === 15) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 2);
+                        }
+
+                        this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 14) {
+
+                        if (this.teils[j].nummer === 16) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 3);
+                        }
+
+                        this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 15) {
+
+                        if (this.teils[j].nummer === 17 || this.teils[j].nummer === 26) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 3);
+                        }
+
+                        this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
 
                 }
-
-
-                //Arbeitsplatz2
-                if(arbeitsplatz.nummer == 2){
-
-                    //Durchlaufen aller Teile die in diesem Arbeitsplatz bearbeitet werden
-                    if(teil.nummer == 50 || teil.nummer == 55 || teil.nummer == 30){
-
-                        erhoehung = teil.istmenge * 5;
-                        //Berechnung des kapazitaetsbedarf_neu:
-                        kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung;
-
-
-                        //Berechnung der Rüstzeitmultiplikatoren:
-                        if (teil.istmenge != 0){
-                            if (teil.nummer == 50 || teil.nummer == 55){
-                                zaheler_teile_ruestzeit_mulitplikator = zaheler_teile_ruestzeit_mulitplikator + 1;
-                            }
-                            if (teil.nummer == 30){
-                                zaheler_teile_ruestzeit_mulitplikator_zwei = 1;
-                            }
-                        }
-                    }
-                    // Berechnung der Rüstzeit
-                    ruestzeit_neu = 30 * zaheler_teile_ruestzeit_mulitplikator + 20 * zaheler_teile_ruestzeit_mulitplikator_zwei;
-
-
-                    // Berechnung des Rückstands der Vorperiode:
-                    fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
-
-
-                        //Berechnung des alten Kap_bed.:
-                        // würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil != null){
-
-                            if (fa.herstellteil == teil.nummer){
-                                if(teil.nummer == 50 || teil.nummer == 55 || teil.nummer == 30){
-                                    erhoehung_kapbedarf_alt = fa.auftragsmenge * 5;
-
-                                    // Berechnung des kapazitaetsbedarf_alt:
-                                    kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
-
-                                    // Berechnung der Rüstzeit_alt:
-                                    if (teil.nummer == 50 || teil.nummer == 55){
-                                    zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt + 1;
-                                    }
-                                    if (teil.nummer == 30){
-                                        zaheler_teile_ruestzeit_mulitplikator_alt_zwei = 1;
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    ruestzeit_alt = 30 * zaheler_teile_ruestzeit_mulitplikator_alt + 20 * zaheler_teile_ruestzeit_mulitplikator_alt_zwei;
-                    gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
-
-
-                    if(gesamt_kapazitaet_pro_arbeitsplatz > 2400) {
-                        schichten = (gesamt_kapazitaet_pro_arbeitsplatz/2400);
-                        schichten = parseInt(schichten);
-                        ueberstunden = gesamt_kapazitaet_pro_arbeitsplatz - schichten*2400;
-                        ueberstunden_pro_tag = ueberstunden/5;
-                    }
-
-                    capacity.arbeitsplatznummer = arbeitsplatz.nummer;
-                    capacity.kapazitaetsbedarf_neu = kapazitaetsbedarf_neu;
-                    capacity.ruestzeit_neu = ruestzeit_neu;
-                    capacity.kapazitaetsbedarf_alt = kapazitaetsbedarf_alt;
-                    capacity.ruestzeit_alt = ruestzeit_alt;
-                    capacity.gesamter_kapazitaetsbedarf = gesamt_kapazitaet_pro_arbeitsplatz;
-                    capacity.schichten = schichten;
-                    capacity.ueberstunden = ueberstunden_pro_tag;
-
-                }
-
-
-                if(arbeitsplatz.nummer == 3){
-                    if(teil.nummer == 51){
-                       erhoehung = teil.istmenge * 5;
-                       kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung;
-                    }
-                    if(teil.nummer == 56 || teil.nummer == 31){
-                       erhoehung_zwei = teil.istmenge * 6;
-                       kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung_zwei;
-                    }
-
-                    //Berechnung des kapazitaetsbedarf_neu:
-
-
-                    //Berechnung der Rüstzeitmultiplikatoren:
-                    if (teil.istmenge != 0){
-                        if (teil.nummer == 51 || teil.nummer == 56 || teil.nummer == 31){
-                            zaheler_teile_ruestzeit_mulitplikator = zaheler_teile_ruestzeit_mulitplikator + 1;
-                        }
-                    }
-                    // Berechnung der Rüstzeit
-                    ruestzeit_neu = 20 * zaheler_teile_ruestzeit_mulitplikator;
-
-                    // Berechnung des Rückstands der Vorperiode:
-                    fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
-
-                        //Berechnung des alten Kap_bed.:
-                        // würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil != null){
-                            if (fa.herstellteil == teil.nummer){
-                                if (teil.nummer == 56 || teil.nummer == 31){
-                                    erhoehung_kapbedarf_alt = fa.auftragsmenge * 6;
-                                     kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
-                                }
-                                if (teil.nummer == 51){
-                                    erhoehung_kapbedarf_alt_zwei = fa.auftragsmenge * 5;
-                                     kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt_zwei;
-                                }
-                                // Berechnung des kapazitaetsbedarf_alt:
-
-
-                                // Berechnung der Rüstzeit_alt:
-                                if (teil.nummer == 51 || teil.nummer == 56 || teil.nummer == 31){
-                                    zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt + 1;
-                                }
-                            }
-                        }
-                    });
-                    ruestzeit_alt = 20*zaheler_teile_ruestzeit_mulitplikator_alt;
-                    gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
-
-
-                    if(gesamt_kapazitaet_pro_arbeitsplatz > 2400) {
-                        schichten = (gesamt_kapazitaet_pro_arbeitsplatz/2400);
-                        schichten = parseInt(schichten);
-                        ueberstunden = gesamt_kapazitaet_pro_arbeitsplatz - schichten*2400;
-                        ueberstunden_pro_tag = ueberstunden/5;
-                    }
-                    capacity.arbeitsplatznummer = arbeitsplatz.nummer;
-                    capacity.kapazitaetsbedarf_neu = kapazitaetsbedarf_neu;
-                    capacity.ruestzeit_neu = ruestzeit_neu;
-                    capacity.kapazitaetsbedarf_alt = kapazitaetsbedarf_alt;
-                    capacity.ruestzeit_alt = ruestzeit_alt;
-                    capacity.gesamter_kapazitaetsbedarf = gesamt_kapazitaet_pro_arbeitsplatz;
-                    capacity.schichten = schichten;
-                    capacity.ueberstunden = ueberstunden_pro_tag;
             }
 
-
-            if(arbeitsplatz.nummer == 4){
-                    if(teil.nummer == 1){
-                       erhoehung = teil.istmenge * 6;
-                       kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung;
-                    }
-                    if(teil.nummer == 2 || teil.nummer == 3){
-                       erhoehung_zwei = teil.istmenge * 7;
-                       kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung_zwei;
-                    }
-                    //Berechnung des kapazitaetsbedarf_neu:
-
-
-                    //Berechnung der Rüstzeitmultiplikatoren:
-                    if (teil.istmenge != 0){
-                        if (teil.nummer == 1 || teil.nummer == 3){
-                            zaheler_teile_ruestzeit_mulitplikator = zaheler_teile_ruestzeit_mulitplikator + 1;
-                        }
-                        if (teil.nummer == 2){
-                            zaheler_teile_ruestzeit_mulitplikator_zwei = zaheler_teile_ruestzeit_mulitplikator_zwei + 1;
-                        }
-                    }
-                    // Berechnung der Rüstzeit
-                    ruestzeit_neu = 30 * zaheler_teile_ruestzeit_mulitplikator + 20*zaheler_teile_ruestzeit_mulitplikator_zwei;
-
-
-                    // Berechnung des Rückstands der Vorperiode:
-                    fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
-
-
-                        //Berechnung des alten Kap_bed.:
-                        // würde ich sehr gerne auf teil.nummer ändern.
-
-                        if (fa.herstellteil != null){
-                            if (fa.herstellteil == teil.nummer){
-                                if (teil.nummer == 1){
-                                    erhoehung_kapbedarf_alt = fa.auftragsmenge * 6;
-                                    kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt
-                                }
-                                if (teil.nummer == 2 ||teil.nummer == 3){
-                                    erhoehung_kapbedarf_alt_zwei = fa.auftragsmenge * 7;
-                                    kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt_zwei;
-                                }
-                                // Berechnung der Rüstzeit_alt:
-                                if (teil.nummer == 1 || teil.nummer == 3){
-                                    zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator + 1;
-                                }
-                                if (teil.nummer == 2) {
-                                    zaheler_teile_ruestzeit_mulitplikator_alt_zwei = zaheler_teile_ruestzeit_mulitplikator_alt_zwei + 1;
-                                }
-                            }
-                        }
-                    });
-                    ruestzeit_alt = 30*zaheler_teile_ruestzeit_mulitplikator_alt + 20*zaheler_teile_ruestzeit_mulitplikator_zwei ;
-                    gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
-
-                    if(gesamt_kapazitaet_pro_arbeitsplatz > 2400) {
-                        schichten = (gesamt_kapazitaet_pro_arbeitsplatz/2400);
-                        schichten = parseInt(schichten);
-                        ueberstunden = gesamt_kapazitaet_pro_arbeitsplatz - schichten*2400;
-                        ueberstunden_pro_tag = ueberstunden/5;
-                    }
-                    capacity.arbeitsplatznummer = arbeitsplatz.nummer;
-                    capacity.kapazitaetsbedarf_neu = kapazitaetsbedarf_neu;
-                    capacity.ruestzeit_neu = ruestzeit_neu;
-                    capacity.kapazitaetsbedarf_alt = kapazitaetsbedarf_alt;
-                    capacity.ruestzeit_alt = ruestzeit_alt;
-                    capacity.gesamter_kapazitaetsbedarf = gesamt_kapazitaet_pro_arbeitsplatz;
-                    capacity.schichten = schichten;
-                    capacity.ueberstunden = ueberstunden_pro_tag;
-
-            }
-
-            if(arbeitsplatz.nummer == 5){
-                capacity.arbeitsplatznummer = arbeitsplatz.nummer;
-                capacity.kapazitaetsbedarf_neu = 0;
-                capacity.ruestzeit_neu = 0;
-                capacity.kapazitaetsbedarf_alt = 0;
-                capacity.ruestzeit_alt = 0;
-                capacity.gesamter_kapazitaetsbedarf = 0;
-                capacity.schichten = 0;
-                capacity.ueberstunden = 0;
-            }
-
-            if (arbeitsplatz.nummer == 6){
-                    if(teil.nummer == 16){
-                       erhoehung = teil.istmenge * 2;
-                       kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung;
-                       console.log("Erhöhung: "+ erhoehung + "  teil.nummer  "+teil.nummer+"  teil.istmenge  "+teil.istmenge);
-                    }
-                    if(teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
-                       erhoehung_zwei = teil.istmenge * 3;
-                       kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung_zwei;
-                       console.log("Erhöhung_2: "+ erhoehung_zwei+ " teil.nummer  "+teil.nummer+"  teil.istmenge  "+teil.istmenge + "kapazitaetsbedarf_neu  "+kapazitaetsbedarf_neu);
-                    }
-
-                    //Berechnung des kapazitaetsbedarf_neu:
-
-                    //console.log("kapazitaetsbedarf" + kapazitaetsbedarf_neu);
-
-                    //Berechnung der Rüstzeitmultiplikatoren:
-                    if (teil.istmenge != 0){
-                        if (teil.nummer == 16 || teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
-                            zaheler_teile_ruestzeit_mulitplikator = zaheler_teile_ruestzeit_mulitplikator + 1;
-                        }
-                    }
-                    // Berechnung der Rüstzeit
-                    ruestzeit_neu = 15 * zaheler_teile_ruestzeit_mulitplikator;
-                    // Berechnung des Rückstands der Vorperiode:
-                    fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
-
-                        //Berechnung des alten Kap_bed.:
-                        // würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil != null){
-                            if (fa.herstellteil == teil.nummer){
-                                if (teil.nummer == 16){
-                                    erhoehung_kapbedarf_alt = fa.auftragsmenge * 2;
-                                    kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
-                                }
-                                if (teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
-                                    erhoehung_kapbedarf_alt_zwei = fa.auftragsmenge * 3;
-                                    kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt_zwei;
-                                }
-                                // Berechnung der Rüstzeit_alt:
-                                if (teil.nummer == 16 || teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
-                                    zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt + 1;
-                                }
-                            }
-                        }
-                    });
-                    ruestzeit_alt = 15 * zaheler_teile_ruestzeit_mulitplikator_alt;
-                    gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
-
-
-                    if(gesamt_kapazitaet_pro_arbeitsplatz > 2400) {
-                        schichten = (gesamt_kapazitaet_pro_arbeitsplatz/2400);
-                        schichten = parseInt(schichten);
-                        ueberstunden = gesamt_kapazitaet_pro_arbeitsplatz - schichten*2400;
-                        ueberstunden_pro_tag = ueberstunden/5;
-                    }
-                    capacity.arbeitsplatznummer = arbeitsplatz.nummer;
-                    capacity.kapazitaetsbedarf_neu = kapazitaetsbedarf_neu;
-                    capacity.ruestzeit_neu = ruestzeit_neu;
-                    capacity.kapazitaetsbedarf_alt = kapazitaetsbedarf_alt;
-                    capacity.ruestzeit_alt = ruestzeit_alt;
-                    capacity.gesamter_kapazitaetsbedarf = gesamt_kapazitaet_pro_arbeitsplatz;
-                    capacity.schichten = schichten;
-                    capacity.ueberstunden = ueberstunden_pro_tag;
-
-            }
-
-            if (arbeitsplatz.nummer == 13){
-                if(teil.nummer == 10 || teil.nummer == 11 ||teil.nummer == 12 ||teil.nummer == 13 ||teil.nummer == 14 ||teil.nummer == 15) {
-                    erhoehung = teil.istmenge * 2;
-                    kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung;
-                }
-                    ruestzeit_neu = 0;
-                    //Berechnung des Rückstands der Vorperiode
-                    fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
-
-                        //würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil != null){
-                            if (fa.herstellteil == teil.nummer){
-                                if(teil.nummer == 10 || teil.nummer == 11 ||teil.nummer == 12 ||teil.nummer == 13 ||teil.nummer == 14 ||teil.nummer == 15){
-                                    erhoehung_kapbedarf_alt = fa.auftragsmenge*2;
-                                    kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
-                                }
-                            }
-                        }
-
-                    });
-                    ruestzeit_alt = 0;
-                    gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
-
-                    if(gesamt_kapazitaet_pro_arbeitsplatz > 2400){
-                        schichten = (gesamt_kapazitaet_pro_arbeitsplatz/2400);
-                        schichten = parseInt(schichten);
-                        ueberstunden = gesamt_kapazitaet_pro_arbeitsplatz - schichten*2400;
-                        ueberstunden_pro_tag = ueberstunden/5;
-                    }
-
-                    capacity.arbeitsplatznummer = arbeitsplatz.nummer;
-                    capacity.kapazitaetsbedarf_neu = kapazitaetsbedarf_neu;
-                    capacity.ruestzeit_neu = ruestzeit_neu;
-                    capacity.kapazitaetsbedarf_alt = kapazitaetsbedarf_alt;
-                    capacity.ruestzeit_alt = ruestzeit_alt;
-                    capacity.gesamter_kapazitaetsbedarf = gesamt_kapazitaet_pro_arbeitsplatz;
-                    capacity.schichten = schichten;
-                    capacity.ueberstunden = ueberstunden_pro_tag;
-
-            }
-
-            //AB HIER AUFPASSEN!!!!
-            if (arbeitsplatz.nummer == 12){
-                if(teil.nummer == 10 || teil.nummer == 11 ||teil.nummer == 12 ||teil.nummer == 13 ||teil.nummer == 14 ||teil.nummer == 15) {
-                    erhoehung = teil.istmenge * 3;
-                    kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung;
-                }
-                    ruestzeit_neu = 0;
-                    //Berechnung des Rückstands der Vor<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-                    fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
-
-                        //würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil != null){
-                        if (fa.herstellteil == teil.nummer){
-                            if(teil.nummer == 10 || teil.nummer == 11 ||teil.nummer == 12 ||teil.nummer == 13 ||teil.nummer == 14 ||teil.nummer == 15){
-                                erhoehung_kapbedarf_alt = fa.auftragsmenge*3;
-                                kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
-                            }
-                        }}
-
-                    });
-                    ruestzeit_alt = 0;
-                    gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
-
-                    if(gesamt_kapazitaet_pro_arbeitsplatz > 2400){
-                        schichten = (gesamt_kapazitaet_pro_arbeitsplatz/2400);
-                        schichten = parseInt(schichten);
-                        ueberstunden = gesamt_kapazitaet_pro_arbeitsplatz - schichten*2400;
-                        ueberstunden_pro_tag = ueberstunden/5;
-                    }
-
-                    capacity.arbeitsplatznummer = arbeitsplatz.nummer;
-                    capacity.kapazitaetsbedarf_neu = kapazitaetsbedarf_neu;
-                    capacity.ruestzeit_neu = ruestzeit_neu;
-                    capacity.kapazitaetsbedarf_alt = kapazitaetsbedarf_alt;
-                    capacity.ruestzeit_alt = ruestzeit_alt;
-                    capacity.gesamter_kapazitaetsbedarf = gesamt_kapazitaet_pro_arbeitsplatz;
-                    capacity.schichten = schichten;
-                    capacity.ueberstunden = ueberstunden_pro_tag;
-
-            }
-
-            if (arbeitsplatz.nummer == 8){
-                if(teil.nummer == 10 || teil.nummer == 13) {
-                    erhoehung = teil.istmenge * 1;
-                    kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung;
-                }
-                if(teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 14|| teil.nummer == 15) {
-                    erhoehung_zwei = teil.istmenge * 2;
-                    kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung_zwei;
-                }
-
-                if(teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20) {
-                    erhoehung_drei = teil.istmenge * 3;
-                    kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung_drei;
-                }
-
-                    //Berechnung der Rüstzeitmultiplikatoren:
-                    if (teil.istmenge != 0){
-                        if (teil.nummer == 10 || teil.nummer == 13|| teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 14|| teil.nummer == 15) {
-                            zaheler_teile_ruestzeit_mulitplikator = zaheler_teile_ruestzeit_mulitplikator + 1;
-                        }
-                        if (teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
-                            zaheler_teile_ruestzeit_mulitplikator_zwei = zaheler_teile_ruestzeit_mulitplikator_zwei + 1;
-                        }
-                        if (teil.nummer == 19){
-                            zaheler_teile_ruestzeit_mulitplikator_drei = zaheler_teile_ruestzeit_mulitplikator_drei + 1;
-                        }
-
-                    }
-                    // Berechnung der Rüstzeit
-                    ruestzeit_neu = 15 * zaheler_teile_ruestzeit_mulitplikator + 20 * zaheler_teile_ruestzeit_mulitplikator_zwei + 25 * zaheler_teile_ruestzeit_mulitplikator_drei;
-                    // Berechnung des Rückstands der Vorperiode:
-                    fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
-
-                        //Berechnung des alten Kap_bed.:
-                        // würde ich sehr gerne auf teil.nummer ändern.
-                    if (fa.herstellteil != null){
-                            if (fa.herstellteil == teil.nummer){
-                                if (teil.nummer == 10 || teil.nummer == 13){
-                                    erhoehung_kapbedarf_alt = fa.auftragsmenge * 1;
-                                    kapazitaetsbedarf_alt = kapazitaetsbedarf_alt+ erhoehung_kapbedarf_alt;
-                                }
-                                if (teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 14|| teil.nummer == 15){
-                                    erhoehung_kapbedarf_alt_zwei = fa.auftragsmenge * 2;
-                                    kapazitaetsbedarf_alt = kapazitaetsbedarf_alt+ erhoehung_kapbedarf_alt_zwei;
-                                }
-                                if ( teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
-                                    erhoehung_kapbedarf_alt_drei = fa.auftragsmenge * 3;
-                                    kapazitaetsbedarf_alt = kapazitaetsbedarf_alt+ erhoehung_kapbedarf_alt_drei;
-                                }
-                            }
-                    }
-                            // Berechnung der Rüstzeit_alt:
-                            if (teil.nummer == 18 || teil.nummer == 20){
-                                zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt + 1;
-                            }
-                            if (teil.nummer == 10 || teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 13 || teil.nummer == 14|| teil.nummer == 15){
-                                zaheler_teile_ruestzeit_mulitplikator_alt_zwei = zaheler_teile_ruestzeit_mulitplikator_alt_zwei + 1;
-                            }
-                            if (teil.nummer == 19){
-                                zaheler_teile_ruestzeit_mulitplikator_alt_drei = zaheler_teile_ruestzeit_mulitplikator_alt_drei + 1;
-                            }
-
-
-                    });
-                    ruestzeit_alt = 20 * zaheler_teile_ruestzeit_mulitplikator_alt + 15 * zaheler_teile_ruestzeit_mulitplikator_alt_zwei + 25* zaheler_teile_ruestzeit_mulitplikator_alt_drei;
-                    gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
-
-
-                    if(gesamt_kapazitaet_pro_arbeitsplatz > 2400) {
-                        schichten = (gesamt_kapazitaet_pro_arbeitsplatz/2400);
-                        schichten = parseInt(schichten);
-                        ueberstunden = gesamt_kapazitaet_pro_arbeitsplatz - schichten*2400;
-                        ueberstunden_pro_tag = ueberstunden/5;
-                    }
-                    capacity.arbeitsplatznummer = arbeitsplatz.nummer;
-                    capacity.kapazitaetsbedarf_neu = kapazitaetsbedarf_neu;
-                    capacity.ruestzeit_neu = ruestzeit_neu;
-                    capacity.kapazitaetsbedarf_alt = kapazitaetsbedarf_alt;
-                    capacity.ruestzeit_alt = ruestzeit_alt;
-                    capacity.gesamter_kapazitaetsbedarf = gesamt_kapazitaet_pro_arbeitsplatz;
-                    capacity.schichten = schichten;
-                    capacity.ueberstunden = ueberstunden_pro_tag;
-            }
-
-
-            if(arbeitsplatz.nummer == 7){
-
-                if(teil.nummer == 10 || teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 13 || teil.nummer == 14|| teil.nummer == 15|| teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20|| teil.nummer == 26) {
-                    erhoehung = teil.istmenge * 2;
-                    kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung;
-                }
-                    //Berechnung der Rüstzeitmultiplikatoren:
-                    if (teil.istmenge != 0){
-                        if (teil.nummer == 26) {
-                            zaheler_teile_ruestzeit_mulitplikator = zaheler_teile_ruestzeit_mulitplikator + 1;
-                        }
-                        if (teil.nummer == 10 || teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 13 || teil.nummer == 14|| teil.nummer == 15|| teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
-                            zaheler_teile_ruestzeit_mulitplikator_zwei = zaheler_teile_ruestzeit_mulitplikator_zwei + 1;
-                        }
-
-                    }
-                    // Berechnung der Rüstzeit
-                    ruestzeit_neu = 30 * zaheler_teile_ruestzeit_mulitplikator + 20 * zaheler_teile_ruestzeit_mulitplikator_zwei;
-
-                    // Berechnung des Rückstands der Vorperiode:
-                    fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
-
-
-                        //Berechnung des alten Kap_bed.:
-                        // würde ich sehr gerne auf teil.nummer ändern.
-
-                        if (fa.herstellteil != null){
-                            if (fa.herstellteil == teil.nummer){
-                                if (teil.nummer == 10 || teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 13 || teil.nummer == 14|| teil.nummer == 15|| teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20|| teil.nummer == 26){
-                                    erhoehung_kapbedarf_alt = fa.auftragsmenge * 2;
-                                    kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
-                                }
-                                // Berechnung der Rüstzeit_alt:
-                                if (teil.nummer == 26){
-                                    zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt + 1;
-                                }
-                                if (teil.nummer == 10 || teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 13 || teil.nummer == 14|| teil.nummer == 15|| teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
-                                    zaheler_teile_ruestzeit_mulitplikator_alt_zwei = zaheler_teile_ruestzeit_mulitplikator_alt_zwei + 1;
-                                }
-
-                            }
-                        }
-                    });
-                    ruestzeit_alt = 30 * zaheler_teile_ruestzeit_mulitplikator_alt + 20* zaheler_teile_ruestzeit_mulitplikator_alt_zwei;
-                    gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
-
-
-                    if(gesamt_kapazitaet_pro_arbeitsplatz > 2400) {
-                        schichten = (gesamt_kapazitaet_pro_arbeitsplatz/2400);
-                        schichten = parseInt(schichten);
-                        ueberstunden = gesamt_kapazitaet_pro_arbeitsplatz - schichten*2400;
-                        ueberstunden_pro_tag = ueberstunden/5;
-                    }
-                    capacity.arbeitsplatznummer = arbeitsplatz.nummer;
-                    capacity.kapazitaetsbedarf_neu = kapazitaetsbedarf_neu;
-                    capacity.ruestzeit_neu = ruestzeit_neu;
-                    capacity.kapazitaetsbedarf_alt = kapazitaetsbedarf_alt;
-                    capacity.ruestzeit_alt = ruestzeit_alt;
-                    capacity.gesamter_kapazitaetsbedarf = gesamt_kapazitaet_pro_arbeitsplatz;
-                    capacity.schichten = schichten;
-                    capacity.ueberstunden = ueberstunden_pro_tag;
-            }
-
-            if (arbeitsplatz.nummer == 9){
-               if(teil.nummer == 10 || teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 13 || teil.nummer == 14|| teil.nummer == 15) {
-                    erhoehung = teil.istmenge * 3;
-                    kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung;
-                }
-                if(teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20) {
-                    erhoehung_zwei = teil.istmenge * 2;
-                    kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung_zwei;
-                }
-                    //Berechnung der Rüstzeitmultiplikatoren:
-                    if (teil.istmenge != 0){
-                        if (teil.nummer == 19) {
-                            zaheler_teile_ruestzeit_mulitplikator = zaheler_teile_ruestzeit_mulitplikator + 1;
-                        }
-                        if (teil.nummer == 10 || teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 13 || teil.nummer == 14|| teil.nummer == 15|| teil.nummer == 18 || teil.nummer == 20){
-                            zaheler_teile_ruestzeit_mulitplikator_zwei = zaheler_teile_ruestzeit_mulitplikator_zwei + 1;
-                        }
-
-                    }
-                    // Berechnung der Rüstzeit
-                    ruestzeit_neu = 20 * zaheler_teile_ruestzeit_mulitplikator + 15 * zaheler_teile_ruestzeit_mulitplikator_zwei;
-
-                    // Berechnung des Rückstands der Vorperiode:
-                    fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
-
-                        //Berechnung des alten Kap_bed.:
-                        // würde ich sehr gerne auf teil.nummer ändern.
-                    if (fa.herstellteil != null){
-                        if (fa.herstellteil == teil.nummer){
-                            if (teil.nummer == 10 || teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 13 || teil.nummer == 14|| teil.nummer == 15){
-                                erhoehung_kapbedarf_alt = fa.auftragsmenge * 3;
-                                kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
-                            }
-                            if ( teil.nummer == 18 || teil.nummer == 19|| teil.nummer == 20){
-                                erhoehung_kapbedarf_alt_zwei = fa.auftragsmenge * 2;
-                                kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt_zwei;
-                            }
-                            // Berechnung der Rüstzeit_alt:
-                            if (teil.nummer == 19){
-                                zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator + 1;
-                            }
-                            if (teil.nummer == 10 || teil.nummer == 11 || teil.nummer == 12|| teil.nummer == 13 || teil.nummer == 14|| teil.nummer == 15|| teil.nummer == 18 || teil.nummer == 20){
-                                zaheler_teile_ruestzeit_mulitplikator_alt_zwei = zaheler_teile_ruestzeit_mulitplikator_alt_zwei + 1;
-                            }
-
-                        }
-                    }
-                    });
-                    ruestzeit_alt = 20 * zaheler_teile_ruestzeit_mulitplikator_alt + 15* zaheler_teile_ruestzeit_mulitplikator_alt_zwei;
-                    gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
-
-
-                    if(gesamt_kapazitaet_pro_arbeitsplatz > 2400) {
-                        schichten = (gesamt_kapazitaet_pro_arbeitsplatz/2400);
-                        schichten = parseInt(schichten);
-                        ueberstunden = gesamt_kapazitaet_pro_arbeitsplatz - schichten*2400;
-                        ueberstunden_pro_tag = ueberstunden/5;
-                    }
-                    capacity.arbeitsplatznummer = arbeitsplatz.nummer;
-                    capacity.kapazitaetsbedarf_neu = kapazitaetsbedarf_neu;
-                    capacity.ruestzeit_neu = ruestzeit_neu;
-                    capacity.kapazitaetsbedarf_alt = kapazitaetsbedarf_alt;
-                    capacity.ruestzeit_alt = ruestzeit_alt;
-                    capacity.gesamter_kapazitaetsbedarf = gesamt_kapazitaet_pro_arbeitsplatz;
-                    capacity.schichten = schichten;
-                    capacity.ueberstunden = ueberstunden_pro_tag;
-
-
-            }
-            if (arbeitsplatz.nummer == 10){
-                if(teil.nummer == 4 || teil.nummer == 5 || teil.nummer == 6|| teil.nummer == 7 || teil.nummer == 8|| teil.nummer == 9) {
-                    erhoehung = teil.istmenge * 4;
-                    //Berechnung des kapazitaetsbedarf_neu:
-                    kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung;
-                    //Berechnung der Rüstzeitmultiplikatoren:
-                    if (teil.istmenge != 0){
-                        zaheler_teile_ruestzeit_mulitplikator = zaheler_teile_ruestzeit_mulitplikator + 1;
-                    }
-                }
-                    // Berechnung der Rüstzeit
-                ruestzeit_neu = 20 * zaheler_teile_ruestzeit_mulitplikator;
-                // Berechnung des Rückstands der Vorperiode:
-                fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
-
-                    //Berechnung des alten Kap_bed.:
-                    // würde ich sehr gerne auf teil.nummer ändern.
-
-                if (fa.herstellteil != null){
-                    if (fa.herstellteil == teil.nummer){
-                        if (teil.nummer == 4 || teil.nummer == 5 || teil.nummer == 6|| teil.nummer == 7 || teil.nummer == 8|| teil.nummer == 9){
-                            erhoehung_kapbedarf_alt = fa.auftragsmenge * 4;
-                        }
-                        // Berechnung des kapazitaetsbedarf_alt:
-                        kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
-
-                        // Berechnung der Rüstzeit_alt:
-                        if (teil.nummer == 4 || teil.nummer == 5 || teil.nummer == 6|| teil.nummer == 7 || teil.nummer == 8|| teil.nummer == 9){
-                            zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt + 1;
-                       }
-
-                    }
-                }
-                });
-                    ruestzeit_alt = 20 * zaheler_teile_ruestzeit_mulitplikator_alt;
-                    gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
-
-
-                    if(gesamt_kapazitaet_pro_arbeitsplatz > 2400) {
-                        schichten = (gesamt_kapazitaet_pro_arbeitsplatz/2400);
-                        schichten = parseInt(schichten);
-                        ueberstunden = gesamt_kapazitaet_pro_arbeitsplatz - schichten*2400;
-                        ueberstunden_pro_tag = ueberstunden/5;
-                    }
-                    capacity.arbeitsplatznummer = arbeitsplatz.nummer;
-                    capacity.kapazitaetsbedarf_neu = kapazitaetsbedarf_neu;
-                    capacity.ruestzeit_neu = ruestzeit_neu;
-                    capacity.kapazitaetsbedarf_alt = kapazitaetsbedarf_alt;
-                    capacity.ruestzeit_alt = ruestzeit_alt;
-                    capacity.gesamter_kapazitaetsbedarf = gesamt_kapazitaet_pro_arbeitsplatz;
-                    capacity.schichten = schichten;
-                    capacity.ueberstunden = ueberstunden_pro_tag;
-
-            }
-            if (arbeitsplatz.nummer == 11){
-                if(teil.nummer == 4 || teil.nummer == 5 || teil.nummer == 6|| teil.nummer == 7 || teil.nummer == 8|| teil.nummer == 9) {
-                    erhoehung = teil.istmenge * 4;
-                }
-                    //Berechnung des kapazitaetsbedarf_neu:
-                    kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung;
-                    //Berechnung der Rüstzeitmultiplikatoren:
-                    if (teil.istmenge != 0){
-                        if (teil.nummer == 4 || teil.nummer == 5) {
-                            zaheler_teile_ruestzeit_mulitplikator = zaheler_teile_ruestzeit_mulitplikator + 1;
-                        }
-                        if (teil.nummer == 6 || teil.nummer == 7 || teil.nummer == 8|| teil.nummer == 9){
-                            zaheler_teile_ruestzeit_mulitplikator_zwei = zaheler_teile_ruestzeit_mulitplikator_zwei + 1;
-                        }
-                    }
-                    // Berechnung der Rüstzeit
-                    ruestzeit_neu = 10 * zaheler_teile_ruestzeit_mulitplikator + 20 * zaheler_teile_ruestzeit_mulitplikator_zwei;
-
-                    // Berechnung des Rückstands der Vorperiode:
-                    fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
-
-                        //Berechnung des alten Kap_bed.:
-                        // würde ich sehr gerne auf teil.nummer ändern.
-                    if (fa.herstellteil != null){
-                        if (fa.herstellteil == teil.nummer){
-                            if (teil.nummer == 4 || teil.nummer == 5 || teil.nummer == 6|| teil.nummer == 7 || teil.nummer == 8|| teil.nummer == 9){
-                                erhoehung_kapbedarf_alt = fa.auftragsmenge * 3;
-                            }
-
-                            // Berechnung des kapazitaetsbedarf_alt:
-                            kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
-
-                            // Berechnung der Rüstzeit_alt:
-                            if (teil.nummer == 4 || teil.nummer == 5){
-                                zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt + 1;
-                            }
-                            if (teil.nummer == 6|| teil.nummer == 7 || teil.nummer == 8|| teil.nummer == 9){
-                                zaheler_teile_ruestzeit_mulitplikator_alt_zwei = zaheler_teile_ruestzeit_mulitplikator_alt_zwei + 1;
-                            }
-
-                        }
-
-                    }
-                    });
-                    ruestzeit_alt = 10 * zaheler_teile_ruestzeit_mulitplikator_alt + 20* zaheler_teile_ruestzeit_mulitplikator_alt_zwei;
-                    gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
-
-
-                    if(gesamt_kapazitaet_pro_arbeitsplatz > 2400) {
-                        schichten = (gesamt_kapazitaet_pro_arbeitsplatz/2400);
-                        schichten = parseInt(schichten);
-                        ueberstunden = gesamt_kapazitaet_pro_arbeitsplatz - schichten*2400;
-                        ueberstunden_pro_tag = ueberstunden/5;
-                    }
-                    capacity.arbeitsplatznummer = arbeitsplatz.nummer;
-                    capacity.kapazitaetsbedarf_neu = kapazitaetsbedarf_neu;
-                    capacity.ruestzeit_neu = ruestzeit_neu;
-                    capacity.kapazitaetsbedarf_alt = kapazitaetsbedarf_alt;
-                    capacity.ruestzeit_alt = ruestzeit_alt;
-                    capacity.gesamter_kapazitaetsbedarf = gesamt_kapazitaet_pro_arbeitsplatz;
-                    capacity.schichten = schichten;
-                    capacity.ueberstunden = ueberstunden_pro_tag;
-            }
-            if (arbeitsplatz.nummer == 14){
-                if(teil.nummer == 16) {
-                    console.log("Forschleife wird durchlaufen: "+ "  Arbeitsplatznr: "+ arbeitsplatz.nummer+ "  teil.nummer : "+ teil.nummer + " kapazitaetsbedarf: " + kapazitaetsbedarf_neu);
-                    erhoehung = teil.istmenge * 3;
-                    kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung;
-                }
-                    ruestzeit_neu = 0;
-                    //Berechnung des Rückstands der Vorperiode
-                    fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
-
-                        //würde ich sehr gerne auf teil.nummer ändern.
-                    if(fa.herstellteil != null){
-                        if (fa.herstellteil == teil.nummer){
-                            if(teil.nummer == 16){
-                                erhoehung_kapbedarf_alt = fa.auftragsmenge*3;
-                                kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
-                            }
-                        }
-                    }
-
-                    });
-                    ruestzeit_alt = 0;
-                    gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
-
-                    if(gesamt_kapazitaet_pro_arbeitsplatz > 2400){
-                        schichten = (gesamt_kapazitaet_pro_arbeitsplatz/2400);
-                        schichten = parseInt(schichten);
-                        ueberstunden = gesamt_kapazitaet_pro_arbeitsplatz - schichten*2400;
-                        ueberstunden_pro_tag = ueberstunden/5;
-                    }
-
-                    capacity.arbeitsplatznummer = arbeitsplatz.nummer;
-                    capacity.kapazitaetsbedarf_neu = kapazitaetsbedarf_neu;
-                    capacity.ruestzeit_neu = ruestzeit_neu;
-                    capacity.kapazitaetsbedarf_alt = kapazitaetsbedarf_alt;
-                    capacity.ruestzeit_alt = ruestzeit_alt;
-                    capacity.gesamter_kapazitaetsbedarf = gesamt_kapazitaet_pro_arbeitsplatz;
-                    capacity.schichten = schichten;
-                    capacity.ueberstunden = ueberstunden_pro_tag;
-
-            }
-
-
-            if (arbeitsplatz.nummer == 15){
-
-                if(teil.nummer == 17 || teil.nummer == 26) {
-                        erhoehung = teil.istmenge * 3;
-                        kapazitaetsbedarf_neu = kapazitaetsbedarf_neu + erhoehung;
-                        if (teil.istmenge != 0){
-                            zaheler_teile_ruestzeit_mulitplikator = zaheler_teile_ruestzeit_mulitplikator + 1;
-                        }
-                    }
-                    ruestzeit_neu = 15 * zaheler_teile_ruestzeit_mulitplikator;
-                    //Berechnung des Rückstands der Vorperiode
-                    fertigungsauftraege_wartend_und_in_bearbeitung.forEach(function(fa){
-
-                        //würde ich sehr gerne auf teil.nummer ändern.
-                        if (fa.herstellteil != null){
-                            if (fa.herstellteil == teil.nummer){
-                                if(teil.nummer == 17 || teil.nummer == 26){
-                                    erhoehung_kapbedarf_alt = fa.auftragsmenge*3;
-                                    kapazitaetsbedarf_alt = kapazitaetsbedarf_alt + erhoehung_kapbedarf_alt;
-                                    zaheler_teile_ruestzeit_mulitplikator_alt = zaheler_teile_ruestzeit_mulitplikator_alt+1;
-                                }
-                            }
-                        }
-
-                    });
-                    ruestzeit_alt = 15 * zaheler_teile_ruestzeit_mulitplikator_alt;
-                    gesamt_kapazitaet_pro_arbeitsplatz = kapazitaetsbedarf_neu + ruestzeit_neu + kapazitaetsbedarf_alt+ ruestzeit_alt;
-
-                    if(gesamt_kapazitaet_pro_arbeitsplatz > 2400){
-                        schichten = (gesamt_kapazitaet_pro_arbeitsplatz/2400);
-                        schichten = parseInt(schichten);
-                        ueberstunden = gesamt_kapazitaet_pro_arbeitsplatz - schichten*2400;
-                        ueberstunden_pro_tag = ueberstunden/5;
-                    }
-
-                    capacity.arbeitsplatznummer = arbeitsplatz.nummer;
-                    capacity.kapazitaetsbedarf_neu = kapazitaetsbedarf_neu;
-                    capacity.ruestzeit_neu = ruestzeit_neu;
-                    capacity.kapazitaetsbedarf_alt = kapazitaetsbedarf_alt;
-                    console.log("kapazitaetsbedarf_alt  "+kapazitaetsbedarf_alt);
-                    capacity.ruestzeit_alt = ruestzeit_alt;
-                    capacity.gesamter_kapazitaetsbedarf = gesamt_kapazitaet_pro_arbeitsplatz;
-                    capacity.schichten = schichten;
-                    capacity.ueberstunden = ueberstunden_pro_tag;
-
-            }
-
-            });
-
-
-            console.log("MEIN NEUES OOOOOOOOOBJEKT_EEEENDEEEEEEEE: "+ " Arbeitplatznr: "+ capacity.arbeitsplatznummer + " Kap.bed.neu "+ capacity.kapazitaetsbedarf_neu +
-            " ruestzeit_neu " + capacity.ruestzeit_neu + " kapazitaetsbedarf_alt: "+ capacity.kapazitaetsbedarf_alt + " ruestzeit_alt  "+  capacity.ruestzeit_alt + "  gesamter_kapazitaetsbedarf: " + capacity.gesamter_kapazitaetsbedarf
-            + " schichten: "+ capacity.schichten + " ueberstunden "+ capacity.ueberstunden );
-
-
-            capacity_array.push(capacity);
-            console.log("hat geklappt");
-
-
-
-        });
-
-
-
-        return capacity_array;
+        }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
-    save() {
+    async berechneRuestzeitneu() {
 
+        const criteria = [
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
+        ];
+
+        this.fertigungsauftragService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((res: ResponseWrapper) => {
+            this.fertigungsauftraege = res.json;
+
+            // this.fertigungsauftraege.sort((a,b) => a.herstellteil.id-b.herstellteil.id);
+
+           /* for (let i = 0; i < this.teils.length; i++) {
+                this.ruestvorgaenge_teil_array_neu.push(new Object({
+                    nummer: this.teils[i].nummer,
+                    ruestvorgaenge: 0,
+                    rüstvorgänge_array: []
+                }));
+
+                this.teil = this.teils.find((teil) => (teil.id === this.fertigungsauftraege[i].herstellteil.id));
+
+                if (this.teils[i].nummer=this.teil.nummer) {*/
+
+                    for (let j = 0; j < this.fertigungsauftraege.length; j++) {
+
+                        // Sind die Rüstvorgänge richtig berechnet
+
+                        this.teil = this.teils.find((teil) => (teil.id === this.fertigungsauftraege[j].herstellteil.id));
+
+                        this.ruestvorgaenge_teil_array_neu.push(new Object({
+                            nummer: this.teil.nummer,
+                            ruestvorgaenge: 1
+                            // rüstvorgänge_array: []
+                        }));
+
+                        // this.ruestvorgaenge_teil_array_neu[j].rüstvorgänge_array.push(1);
+
+                        // this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge = this.ruestvorgaenge_teil_array_neu[j].rüstvorgänge_array.reduce((a, b) => a + b, 0);
+
+                    }
+
+            // this.ruestvorgaenge_teil_array_neu =  _lodash.groupBy(this.ruestvorgaenge_teil_array_neu, 'nummer')
+
+            /*    }
+
+            }*/
+
+            console.log(this.ruestvorgaenge_teil_array_neu);
+
+            for (let i = 0; i < this.capacity_array.length; i++) {
+
+                const ruestzeit_arbeitsplatz = [];
+
+                for (let j = 0; j < this.ruestvorgaenge_teil_array_neu.length; j++) {
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 1) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 49 || this.ruestvorgaenge_teil_array_neu[j].nummer === 54
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 29) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 2) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 50 || this.ruestvorgaenge_teil_array_neu[j].nummer === 55) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 30);
+                        }
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 30) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 3) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 31 || this.ruestvorgaenge_teil_array_neu[j].nummer === 56
+                            || this.ruestvorgaenge_teil_array_neu[j].numer === 51) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 4) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 1 || this.ruestvorgaenge_teil_array_neu[j].nummer === 3) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 30);
+                        }
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 2) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 6) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 18 || this.ruestvorgaenge_teil_array_neu[j].nummer === 19
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 20 || this.ruestvorgaenge_teil_array_neu[j].nummer === 16) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 15);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 7) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 10 || this.ruestvorgaenge_teil_array_neu[j].nummer === 11
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 18 || this.ruestvorgaenge_teil_array_neu[j].nummer === 19
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 20) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 26) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 30);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 8) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 10 || this.ruestvorgaenge_teil_array_neu[j].nummer === 11 ||
+                            this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 15);
+                        }
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 18 || this.ruestvorgaenge_teil_array_neu[j].nummer === 20) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 19) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 25);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 9) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 10 || this.ruestvorgaenge_teil_array_neu[j].nummer === 11 ||
+                            this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 18 || this.ruestvorgaenge_teil_array_neu[j].nummer === 20) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 15);
+                        }
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 19) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 10) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 4 || this.ruestvorgaenge_teil_array_neu[j].nummer === 5
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 6 || this.ruestvorgaenge_teil_array_neu[j].nummer === 7
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 8 || this.ruestvorgaenge_teil_array_neu[j].nummer === 9) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 11) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 4 || this.ruestvorgaenge_teil_array_neu[j].nummer === 5) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 10);
+                        }
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 6 || this.ruestvorgaenge_teil_array_neu[j].nummer === 7
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 8 || this.ruestvorgaenge_teil_array_neu[j].nummer === 9) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 12) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 10 || this.ruestvorgaenge_teil_array_neu[j].nummer === 11
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15) {
+                            ruestzeit_arbeitsplatz.push(0);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 13) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 10 || this.ruestvorgaenge_teil_array_neu[j].nummer === 11
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15) {
+                            ruestzeit_arbeitsplatz.push(0);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 14) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 16) {
+                            ruestzeit_arbeitsplatz.push(0);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 15) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 17 || this.ruestvorgaenge_teil_array_neu[j].nummer === 26) {
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 15);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
+                    }
+
+                }
+            }
+
+        }, (res: ResponseWrapper) => this.onError(res.json));
+
+    }
+
+    async berechneKapzitaetsbedarfalt() {
+
+        const criteria = [
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 1}
+        ];
+
+        this.arbeitsplatzService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((res: ResponseWrapper) => {
+            this.arbeitsplaetze_vorperiode = res.json;
+            for (let i = 0; i < this.capacity_array.length; i++) {
+                this.arbeitsplatz = this.arbeitsplaetze_vorperiode.find((arbeitsplatz) =>
+                    (arbeitsplatz.nummer === this.capacity_array[i].arbeitsplatznummer));
+                this.capacity_array[i].kapazitaetsbedarf_alt = this.arbeitsplatz.restzeitbedarf_in_bearbeitung
+                    + this.arbeitsplatz.restzeitbedarf;
+            }
+        }, (res: ResponseWrapper) => this.onError(res.json));
+
+    }
+
+    async berechneRuestzeitalt() {
+        for (let i = 0; i < this.capacity_array.length; i++) {
+            this.capacity_array[i].ruestzeit_alt = 0;
+        }
+
+    }
+
+   /* async berechneRuestzeitalt() {
+
+        const criteria = [
+            {key: 'auftragsstatus.in', value: 'ANGEFANGEN'},
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 1}
+        ];
+
+        this.fertigungsauftragService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((res: ResponseWrapper) => {
+            this.fertigungsauftraege_alt = res.json;
+
+            console.log(this.teils);
+
+            // Sind die Rüstvorgänge richtig berechnet muss noch teile gruppieren
+            for (let i = 0; i < this.fertigungsauftraege_alt.length; i++) {
+
+                this.teil = this.teile.find((teil) => (teil.id === this.fertigungsauftraege_alt[i].herstellteil.id));
+                this.ruestvorgaenge_teil_array_alt.push(new Object({nummer: this.teil.nummer, ruestvorgaenge: 1}));
+
+            }
+
+            for (let i = 0; i < this.capacity_array.length; i++) {
+
+                const rüstzeit_arbeitsplatz = [];
+
+                for (let j = 0; j < this.ruestvorgaenge_teil_array_alt.length; j++) {
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 1) {
+
+                        if (this.ruestvorgaenge_teil_array_alt[j].nummer === 49 || this.ruestvorgaenge_teil_array_alt[j].nummer === 54
+                            || this.ruestvorgaenge_teil_array_alt[j].nummer === 29) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 2) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 50 ||this.ruestvorgaenge_teil_array_neu[j].nummer === 55) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 30);
+                        }
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 30) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 3) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 31 || this.ruestvorgaenge_teil_array_neu[j].nummer === 56
+                            || this.ruestvorgaenge_teil_array_neu[j].numer === 51) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 4) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 1 || this.ruestvorgaenge_teil_array_neu[j].nummer === 3) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 30);
+                        }
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 2) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 6) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 18 || this.ruestvorgaenge_teil_array_neu[j].nummer === 19
+                            ||this.ruestvorgaenge_teil_array_neu[j].nummer === 20 || this.ruestvorgaenge_teil_array_neu[j].nummer === 16) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 15);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 7) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 10 || this.ruestvorgaenge_teil_array_neu[j].nummer === 11
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 18 || this.ruestvorgaenge_teil_array_neu[j].nummer === 19
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 20) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 26) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 30);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 8) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 10 || this.ruestvorgaenge_teil_array_neu[j].nummer === 11 ||
+                            this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 15);
+                        }
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 18 || this.ruestvorgaenge_teil_array_neu[j].nummer === 20) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 19) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 25);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 9) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 10 || this.ruestvorgaenge_teil_array_neu[j].nummer === 11 ||
+                            this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 18 || this.ruestvorgaenge_teil_array_neu[j].nummer === 20) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 15);
+                        }
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 19) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 10) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 4 || this.ruestvorgaenge_teil_array_neu[j].nummer === 5
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 6 || this.ruestvorgaenge_teil_array_neu[j].nummer === 7
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 8 || this.ruestvorgaenge_teil_array_neu[j].nummer === 9) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 11) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 4 || this.ruestvorgaenge_teil_array_neu[j].nummer === 5) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 10);
+                        }
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 6 || this.ruestvorgaenge_teil_array_neu[j].nummer === 7
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 8 || this.ruestvorgaenge_teil_array_neu[j].nummer === 9) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 12) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 10 || this.ruestvorgaenge_teil_array_neu[j].nummer === 11
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 0);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 13) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 10 || this.ruestvorgaenge_teil_array_neu[j].nummer === 11
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 0);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 14) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 16) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 0);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+
+                    }
+
+                    if (this.capacity_array[i].arbeitsplatznummer === 15) {
+
+                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 17 || this.ruestvorgaenge_teil_array_neu[j].nummer === 26) {
+                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 15);
+                        }
+
+                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+
+                    }
+
+                }
+            }
+
+        }, (res: ResponseWrapper) => this.onError(res.json));
+
+    }*/
+
+    async berechneRuestzeitenundKapazitaeten() {
+
+        await this.berechneKapzitaetsbedarfneu();
+
+        await this.berechneRuestzeitneu();
+
+        await this.berechneKapzitaetsbedarfalt();
+
+        await this.berechneRuestzeitalt();
+
+    }
+
+   async berechneGesamtKapazitaetsbedarf() {
+
+       this.berechneRuestzeitenundKapazitaeten();
+
+       /*await this.berechneRuestzeitenundKapazitaeten().then( () => {
+           for (let i=0; i < this.capacity_array.length; i++) {
+               this.capacity_array[i].gesamter_kapazitaetsbedarf = this.capacity_array[i].kapazitaetsbedarf_neu
+                   + this.capacity_array[i].ruestzeit_neu + this.capacity_array[i].kapazitaetsbedarf_alt + this.capacity_array[i].ruestzeit_alt;
+               console.log(this.capacity_array[i]);
+           }
+       });*/
+
+      setTimeout( () => {
+           for (let i = 0; i < this.capacity_array.length; i++) {
+               this.capacity_array[i].gesamter_kapazitaetsbedarf = this.capacity_array[i].kapazitaetsbedarf_neu
+                   + this.capacity_array[i].ruestzeit_neu + this.capacity_array[i].kapazitaetsbedarf_alt + this.capacity_array[i].ruestzeit_alt;
+           }
+       }, 500);
+
+   }
+
+    berechneSichtundUeberstunden() {
+
+        this.berechneGesamtKapazitaetsbedarf();
+
+       /* this.berechneGesamtKapazitaetsbedarf().then(() => {*/
+
+        setTimeout( () => {
+        for (let i = 0; i < this.capacity_array.length; i++) {
+
+            if (this.capacity_array[i].gesamter_kapazitaetsbedarf <= 2400) {
+                this.capacity_array[i].schichten = 1;
+                this.capacity_array[i].ueberstunden = 0;
+            }
+
+            if (this.capacity_array[i].gesamter_kapazitaetsbedarf > 2400 && this.capacity_array[i].gesamter_kapazitaetsbedarf <= 3600) {
+                this.capacity_array[i].schichten = 1;
+                this.capacity_array[i].ueberstunden = (this.capacity_array[i].gesamter_kapazitaetsbedarf - 2400) / 5;
+            }
+
+            if (this.capacity_array[i].gesamter_kapazitaetsbedarf > 3600 && this.capacity_array[i].gesamter_kapazitaetsbedarf <= 4800) {
+                this.capacity_array[i].schichten = 2;
+                this.capacity_array[i].ueberstunden = 0;
+            }
+
+            if (this.capacity_array[i].gesamter_kapazitaetsbedarf > 4800 && this.capacity_array[i].gesamter_kapazitaetsbedarf <= 6000) {
+                this.capacity_array[i].schichten = 2;
+                this.capacity_array[i].ueberstunden = (this.capacity_array[i].gesamter_kapazitaetsbedarf - 4800) / 5;
+            }
+
+            if (this.capacity_array[i].gesamter_kapazitaetsbedarf > 6000 && this.capacity_array[i].gesamter_kapazitaetsbedarf <= 7200) {
+                this.capacity_array[i].schichten = 3;
+                this.capacity_array[i].ueberstunden = 0;
+            }
+
+            }
+
+        // })
+        }, 500);
+
+    }
+
+    saveArbeitsplatz() {
+
+        const criteria = [
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
+        ];
+
+        this.arbeitsplatzService.query({
+            size: 1000000,
+            criteria
+        })
+            .subscribe((res: ResponseWrapper) => {
+                this.arbeitsplaetze = res.json;
+                let i;
+                for (i = 0; i < this.capacity_array.length; i++) {
+                    this.arbeitsplatz = this.arbeitsplaetze.find((arbeitsplatz) => (arbeitsplatz.nummer === this.capacity_array[i].arbeitsplatznummer)
+                        && arbeitsplatz.periode === parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                    if (this.arbeitsplatz !== undefined) {
+                        this.arbeitsplatz.schicht = this.capacity_array[i].schichten;
+                        this.arbeitsplatz.ueberstunden = this.capacity_array[i].ueberstunden;
+                        this.arbeitsplatzService.update(this.arbeitsplatz).subscribe((respond: Arbeitsplatz) =>
+                            console.log(respond), () => this.onSaveError());
+                    } else {
+                        this.arbeitsplatz = new Arbeitsplatz(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10),
+                            this.capacity_array[i].arbeitsplatznummer, undefined, undefined,
+                            undefined, undefined, undefined, undefined,
+                            undefined, this.capacity_array[i].schichten, this.capacity_array[i].ueberstunden)
+                        this.arbeitsplatzService.create(this.arbeitsplatz).subscribe((respond: Arbeitsplatz) =>
+                            console.log(respond), () => this.onSaveError());
+                    }
+                }
+            }, (respond: ResponseWrapper) => this.onError(respond.json));
+
+        this.isSaving = true;
+
+    }
+
+    private onSaveError() {
+        this.isSaving = false;
     }
 
     previousState() {

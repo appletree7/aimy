@@ -72,6 +72,9 @@ public class ModusQueryService extends QueryService<Modus> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildSpecification(criteria.getId(), Modus_.id));
             }
+            if (criteria.getNummer() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getNummer(), Modus_.nummer));
+            }
             if (criteria.getName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getName(), Modus_.name));
             }

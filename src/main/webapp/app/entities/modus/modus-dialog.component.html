@@ -13,15 +13,28 @@
                    [(ngModel)]="modus.id" readonly />
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="aimyApp.modus.name" for="field_name">Name</label>
-            <input type="text" class="form-control" name="name" id="field_name"
-                [(ngModel)]="modus.name" required />
-            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+            <label class="form-control-label" jhiTranslate="aimyApp.modus.nummer" for="field_nummer">Nummer</label>
+            <input type="number" class="form-control" name="nummer" id="field_nummer"
+                [(ngModel)]="modus.nummer" required min="1" />
+            <div [hidden]="!(editForm.controls.nummer?.dirty && editForm.controls.nummer?.invalid)">
                 <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
+                   [hidden]="!editForm.controls.nummer?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
                 </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.nummer?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 1 }">
+                    This field should be at least 1.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.nummer?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
             </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="aimyApp.modus.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="modus.name"  />
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="aimyApp.modus.bearbeitungsfaktor" for="field_bearbeitungsfaktor">Bearbeitungsfaktor</label>

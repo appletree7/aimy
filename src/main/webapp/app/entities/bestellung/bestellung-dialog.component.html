@@ -152,7 +152,7 @@
             <label class="form-control-label" jhiTranslate="aimyApp.bestellung.modus" for="field_modus">Modus</label>
             <select class="form-control" id="field_modus" name="modus" [(ngModel)]="bestellung.modus"  required>
                 <option *ngIf="!editForm.value.modus" [ngValue]="null" selected></option>
-                <option [ngValue]="modusOption.id === bestellung.modus?.id ? bestellung.modus : modusOption" *ngFor="let modusOption of moduses; trackBy: trackModusById">{{modusOption.id}}</option>
+                <option [ngValue]="modusOption.id === bestellung.modus?.id ? bestellung.modus : modusOption" *ngFor="let modusOption of moduses; trackBy: trackModusById">{{modusOption.nummer}}</option>
             </select>
         </div>
         <div [hidden]="!(editForm.controls.modus?.dirty && editForm.controls.modus?.invalid)">

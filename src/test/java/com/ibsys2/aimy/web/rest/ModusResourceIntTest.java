@@ -41,6 +41,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = AimyApp.class)
 public class ModusResourceIntTest {
 
+    private static final Integer DEFAULT_NUMMER = 1;
+    private static final Integer UPDATED_NUMMER = 2;
+
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
@@ -115,6 +118,7 @@ public class ModusResourceIntTest {
      */
     public static Modus createEntity(EntityManager em) {
         Modus modus = new Modus()
+            .nummer(DEFAULT_NUMMER)
             .name(DEFAULT_NAME)
             .bearbeitungsfaktor(DEFAULT_BEARBEITUNGSFAKTOR)
             .bearbeitungsabweichung(DEFAULT_BEARBEITUNGSABWEICHUNG)
@@ -148,6 +152,7 @@ public class ModusResourceIntTest {
         List<Modus> modusList = modusRepository.findAll();
         assertThat(modusList).hasSize(databaseSizeBeforeCreate + 1);
         Modus testModus = modusList.get(modusList.size() - 1);
+        assertThat(testModus.getNummer()).isEqualTo(DEFAULT_NUMMER);
         assertThat(testModus.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testModus.getBearbeitungsfaktor()).isEqualTo(DEFAULT_BEARBEITUNGSFAKTOR);
         assertThat(testModus.getBearbeitungsabweichung()).isEqualTo(DEFAULT_BEARBEITUNGSABWEICHUNG);
@@ -181,10 +186,10 @@ public class ModusResourceIntTest {
 
     @Test
     @Transactional
-    public void checkNameIsRequired() throws Exception {
+    public void checkNummerIsRequired() throws Exception {
         int databaseSizeBeforeTest = modusRepository.findAll().size();
         // set the field null
-        modus.setName(null);
+        modus.setNummer(null);
 
         // Create the Modus, which fails.
 
@@ -208,6 +213,7 @@ public class ModusResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(modus.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nummer").value(hasItem(DEFAULT_NUMMER)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].bearbeitungsfaktor").value(hasItem(DEFAULT_BEARBEITUNGSFAKTOR.doubleValue())))
             .andExpect(jsonPath("$.[*].bearbeitungsabweichung").value(hasItem(DEFAULT_BEARBEITUNGSABWEICHUNG.doubleValue())))
@@ -231,6 +237,7 @@ public class ModusResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(modus.getId().intValue()))
+            .andExpect(jsonPath("$.nummer").value(DEFAULT_NUMMER))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.bearbeitungsfaktor").value(DEFAULT_BEARBEITUNGSFAKTOR.doubleValue()))
             .andExpect(jsonPath("$.bearbeitungsabweichung").value(DEFAULT_BEARBEITUNGSABWEICHUNG.doubleValue()))
@@ -242,6 +249,72 @@ public class ModusResourceIntTest {
             .andExpect(jsonPath("$.diskontfaktor").value(DEFAULT_DISKONTFAKTOR.doubleValue()))
             .andExpect(jsonPath("$.bestellkostenfaktor").value(DEFAULT_BESTELLKOSTENFAKTOR.doubleValue()));
     }
+
+    @Test
+    @Transactional
+    public void getAllModusesByNummerIsEqualToSomething() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where nummer equals to DEFAULT_NUMMER
+        defaultModusShouldBeFound("nummer.equals=" + DEFAULT_NUMMER);
+
+        // Get all the modusList where nummer equals to UPDATED_NUMMER
+        defaultModusShouldNotBeFound("nummer.equals=" + UPDATED_NUMMER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByNummerIsInShouldWork() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where nummer in DEFAULT_NUMMER or UPDATED_NUMMER
+        defaultModusShouldBeFound("nummer.in=" + DEFAULT_NUMMER + "," + UPDATED_NUMMER);
+
+        // Get all the modusList where nummer equals to UPDATED_NUMMER
+        defaultModusShouldNotBeFound("nummer.in=" + UPDATED_NUMMER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByNummerIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where nummer is not null
+        defaultModusShouldBeFound("nummer.specified=true");
+
+        // Get all the modusList where nummer is null
+        defaultModusShouldNotBeFound("nummer.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByNummerIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where nummer greater than or equals to DEFAULT_NUMMER
+        defaultModusShouldBeFound("nummer.greaterOrEqualThan=" + DEFAULT_NUMMER);
+
+        // Get all the modusList where nummer greater than or equals to UPDATED_NUMMER
+        defaultModusShouldNotBeFound("nummer.greaterOrEqualThan=" + UPDATED_NUMMER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModusesByNummerIsLessThanSomething() throws Exception {
+        // Initialize the database
+        modusRepository.saveAndFlush(modus);
+
+        // Get all the modusList where nummer less than or equals to DEFAULT_NUMMER
+        defaultModusShouldNotBeFound("nummer.lessThan=" + DEFAULT_NUMMER);
+
+        // Get all the modusList where nummer less than or equals to UPDATED_NUMMER
+        defaultModusShouldBeFound("nummer.lessThan=" + UPDATED_NUMMER);
+    }
+
 
     @Test
     @Transactional
@@ -640,6 +713,7 @@ public class ModusResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(modus.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nummer").value(hasItem(DEFAULT_NUMMER)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].bearbeitungsfaktor").value(hasItem(DEFAULT_BEARBEITUNGSFAKTOR.doubleValue())))
             .andExpect(jsonPath("$.[*].bearbeitungsabweichung").value(hasItem(DEFAULT_BEARBEITUNGSABWEICHUNG.doubleValue())))
@@ -683,6 +757,7 @@ public class ModusResourceIntTest {
         // Update the modus
         Modus updatedModus = modusRepository.findOne(modus.getId());
         updatedModus
+            .nummer(UPDATED_NUMMER)
             .name(UPDATED_NAME)
             .bearbeitungsfaktor(UPDATED_BEARBEITUNGSFAKTOR)
             .bearbeitungsabweichung(UPDATED_BEARBEITUNGSABWEICHUNG)
@@ -703,6 +778,7 @@ public class ModusResourceIntTest {
         List<Modus> modusList = modusRepository.findAll();
         assertThat(modusList).hasSize(databaseSizeBeforeUpdate);
         Modus testModus = modusList.get(modusList.size() - 1);
+        assertThat(testModus.getNummer()).isEqualTo(UPDATED_NUMMER);
         assertThat(testModus.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testModus.getBearbeitungsfaktor()).isEqualTo(UPDATED_BEARBEITUNGSFAKTOR);
         assertThat(testModus.getBearbeitungsabweichung()).isEqualTo(UPDATED_BEARBEITUNGSABWEICHUNG);

@@ -3,6 +3,7 @@ import { BaseEntity } from './../../shared';
 export class Modus implements BaseEntity {
     constructor(
         public id?: number,
+        public nummer?: number,
         public name?: string,
         public bearbeitungsfaktor?: number,
         public bearbeitungsabweichung?: number,

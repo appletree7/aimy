@@ -1,324 +1,537 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute,  Router } from '@angular/router';
+import { Component, OnInit} from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
-import { Response } from '@angular/http'; 
 import { PurchasedPart } from '../../entities/anzeige/purchased_part.model';
-import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster'; 
-import { Teil, Teiltyp } from '../../entities/teil/teil.model';
-import { Bestellung, Bestellstatus } from '../../entities/bestellung/bestellung.model';
-import { TeilService } from '../../entities/teil/teil.service';
-import { BestellungService } from '../../entities/bestellung/bestellung.service';
-import { Modus } from '../../entities/modus/modus.model';
-import { ModusService } from '../../entities/modus/modus.service';
-import { Arbeitsplatz, ArbeitsplatzService } from '../../entities/arbeitsplatz'; 
-import { ITEMS_PER_PAGE, Principal, User, UserService, ResponseWrapper } from '../../shared';  
- 
-@Component({ 
-    selector: 'jhi-purchased_part', 
-     //Auswahlmenue in der Navigationsleiste 
-    templateUrl: './purchased_part.component.html', 
-     //Fenstergröße --> hier: Standard 
-     //styles: [] 
-}) 
-export class PurchasedPartComponent implements OnInit { 
-    //Variablen, die ich benötige hier definieren:  
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { Teil, Teiltyp } from '../../entities/teil';
+import { Bestellung, Bestellstatus } from '../../entities/bestellung';
+import { TeilService } from '../../entities/teil';
+import { BestellungService } from '../../entities/bestellung';
+import { Modus } from '../../entities/modus';
+import { ModusService } from '../../entities/modus';
+import { Principal, ResponseWrapper } from '../../shared';
 
-    teils: Teil[]; 
+@Component({
+    selector: 'jhi-purchased-part',
+
+    templateUrl: './purchased_part.component.html',
+
+})
+export class PurchasedPartComponent implements OnInit {
+
+    teil: Teil;
+    kaufteile: Teil[];
+    teils: Teil[];
+    modus: Modus;
+    modi: Modus[];
+    kaufteile_vorperiode: Teil[];
+    bedarfdurchschnittKaufteil = [];
     account: any;
-    arbeitsplatzs: Arbeitsplatz[];  
     currentAccount: any;
     eventSubscriber: Subscription;
-    
-    alle_kaufteile: Teil[];
-    lieferdauer_max_array: any; 
+
+    lieferdauer_array: Array<number>;
+    kaufteile_array = [21, 22, 23, 24, 25, 27, 28, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 52, 53, 57, 58, 59];
+    lagerbestand__kaufteile_periode0 = [300, 300, 300, 6100, 3600, 1800, 4500, 2700, 900, 22000, 3600, 900, 900, 300, 900, 900, 900,
+    1800, 1900, 2700, 900, 900, 900, 1800, 600, 22000, 600, 22000, 1800];
+    preis__kaufteile_periode0 = [5.00, 6.50, 6.50, 0.06, 0.06, 0.10, 1.20, 0.75, 22.00, 0.10, 1.00, 8.00, 1.50, 1.50, 1.50, 2.50, 0.06,
+        0.10, 5.00, 0.50, 0.06, 0.10, 3.50, 1.50, 22.00, 0.10, 22.00, 0.10, 0.15];
+    sicherheitszeit_array: Array<number>;
+    lieferdauer_max_array: any;
     diskontmenge_array: any;
-    verwendung_array : any; 
-    gesamtes_array: any; 
-    anfangsbestand_vorperiode: any; 
-    
-    bestellungen: Bestellung[]; 
-    bestellung: Bestellung; 
+    verwendung_array: any;
+    bestellkosten_array: any;
+    sicherheitsbestand_array = [];
+    bestellpunkt_array = [];
+    reichweite_array = [];
+    modusnummerkaufteil = [];
+    optBestellmenge = [];
+    gesamtes_array = [];
+    empfohlene_neue_Bestellungen_array = [];
+
+    bestellungen = [];
+    bestellungen_DB = [];
+    bestellung: Bestellung;
     isSaving: boolean;
-    kaufteil: Teil; 
-    teiltyp: Teiltyp.KAUFTEIL; 
-    
-    kaufteil_mit_purchased_part: Teil; 
-    modi : Modus[];  
-    modus_mit_purchased_part: Modus;
-    hoechste_nummer: number; 
-    
-    
- 
-    //produktionsprogramm_naechste_periode: Number []; 
-    //this.angangsbestand_vorperiode: any; 
-    
+    kaufteil: Teil;
+    teiltyp: Teiltyp.KAUFTEIL;
+
     constructor(
-        private eventManager: JhiEventManager, 
+        private eventManager: JhiEventManager,
         private teilService: TeilService,
         private bestellungService: BestellungService,
         private modusService: ModusService,
-        private jhiAlertService: JhiAlertService,    
+        private jhiAlertService: JhiAlertService,
         private principal: Principal
-    ) {} 
-        
- 
-    ngOnInit() { 
+    ) { }
+
+    ngOnInit() {
         this.principal.identity().then((account) => {
             this.account = account;
-        }); 
+        });
         this.isSaving = false;
-        this.hoechste_nummer = 0;
-     
-           
+
+        this.lieferdauer_max_array = [2.2, 2.1, 1.4, 3.5, 1.1, 1.1, 2.1, 2.6, 2.4, 1.9, 2.6, 1.3, 1.8, 2.1, 1.8, 1.9, 1.1, 1.5, 2.5,
+            1.2, 2.0, 1.2, 1.2, 1.2, 2.0, 1.8, 2.0, 2.1, 0.9];
+        this.lieferdauer_array = [1.8, 1.7, 1.2, 3.2, 0.9, 0.9, 1.7, 2.1, 1.9, 1.6, 2.2, 1.2, 1.5, 1.7, 1.5, 1.7, 0.9, 1.2, 2.0,
+            1.0, 1.7, 0.9, 1.1, 1.0, 1.6, 1.6, 1.7, 1.6, 0.7];
+        this.sicherheitszeit_array = [0.4, 0.4, 0.2, 0.3, 0.2, 0.2, 0.4, 0.5, 0.5, 0.3, 0.4, 0.1, 0.3, 0.4, 0.3, 0.2, 0.2, 0.3, 0.5,
+            0.2, 0.3, 0.3, 0.1, 0.2, 0.4, 0.2, 0.3, 0.5, 0.2];
+        this.diskontmenge_array = [300, 300, 300, 6100, 3600, 1800, 4500, 2700, 900, 2200, 3600, 900, 900, 300, 1800, 900, 900, 1800,
+            2700, 900, 900, 900, 900, 1800, 600, 22000, 600, 22000, 1800];
+        this.verwendung_array = [[1, 0, 0], [0, 1, 0], [0, 0, 1], [7, 7, 7], [4, 4, 4], [2, 2, 2], [4, 5, 6], [3, 3, 3], [0, 0, 2], [0, 0, 72],
+            [4, 4, 4], [1, 1, 1], [1, 1, 1], [1, 1, 1], [2, 2, 2], [1, 1, 1], [1, 1, 1 ], [2, 2, 2], [1, 1, 1], [3, 3, 3], [1, 1, 1],
+            [1, 1, 1], [1, 1, 1], [2, 2, 2], [2, 0, 0], [72, 0, 0], [0, 2, 0], [0, 72, 0], [2, 2, 2]];
+        this.bestellkosten_array = [50.00, 50.00, 50.00, 100.00, 50.00, 75.00, 50.00, 50.00, 75.00, 50.00, 75.00, 100.00, 50.00, 50.00,
+            75.00, 50.00, 50.00, 50.00, 75.00, 50.00, 50.00, 50.00, 50.00, 75.00, 50.00, 50.00, 50.00, 50.00, 50.00];
+
+        this.modusService.query({
+            size: 1000000,
+        }).subscribe((res: ResponseWrapper) => {
+            this.modi = res.json;
+        }, (res: ResponseWrapper) => this.onError(res.json));
+
+       let criteria = [
+            {key: 'teiltyp.in', value: 'KAUFTEIL'},
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
+        ];
+
+        this.teilService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((res3: ResponseWrapper) => {
+            this.kaufteile = res3.json;
+            if (this.kaufteile.length === 0) {
+                for (const kaufteile of this.kaufteile_array) {
+                    this.teil = new Teil(undefined, Teiltyp.KAUFTEIL, parseInt(localStorage.getItem('aktuelleperiode'), 10),
+                        kaufteile, undefined, undefined, undefined, undefined,
+                        undefined, undefined, undefined, undefined,
+                        undefined, undefined, undefined,
+                        undefined, undefined, undefined,
+                        undefined, undefined, undefined);
+                    this.teilService.create(this.teil).subscribe((respond: Teil) =>
+                        console.log(respond), () => this.onSaveError());
+                }
+
+            }
+        }, (res3: ResponseWrapper) => this.onError(res3.json));
+
+        this.berechnedurchscnittlichenVerbrauch();
+
+        this.bestimmeBestellmodus();
+
+        this.berechneSicherheitsbestandundBestellpunkt();
+
+        this.loeseBestellungenaus();
+
+        criteria = [
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
+        ];
+
+        this.bestellungService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((res: ResponseWrapper) => {
+            this.bestellungen = res.json;
+            this.bestellungen.sort((a, b) => a.nummer - b.nummer);
+            if (this.bestellungen.length === 0) {
+
+                setTimeout( () => {
+                    for (const bestellung of this.empfohlene_neue_Bestellungen_array) {
+                        this.bestellungen.push(bestellung);
+                    }
+                } , 2500);
+            }
+        }, (res: ResponseWrapper) => this.onError(res.json));
+
+        criteria = [
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 1},
+            {key: 'teiltyp.in', value: 2}
+        ];
+
+    }
+
+    berechnedurchscnittlichenVerbrauch() {
+
+        let criteria = [
+            {key: 'teiltyp.in', value: 'PRODUKT'},
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
+        ];
+
+        this.teilService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((res: ResponseWrapper) => {
+            this.teils = res.json;
+            this.teils.sort((a, b) => a.nummer - b.nummer);
+
+            criteria = [
+                {key: 'teiltyp.in', value: 'KAUFTEIL'},
+                {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 1}
+            ];
+
             this.teilService.query({
-                   size: 1000000,
-            })
-            .subscribe((res3: ResponseWrapper) => { 
-                
-                this.teils = res3.json;
-                let produktionsprogramm = new Array; 
-                let anfangsbestand_vorperiode = new Array;
-                
-                
-                this.alle_kaufteile = this.teils.filter( function(teil){
-                        
-                    let teiltypen = teil.teiltyp.toString();
-                    let alte_periode : number;                    
-                    alte_periode = parseInt(localStorage.getItem('aktuelleperiode'), 10);
-                    alte_periode = alte_periode - 1; 
-                    
-                    if (teil.nummer == 1 && teil.periode == parseInt(localStorage.getItem('aktuelleperiode'), 10)|| teil.nummer == 2 && teil.periode == parseInt(localStorage.getItem('aktuelleperiode'), 10) || teil.nummer == 3 && teil.periode == parseInt(localStorage.getItem('aktuelleperiode'), 10) ){
-                        if(teil.vertriebswunsch == undefined){
-                           teil.vertriebswunsch = 100; 
-                        }  
-                        produktionsprogramm.push(teil.vertriebswunsch);  
-                    };    
- 
-                    if (teiltypen == 'KAUFTEIL' && teil.periode == alte_periode ) {  
-                        anfangsbestand_vorperiode.push(teil.istmenge);
-                        return (teil);  
-                    }; 
- 
-                });
-                
-                
- 
-                
-                //Beispielhaft für Kaufteile 21,22,23:        
-                this.lieferdauer_max_array = [2.2, 2.1, 1.4, 3.5, 1.1, 1.1, 2.1, 2.6, 2.4, 1.9, 2.6, 1.3, 1.8, 2.1, 1.8, 1.9, 1.1, 1.5, 2.5, 1.2, 2.0, 1.2, 1.2, 1.2, 2.0, 1.8, 2.0, 2.1, 0.9]
-                this.diskontmenge_array = [300,300,300,6100,3600, 1800,4500,2700,900,2200,3600,900,900,300,1800,900,900,1800,2700,900,900,900,900,1800,600,22000,600,22000,1800]
-                this.verwendung_array = [[1,0,0],[0,1,0],[0,0,1],[7,7,7],[4,4,4],[2,2,2],[4,5,6],[3,3,3],[0,0,2],[0,0,72],[4,4,4],[1,1,1],[1,1,1],[1,1,1],[2,2,2],[1,1,1],[1,1,1],[2,2,2],[1,1,1],[3,3,3],[1,1,1],[1,1,1],[1,1,1],[2,2,2],[2,0,0],[72,0,0],[0,2,0],[0,72,0],[2,2,2]]                                  
-                             
-                //this.produktionsprogramm_periode_1 = [teil.vertriebswunsch für Teil 1,teil.vertriebswunsch für Teil 2, teil.vertriebswunsch für Teil3 ];     
-                //falls Produktionsprogramm nächste Periode < Anfangsbestand, dann bestellen: 
-                // Was hier noch alles rein muss: this.anfangsbestand_vorperiode + produktionsprogramm
-                this.gesamtes_array = this.bruttobedarf_berechnen(this.alle_kaufteile, this.lieferdauer_max_array, this.diskontmenge_array, this.verwendung_array, produktionsprogramm);
-                
-                // Alle Teile, die den Teiltyp "Kaufteil" besitzen, werden ausgegeben:       
-                res3.json = this.alle_kaufteile; 
-                
-                },(res3: ResponseWrapper) => this.onError(res3.json));   
-        
-        
-              
-    } 
-    
-    
+                size: 1000000,
+                criteria
+            }).subscribe((res2: ResponseWrapper) => {
+                this.kaufteile_vorperiode = res2.json;
+                this.kaufteile_vorperiode.sort((a, b) => a.nummer - b.nummer);
+
+                if (this.kaufteile_vorperiode.length !== 0) {
+
+                    const bedarfKaufteil = [];
+
+                    for (let i = 0; i < this.kaufteile_vorperiode.length; i++) {
+
+                        this.gesamtes_array.push(new PurchasedPart(undefined, this.kaufteile_vorperiode[i].nummer, undefined,
+                            undefined, undefined, undefined, undefined, undefined));
+
+                        this.gesamtes_array[i].diskontmenge = this.diskontmenge_array[i];
+
+                        this.gesamtes_array[i].bestand = this.kaufteile_vorperiode[i].istmenge;
+
+                        if (this.kaufteile_vorperiode[i].teiltyp.toString() === 'KAUFTEIL') {
+                            bedarfKaufteil.push(new Object(
+                                {
+                                    nummer: this.kaufteile_vorperiode[i].nummer,
+                                    bedarf: 0,
+                                    bedarf_naechste: 0,
+                                    bedarf_uebernaechste: 0,
+                                    bedarf_ueberuebernaechste: 0
+                                }));
+                        }
+
+                        for (let j = 0; j < this.teils.length; j++) {
+                            bedarfKaufteil[i].bedarf = this.verwendung_array[i][0] * this.teils[0].gesamtproduktionsmenge
+                                + this.verwendung_array[i][1] * this.teils[1].gesamtproduktionsmenge + this.verwendung_array[i][2] * this.teils[2].gesamtproduktionsmenge;
+                            bedarfKaufteil[i].bedarf_naechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_naechste
+                                + this.verwendung_array[i][1] * this.teils[1].vertriebswunsch_naechste + this.verwendung_array[i][2] * this.teils[2].vertriebswunsch_naechste;
+                            bedarfKaufteil[i].bedarf_uebernaechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_uebernaechste
+                                + this.verwendung_array[i][1] * this.teils[1].vertriebswunsch_uebernaechste +
+                                this.verwendung_array[i][2] * this.teils[2].vertriebswunsch_uebernaechste;
+                            bedarfKaufteil[i].bedarf_ueberuebernaechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_ueberuebernaechste
+                                + this.verwendung_array[i][1] * this.teils[1].vertriebswunsch_ueberuebernaechste
+                                + this.verwendung_array[i][2] * this.teils[2].vertriebswunsch_ueberuebernaechste;
+                        }
+
+                        if (this.lieferdauer_max_array[i] <= 1) {
+                            this.bedarfdurchschnittKaufteil.push(new Object(
+                                {nummer: this.kaufteile_vorperiode[i].nummer, bedarfavg: bedarfKaufteil[i].bedarf}))
+                        } else if (this.lieferdauer_max_array[i] > 1 && this.lieferdauer_max_array[i] <= 2) {
+                            const durschnittbedarf = Math.round((bedarfKaufteil[i].bedarf + bedarfKaufteil[i].bedarf_naechste) / 2);
+                            this.bedarfdurchschnittKaufteil.push(new Object(
+                                {nummer: this.kaufteile_vorperiode[i].nummer, bedarfavg: durschnittbedarf}))
+                        } else if (this.lieferdauer_max_array[i] > 2 && this.lieferdauer_max_array[i] <= 3) {
+                            const durschnittbedarf = Math.round((bedarfKaufteil[i].bedarf + bedarfKaufteil[i].bedarf_naechste
+                                + bedarfKaufteil[i].bedarf_uebernaechste) / 3);
+                            this.bedarfdurchschnittKaufteil.push(new Object(
+                                {nummer: this.kaufteile_vorperiode[i].nummer, bedarfavg: durschnittbedarf}))
+                        } else if (this.lieferdauer_max_array[i] > 3) {
+                            const durschnittbedarf = Math.round((bedarfKaufteil[i].bedarf
+                                + bedarfKaufteil[i].bedarf_naechste + bedarfKaufteil[i].bedarf_uebernaechste
+                                + bedarfKaufteil[i].bedarf_ueberuebernaechste) / 4);
+                            this.bedarfdurchschnittKaufteil.push(new Object(
+                                {nummer: this.kaufteile_vorperiode[i].nummer, bedarfavg: durschnittbedarf}))
+                        }
+
+                        this.gesamtes_array[i].durchschnittbedarf = this.bedarfdurchschnittKaufteil[i].bedarfavg;
+
+                    }
+
+                    console.log('durchschnittlicher Bedarf Kaufteil Array:');
+
+                    console.log(this.bedarfdurchschnittKaufteil);
+
+                } else {
+
+                    const bedarfKaufteil = [];
+
+                    for (let i = 0; i < this.kaufteile_array.length; i++) {
+
+                        this.gesamtes_array.push(new PurchasedPart(undefined, this.kaufteile_array[i], undefined,
+                            undefined, undefined, undefined, undefined, undefined));
+
+                        this.gesamtes_array[i].diskontmenge = this.diskontmenge_array[i];
+
+                        this.gesamtes_array[i].bestand = this.lagerbestand__kaufteile_periode0[i];
+
+                        bedarfKaufteil.push(new Object(
+                                {
+                                    nummer: this.kaufteile_array[i],
+                                    bedarf: 0,
+                                    bedarf_naechste: 0,
+                                    bedarf_uebernaechste: 0,
+                                    bedarf_ueberuebernaechste: 0
+                                }));
+
+                        for (let j = 0; j < this.teils.length; j++) {
+                            bedarfKaufteil[i].bedarf = this.verwendung_array[i][0] * this.teils[0].gesamtproduktionsmenge
+                                + this.verwendung_array[i][1] * this.teils[1].gesamtproduktionsmenge + this.verwendung_array[i][2] * this.teils[2].gesamtproduktionsmenge;
+                            bedarfKaufteil[i].bedarf_naechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_naechste
+                                + this.verwendung_array[i][1] * this.teils[1].vertriebswunsch_naechste + this.verwendung_array[i][2] * this.teils[2].vertriebswunsch_naechste;
+                            bedarfKaufteil[i].bedarf_uebernaechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_uebernaechste
+                                + this.verwendung_array[i][1] * this.teils[1].vertriebswunsch_uebernaechste +
+                                this.verwendung_array[i][2] * this.teils[2].vertriebswunsch_uebernaechste;
+                            bedarfKaufteil[i].bedarf_ueberuebernaechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_ueberuebernaechste
+                                + this.verwendung_array[i][1] * this.teils[1].vertriebswunsch_ueberuebernaechste
+                                + this.verwendung_array[i][2] * this.teils[2].vertriebswunsch_ueberuebernaechste;
+                        }
+
+                        if (this.lieferdauer_max_array[i] <= 1) {
+                            this.bedarfdurchschnittKaufteil.push(new Object(
+                                {nummer: this.kaufteile_array[i], bedarfavg: bedarfKaufteil[i].bedarf}))
+                        } else if (this.lieferdauer_max_array[i] > 1 && this.lieferdauer_max_array[i] <= 2) {
+                            const durschnittbedarf = Math.round((bedarfKaufteil[i].bedarf + bedarfKaufteil[i].bedarf_naechste) / 2);
+                            this.bedarfdurchschnittKaufteil.push(new Object(
+                                {nummer: this.kaufteile_array[i], bedarfavg: durschnittbedarf}))
+                        } else if (this.lieferdauer_max_array[i] > 2 && this.lieferdauer_max_array[i] <= 3) {
+                            const durschnittbedarf = Math.round((bedarfKaufteil[i].bedarf + bedarfKaufteil[i].bedarf_naechste
+                                + bedarfKaufteil[i].bedarf_uebernaechste) / 3);
+                            this.bedarfdurchschnittKaufteil.push(new Object(
+                                {nummer: this.kaufteile_array[i], bedarfavg: durschnittbedarf}))
+                        } else if (this.lieferdauer_max_array[i] > 3) {
+                            const durschnittbedarf = Math.round((bedarfKaufteil[i].bedarf
+                                + bedarfKaufteil[i].bedarf_naechste + bedarfKaufteil[i].bedarf_uebernaechste
+                                + bedarfKaufteil[i].bedarf_ueberuebernaechste) / 4);
+                            this.bedarfdurchschnittKaufteil.push(new Object(
+                                {nummer: this.kaufteile_array[i], bedarfavg: durschnittbedarf}))
+                        }
+
+                        this.gesamtes_array[i].durchschnittbedarf = this.bedarfdurchschnittKaufteil[i].bedarfavg;
+
+                    }
+
+                    console.log('durchschnittlicher Bedarf Kaufteil Array:');
+
+                    console.log(this.bedarfdurchschnittKaufteil);
+                }
+
+            }, (res2: ResponseWrapper) => this.onError(res2.json));
+
+        }, (res: ResponseWrapper) => this.onError(res.json));
+
+    }
+
+    bestimmeBestellmodus() {
+
+        setTimeout( () => {
+
+            if (this.kaufteile_vorperiode.length !== 0) {
+
+                const durchscnittlicherLagerbestand_Array_Kaufteil = [];
+
+                for (let i = 0; i < this.kaufteile_vorperiode.length; i++) {
+                    const durchscnittlicherLagerbestand = (this.kaufteile_vorperiode[i].startmenge + this.kaufteile_vorperiode[i].istmenge) / 2;
+                    durchscnittlicherLagerbestand_Array_Kaufteil.push(durchscnittlicherLagerbestand);
+                    const lagerreichweite = (durchscnittlicherLagerbestand / this.bedarfdurchschnittKaufteil[i].bedarfavg);
+                    this.gesamtes_array[i].lagerreichweite = lagerreichweite;
+                    this.reichweite_array.push(lagerreichweite);
+                    if (this.reichweite_array[i] > this.lieferdauer_max_array[i]) {
+                        this.modusnummerkaufteil.push(5); // Normal
+                    } else {
+                        this.modusnummerkaufteil.push(4); // Eil
+                    }
+                }
+
+                console.log('durchschnittlicher Lagerbestand Array Kaufteil: ' + durchscnittlicherLagerbestand_Array_Kaufteil);
+                console.log('Lagerreichweite Array: ' + this.reichweite_array);
+                console.log('Bestellmodus Array: ' + this.modusnummerkaufteil);
+
+            } else {
+
+                const durchscnittlicherLagerbestand_Array_Kaufteil = [];
+
+                for (let i = 0; i < this.kaufteile_array.length; i++) {
+                    const durchscnittlicherLagerbestand = this.lagerbestand__kaufteile_periode0[i];
+                    durchscnittlicherLagerbestand_Array_Kaufteil.push(durchscnittlicherLagerbestand);
+                    const lagerreichweite = (durchscnittlicherLagerbestand / this.bedarfdurchschnittKaufteil[i].bedarfavg);
+                    this.gesamtes_array[i].lagerreichweite = lagerreichweite;
+                    this.reichweite_array.push(lagerreichweite);
+                    if (this.reichweite_array[i] > this.lieferdauer_max_array[i]) {
+                        this.modusnummerkaufteil.push(5); // Normal
+                    } else {
+                        this.modusnummerkaufteil.push(4); // Eil
+                    }
+                }
+
+                console.log('durchschnittlicher Lagerbestand Array Kaufteil: ' + durchscnittlicherLagerbestand_Array_Kaufteil);
+                console.log('Lagerreichweite Array: ' + this.reichweite_array);
+                console.log('Bestellmodus Array: ' + this.modusnummerkaufteil);
+
+            }
+
+        }, 1000);
+
+    }
+
+    berechneSicherheitsbestandundBestellpunkt() {
+
+        setTimeout( () => {
+
+                for (let i = 0; i < this.bedarfdurchschnittKaufteil.length; i++) {
+                    if (this.modusnummerkaufteil[i] === 5) {
+                        const sicherheitsbestand = Math.round(this.bedarfdurchschnittKaufteil[i].bedarfavg * this.sicherheitszeit_array[i]);
+                        this.sicherheitsbestand_array.push(sicherheitsbestand);
+                        const bestellpunkt = Math.round(this.bedarfdurchschnittKaufteil[i].bedarfavg * (this.lieferdauer_array[i] + 1.2 + this.sicherheitszeit_array[i]));
+                        this.bestellpunkt_array.push(bestellpunkt)
+                    }
+                    if (this.modusnummerkaufteil[i] === 4) {
+                        const sicherheitsbestand = Math.round(this.bedarfdurchschnittKaufteil[i].bedarfavg * 0);
+                        this.sicherheitsbestand_array.push(sicherheitsbestand);
+                        const bestellpunkt = Math.round(this.bedarfdurchschnittKaufteil[i].bedarfavg * ((this.lieferdauer_array[i] * 0.5) + 1.2 + 0));
+                        this.bestellpunkt_array.push(bestellpunkt)
+                    }
+
+                    this.gesamtes_array[i].sicherheitsbestand = this.sicherheitsbestand_array[i];
+                    this.gesamtes_array[i].bestellpunkt = this.bestellpunkt_array[i];
+                }
+
+                console.log('Sicherheitsbestand Array: ' + this.sicherheitsbestand_array);
+                console.log('Bestellpunkt Array: ' + this.bestellpunkt_array);
+
+        }, 1000);
+
+    }
+
+    loeseBestellungenaus() {
+
+        setTimeout( () => {
+
+            if (this.kaufteile_vorperiode.length !== 0) {
+
+                for (let i = 0; i < this.kaufteile_vorperiode.length; i++) {
+                    if (this.kaufteile_vorperiode[i].istmenge < this.bestellpunkt_array[i]) { // + alte Bestellungen!!!
+                        if (this.modusnummerkaufteil[i] === 5) {
+                            this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * this.bestellkosten_array[i])
+                                / (this.kaufteile_vorperiode[i].lagerpreis * 0.6))));
+
+                            this.modus = this.modi.find((modus) => modus.nummer === 5);
+                            this.teil = this.kaufteile.find((teil) => (teil.nummer === this.kaufteile[i].nummer)
+                                && (teil.periode === (parseInt(localStorage.getItem('aktuelleperiode'), 10))));
+                            this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), undefined,
+                                undefined, undefined, undefined, undefined,
+                                undefined, undefined, Bestellstatus.UNTERWEGS, this.modus, this.teil);
+                            this.empfohlene_neue_Bestellungen_array.push(this.bestellung);
+                        } else if (this.modusnummerkaufteil[i] === 4) {
+                            this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * (this.bestellkosten_array[i] * 10))
+                                / (this.kaufteile_vorperiode[i].lagerpreis * 0.6))));
+                            this.modus = this.modi.find((modus) => modus.nummer === 4);
+                            this.teil = this.kaufteile.find((teil) => (teil.nummer === this.kaufteile[i].nummer)
+                                && (teil.periode === (parseInt(localStorage.getItem('aktuelleperiode'), 10))));
+                            this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), undefined,
+                                undefined, undefined, undefined, undefined,
+                                undefined, undefined, Bestellstatus.UNTERWEGS, this.modus, this.teil);
+                            this.empfohlene_neue_Bestellungen_array.push(this.bestellung);
+                        }
+
+                    }
+                }
+
+            } else {
+
+                for (let i = 0; i < this.kaufteile_array.length; i++) {
+                    if (this.lagerbestand__kaufteile_periode0[i] < this.bestellpunkt_array[i]) { // + alte Bestellungen!!!
+                        if (this.modusnummerkaufteil[i] === 5) {
+                            this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * this.bestellkosten_array[i])
+                                / (this.preis__kaufteile_periode0[i] * 0.6))));
+
+                            this.modus = this.modi.find((modus) => modus.nummer === 5);
+                            this.teil = this.kaufteile.find((teil) => (teil.nummer === this.kaufteile[i].nummer)
+                                && (teil.periode === (parseInt(localStorage.getItem('aktuelleperiode'), 10))));
+                            this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), undefined,
+                                undefined, undefined, undefined, undefined,
+                                undefined, undefined, Bestellstatus.UNTERWEGS, this.modus, this.teil);
+                            this.empfohlene_neue_Bestellungen_array.push(this.bestellung);
+                        } else if (this.modusnummerkaufteil[i] === 4) {
+                            this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * (this.bestellkosten_array[i] * 10))
+                                / (this.preis__kaufteile_periode0[i] * 0.6))));
+                            this.modus = this.modi.find((modus) => modus.nummer === 4);
+                            this.teil = this.kaufteile.find((teil) => (teil.nummer === this.kaufteile[i].nummer)
+                                && (teil.periode === (parseInt(localStorage.getItem('aktuelleperiode'), 10))));
+                            this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), undefined,
+                                undefined, undefined, undefined, undefined,
+                                undefined, undefined, Bestellstatus.UNTERWEGS, this.modus, this.teil);
+                            this.empfohlene_neue_Bestellungen_array.push(this.bestellung);
+                        }
+
+                    }
+                }
+
+            }
+
+            let bestellnummer = 1;
+
+            for (let i = 0; i < this.optBestellmenge.length; i++) {
+                this.empfohlene_neue_Bestellungen_array[i].nummer = bestellnummer;
+                this.empfohlene_neue_Bestellungen_array[i].kaufmenge = this.optBestellmenge[i];
+                bestellnummer = bestellnummer + 1;
+            }
+
+            console.log('optimale Bestellmenge Array: ' + this.optBestellmenge);
+            console.log('empfohlene neue Bestellungen Array: ');
+            console.log(this.empfohlene_neue_Bestellungen_array);
+
+        }, 1500);
+
+    }
+
     changeListener($event): void {
         $event = this.isSaving = true;
         this.save();
     }
-    
-    
-    
+
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
     };
 
-    
-    public bruttobedarf_berechnen(alle_kaufteile: Teil[], lieferdauer_max_array: any, diskontmenge_array: any, verwendung_array:Number[], produktionsprogramm: any) { 
- 
-        let purchasedpart_anzeige_array = new Array(); 
-        let durchlauf = 1;
-        let bruttobedarf = 0; 
-        
-        alle_kaufteile.sort( function (a,b){
-            if (a.nummer > b.nummer) {
-                return 1;
-            }
-            if (a.nummer < b.nummer) {
-             return -1;
-            }
-            // a muss gleich b sein
-            return 0;         
-        });
-        
-           
-                
-            alle_kaufteile.forEach(function(kaufteil){
+    public save() {
+        this.saveBestellung();
+        this.isSaving = true;
+    };
 
-            let purchasedpart = new PurchasedPart;
-            purchasedpart.nummer = kaufteil.nummer.toString();
-            purchasedpart.bestand = kaufteil.istmenge;
-            purchasedpart.bruttobedarf = 0; 
-            purchasedpart.periode = parseInt(localStorage.getItem('aktuelleperiode'), 10);
- 
-            for (let i = 0; i < durchlauf ; i++){
-                lieferdauer_max_array[i]; 
-                purchasedpart.lieferdauer = lieferdauer_max_array[i];
-                lieferdauer_max_array.shift(); 
-                
-                diskontmenge_array[i];   
-                purchasedpart.diskontmenge = diskontmenge_array[i];
-                diskontmenge_array.shift();  
-                                        
-                        
-                        
-                        for (let j = 0; j < 3; j++){
-                            bruttobedarf = verwendung_array[i][j] * produktionsprogramm[j]; //produkt_produktionsprogramm]; 
-                            purchasedpart.bruttobedarf = purchasedpart.bruttobedarf + bruttobedarf;
+    public saveBestellung() {
 
-                            
-                         }
-
-                    verwendung_array.shift();
-                 
- 
-                    console.log("purchasedpart.bestand: " + purchasedpart.bestand + " purchasedpart.lieferdauer "+purchasedpart.lieferdauer +" purchasedpart.bruttobedarf "+purchasedpart.bruttobedarf)
-                    
-                    let puffer = purchasedpart.bruttobedarf*1.6;
-                    console.log("Puffer: "+puffer)
-      
-                    if (purchasedpart.bestand*purchasedpart.lieferdauer > puffer){
-                        purchasedpart.bestellung = 0; 
-                        purchasedpart.art= "-";
-                        purchasedpart.modus_id = 0;
-                        
-                    }
-                    
-                    if (purchasedpart.bestand - (purchasedpart.lieferdauer* purchasedpart.bruttobedarf) < 0){
-                        purchasedpart.bestellung = purchasedpart.bruttobedarf; 
-                        purchasedpart.art= "N";                        
-                        purchasedpart.modus_id = 2; 
-                    }else {
-                        purchasedpart.bestellung = 0; 
-                        purchasedpart.art= "-"; 
-                        purchasedpart.modus_id = 0;
-                    }
-
-                    if( purchasedpart.bestand < purchasedpart.bruttobedarf) {
-                        purchasedpart.bestellung = Math.ceil(purchasedpart.bruttobedarf* Math.round(purchasedpart.lieferdauer)); 
-                        purchasedpart.art= "E"; 
-                        purchasedpart.modus_id = 5; 
-                    }
-                    if( purchasedpart.bestand*purchasedpart.lieferdauer < purchasedpart.bruttobedarf) {
-                        purchasedpart.bestellung = Math.ceil((purchasedpart.bruttobedarf*1.3)); 
-                        purchasedpart.art= "E";
-                        purchasedpart.modus_id = 5;  
-                    }               
-            } 
-            purchasedpart_anzeige_array.push(purchasedpart); 
-            //durchlauf = durchlauf+1;         
-        });      
-        return purchasedpart_anzeige_array; 
-    }; 
-    
-    
-    
-    public save() { 
-        //Anpassen der aktuellen Teile 
-        //this.saveTeil(); 
-        //Neue_Bestellungen_anlegen 
-        this.saveBestellung();       
-        this.isSaving = true;         
-    };   
-     
-
-    public saveBestellung(){ 
-        
-        console.log("saveBestellung()wird aufgerufen ");
+        const criteria = [
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
+        ];
 
         this.bestellungService.query({
             size: 1000000,
+            criteria
         })
             .subscribe((res: ResponseWrapper) => {
-                this.bestellungen = res.json;
-                
-                this.teilService.query({
-                   size: 1000000,
-                })
-                   .subscribe((res: ResponseWrapper) => {
-                    this.teils = res.json;
-                        
-                    this.modusService.query({
-                         size: 1000000,
-                     })
-                         .subscribe((res: ResponseWrapper) => {
-                             this.modi = res.json;
-                    
-                    let j = 0;                                  
-                    for(let i = 0; i < this.gesamtes_array.length; i++){
-                        
-                            for(let i = 0; i < this.bestellungen.length; i++){
-                                if(this.hoechste_nummer < this.bestellungen[i].nummer)
-                                    this.hoechste_nummer = this.bestellungen[i].nummer;
-                            }
-                            this.hoechste_nummer = this.hoechste_nummer + 1;
-                        
-                        console.log("this.gesamtes_array Array wird durchlaufen. "+ this.gesamtes_array[i].nummer.toString() + " bestellung "+ this.gesamtes_array[i].bestellung);
-                        
-                        this.bestellung = this.gesamtes_array.find((bestellung) => bestellung.periode === parseInt(localStorage.getItem("aktuellepriode"))&& bestellung.nummer === this.gesamtes_array[i].nummer);
-                        if(this.bestellung !== undefined){
-                            
-                            console.log(" Bestellung ist nicht undefined ");
-                            this.bestellung.kaufmenge = 0; //this.gesamtes_array.bestellung,
-                            //this.bestellung.kaufteil.id  = this.sucheKaufteil(this.bestellung);  //this.gesamtes_array // Query durchlaufen
- 
-                            this.bestellungService.update(this.bestellung)
-                                                  .subscribe((respond: Bestellung) =>
+                this.bestellungen_DB = res.json;
+                let i;
+                for (i = 0; i < this.bestellungen.length; i++) {
+                    this.bestellung = this.bestellungen_DB.find((bestellung) => (bestellung.nummer === this.bestellungen[i].nummer)
+                        && bestellung.periode === parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                    if (this.bestellung !== undefined) {
+                        this.bestellung.kaufteil = this.bestellungen[i].kaufteil;
+                        this.bestellung.modus = this.bestellungen[i].modus;
+                        this.bestellung.kaufmenge = this.bestellungen[i].kaufmenge;
+                        this.bestellung.bestellstatus = this.bestellungen[i].bestellstatus;
+                        this.bestellungService.update(this.bestellung).subscribe((respond: Bestellung) =>
                             console.log(respond), () => this.onSaveError());
-                        }
-                        else{                           
-                            //if(this.gesamtes_array[i].bestellung !== 0){
-                            if(this.gesamtes_array[i].bestellung !== 0){
-                                
-                                console.log(" Else-Schleife wird durchlaufen: " +this.gesamtes_array[i].nummer);
-                                
-                                let j = 0;  
-                                let k = 0;                                  
-                                for (j= 0; j < this.teils.length; j++){
-                                    if (this.gesamtes_array[i].nummer === this.teils[j].nummer.toString()){                                        
-                                                    this.kaufteil_mit_purchased_part = this.teils[i];
-                                                    j = 1000;                                                 
-                                    } 
-                                }
-                                for (k= 0; k < this.modi.length; k++){
-                                    console.log("Durchlauf NR: "+k);
-                                    if (this.gesamtes_array[i].modus_id === this.modi[k].id){                                       
-                                        this.modus_mit_purchased_part = this.modi[k];
-                                        k = 1000; 
-                                                
-                                    } 
-                                }
-                                    this.bestellung = new Bestellung(undefined, parseInt(this.gesamtes_array[i].periode) , this.hoechste_nummer, undefined, parseInt(this.gesamtes_array[i].bestellung), undefined, undefined, 
-                                                                     undefined, undefined, Bestellstatus.UNTERWEGS, this.modus_mit_purchased_part ,  this.kaufteil_mit_purchased_part); // Kaufteil
-
-                                    this.bestellungService.create(this.bestellung)
-                                                          .subscribe((respond: Bestellung) =>
-                                    console.log(respond), () => this.onSaveError()); 
-                                    console.log(" Teil wurde gepeichert ");                                    
-                            }                         
-                        }
+                    } else {
+                        this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10),
+                            this.bestellungen[i].nummer, undefined, this.bestellungen[i].kaufmenge,
+                            undefined, undefined, undefined, undefined, this.bestellungen[i].bestellstatus,
+                            this.bestellungen[i].modus, this.bestellungen[i].kaufteil);
+                        this.bestellungService.create(this.bestellung).subscribe((respond: Bestellung) =>
+                            console.log(respond), () => this.onSaveError());
                     }
-        }, (respond: ResponseWrapper) => this.onError(respond.json));
-        }, (respond: ResponseWrapper) => this.onError(respond.json)); 
-        }, (respond: ResponseWrapper) => this.onError(respond.json));
-        
-    }    
+                }
+            }, (respond: ResponseWrapper) => this.onError(respond.json));
+
+        this.isSaving = true;
+
+    }
+
     private onSaveError() {
         this.isSaving = false;
-    }      
+    }
+
     previousState() {
         window.history.back();
     }
+
 }

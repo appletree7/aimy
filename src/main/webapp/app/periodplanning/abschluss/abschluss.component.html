@@ -101,9 +101,17 @@
             <tbody>
             <tr *ngFor="let bestellung of bestellungen ;trackBy: trackId">
                 <td>{{bestellung.nummer}}</td>
-                <td>{{bestellung.bestellung.kaufteil.id}}</td>
+                <td>
+                    <div *ngIf="bestellung.kaufteil">
+                        <a [routerLink]="['../teil', bestellung.kaufteil?.id ]" >{{bestellung.kaufteil?.nummer}}</a>
+                    </div>
+                </td>
                 <td>{{bestellung.kaufmenge}}</td>
-                <td>{{bestellung.modus.id}}</td>
+                <td>
+                    <div *ngIf="bestellung.modus">
+                        <a [routerLink]="['../modus', bestellung.modus?.id ]" >{{bestellung.modus?.name}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
@@ -192,9 +200,8 @@
             </thead>
             <tbody>
             <tr *ngFor="let arbeitsplatz of arbeitsplaetze ;trackBy: trackId">
-                <td jhiTranslate="{{'aimyApp.Teiltyp.' + teil.teiltyp}}">{{teil.teiltyp}}</td>
                 <td>{{arbeitsplatz.nummer}}</td>
-                <td>{{arbeitsplatz.vertriebswunsch}}</td>
+                <td>{{arbeitsplatz.schicht}}</td>
                 <td>{{arbeitsplatz.ueberstunden}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

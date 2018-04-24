@@ -1,7 +1,7 @@
-import { BaseEntity } from './../../shared';
+import { BaseEntity } from '../../shared';
 
 export class Capacity implements BaseEntity {
-    
+
     constructor(
         public id?: number,
         public arbeitsplatznummer?: number,

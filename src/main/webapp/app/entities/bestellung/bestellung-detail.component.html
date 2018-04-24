@@ -43,7 +43,7 @@
         <dt><span jhiTranslate="aimyApp.bestellung.modus">Modus</span></dt>
         <dd>
             <div *ngIf="bestellung.modus">
-                <a [routerLink]="['/modus', bestellung.modus?.id]">{{bestellung.modus?.id}}</a>
+                <a [routerLink]="['/modus', bestellung.modus?.id]">{{bestellung.modus?.nummer}}</a>
             </div>
         </dd>
         <dt><span jhiTranslate="aimyApp.bestellung.kaufteil">Kaufteil</span></dt>

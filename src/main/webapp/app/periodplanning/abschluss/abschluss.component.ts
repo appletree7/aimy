@@ -19,6 +19,7 @@ export class AbschlussComponent implements OnInit, OnDestroy {
     currentAccount: any;
     eventSubscriber: Subscription;
     teil: Teil;
+    kaufteile = [];
     teils = [];
     teile = [];
     fertigungsauftrag: Fertigungsauftrag;
@@ -93,6 +94,17 @@ export class AbschlussComponent implements OnInit, OnDestroy {
             .subscribe((res: ResponseWrapper) => {
                 this.fertigungsauftraege = res.json;
             }, (res: ResponseWrapper) => this.onError(res.json));
+
+        criteria = [
+            {key: 'teiltyp.in', value: 'KAUFTEIL'},
+            {key: 'periode.equals', value: localStorage.getItem('aktuelleperiode')}
+        ];
+        this.teilService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((response: ResponseWrapper) => {
+            this.kaufteile = response.json;
+        }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
   ngOnInit() {
@@ -207,13 +219,13 @@ export class AbschlussComponent implements OnInit, OnDestroy {
             if (bestellung.kaufmenge !== 0 && bestellung.auftragsmenge !== null) {
                 const order = doc.createElement('order');
                 orderlist.appendChild(order);
-                this.teil = this.teile.find((teil) => (teil.id === bestellung.kaufteil.id));
+                this.teil = this.kaufteile.find((teil) => (teil.id === bestellung.kaufteil.id));
                 if (this.teil.nummer !== null || this.teil.nummer !== undefined) {
                     order.setAttribute('article', this.teil.nummer.toString());
                 } else {
                     order.setAttribute('article', '');
                 }
-                    order.setAttribute('quantity', bestellung.kaufmenge.toString())
+                    order.setAttribute('quantity', bestellung.kaufmenge.toString());
                 if (bestellung.modus !== null) {
                     order.setAttribute('modus', bestellung.modus.id.toString());
                 } else {
@@ -388,13 +400,14 @@ export class AbschlussComponent implements OnInit, OnDestroy {
                         || (this.teil.nummer === 30) || (this.teil.nummer === 51)) {
                         fertigungsauftrag.bearbeitungszeitmin = fertigungsauftrag.auftragsmenge * 5
               } else if ((this.teil.nummer === 2) || (this.teil.nummer === 3)) {
-                        fertigungsauftrag.bearbeitungszeitmin = fertigungsauftrag.auftragsmenge * 7
+                  fertigungsauftrag.bearbeitungszeitmin = fertigungsauftrag.auftragsmenge * 7
               }
               this.fertigungsauftragService.update(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
                         console.log(respond), () => this.onSaveError());
       }
 
         this.fertigungsauftraege.sort((a, b) => a.bearbeitungszeitmin - b.bearbeitungszeitmin);
+        this.fertigungsauftraege.reverse();
         let i = 1;
         for (const fertigungsauftrag of this.fertigungsauftraege) {
             fertigungsauftrag.nummer = i;

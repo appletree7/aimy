@@ -68,7 +68,7 @@ class ModusGatlingTest extends Simulation {
             .exec(http("Create new modus")
             .post("/api/moduses")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT", "bearbeitungsfaktor":null, "bearbeitungsabweichung":null, "lieferfaktor":null, "lieferabweichung":null, "mengenfakor":null, "mengenabweichung":null, "preisfaktor":null, "diskontfaktor":null, "bestellkostenfaktor":null}""")).asJSON
+            .body(StringBody("""{"id":null, "nummer":"0", "name":"SAMPLE_TEXT", "bearbeitungsfaktor":null, "bearbeitungsabweichung":null, "lieferfaktor":null, "lieferabweichung":null, "mengenfakor":null, "mengenabweichung":null, "preisfaktor":null, "diskontfaktor":null, "bestellkostenfaktor":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_modus_url"))).exitHereIfFailed
             .pause(10)

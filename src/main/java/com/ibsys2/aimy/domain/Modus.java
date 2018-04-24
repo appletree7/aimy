@@ -25,7 +25,11 @@ public class Modus implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "name", nullable = false)
+    @Min(value = 1)
+    @Column(name = "nummer", nullable = false)
+    private Integer nummer;
+
+    @Column(name = "name")
     private String name;
 
     @DecimalMin(value = "0")
@@ -71,6 +75,19 @@ public class Modus implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getNummer() {
+        return nummer;
+    }
+
+    public Modus nummer(Integer nummer) {
+        this.nummer = nummer;
+        return this;
+    }
+
+    public void setNummer(Integer nummer) {
+        this.nummer = nummer;
     }
 
     public String getName() {
@@ -228,6 +245,7 @@ public class Modus implements Serializable {
     public String toString() {
         return "Modus{" +
             "id=" + getId() +
+            ", nummer='" + getNummer() + "'" +
             ", name='" + getName() + "'" +
             ", bearbeitungsfaktor='" + getBearbeitungsfaktor() + "'" +
             ", bearbeitungsabweichung='" + getBearbeitungsabweichung() + "'" +

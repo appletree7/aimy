@@ -35,6 +35,8 @@ describe('Modus e2e test', () => {
 
     it('should create and save Moduses', () => {
         modusComponentsPage.clickOnCreateButton();
+        modusDialogPage.setNummerInput('5');
+        expect(modusDialogPage.getNummerInput()).toMatch('5');
         modusDialogPage.setNameInput('name');
         expect(modusDialogPage.getNameInput()).toMatch('name');
         modusDialogPage.setBearbeitungsfaktorInput('5');
@@ -81,6 +83,7 @@ export class ModusDialogPage {
     modalTitle = element(by.css('h4#myModusLabel'));
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
+    nummerInput = element(by.css('input#field_nummer'));
     nameInput = element(by.css('input#field_name'));
     bearbeitungsfaktorInput = element(by.css('input#field_bearbeitungsfaktor'));
     bearbeitungsabweichungInput = element(by.css('input#field_bearbeitungsabweichung'));
@@ -94,6 +97,14 @@ export class ModusDialogPage {
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
+    }
+
+    setNummerInput = function (nummer) {
+        this.nummerInput.sendKeys(nummer);
+    }
+
+    getNummerInput = function () {
+        return this.nummerInput.getAttribute('value');
     }
 
     setNameInput = function (name) {

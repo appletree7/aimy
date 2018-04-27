@@ -1,4 +1,5 @@
-<form name="saveForm" role="form" novalidate (ngSubmit)="saveArbeitsplatz()" #saveForm="ngForm">
+<form name="saveForm" role="form" novalidate (ngSubmit)="saveArbeitsplatz()" #saveForm="ngForm"
+      xmlns="http://www.w3.org/1999/html">
 <div>
     <h2>
         <span jhiTranslate="capacity_planning.title">Kapazitätsplanung</span>
@@ -22,13 +23,19 @@
                 </tr>
             </thead>
             <tbody>
-                        <tr *ngFor="let capacity of capacity_array|orderBy:'arbeitsplatznummer'">
+                        <tr *ngFor="let capacity of capacity_array">
                         <td class="text-center">{{capacity.arbeitsplatznummer}}</td>
                         <td class="text-center">{{capacity.kapazitaetsbedarf_alt}}</td>
                         <td class="text-center">{{capacity.ruestzeit_alt}}</td>
                         <td class="text-center">{{capacity.kapazitaetsbedarf_neu}}</td>
                         <td class="text-center">{{capacity.ruestzeit_neu}}</td>
                         <td class="text-center">{{capacity.gesamter_kapazitaetsbedarf}}</td>
+                           <!-- <td>
+                                <div class="form-group">
+                                    <input type="number" class="form-control" name="schichten" id="schichten"
+                                           [(ngModel)]="capacity.schichten" required min="1" max="3"/>
+                                </div>
+                            </td>-->
                         <td class="text-center">{{capacity.schichten}}</td>
                         <td class="text-center">{{capacity.ueberstunden}}</td>
             </tbody>

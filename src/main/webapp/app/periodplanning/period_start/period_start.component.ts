@@ -57,6 +57,39 @@ export class PeriodStartComponent implements OnInit {
             this.currentAccount = account;
         });
         this.isSaving = false;
+
+        this.modusService.query({
+            size: 1000000
+        }).subscribe((res: ResponseWrapper) => {
+            this.moduse = res.json;
+            if (this.moduse.length === 0) {
+                this.modus = new Modus(undefined, 1, 'Sonderbestellung', 1.0, 0.1,
+                    0.4, 0.0, 1.0, 0.0, 2.5,
+                    1.0, 2.0);
+                this.modusService.create(this.modus).subscribe((respond: Modus) =>
+                    console.log(respond), () => this.onSaveError());
+                this.modus = new Modus(undefined, 2, 'Billiganbieter', 3.0, 0.5, 1.3,
+                    2.0, 0.9, 10.0, 0.8,
+                    0.8, 0.8);
+                this.modusService.create(this.modus).subscribe((respond: Modus) =>
+                    console.log(respond), () => this.onSaveError());
+                this.modus = new Modus(undefined, 3, 'JIT ', 0.0, 0.0,
+                    0.5, 0.0, 1.0, 0.0, 1.2,
+                    1.0, 3.0);
+                this.modusService.create(this.modus).subscribe((respond: Modus) =>
+                    console.log(respond), () => this.onSaveError());
+                this.modus = new Modus(undefined, 4, 'Eil ', 0.0, 0.0,
+                    0.5, 0.0, 1.0, 0.0, 1.0,
+                    1.0, 10.0);
+                this.modusService.create(this.modus).subscribe((respond: Modus) =>
+                    console.log(respond), () => this.onSaveError());
+                this.modus = new Modus(undefined, 5, 'Normal ', 0.0, 0.0,
+                    1.0, 1.0, 1.0, 0.0, 1.0,
+                    0.9, 1.0);
+                this.modusService.create(this.modus).subscribe((respond: Modus) =>
+                    console.log(respond), () => this.onSaveError());
+            }
+        }, (respond: ResponseWrapper) => this.onError(respond.json), () => this.saveTeil(this.moduse));
    }
 
     changeListener($event): void {
@@ -88,7 +121,7 @@ export class PeriodStartComponent implements OnInit {
         }
         if (this.xml !== undefined) {
             this.periode = parseInt(this.xml.getElementsByTagName('results')[0].getAttribute('period'), 10);
-            this.saveModus();
+            this.saveTeil(this.moduse);
             this.saveArbeitsplatz();
             this.saveKennzahl();
 
@@ -194,7 +227,7 @@ export class PeriodStartComponent implements OnInit {
      * Speichert die 5 Bestellmodi
      */
     saveModus() {
-        this.modusService.query({
+        /*this.modusService.query({
             size: 1000000
         }).subscribe((res: ResponseWrapper) => {
             this.moduse = res.json;
@@ -225,7 +258,7 @@ export class PeriodStartComponent implements OnInit {
                 this.modusService.create(this.modus).subscribe((respond: Modus) =>
                     console.log(respond), () => this.onSaveError());
             }
-        }, (respond: ResponseWrapper) => this.onError(respond.json), () => this.saveTeil(this.moduse));
+        }, (respond: ResponseWrapper) => this.onError(respond.json), () => this.saveTeil(this.moduse));*/
     }
 
     /**

@@ -643,7 +643,7 @@ export class InHouseProductionComponent implements OnInit {
 
             }
 
-            }, (res: ResponseWrapper) => this.onError(res.json));
+            }, (res: ResponseWrapper) => this.onError(res.json), () => {
 
             criteria = [
                 {key: 'teiltyp.in', value: 'PRODUKT'},
@@ -654,7 +654,6 @@ export class InHouseProductionComponent implements OnInit {
             size: 1000000,
             criteria
         }).subscribe((res: ResponseWrapper) => {
-            // if (this.teil.nummer != null && this.teil.nummer == "1"){
 
             this.teile = res.json;
                 for (let i = 0; i < this.inhouse_anzeige_array.length; i++) {
@@ -1098,6 +1097,7 @@ export class InHouseProductionComponent implements OnInit {
 
         }, (res: ResponseWrapper) => this.onError(res.json));
 
+        });
     };
 
     private onError(error) {

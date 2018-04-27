@@ -8,6 +8,7 @@ import {Teil} from '../../entities/teil';
 import {BestellungService} from '../../entities/bestellung';
 import {ArbeitsplatzService} from '../../entities/arbeitsplatz';
 import {Fertigungsauftrag, FertigungsauftragService} from '../../entities/fertigungsauftrag';
+import {Modus, ModusService} from '../../entities/modus';
 
 @Component({
   selector: 'jhi-abschluss',
@@ -19,6 +20,8 @@ export class AbschlussComponent implements OnInit, OnDestroy {
     currentAccount: any;
     eventSubscriber: Subscription;
     teil: Teil;
+    modus: Modus;
+    modi = [];
     kaufteile = [];
     teils = [];
     teile = [];
@@ -34,6 +37,7 @@ export class AbschlussComponent implements OnInit, OnDestroy {
       private principal: Principal,
       private teilService: TeilService,
       private bestellungService: BestellungService,
+      private modusService: ModusService,
       private arbeitsplatzService: ArbeitsplatzService,
       private fertigungsauftragService: FertigungsauftragService
   ) { }
@@ -104,6 +108,13 @@ export class AbschlussComponent implements OnInit, OnDestroy {
             criteria
         }).subscribe((response: ResponseWrapper) => {
             this.kaufteile = response.json;
+        }, (res: ResponseWrapper) => this.onError(res.json));
+
+        this.modusService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((response: ResponseWrapper) => {
+            this.modi = response.json;
         }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
@@ -220,6 +231,7 @@ export class AbschlussComponent implements OnInit, OnDestroy {
                 const order = doc.createElement('order');
                 orderlist.appendChild(order);
                 this.teil = this.kaufteile.find((teil) => (teil.id === bestellung.kaufteil.id));
+                this.modus = this.modi.find((modus) => (modus.id === bestellung.modus.id));
                 if (this.teil.nummer !== null || this.teil.nummer !== undefined) {
                     order.setAttribute('article', this.teil.nummer.toString());
                 } else {
@@ -227,7 +239,7 @@ export class AbschlussComponent implements OnInit, OnDestroy {
                 }
                     order.setAttribute('quantity', bestellung.kaufmenge.toString());
                 if (bestellung.modus !== null) {
-                    order.setAttribute('modus', bestellung.modus.id.toString());
+                    order.setAttribute('modus', this.modus.nummer.toString());
                 } else {
                     order.setAttribute('modus', '');
                 }
@@ -405,16 +417,18 @@ export class AbschlussComponent implements OnInit, OnDestroy {
               this.fertigungsauftragService.update(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
                         console.log(respond), () => this.onSaveError());
       }
+        setTimeout(() => {
+            this.fertigungsauftraege.sort((a, b) => a.bearbeitungszeitmin - b.bearbeitungszeitmin);
+            this.fertigungsauftraege.reverse();
+            let i = 1;
+            for (const fertigungsauftrag of this.fertigungsauftraege) {
+                fertigungsauftrag.nummer = i;
+                this.fertigungsauftragService.update(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
+                    console.log(respond), () => this.onSaveError());
+                i = i + 1;
+            }
+        }, 500);
 
-        this.fertigungsauftraege.sort((a, b) => a.bearbeitungszeitmin - b.bearbeitungszeitmin);
-        this.fertigungsauftraege.reverse();
-        let i = 1;
-        for (const fertigungsauftrag of this.fertigungsauftraege) {
-            fertigungsauftrag.nummer = i;
-            this.fertigungsauftragService.update(fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
-                console.log(respond), () => this.onSaveError());
-            i = i + 1;
-        }
     }
 
     registerChangeInFertigungsauftrags() {

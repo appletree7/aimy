@@ -19,7 +19,9 @@ import { Principal, ResponseWrapper } from '../../shared';
 export class PurchasedPartComponent implements OnInit {
 
     teil: Teil;
+    alle_teile: Teil[];
     kaufteile: Teil[];
+    kaufteile_mehere_Perioden: Teil[];
     teils: Teil[];
     modus: Modus;
     modi: Modus[];
@@ -40,6 +42,8 @@ export class PurchasedPartComponent implements OnInit {
     diskontmenge_array: any;
     verwendung_array: any;
     bestellkosten_array: any;
+    lagerwert_gesamt: number;
+    lagerkostensatz: number;
     sicherheitsbestand_array = [];
     bestellpunkt_array = [];
     reichweite_array = [];
@@ -48,6 +52,8 @@ export class PurchasedPartComponent implements OnInit {
     gesamtes_array = [];
     empfohlene_neue_Bestellungen_array = [];
 
+    alte_bestellungen = [];
+    alte_bestellungen_kaufteil_array = [];
     bestellungen = [];
     bestellungen_DB = [];
     bestellung: Bestellung;
@@ -101,9 +107,9 @@ export class PurchasedPartComponent implements OnInit {
         }).subscribe((res3: ResponseWrapper) => {
             this.kaufteile = res3.json;
             if (this.kaufteile.length === 0) {
-                for (const kaufteile of this.kaufteile_array) {
+                for (const kaufteil of this.kaufteile_array) {
                     this.teil = new Teil(undefined, Teiltyp.KAUFTEIL, parseInt(localStorage.getItem('aktuelleperiode'), 10),
-                        kaufteile, undefined, undefined, undefined, undefined,
+                        kaufteil, undefined, undefined, undefined, undefined,
                         undefined, undefined, undefined, undefined,
                         undefined, undefined, undefined,
                         undefined, undefined, undefined,
@@ -113,6 +119,7 @@ export class PurchasedPartComponent implements OnInit {
                 }
 
             }
+            this.kaufteile.sort((a, b) => a.nummer - b.nummer)
         }, (res3: ResponseWrapper) => this.onError(res3.json));
 
         this.berechnedurchscnittlichenVerbrauch();
@@ -139,7 +146,7 @@ export class PurchasedPartComponent implements OnInit {
                     for (const bestellung of this.empfohlene_neue_Bestellungen_array) {
                         this.bestellungen.push(bestellung);
                     }
-                } , 2500);
+                } , 1500);
             }
         }, (res: ResponseWrapper) => this.onError(res.json));
 
@@ -322,7 +329,8 @@ export class PurchasedPartComponent implements OnInit {
                 for (let i = 0; i < this.kaufteile_vorperiode.length; i++) {
                     const durchscnittlicherLagerbestand = (this.kaufteile_vorperiode[i].startmenge + this.kaufteile_vorperiode[i].istmenge) / 2;
                     durchscnittlicherLagerbestand_Array_Kaufteil.push(durchscnittlicherLagerbestand);
-                    const lagerreichweite = (durchscnittlicherLagerbestand / this.bedarfdurchschnittKaufteil[i].bedarfavg);
+                    let lagerreichweite = (durchscnittlicherLagerbestand / this.bedarfdurchschnittKaufteil[i].bedarfavg);
+                    lagerreichweite = parseFloat(lagerreichweite.toFixed(2));
                     this.gesamtes_array[i].lagerreichweite = lagerreichweite;
                     this.reichweite_array.push(lagerreichweite);
                     if (this.reichweite_array[i] > this.lieferdauer_max_array[i]) {
@@ -343,7 +351,8 @@ export class PurchasedPartComponent implements OnInit {
                 for (let i = 0; i < this.kaufteile_array.length; i++) {
                     const durchscnittlicherLagerbestand = this.lagerbestand__kaufteile_periode0[i];
                     durchscnittlicherLagerbestand_Array_Kaufteil.push(durchscnittlicherLagerbestand);
-                    const lagerreichweite = (durchscnittlicherLagerbestand / this.bedarfdurchschnittKaufteil[i].bedarfavg);
+                    let lagerreichweite = (durchscnittlicherLagerbestand / this.bedarfdurchschnittKaufteil[i].bedarfavg);
+                    lagerreichweite = parseFloat(lagerreichweite.toFixed(2));
                     this.gesamtes_array[i].lagerreichweite = lagerreichweite;
                     this.reichweite_array.push(lagerreichweite);
                     if (this.reichweite_array[i] > this.lieferdauer_max_array[i]) {
@@ -359,7 +368,7 @@ export class PurchasedPartComponent implements OnInit {
 
             }
 
-        }, 1000);
+        }, 500);
 
     }
 
@@ -388,49 +397,154 @@ export class PurchasedPartComponent implements OnInit {
                 console.log('Sicherheitsbestand Array: ' + this.sicherheitsbestand_array);
                 console.log('Bestellpunkt Array: ' + this.bestellpunkt_array);
 
-        }, 1000);
+        }, 700);
 
     }
 
     loeseBestellungenaus() {
 
+        let criteria = [
+            {key: 'bestellstatus.in', value: 'UNTERWEGS'},
+            {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 1},
+            {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 2},
+            {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 3},
+            {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 4}
+        ];
+
+        this.bestellungService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((res: ResponseWrapper) => {
+            this.alte_bestellungen = res.json;
+
+            criteria = [
+                {key: 'teiltyp.in', value: 'KAUFTEIL'},
+                {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 1},
+                {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 2},
+                {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 3},
+                {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 4}
+            ];
+
+            this.teilService.query({
+                size: 1000000,
+                criteria
+            }).subscribe((res2: ResponseWrapper) => {
+                this.kaufteile_mehere_Perioden = res2.json;
+
+            for (let i = 0; i < this.alte_bestellungen.length; i++) {
+                this.teil = this.kaufteile_mehere_Perioden.find((teil) => teil.id === this.alte_bestellungen[i].kaufteil.id)
+                this.alte_bestellungen_kaufteil_array.push(new Object({
+                    kaufteil: this.teil.nummer,
+                    kaufmenge: this.alte_bestellungen[i].kaufmenge,
+                    liefertermin: this.alte_bestellungen[i].periode + 2.2
+                }));
+                /*if (this.alte_bestellungen_kaufteil_array[i].liefertermin <= parseInt(localStorage.getItem('aktuelleperiode'), 10)
+                    && this.alte_bestellungen_kaufteil_array[i].liefertermin >= parseInt(localStorage.getItem('aktuelleperiode'), 10)+1) {
+                    this.alte_bestellungen.pop();
+                }*/
+            }
+
+            this.alte_bestellungen_kaufteil_array.sort((a, b) => a.liefertermin - b.liefertermin)
+            console.log(this.alte_bestellungen_kaufteil_array);
+            }, (res2: ResponseWrapper) => this.onError(res2.json));
+
+        }, (res: ResponseWrapper) => this.onError(res.json));
+
+        criteria = [
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 1}
+        ];
+
+        this.teilService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((res: ResponseWrapper) => {
+            this.alle_teile = res.json;
+            const lagerwert_array = [];
+            if (this.alle_teile.length !== 0) {
+                for (const teil of this.alle_teile) {
+                    lagerwert_array.push(teil.lagerwert);
+                    this.lagerwert_gesamt = lagerwert_array.reduce((a, b) => a + b, 0)
+                }
+                if (this.lagerwert_gesamt > 250000) {
+                    const differenz = this.lagerwert_gesamt - 250000;
+                    const lagerkosten_periode = 250.000 * 0.006 + 5000 + differenz * 0.012;
+                    this.lagerkostensatz = (lagerkosten_periode / this.lagerwert_gesamt) * 100;
+                    console.log('Lagerkostensatz_Periode: ' + this.lagerkostensatz);
+                } else {
+                    this.lagerkostensatz = 0.6;
+                    console.log('Lagerkostensatz_Periode: ' + this.lagerkostensatz);
+                }
+            } else {
+                this.lagerwert_gesamt = 291355.00;
+                if (this.lagerwert_gesamt > 250000) {
+                    const differenz = this.lagerwert_gesamt - 250000;
+                    const lagerkosten_periode = 250.000 * 0.006 + 5000 + differenz * 0.012;
+                    this.lagerkostensatz = (lagerkosten_periode / this.lagerwert_gesamt) * 100;
+                    console.log('Lagerkostensatz_Periode: ' + this.lagerkostensatz);
+                } else {
+                    this.lagerkostensatz = 0.6;
+                    console.log('Lagerkostensatz_Periode: ' + this.lagerkostensatz);
+                }
+            }
+        }, (res: ResponseWrapper) => this.onError(res.json));
+
         setTimeout( () => {
 
             if (this.kaufteile_vorperiode.length !== 0) {
 
-                for (let i = 0; i < this.kaufteile_vorperiode.length; i++) {
-                    if (this.kaufteile_vorperiode[i].istmenge < this.bestellpunkt_array[i]) { // + alte Bestellungen!!!
-                        if (this.modusnummerkaufteil[i] === 5) {
-                            this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * this.bestellkosten_array[i])
-                                / (this.kaufteile_vorperiode[i].lagerpreis * 0.6))));
+                        for (let i = 0; i < this.kaufteile_vorperiode.length; i++) {
+                                    if (this.kaufteile_vorperiode[i].istmenge < this.bestellpunkt_array[i]) { // + alte Bestellungen!!!
+                                        if (this.modusnummerkaufteil[i] === 5 && this.lagerwert_gesamt <= 250000.00) {
+                                            this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * this.bestellkosten_array[i])
+                                                / (this.kaufteile_vorperiode[i].lagerpreis * this.lagerkostensatz))));
 
-                            this.modus = this.modi.find((modus) => modus.nummer === 5);
-                            this.teil = this.kaufteile.find((teil) => (teil.nummer === this.kaufteile[i].nummer)
-                                && (teil.periode === (parseInt(localStorage.getItem('aktuelleperiode'), 10))));
-                            this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), undefined,
-                                undefined, undefined, undefined, undefined,
-                                undefined, undefined, Bestellstatus.UNTERWEGS, this.modus, this.teil);
-                            this.empfohlene_neue_Bestellungen_array.push(this.bestellung);
-                        } else if (this.modusnummerkaufteil[i] === 4) {
-                            this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * (this.bestellkosten_array[i] * 10))
-                                / (this.kaufteile_vorperiode[i].lagerpreis * 0.6))));
-                            this.modus = this.modi.find((modus) => modus.nummer === 4);
-                            this.teil = this.kaufteile.find((teil) => (teil.nummer === this.kaufteile[i].nummer)
-                                && (teil.periode === (parseInt(localStorage.getItem('aktuelleperiode'), 10))));
-                            this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), undefined,
-                                undefined, undefined, undefined, undefined,
-                                undefined, undefined, Bestellstatus.UNTERWEGS, this.modus, this.teil);
-                            this.empfohlene_neue_Bestellungen_array.push(this.bestellung);
-                        }
+                                            this.modus = this.modi.find((modus) => modus.nummer === 5);
+                                            this.teil = this.kaufteile.find((teil) => (teil.nummer === this.kaufteile[i].nummer)
+                                                && (teil.periode === (parseInt(localStorage.getItem('aktuelleperiode'), 10))));
+                                            this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), undefined,
+                                                undefined, undefined, undefined, undefined,
+                                                undefined, undefined, Bestellstatus.UNTERWEGS, this.modus, this.teil);
+                                            this.empfohlene_neue_Bestellungen_array.push(this.bestellung);
+                                        } else if (this.modusnummerkaufteil[i] === 5 && this.lagerwert_gesamt > 250000.00) {
+                                                this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * this.bestellkosten_array[i])
+                                                    / (this.kaufteile_vorperiode[i].lagerpreis * this.lagerkostensatz))));
 
-                    }
+                                                this.modus = this.modi.find((modus) => modus.nummer === 5);
+                                                this.teil = this.kaufteile.find((teil) => (teil.nummer === this.kaufteile[i].nummer)
+                                                    && (teil.periode === (parseInt(localStorage.getItem('aktuelleperiode'), 10))));
+                                                this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), undefined,
+                                                    undefined, undefined, undefined, undefined,
+                                                    undefined, undefined, Bestellstatus.UNTERWEGS, this.modus, this.teil);
+                                                this.empfohlene_neue_Bestellungen_array.push(this.bestellung);
+                                        } else if (this.modusnummerkaufteil[i] === 4 && this.lagerwert_gesamt <= 250000.00) {
+                                            this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * (this.bestellkosten_array[i] * 10))
+                                                / (this.kaufteile_vorperiode[i].lagerpreis * this.lagerkostensatz))));
+                                            this.modus = this.modi.find((modus) => modus.nummer === 4);
+                                            this.teil = this.kaufteile.find((teil) => (teil.nummer === this.kaufteile[i].nummer)
+                                                && (teil.periode === (parseInt(localStorage.getItem('aktuelleperiode'), 10))));
+                                            this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), undefined,
+                                                undefined, undefined, undefined, undefined,
+                                                undefined, undefined, Bestellstatus.UNTERWEGS, this.modus, this.teil);
+                                            this.empfohlene_neue_Bestellungen_array.push(this.bestellung);
+                                        } else if (this.modusnummerkaufteil[i] === 4 && this.lagerwert_gesamt > 250000.00) {
+                                            this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * (this.bestellkosten_array[i] * 10))
+                                                / (this.kaufteile_vorperiode[i].lagerpreis * this.lagerkostensatz))));
+                                            this.modus = this.modi.find((modus) => modus.nummer === 4);
+                                            this.teil = this.kaufteile.find((teil) => (teil.nummer === this.kaufteile[i].nummer)
+                                                && (teil.periode === (parseInt(localStorage.getItem('aktuelleperiode'), 10))));
+                                            this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), undefined,
+                                                undefined, undefined, undefined, undefined,
+                                                undefined, undefined, Bestellstatus.UNTERWEGS, this.modus, this.teil);
+                                            this.empfohlene_neue_Bestellungen_array.push(this.bestellung);
+                                        }
+                                    }
                 }
 
             } else {
 
                 for (let i = 0; i < this.kaufteile_array.length; i++) {
-                    if (this.lagerbestand__kaufteile_periode0[i] < this.bestellpunkt_array[i]) { // + alte Bestellungen!!!
-                        if (this.modusnummerkaufteil[i] === 5) {
+                    if (this.lagerbestand__kaufteile_periode0[i] < this.bestellpunkt_array[i]) {
+                        if (this.modusnummerkaufteil[i] === 5 && this.lagerwert_gesamt <= 250000.00) {
                             this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * this.bestellkosten_array[i])
                                 / (this.preis__kaufteile_periode0[i] * 0.6))));
 
@@ -441,10 +555,35 @@ export class PurchasedPartComponent implements OnInit {
                                 undefined, undefined, undefined, undefined,
                                 undefined, undefined, Bestellstatus.UNTERWEGS, this.modus, this.teil);
                             this.empfohlene_neue_Bestellungen_array.push(this.bestellung);
-                        } else if (this.modusnummerkaufteil[i] === 4) {
+                        } else if (this.modusnummerkaufteil[i] === 5 && this.lagerwert_gesamt > 250000.00) {
+                                this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * this.bestellkosten_array[i])
+                                    / (this.preis__kaufteile_periode0[i] * 1.2))));
+
+                                this.modus = this.modi.find((modus) => modus.nummer === 5);
+                                this.teil = this.kaufteile.find((teil) => (teil.nummer === this.kaufteile[i].nummer)
+                                    && (teil.periode === (parseInt(localStorage.getItem('aktuelleperiode'), 10))));
+                                this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), undefined,
+                                    undefined, undefined, undefined, undefined,
+                                    undefined, undefined, Bestellstatus.UNTERWEGS, this.modus, this.teil);
+                                this.empfohlene_neue_Bestellungen_array.push(this.bestellung);
+                        } else if (this.modusnummerkaufteil[i] === 4 && this.lagerwert_gesamt <= 250000.00) {
                             this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * (this.bestellkosten_array[i] * 10))
                                 / (this.preis__kaufteile_periode0[i] * 0.6))));
+
                             this.modus = this.modi.find((modus) => modus.nummer === 4);
+                            this.teil = this.kaufteile.find((teil) => (teil.nummer === this.kaufteile[i].nummer)
+                                && (teil.periode === (parseInt(localStorage.getItem('aktuelleperiode'), 10))));
+                            console.log('Teil: ' + this.teil.nummer);
+                            console.log('Modus: ' + this.modus.nummer);
+                            this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), undefined,
+                                undefined, undefined, undefined, undefined,
+                                undefined, undefined, Bestellstatus.UNTERWEGS, this.modus, this.teil);
+                            this.empfohlene_neue_Bestellungen_array.push(this.bestellung);
+                        } else if (this.modusnummerkaufteil[i] === 4 && this.lagerwert_gesamt > 250000.00 ) {
+                            this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * (this.bestellkosten_array[i] * 10))
+                                / (this.preis__kaufteile_periode0[i] * 1.2))));
+
+                            this.modus = this.modi.find((modus) => modus.nummer === 4 && this.lagerwert_gesamt > 250000.00);
                             this.teil = this.kaufteile.find((teil) => (teil.nummer === this.kaufteile[i].nummer)
                                 && (teil.periode === (parseInt(localStorage.getItem('aktuelleperiode'), 10))));
                             this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), undefined,

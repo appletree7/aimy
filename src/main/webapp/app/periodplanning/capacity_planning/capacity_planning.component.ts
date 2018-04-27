@@ -8,7 +8,7 @@ import { TeilService } from '../../entities/teil';
 import { Arbeitsplatz, ArbeitsplatzService } from '../../entities/arbeitsplatz';
 import { Fertigungsauftrag, FertigungsauftragService  } from '../../entities/fertigungsauftrag';
 import {Principal, ResponseWrapper} from '../../shared';
-import {Observable} from 'rxjs/Rx';
+import * as d3 from 'd3';
 
 @Component({
     selector: 'jhi-capacity-planning',
@@ -18,6 +18,7 @@ export class CapacityPlanningComponent implements OnInit {
 
     isSaving: boolean;
     teils: Teil[];
+    teile: Teil[];
     teil: Teil;
     account: any;
     arbeitsplatz: Arbeitsplatz;
@@ -58,74 +59,75 @@ export class CapacityPlanningComponent implements OnInit {
         }).subscribe((res: ResponseWrapper) => {
             this.arbeitsplaetze = res.json;
             if (this.arbeitsplaetze.length === 0) {
-                this.capacity = new Capacity(undefined, 1, undefined, undefined,
-                    undefined, undefined, undefined, undefined, undefined,
+                this.capacity = new Capacity(undefined, 1, 0, 0,
+                    0, 0, undefined, undefined, undefined,
                      parseInt(localStorage.getItem('aktuelleperiode'), 10));
                 this.capacity_array.push(this.capacity);
-                this.capacity = new Capacity(undefined, 2, undefined, undefined,
-                    undefined, undefined, undefined, undefined, undefined,
+                this.capacity = new Capacity(undefined, 2, 0, 0,
+                    0, 0, undefined, undefined, undefined,
                     parseInt(localStorage.getItem('aktuelleperiode'), 10));
                 this.capacity_array.push(this.capacity);
-                this.capacity = new Capacity(undefined, 3, undefined, undefined,
-                    undefined, undefined, undefined, undefined, undefined,
+                this.capacity = new Capacity(undefined, 3, 0, 0,
+                    0, 0, undefined, undefined, undefined,
                     parseInt(localStorage.getItem('aktuelleperiode'), 10));
                 this.capacity_array.push(this.capacity);
-                this.capacity = new Capacity(undefined, 4, undefined, undefined,
-                    undefined, undefined, undefined, undefined, undefined,
+                this.capacity = new Capacity(undefined, 4, 0, 0,
+                    0, 0, undefined, undefined, undefined,
                     parseInt(localStorage.getItem('aktuelleperiode'), 10));
                 this.capacity_array.push(this.capacity);
-                this.capacity = new Capacity(undefined, 6, undefined, undefined,
-                    undefined, undefined, undefined, undefined, undefined,
+                this.capacity = new Capacity(undefined, 6, 0, 0,
+                    0, 0, undefined, undefined, undefined,
                     parseInt(localStorage.getItem('aktuelleperiode'), 10));
                 this.capacity_array.push(this.capacity);
-                this.capacity = new Capacity(undefined, 7, undefined, undefined,
-                    undefined, undefined, undefined, undefined, undefined,
+                this.capacity = new Capacity(undefined, 7, 0, 0,
+                    0, 0, undefined, undefined, undefined,
                     parseInt(localStorage.getItem('aktuelleperiode'), 10));
                 this.capacity_array.push(this.capacity);
-                this.capacity = new Capacity(undefined, 8, undefined, undefined,
-                    undefined, undefined, undefined, undefined, undefined,
+                this.capacity = new Capacity(undefined, 8, 0, 0,
+                    0, 0, undefined, undefined, undefined,
                     parseInt(localStorage.getItem('aktuelleperiode'), 10));
                 this.capacity_array.push(this.capacity);
-                this.capacity = new Capacity(undefined, 9, undefined, undefined,
-                    undefined, undefined, undefined, undefined, undefined,
+                this.capacity = new Capacity(undefined, 9, 0, 0,
+                    0, 0, undefined, undefined, undefined,
                     parseInt(localStorage.getItem('aktuelleperiode'), 10));
                 this.capacity_array.push(this.capacity);
-                this.capacity = new Capacity(undefined, 10, undefined, undefined,
-                    undefined, undefined, undefined, undefined, undefined,
+                this.capacity = new Capacity(undefined, 10, 0, 0,
+                    0, 0, undefined, undefined, undefined,
                     parseInt(localStorage.getItem('aktuelleperiode'), 10));
                 this.capacity_array.push(this.capacity);
-                this.capacity = new Capacity(undefined, 11, undefined, undefined,
-                    undefined, undefined, undefined, undefined, undefined,
+                this.capacity = new Capacity(undefined, 11, 0, 0,
+                    0, 0, undefined, undefined, undefined,
                     parseInt(localStorage.getItem('aktuelleperiode'), 10));
                 this.capacity_array.push(this.capacity);
-                this.capacity = new Capacity(undefined, 12, undefined, undefined,
-                    undefined, undefined, undefined, undefined, undefined,
+                this.capacity = new Capacity(undefined, 12, 0, 0,
+                    0, 0, undefined, undefined, undefined,
                     parseInt(localStorage.getItem('aktuelleperiode'), 10));
                 this.capacity_array.push(this.capacity);
-                this.capacity = new Capacity(undefined, 13, undefined, undefined,
-                    undefined, undefined, undefined, undefined, undefined,
+                this.capacity = new Capacity(undefined, 13, 0, 0,
+                    0, 0, undefined, undefined, undefined,
                     parseInt(localStorage.getItem('aktuelleperiode'), 10));
                 this.capacity_array.push(this.capacity);
-                this.capacity = new Capacity(undefined, 14, undefined, undefined,
-                    undefined, undefined, undefined, undefined, undefined,
+                this.capacity = new Capacity(undefined, 14, 0, 0,
+                    0, 0, undefined, undefined, undefined,
                     parseInt(localStorage.getItem('aktuelleperiode'), 10));
                 this.capacity_array.push(this.capacity);
-                this.capacity = new Capacity(undefined, 15, undefined, undefined,
-                    undefined, undefined, undefined, undefined, undefined,
+                this.capacity = new Capacity(undefined, 15, 0, 0,
+                    0, 0, undefined, undefined, undefined,
                     parseInt(localStorage.getItem('aktuelleperiode'), 10));
                 this.capacity_array.push(this.capacity);
             } else {
                 for (const arbeitsplatz of this.arbeitsplaetze) {
                     this.capacity_array.push(
-                        new Capacity(undefined, arbeitsplatz.nummer, undefined, undefined,
-                            undefined, undefined, undefined, undefined, undefined,
+                        new Capacity(undefined, arbeitsplatz.nummer, 0, 0,
+                            0, 0, undefined, undefined, undefined,
                             arbeitsplatz.periode));
                 }
+                this.capacity_array.sort((a, b) => a.arbeitsplatznummer - b.arbeitsplatznummer);
             }
 
-            this.berechneSichtundUeberstunden();
-
         }, (res: ResponseWrapper) => this.onError(res.json));
+
+        this.berechneSichtundUeberstunden();
 
     };
 
@@ -344,19 +346,6 @@ export class CapacityPlanningComponent implements OnInit {
         }).subscribe((res: ResponseWrapper) => {
             this.fertigungsauftraege = res.json;
 
-            // this.fertigungsauftraege.sort((a,b) => a.herstellteil.id-b.herstellteil.id);
-
-           /* for (let i = 0; i < this.teils.length; i++) {
-                this.ruestvorgaenge_teil_array_neu.push(new Object({
-                    nummer: this.teils[i].nummer,
-                    ruestvorgaenge: 0,
-                    rüstvorgänge_array: []
-                }));
-
-                this.teil = this.teils.find((teil) => (teil.id === this.fertigungsauftraege[i].herstellteil.id));
-
-                if (this.teils[i].nummer=this.teil.nummer) {*/
-
                     for (let j = 0; j < this.fertigungsauftraege.length; j++) {
 
                         // Sind die Rüstvorgänge richtig berechnet
@@ -366,22 +355,23 @@ export class CapacityPlanningComponent implements OnInit {
                         this.ruestvorgaenge_teil_array_neu.push(new Object({
                             nummer: this.teil.nummer,
                             ruestvorgaenge: 1
-                            // rüstvorgänge_array: []
                         }));
-
-                        // this.ruestvorgaenge_teil_array_neu[j].rüstvorgänge_array.push(1);
-
-                        // this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge = this.ruestvorgaenge_teil_array_neu[j].rüstvorgänge_array.reduce((a, b) => a + b, 0);
 
                     }
 
-            // this.ruestvorgaenge_teil_array_neu =  _lodash.groupBy(this.ruestvorgaenge_teil_array_neu, 'nummer')
+            const ruestvorgaengegroup = d3.nest()
+                .key((d) => d.nummer)
+                .rollup(function(v) { return d3.sum(v, function(d) { return d.ruestvorgaenge; }); })
+                .entries(this.ruestvorgaenge_teil_array_neu);
 
-            /*    }
+            this.ruestvorgaenge_teil_array_neu = [];
 
-            }*/
-
-            console.log(this.ruestvorgaenge_teil_array_neu);
+            for (const element of ruestvorgaengegroup) {
+                this.ruestvorgaenge_teil_array_neu.push(new Object({
+                    nummer: parseInt(element.key, 10),
+                    ruestvorgaenge: element.value
+                }));
+            }
 
             for (let i = 0; i < this.capacity_array.length; i++) {
 
@@ -585,7 +575,20 @@ export class CapacityPlanningComponent implements OnInit {
 
     async berechneKapzitaetsbedarfalt() {
 
-        const criteria = [
+        let criteria = [
+            {key: 'teiltyp.in', value: 'PRODUKT'},
+            {key: 'teiltyp.in', value: 'ERZEUGNIS'},
+            {key: 'periode.lessOrEqualThan', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
+        ];
+
+        this.teilService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((res: ResponseWrapper) => {
+            this.teile = res.json;
+        }, (res: ResponseWrapper) => this.onError(res.json));
+
+        criteria = [
             {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 1}
         ];
 
@@ -594,28 +597,30 @@ export class CapacityPlanningComponent implements OnInit {
             criteria
         }).subscribe((res: ResponseWrapper) => {
             this.arbeitsplaetze_vorperiode = res.json;
-            for (let i = 0; i < this.capacity_array.length; i++) {
-                this.arbeitsplatz = this.arbeitsplaetze_vorperiode.find((arbeitsplatz) =>
-                    (arbeitsplatz.nummer === this.capacity_array[i].arbeitsplatznummer));
-                this.capacity_array[i].kapazitaetsbedarf_alt = this.arbeitsplatz.restzeitbedarf_in_bearbeitung
-                    + this.arbeitsplatz.restzeitbedarf;
+            if (this.arbeitsplaetze_vorperiode.length !== 0) {
+                for (let i = 0; i < this.capacity_array.length; i++) {
+                    this.arbeitsplatz = this.arbeitsplaetze_vorperiode.find((arbeitsplatz) =>
+                        (arbeitsplatz.nummer === this.capacity_array[i].arbeitsplatznummer));
+                    this.capacity_array[i].kapazitaetsbedarf_alt = this.arbeitsplatz.restzeitbedarf_in_bearbeitung
+                        + this.arbeitsplatz.restzeitbedarf;
+                }
             }
         }, (res: ResponseWrapper) => this.onError(res.json));
 
-    }
+        }
 
-    async berechneRuestzeitalt() {
+   /* async berechneRuestzeitalt() {
         for (let i = 0; i < this.capacity_array.length; i++) {
             this.capacity_array[i].ruestzeit_alt = 0;
         }
 
-    }
+    }*/
 
-   /* async berechneRuestzeitalt() {
+   async berechneRuestzeitalt() {
 
         const criteria = [
-            {key: 'auftragsstatus.in', value: 'ANGEFANGEN'},
-            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 1}
+            {key: 'auftragsstatus.equals', value: 'ANGEFANGEN'},
+            {key: 'periode.lessOrEqualThan', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
         ];
 
         this.fertigungsauftragService.query({
@@ -624,225 +629,242 @@ export class CapacityPlanningComponent implements OnInit {
         }).subscribe((res: ResponseWrapper) => {
             this.fertigungsauftraege_alt = res.json;
 
-            console.log(this.teils);
+            setTimeout(() => {
 
-            // Sind die Rüstvorgänge richtig berechnet muss noch teile gruppieren
-            for (let i = 0; i < this.fertigungsauftraege_alt.length; i++) {
+                // Sind die Rüstvorgänge richtig berechnet muss noch teile gruppieren
+                for (let i = 0; i < this.fertigungsauftraege_alt.length; i++) {
 
-                this.teil = this.teile.find((teil) => (teil.id === this.fertigungsauftraege_alt[i].herstellteil.id));
-                this.ruestvorgaenge_teil_array_alt.push(new Object({nummer: this.teil.nummer, ruestvorgaenge: 1}));
+                    this.teil = this.teile.find((teil) => (teil.id === this.fertigungsauftraege_alt[i].herstellteil.id));
+                    this.ruestvorgaenge_teil_array_alt.push(new Object({nummer: this.teil.nummer, ruestvorgaenge: 1}));
 
-            }
+                }
 
-            for (let i = 0; i < this.capacity_array.length; i++) {
+                const ruestvorgaengegroup = d3.nest()
+                    .key((d) => d.nummer)
+                    .rollup( function(v) { return d3.sum(v, function(d) { return d.ruestvorgaenge; }); })
+                    .entries(this.ruestvorgaenge_teil_array_alt);
 
-                const rüstzeit_arbeitsplatz = [];
+                this.ruestvorgaenge_teil_array_alt = [];
 
-                for (let j = 0; j < this.ruestvorgaenge_teil_array_alt.length; j++) {
+                for (const element of ruestvorgaengegroup) {
+                    this.ruestvorgaenge_teil_array_alt.push(new Object({
+                        nummer: parseInt(element.key, 10),
+                        ruestvorgaenge: element.value
+                    }));
+                }
 
-                    if (this.capacity_array[i].arbeitsplatznummer === 1) {
+                for (let i = 0; i < this.capacity_array.length; i++) {
 
-                        if (this.ruestvorgaenge_teil_array_alt[j].nummer === 49 || this.ruestvorgaenge_teil_array_alt[j].nummer === 54
-                            || this.ruestvorgaenge_teil_array_alt[j].nummer === 29) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                    const rüstzeit_arbeitsplatz = [];
+
+                    for (let j = 0; j < this.ruestvorgaenge_teil_array_alt.length; j++) {
+
+                        if (this.capacity_array[i].arbeitsplatznummer === 1) {
+
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 49 || this.ruestvorgaenge_teil_array_alt[j].nummer === 54
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 29) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                            }
+
+                            this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
                         }
 
-                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+                        if (this.capacity_array[i].arbeitsplatznummer === 2) {
 
-                    }
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 50 || this.ruestvorgaenge_teil_array_alt[j].nummer === 55) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 30);
+                            }
 
-                    if (this.capacity_array[i].arbeitsplatznummer === 2) {
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 30) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                            }
 
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 50 ||this.ruestvorgaenge_teil_array_neu[j].nummer === 55) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 30);
+                            this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
                         }
 
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 30) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        if (this.capacity_array[i].arbeitsplatznummer === 3) {
+
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 31 || this.ruestvorgaenge_teil_array_alt[j].nummer === 56
+                                || this.ruestvorgaenge_teil_array_alt[j].numer === 51) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                            }
+
+                            this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
                         }
 
-                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+                        if (this.capacity_array[i].arbeitsplatznummer === 4) {
 
-                    }
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 1 || this.ruestvorgaenge_teil_array_alt[j].nummer === 3) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 30);
+                            }
 
-                    if (this.capacity_array[i].arbeitsplatznummer === 3) {
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 2) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                            }
 
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 31 || this.ruestvorgaenge_teil_array_neu[j].nummer === 56
-                            || this.ruestvorgaenge_teil_array_neu[j].numer === 51) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                            this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
                         }
 
-                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+                        if (this.capacity_array[i].arbeitsplatznummer === 6) {
 
-                    }
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 18 || this.ruestvorgaenge_teil_array_alt[j].nummer === 19
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 20 || this.ruestvorgaenge_teil_array_alt[j].nummer === 16) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 15);
+                            }
 
-                    if (this.capacity_array[i].arbeitsplatznummer === 4) {
+                            this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
 
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 1 || this.ruestvorgaenge_teil_array_neu[j].nummer === 3) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 30);
                         }
 
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 2) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        if (this.capacity_array[i].arbeitsplatznummer === 7) {
+
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 10 || this.ruestvorgaenge_teil_array_alt[j].nummer === 11
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 12 || this.ruestvorgaenge_teil_array_alt[j].nummer === 13
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 14 || this.ruestvorgaenge_teil_array_alt[j].nummer === 15
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 18 || this.ruestvorgaenge_teil_array_alt[j].nummer === 19
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 20) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                            }
+
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 26) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 30);
+                            }
+
+                            this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
                         }
 
-                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+                        if (this.capacity_array[i].arbeitsplatznummer === 8) {
 
-                    }
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 10 || this.ruestvorgaenge_teil_array_alt[j].nummer === 11 ||
+                                this.ruestvorgaenge_teil_array_alt[j].nummer === 12 || this.ruestvorgaenge_teil_array_alt[j].nummer === 13
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 14 || this.ruestvorgaenge_teil_array_alt[j].nummer === 15) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 15);
+                            }
 
-                    if (this.capacity_array[i].arbeitsplatznummer === 6) {
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 18 || this.ruestvorgaenge_teil_array_alt[j].nummer === 20) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                            }
 
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 18 || this.ruestvorgaenge_teil_array_neu[j].nummer === 19
-                            ||this.ruestvorgaenge_teil_array_neu[j].nummer === 20 || this.ruestvorgaenge_teil_array_neu[j].nummer === 16) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 15);
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 19) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 25);
+                            }
+
+                            this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
                         }
 
-                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+                        if (this.capacity_array[i].arbeitsplatznummer === 9) {
 
-                    }
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 10 || this.ruestvorgaenge_teil_array_alt[j].nummer === 11 ||
+                                this.ruestvorgaenge_teil_array_alt[j].nummer === 12 || this.ruestvorgaenge_teil_array_alt[j].nummer === 13
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 14 || this.ruestvorgaenge_teil_array_alt[j].nummer === 15
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 18 || this.ruestvorgaenge_teil_array_alt[j].nummer === 20) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 15);
+                            }
 
-                    if (this.capacity_array[i].arbeitsplatznummer === 7) {
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 19) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                            }
 
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 10 || this.ruestvorgaenge_teil_array_neu[j].nummer === 11
-                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
-                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15
-                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 18 || this.ruestvorgaenge_teil_array_neu[j].nummer === 19
-                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 20) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                            this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
                         }
 
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 26) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 30);
+                        if (this.capacity_array[i].arbeitsplatznummer === 10) {
+
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 4 || this.ruestvorgaenge_teil_array_alt[j].nummer === 5
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 6 || this.ruestvorgaenge_teil_array_alt[j].nummer === 7
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 8 || this.ruestvorgaenge_teil_array_alt[j].nummer === 9) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                            }
+
+                            this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
                         }
 
-                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+                        if (this.capacity_array[i].arbeitsplatznummer === 11) {
 
-                    }
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 4 || this.ruestvorgaenge_teil_array_alt[j].nummer === 5) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 10);
+                            }
 
-                    if (this.capacity_array[i].arbeitsplatznummer === 8) {
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 6 || this.ruestvorgaenge_teil_array_alt[j].nummer === 7
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 8 || this.ruestvorgaenge_teil_array_alt[j].nummer === 9) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                            }
 
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 10 || this.ruestvorgaenge_teil_array_neu[j].nummer === 11 ||
-                            this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
-                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 15);
+                            this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
                         }
 
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 18 || this.ruestvorgaenge_teil_array_neu[j].nummer === 20) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        if (this.capacity_array[i].arbeitsplatznummer === 12) {
+
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 10 || this.ruestvorgaenge_teil_array_alt[j].nummer === 11
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 12 || this.ruestvorgaenge_teil_array_alt[j].nummer === 13
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 14 || this.ruestvorgaenge_teil_array_alt[j].nummer === 15) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 0);
+                            }
+
+                            this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
                         }
 
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 19) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 25);
+                        if (this.capacity_array[i].arbeitsplatznummer === 13) {
+
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 10 || this.ruestvorgaenge_teil_array_alt[j].nummer === 11
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 12 || this.ruestvorgaenge_teil_array_alt[j].nummer === 13
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 14 || this.ruestvorgaenge_teil_array_alt[j].nummer === 15) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 0);
+                            }
+
+                            this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
                         }
 
-                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
+                        if (this.capacity_array[i].arbeitsplatznummer === 14) {
 
-                    }
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 16) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 0);
+                            }
 
-                    if (this.capacity_array[i].arbeitsplatznummer === 9) {
+                            this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
 
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 10 || this.ruestvorgaenge_teil_array_neu[j].nummer === 11 ||
-                            this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
-                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15
-                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 18 || this.ruestvorgaenge_teil_array_neu[j].nummer === 20) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 15);
                         }
 
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 19) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                        if (this.capacity_array[i].arbeitsplatznummer === 15) {
+
+                            if (this.ruestvorgaenge_teil_array_alt[j].nummer === 17 || this.ruestvorgaenge_teil_array_alt[j].nummer === 26) {
+                                rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 15);
+                            }
+
+                            this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
+
                         }
-
-                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
-
-                    }
-
-                    if (this.capacity_array[i].arbeitsplatznummer === 10) {
-
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 4 || this.ruestvorgaenge_teil_array_neu[j].nummer === 5
-                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 6 || this.ruestvorgaenge_teil_array_neu[j].nummer === 7
-                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 8 || this.ruestvorgaenge_teil_array_neu[j].nummer === 9) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
-                        }
-
-                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
-
-                    }
-
-                    if (this.capacity_array[i].arbeitsplatznummer === 11) {
-
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 4 || this.ruestvorgaenge_teil_array_neu[j].nummer === 5) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 10);
-                        }
-
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 6 || this.ruestvorgaenge_teil_array_neu[j].nummer === 7
-                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 8 || this.ruestvorgaenge_teil_array_neu[j].nummer === 9) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
-                        }
-
-                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
-
-                    }
-
-                    if (this.capacity_array[i].arbeitsplatznummer === 12) {
-
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 10 || this.ruestvorgaenge_teil_array_neu[j].nummer === 11
-                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
-                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 0);
-                        }
-
-                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
-
-                    }
-
-                    if (this.capacity_array[i].arbeitsplatznummer === 13) {
-
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 10 || this.ruestvorgaenge_teil_array_neu[j].nummer === 11
-                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
-                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 0);
-                        }
-
-                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
-
-                    }
-
-                    if (this.capacity_array[i].arbeitsplatznummer === 14) {
-
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 16) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 0);
-                        }
-
-                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
-
-                    }
-
-                    if (this.capacity_array[i].arbeitsplatznummer === 15) {
-
-                        if (this.ruestvorgaenge_teil_array_neu[j].nummer === 17 || this.ruestvorgaenge_teil_array_neu[j].nummer === 26) {
-                            rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 15);
-                        }
-
-                        this.capacity_array[i].ruestzeit_neu = rüstzeit_arbeitsplatz.reduce((a,b) => a +b, 0);
 
                     }
 
                 }
-            }
+
+            }, 300);
 
         }, (res: ResponseWrapper) => this.onError(res.json));
 
-    }*/
+    }
 
     async berechneRuestzeitenundKapazitaeten() {
 
-        await this.berechneKapzitaetsbedarfneu();
+        this.berechneKapzitaetsbedarfneu();
 
-        await this.berechneRuestzeitneu();
+        this.berechneRuestzeitneu();
 
-        await this.berechneKapzitaetsbedarfalt();
+        this.berechneKapzitaetsbedarfalt();
 
-        await this.berechneRuestzeitalt();
+        this.berechneRuestzeitalt();
 
     }
 
@@ -850,8 +872,8 @@ export class CapacityPlanningComponent implements OnInit {
 
        this.berechneRuestzeitenundKapazitaeten();
 
-       /*await this.berechneRuestzeitenundKapazitaeten().then( () => {
-           for (let i=0; i < this.capacity_array.length; i++) {
+       /* await this.berechneRuestzeitenundKapazitaeten().then( () => {
+           for (let i = 0; i < this.capacity_array.length; i++) {
                this.capacity_array[i].gesamter_kapazitaetsbedarf = this.capacity_array[i].kapazitaetsbedarf_neu
                    + this.capacity_array[i].ruestzeit_neu + this.capacity_array[i].kapazitaetsbedarf_alt + this.capacity_array[i].ruestzeit_alt;
                console.log(this.capacity_array[i]);
@@ -902,8 +924,6 @@ export class CapacityPlanningComponent implements OnInit {
             }
 
             }
-
-        // })
         }, 500);
 
     }

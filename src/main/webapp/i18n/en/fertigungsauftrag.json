@@ -2,31 +2,33 @@
     "aimyApp": {
         "fertigungsauftrag" : {
             "home": {
-                "title": "Construction contracts",
-                "createLabel": "Create a new Construction contract",
-                "createOrEditLabel": "Create or edit a Construction contract"
+                "title": "Fertigungsauftrags",
+                "createLabel": "Create a new Fertigungsauftrag",
+                "createOrEditLabel": "Create or edit a Fertigungsauftrag"
             },
-            "created": "A new Construction contract is created with identifier {{ param }}",
-            "updated": "A Construction contract is updated with identifier {{ param }}",
-            "deleted": "A Construction contract is deleted with identifier {{ param }}",
+            "created": "A new Fertigungsauftrag is created with identifier {{ param }}",
+            "updated": "A Fertigungsauftrag is updated with identifier {{ param }}",
+            "deleted": "A Fertigungsauftrag is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Construction contract {{ id }}?"
+                "question": "Are you sure you want to delete Fertigungsauftrag {{ id }}?"
             },
             "detail": {
-                "title": "Construction contract"
+                "title": "Fertigungsauftrag"
             },
             "periode": "Periode",
-            "nummer": "number",
-            "auftragsmenge": "order quantity",
-            "kosten": "costs",
-            "durchschnittlichestueckkosten": "Average unit costs",
-            "auftragsstatus": "order status",
-            "begonnen": "began",
-            "beendet": "completed",
-            "dlzminimal": "Cycle time minimal",
-            "dlzFaktor": "Cycle time factor",
-            "bearbeitungszeitmin": "Processing time min",
-            "herstellteil": "manufacturing component"
+            "nummer": "Nummer",
+            "auftragsmenge": "Auftragsmenge",
+            "kosten": "Kosten",
+            "durchschnittlichestueckkosten": "Durchschnittlichestueckkosten",
+            "auftragsstatus": "Auftragsstatus",
+            "begonnen": "Begonnen",
+            "beendet": "Beendet",
+            "dlzminimal": "Dlzminimal",
+            "dlzFaktor": "Dlz Faktor",
+            "bearbeitungszeitmin": "Bearbeitungszeitmin",
+            "warteliste_menge": "Warteliste Menge",
+            "inBearbeitung_menge": "In Bearbeitung Menge",
+            "herstellteil": "Herstellteil"
         }
     }
 }

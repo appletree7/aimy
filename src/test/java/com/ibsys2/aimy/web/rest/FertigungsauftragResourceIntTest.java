@@ -76,6 +76,12 @@ public class FertigungsauftragResourceIntTest {
     private static final Integer DEFAULT_BEARBEITUNGSZEITMIN = 0;
     private static final Integer UPDATED_BEARBEITUNGSZEITMIN = 1;
 
+    private static final Integer DEFAULT_WARTELISTE_MENGE = 0;
+    private static final Integer UPDATED_WARTELISTE_MENGE = 1;
+
+    private static final Integer DEFAULT_IN_BEARBEITUNG_MENGE = 0;
+    private static final Integer UPDATED_IN_BEARBEITUNG_MENGE = 1;
+
     @Autowired
     private FertigungsauftragRepository fertigungsauftragRepository;
 
@@ -130,7 +136,9 @@ public class FertigungsauftragResourceIntTest {
             .beendet(DEFAULT_BEENDET)
             .dlzminimal(DEFAULT_DLZMINIMAL)
             .dlzFaktor(DEFAULT_DLZ_FAKTOR)
-            .bearbeitungszeitmin(DEFAULT_BEARBEITUNGSZEITMIN);
+            .bearbeitungszeitmin(DEFAULT_BEARBEITUNGSZEITMIN)
+            .warteliste_menge(DEFAULT_WARTELISTE_MENGE)
+            .inBearbeitung_menge(DEFAULT_IN_BEARBEITUNG_MENGE);
         return fertigungsauftrag;
     }
 
@@ -165,6 +173,8 @@ public class FertigungsauftragResourceIntTest {
         assertThat(testFertigungsauftrag.getDlzminimal()).isEqualTo(DEFAULT_DLZMINIMAL);
         assertThat(testFertigungsauftrag.getDlzFaktor()).isEqualTo(DEFAULT_DLZ_FAKTOR);
         assertThat(testFertigungsauftrag.getBearbeitungszeitmin()).isEqualTo(DEFAULT_BEARBEITUNGSZEITMIN);
+        assertThat(testFertigungsauftrag.getWarteliste_menge()).isEqualTo(DEFAULT_WARTELISTE_MENGE);
+        assertThat(testFertigungsauftrag.getInBearbeitung_menge()).isEqualTo(DEFAULT_IN_BEARBEITUNG_MENGE);
     }
 
     @Test
@@ -243,7 +253,9 @@ public class FertigungsauftragResourceIntTest {
             .andExpect(jsonPath("$.[*].beendet").value(hasItem(DEFAULT_BEENDET.toString())))
             .andExpect(jsonPath("$.[*].dlzminimal").value(hasItem(DEFAULT_DLZMINIMAL)))
             .andExpect(jsonPath("$.[*].dlzFaktor").value(hasItem(DEFAULT_DLZ_FAKTOR.doubleValue())))
-            .andExpect(jsonPath("$.[*].bearbeitungszeitmin").value(hasItem(DEFAULT_BEARBEITUNGSZEITMIN)));
+            .andExpect(jsonPath("$.[*].bearbeitungszeitmin").value(hasItem(DEFAULT_BEARBEITUNGSZEITMIN)))
+            .andExpect(jsonPath("$.[*].warteliste_menge").value(hasItem(DEFAULT_WARTELISTE_MENGE)))
+            .andExpect(jsonPath("$.[*].inBearbeitung_menge").value(hasItem(DEFAULT_IN_BEARBEITUNG_MENGE)));
     }
 
     @Test
@@ -267,7 +279,9 @@ public class FertigungsauftragResourceIntTest {
             .andExpect(jsonPath("$.beendet").value(DEFAULT_BEENDET.toString()))
             .andExpect(jsonPath("$.dlzminimal").value(DEFAULT_DLZMINIMAL))
             .andExpect(jsonPath("$.dlzFaktor").value(DEFAULT_DLZ_FAKTOR.doubleValue()))
-            .andExpect(jsonPath("$.bearbeitungszeitmin").value(DEFAULT_BEARBEITUNGSZEITMIN));
+            .andExpect(jsonPath("$.bearbeitungszeitmin").value(DEFAULT_BEARBEITUNGSZEITMIN))
+            .andExpect(jsonPath("$.warteliste_menge").value(DEFAULT_WARTELISTE_MENGE))
+            .andExpect(jsonPath("$.inBearbeitung_menge").value(DEFAULT_IN_BEARBEITUNG_MENGE));
     }
 
     @Test
@@ -836,6 +850,138 @@ public class FertigungsauftragResourceIntTest {
 
     @Test
     @Transactional
+    public void getAllFertigungsauftragsByWarteliste_mengeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        fertigungsauftragRepository.saveAndFlush(fertigungsauftrag);
+
+        // Get all the fertigungsauftragList where warteliste_menge equals to DEFAULT_WARTELISTE_MENGE
+        defaultFertigungsauftragShouldBeFound("warteliste_menge.equals=" + DEFAULT_WARTELISTE_MENGE);
+
+        // Get all the fertigungsauftragList where warteliste_menge equals to UPDATED_WARTELISTE_MENGE
+        defaultFertigungsauftragShouldNotBeFound("warteliste_menge.equals=" + UPDATED_WARTELISTE_MENGE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllFertigungsauftragsByWarteliste_mengeIsInShouldWork() throws Exception {
+        // Initialize the database
+        fertigungsauftragRepository.saveAndFlush(fertigungsauftrag);
+
+        // Get all the fertigungsauftragList where warteliste_menge in DEFAULT_WARTELISTE_MENGE or UPDATED_WARTELISTE_MENGE
+        defaultFertigungsauftragShouldBeFound("warteliste_menge.in=" + DEFAULT_WARTELISTE_MENGE + "," + UPDATED_WARTELISTE_MENGE);
+
+        // Get all the fertigungsauftragList where warteliste_menge equals to UPDATED_WARTELISTE_MENGE
+        defaultFertigungsauftragShouldNotBeFound("warteliste_menge.in=" + UPDATED_WARTELISTE_MENGE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllFertigungsauftragsByWarteliste_mengeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        fertigungsauftragRepository.saveAndFlush(fertigungsauftrag);
+
+        // Get all the fertigungsauftragList where warteliste_menge is not null
+        defaultFertigungsauftragShouldBeFound("warteliste_menge.specified=true");
+
+        // Get all the fertigungsauftragList where warteliste_menge is null
+        defaultFertigungsauftragShouldNotBeFound("warteliste_menge.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllFertigungsauftragsByWarteliste_mengeIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        fertigungsauftragRepository.saveAndFlush(fertigungsauftrag);
+
+        // Get all the fertigungsauftragList where warteliste_menge greater than or equals to DEFAULT_WARTELISTE_MENGE
+        defaultFertigungsauftragShouldBeFound("warteliste_menge.greaterOrEqualThan=" + DEFAULT_WARTELISTE_MENGE);
+
+        // Get all the fertigungsauftragList where warteliste_menge greater than or equals to UPDATED_WARTELISTE_MENGE
+        defaultFertigungsauftragShouldNotBeFound("warteliste_menge.greaterOrEqualThan=" + UPDATED_WARTELISTE_MENGE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllFertigungsauftragsByWarteliste_mengeIsLessThanSomething() throws Exception {
+        // Initialize the database
+        fertigungsauftragRepository.saveAndFlush(fertigungsauftrag);
+
+        // Get all the fertigungsauftragList where warteliste_menge less than or equals to DEFAULT_WARTELISTE_MENGE
+        defaultFertigungsauftragShouldNotBeFound("warteliste_menge.lessThan=" + DEFAULT_WARTELISTE_MENGE);
+
+        // Get all the fertigungsauftragList where warteliste_menge less than or equals to UPDATED_WARTELISTE_MENGE
+        defaultFertigungsauftragShouldBeFound("warteliste_menge.lessThan=" + UPDATED_WARTELISTE_MENGE);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllFertigungsauftragsByInBearbeitung_mengeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        fertigungsauftragRepository.saveAndFlush(fertigungsauftrag);
+
+        // Get all the fertigungsauftragList where inBearbeitung_menge equals to DEFAULT_IN_BEARBEITUNG_MENGE
+        defaultFertigungsauftragShouldBeFound("inBearbeitung_menge.equals=" + DEFAULT_IN_BEARBEITUNG_MENGE);
+
+        // Get all the fertigungsauftragList where inBearbeitung_menge equals to UPDATED_IN_BEARBEITUNG_MENGE
+        defaultFertigungsauftragShouldNotBeFound("inBearbeitung_menge.equals=" + UPDATED_IN_BEARBEITUNG_MENGE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllFertigungsauftragsByInBearbeitung_mengeIsInShouldWork() throws Exception {
+        // Initialize the database
+        fertigungsauftragRepository.saveAndFlush(fertigungsauftrag);
+
+        // Get all the fertigungsauftragList where inBearbeitung_menge in DEFAULT_IN_BEARBEITUNG_MENGE or UPDATED_IN_BEARBEITUNG_MENGE
+        defaultFertigungsauftragShouldBeFound("inBearbeitung_menge.in=" + DEFAULT_IN_BEARBEITUNG_MENGE + "," + UPDATED_IN_BEARBEITUNG_MENGE);
+
+        // Get all the fertigungsauftragList where inBearbeitung_menge equals to UPDATED_IN_BEARBEITUNG_MENGE
+        defaultFertigungsauftragShouldNotBeFound("inBearbeitung_menge.in=" + UPDATED_IN_BEARBEITUNG_MENGE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllFertigungsauftragsByInBearbeitung_mengeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        fertigungsauftragRepository.saveAndFlush(fertigungsauftrag);
+
+        // Get all the fertigungsauftragList where inBearbeitung_menge is not null
+        defaultFertigungsauftragShouldBeFound("inBearbeitung_menge.specified=true");
+
+        // Get all the fertigungsauftragList where inBearbeitung_menge is null
+        defaultFertigungsauftragShouldNotBeFound("inBearbeitung_menge.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllFertigungsauftragsByInBearbeitung_mengeIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        fertigungsauftragRepository.saveAndFlush(fertigungsauftrag);
+
+        // Get all the fertigungsauftragList where inBearbeitung_menge greater than or equals to DEFAULT_IN_BEARBEITUNG_MENGE
+        defaultFertigungsauftragShouldBeFound("inBearbeitung_menge.greaterOrEqualThan=" + DEFAULT_IN_BEARBEITUNG_MENGE);
+
+        // Get all the fertigungsauftragList where inBearbeitung_menge greater than or equals to UPDATED_IN_BEARBEITUNG_MENGE
+        defaultFertigungsauftragShouldNotBeFound("inBearbeitung_menge.greaterOrEqualThan=" + UPDATED_IN_BEARBEITUNG_MENGE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllFertigungsauftragsByInBearbeitung_mengeIsLessThanSomething() throws Exception {
+        // Initialize the database
+        fertigungsauftragRepository.saveAndFlush(fertigungsauftrag);
+
+        // Get all the fertigungsauftragList where inBearbeitung_menge less than or equals to DEFAULT_IN_BEARBEITUNG_MENGE
+        defaultFertigungsauftragShouldNotBeFound("inBearbeitung_menge.lessThan=" + DEFAULT_IN_BEARBEITUNG_MENGE);
+
+        // Get all the fertigungsauftragList where inBearbeitung_menge less than or equals to UPDATED_IN_BEARBEITUNG_MENGE
+        defaultFertigungsauftragShouldBeFound("inBearbeitung_menge.lessThan=" + UPDATED_IN_BEARBEITUNG_MENGE);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllFertigungsauftragsByHerstellteilIsEqualToSomething() throws Exception {
         // Initialize the database
         Teil herstellteil = TeilResourceIntTest.createEntity(em);
@@ -870,7 +1016,9 @@ public class FertigungsauftragResourceIntTest {
             .andExpect(jsonPath("$.[*].beendet").value(hasItem(DEFAULT_BEENDET.toString())))
             .andExpect(jsonPath("$.[*].dlzminimal").value(hasItem(DEFAULT_DLZMINIMAL)))
             .andExpect(jsonPath("$.[*].dlzFaktor").value(hasItem(DEFAULT_DLZ_FAKTOR.doubleValue())))
-            .andExpect(jsonPath("$.[*].bearbeitungszeitmin").value(hasItem(DEFAULT_BEARBEITUNGSZEITMIN)));
+            .andExpect(jsonPath("$.[*].bearbeitungszeitmin").value(hasItem(DEFAULT_BEARBEITUNGSZEITMIN)))
+            .andExpect(jsonPath("$.[*].warteliste_menge").value(hasItem(DEFAULT_WARTELISTE_MENGE)))
+            .andExpect(jsonPath("$.[*].inBearbeitung_menge").value(hasItem(DEFAULT_IN_BEARBEITUNG_MENGE)));
     }
 
     /**
@@ -914,7 +1062,9 @@ public class FertigungsauftragResourceIntTest {
             .beendet(UPDATED_BEENDET)
             .dlzminimal(UPDATED_DLZMINIMAL)
             .dlzFaktor(UPDATED_DLZ_FAKTOR)
-            .bearbeitungszeitmin(UPDATED_BEARBEITUNGSZEITMIN);
+            .bearbeitungszeitmin(UPDATED_BEARBEITUNGSZEITMIN)
+            .warteliste_menge(UPDATED_WARTELISTE_MENGE)
+            .inBearbeitung_menge(UPDATED_IN_BEARBEITUNG_MENGE);
 
         restFertigungsauftragMockMvc.perform(put("/api/fertigungsauftrags")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -936,6 +1086,8 @@ public class FertigungsauftragResourceIntTest {
         assertThat(testFertigungsauftrag.getDlzminimal()).isEqualTo(UPDATED_DLZMINIMAL);
         assertThat(testFertigungsauftrag.getDlzFaktor()).isEqualTo(UPDATED_DLZ_FAKTOR);
         assertThat(testFertigungsauftrag.getBearbeitungszeitmin()).isEqualTo(UPDATED_BEARBEITUNGSZEITMIN);
+        assertThat(testFertigungsauftrag.getWarteliste_menge()).isEqualTo(UPDATED_WARTELISTE_MENGE);
+        assertThat(testFertigungsauftrag.getInBearbeitung_menge()).isEqualTo(UPDATED_IN_BEARBEITUNG_MENGE);
     }
 
     @Test

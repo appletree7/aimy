@@ -19,13 +19,15 @@
             "nummer": "Nummer",
             "auftragsmenge": "Auftragsmenge",
             "kosten": "Kosten",
-            "durchschnittlichestueckkosten": "Durchschnittliche Stückkosten",
+            "durchschnittlichestueckkosten": "Durchschnittlichestueckkosten",
             "auftragsstatus": "Auftragsstatus",
             "begonnen": "Begonnen",
             "beendet": "Beendet",
             "dlzminimal": "Dlzminimal",
             "dlzFaktor": "Dlz Faktor",
             "bearbeitungszeitmin": "Bearbeitungszeitmin",
+            "warteliste_menge": "Warteliste Menge",
+            "inBearbeitung_menge": "In Bearbeitung Menge",
             "herstellteil": "Herstellteil"
         }
     }

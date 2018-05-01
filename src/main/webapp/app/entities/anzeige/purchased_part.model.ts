@@ -6,6 +6,8 @@ export class PurchasedPart implements BaseEntity {
         public id?: number,
         public nummer?: number,
         public bestand?: number,
+        public menge_alteBestellung?: number,
+        public hoechstbestand?: number,
         public diskontmenge?: number,
         public lagerreichweite?: number,
         public durchschnittbedarf?: number,

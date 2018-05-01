@@ -56,6 +56,10 @@ describe('Fertigungsauftrag e2e test', () => {
         expect(fertigungsauftragDialogPage.getDlzFaktorInput()).toMatch('5');
         fertigungsauftragDialogPage.setBearbeitungszeitminInput('5');
         expect(fertigungsauftragDialogPage.getBearbeitungszeitminInput()).toMatch('5');
+        fertigungsauftragDialogPage.setWarteliste_mengeInput('5');
+        expect(fertigungsauftragDialogPage.getWarteliste_mengeInput()).toMatch('5');
+        fertigungsauftragDialogPage.setInBearbeitung_mengeInput('5');
+        expect(fertigungsauftragDialogPage.getInBearbeitung_mengeInput()).toMatch('5');
         fertigungsauftragDialogPage.herstellteilSelectLastOption();
         fertigungsauftragDialogPage.save();
         expect(fertigungsauftragDialogPage.getSaveButton().isPresent()).toBeFalsy();
@@ -94,6 +98,8 @@ export class FertigungsauftragDialogPage {
     dlzminimalInput = element(by.css('input#field_dlzminimal'));
     dlzFaktorInput = element(by.css('input#field_dlzFaktor'));
     bearbeitungszeitminInput = element(by.css('input#field_bearbeitungszeitmin'));
+    warteliste_mengeInput = element(by.css('input#field_warteliste_menge'));
+    inBearbeitung_mengeInput = element(by.css('input#field_inBearbeitung_menge'));
     herstellteilSelect = element(by.css('select#field_herstellteil'));
 
     getModalTitle() {
@@ -189,6 +195,22 @@ export class FertigungsauftragDialogPage {
 
     getBearbeitungszeitminInput = function () {
         return this.bearbeitungszeitminInput.getAttribute('value');
+    }
+
+    setWarteliste_mengeInput = function (warteliste_menge) {
+        this.warteliste_mengeInput.sendKeys(warteliste_menge);
+    }
+
+    getWarteliste_mengeInput = function () {
+        return this.warteliste_mengeInput.getAttribute('value');
+    }
+
+    setInBearbeitung_mengeInput = function (inBearbeitung_menge) {
+        this.inBearbeitung_mengeInput.sendKeys(inBearbeitung_menge);
+    }
+
+    getInBearbeitung_mengeInput = function () {
+        return this.inBearbeitung_mengeInput.getAttribute('value');
     }
 
     herstellteilSelectLastOption = function () {

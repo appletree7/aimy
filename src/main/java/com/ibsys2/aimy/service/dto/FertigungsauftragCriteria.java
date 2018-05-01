@@ -57,6 +57,10 @@ public class FertigungsauftragCriteria implements Serializable {
 
     private IntegerFilter bearbeitungszeitmin;
 
+    private IntegerFilter warteliste_menge;
+
+    private IntegerFilter inBearbeitung_menge;
+
     private LongFilter herstellteilId;
 
     public FertigungsauftragCriteria() {
@@ -158,6 +162,22 @@ public class FertigungsauftragCriteria implements Serializable {
         this.bearbeitungszeitmin = bearbeitungszeitmin;
     }
 
+    public IntegerFilter getWarteliste_menge() {
+        return warteliste_menge;
+    }
+
+    public void setWarteliste_menge(IntegerFilter warteliste_menge) {
+        this.warteliste_menge = warteliste_menge;
+    }
+
+    public IntegerFilter getInBearbeitung_menge() {
+        return inBearbeitung_menge;
+    }
+
+    public void setInBearbeitung_menge(IntegerFilter inBearbeitung_menge) {
+        this.inBearbeitung_menge = inBearbeitung_menge;
+    }
+
     public LongFilter getHerstellteilId() {
         return herstellteilId;
     }
@@ -181,6 +201,8 @@ public class FertigungsauftragCriteria implements Serializable {
                 (dlzminimal != null ? "dlzminimal=" + dlzminimal + ", " : "") +
                 (dlzFaktor != null ? "dlzFaktor=" + dlzFaktor + ", " : "") +
                 (bearbeitungszeitmin != null ? "bearbeitungszeitmin=" + bearbeitungszeitmin + ", " : "") +
+                (warteliste_menge != null ? "warteliste_menge=" + warteliste_menge + ", " : "") +
+                (inBearbeitung_menge != null ? "inBearbeitung_menge=" + inBearbeitung_menge + ", " : "") +
                 (herstellteilId != null ? "herstellteilId=" + herstellteilId + ", " : "") +
             "}";
     }

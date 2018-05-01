@@ -2,9 +2,9 @@
     "aimyApp": {
         "Auftragstatus" : {
             "null": "",
-            "ANGEFANGEN": "EMPEZAR",
-            "WARTEND": "ESPERA",
-            "BEENDET": "TERMINADO"
+            "ANGEFANGEN": "ANGEFANGEN",
+            "WARTEND": "WARTEND",
+            "BEENDET": "BEENDET"
         }
     }
 }

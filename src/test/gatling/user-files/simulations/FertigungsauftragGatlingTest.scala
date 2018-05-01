@@ -68,7 +68,7 @@ class FertigungsauftragGatlingTest extends Simulation {
             .exec(http("Create new fertigungsauftrag")
             .post("/api/fertigungsauftrags")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "periode":"0", "nummer":"0", "auftragsmenge":"0", "kosten":null, "durchschnittlichestueckkosten":null, "auftragsstatus":null, "begonnen":"SAMPLE_TEXT", "beendet":"SAMPLE_TEXT", "dlzminimal":"0", "dlzFaktor":null, "bearbeitungszeitmin":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "periode":"0", "nummer":"0", "auftragsmenge":"0", "kosten":null, "durchschnittlichestueckkosten":null, "auftragsstatus":null, "begonnen":"SAMPLE_TEXT", "beendet":"SAMPLE_TEXT", "dlzminimal":"0", "dlzFaktor":null, "bearbeitungszeitmin":"0", "warteliste_menge":"0", "inBearbeitung_menge":"0"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_fertigungsauftrag_url"))).exitHereIfFailed
             .pause(10)

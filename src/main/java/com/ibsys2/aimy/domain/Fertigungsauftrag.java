@@ -70,6 +70,14 @@ public class Fertigungsauftrag implements Serializable {
     @Column(name = "bearbeitungszeitmin")
     private Integer bearbeitungszeitmin;
 
+    @Min(value = 0)
+    @Column(name = "warteliste_menge")
+    private Integer warteliste_menge;
+
+    @Min(value = 0)
+    @Column(name = "in_bearbeitung_menge")
+    private Integer inBearbeitung_menge;
+
     @ManyToOne
     private Teil herstellteil;
 
@@ -225,6 +233,32 @@ public class Fertigungsauftrag implements Serializable {
         this.bearbeitungszeitmin = bearbeitungszeitmin;
     }
 
+    public Integer getWarteliste_menge() {
+        return warteliste_menge;
+    }
+
+    public Fertigungsauftrag warteliste_menge(Integer warteliste_menge) {
+        this.warteliste_menge = warteliste_menge;
+        return this;
+    }
+
+    public void setWarteliste_menge(Integer warteliste_menge) {
+        this.warteliste_menge = warteliste_menge;
+    }
+
+    public Integer getInBearbeitung_menge() {
+        return inBearbeitung_menge;
+    }
+
+    public Fertigungsauftrag inBearbeitung_menge(Integer inBearbeitung_menge) {
+        this.inBearbeitung_menge = inBearbeitung_menge;
+        return this;
+    }
+
+    public void setInBearbeitung_menge(Integer inBearbeitung_menge) {
+        this.inBearbeitung_menge = inBearbeitung_menge;
+    }
+
     public Teil getHerstellteil() {
         return herstellteil;
     }
@@ -274,6 +308,8 @@ public class Fertigungsauftrag implements Serializable {
             ", dlzminimal='" + getDlzminimal() + "'" +
             ", dlzFaktor='" + getDlzFaktor() + "'" +
             ", bearbeitungszeitmin='" + getBearbeitungszeitmin() + "'" +
+            ", warteliste_menge='" + getWarteliste_menge() + "'" +
+            ", inBearbeitung_menge='" + getInBearbeitung_menge() + "'" +
             "}";
     }
 }

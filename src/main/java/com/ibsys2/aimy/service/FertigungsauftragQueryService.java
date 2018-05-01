@@ -106,6 +106,12 @@ public class FertigungsauftragQueryService extends QueryService<Fertigungsauftra
             if (criteria.getBearbeitungszeitmin() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getBearbeitungszeitmin(), Fertigungsauftrag_.bearbeitungszeitmin));
             }
+            if (criteria.getWarteliste_menge() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getWarteliste_menge(), Fertigungsauftrag_.warteliste_menge));
+            }
+            if (criteria.getInBearbeitung_menge() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getInBearbeitung_menge(), Fertigungsauftrag_.inBearbeitung_menge));
+            }
             if (criteria.getHerstellteilId() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getHerstellteilId(), Fertigungsauftrag_.herstellteil, Teil_.id));
             }

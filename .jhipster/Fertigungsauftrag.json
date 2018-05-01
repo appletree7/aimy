@@ -87,6 +87,22 @@
                 "min"
             ],
             "fieldValidateRulesMin": 0
+        },
+		{
+            "fieldName": "warteliste_menge",
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+		{
+            "fieldName": "inBearbeitung_menge",
+            "fieldType": "Integer",
+			"fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         }
     ],
     "changelogDate": "20171220194423",

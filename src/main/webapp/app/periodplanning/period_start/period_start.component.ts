@@ -89,7 +89,7 @@ export class PeriodStartComponent implements OnInit {
                 this.modusService.create(this.modus).subscribe((respond: Modus) =>
                     console.log(respond), () => this.onSaveError());
             }
-        }, (respond: ResponseWrapper) => this.onError(respond.json), () => this.saveTeil(this.moduse));
+        }, (respond: ResponseWrapper) => this.onError(respond.json));
    }
 
     changeListener($event): void {
@@ -221,44 +221,6 @@ export class PeriodStartComponent implements OnInit {
                     this.saveBestellung(modi, this.teils);
                     this.saveFertigungsauftrag(this.teils);
                 });
-    }
-
-    /**
-     * Speichert die 5 Bestellmodi
-     */
-    saveModus() {
-        /*this.modusService.query({
-            size: 1000000
-        }).subscribe((res: ResponseWrapper) => {
-            this.moduse = res.json;
-            if (this.moduse.length === 0) {
-                this.modus = new Modus(undefined, 1, 'Sonderbestellung', 1.0, 0.1,
-                0.4, 0.0, 1.0, 0.0, 2.5,
-                    1.0, 2.0);
-                this.modusService.create(this.modus).subscribe((respond: Modus) =>
-                    console.log(respond), () => this.onSaveError());
-                this.modus = new Modus(undefined, 2, 'Billiganbieter', 3.0, 0.5, 1.3,
-                    2.0, 0.9, 10.0, 0.8,
-                    0.8, 0.8);
-                this.modusService.create(this.modus).subscribe((respond: Modus) =>
-                    console.log(respond), () => this.onSaveError());
-                this.modus = new Modus(undefined, 3, 'JIT ', 0.0, 0.0,
-                    0.5, 0.0, 1.0, 0.0, 1.2,
-                    1.0, 3.0);
-                this.modusService.create(this.modus).subscribe((respond: Modus) =>
-                    console.log(respond), () => this.onSaveError());
-                this.modus = new Modus(undefined, 4, 'Eil ', 0.0, 0.0,
-                    0.5, 0.0, 1.0, 0.0, 1.0,
-                    1.0, 10.0);
-                this.modusService.create(this.modus).subscribe((respond: Modus) =>
-                    console.log(respond), () => this.onSaveError());
-                this.modus = new Modus(undefined, 5, 'Normal ', 0.0, 0.0,
-                    1.0, 1.0, 1.0, 0.0, 1.0,
-                    0.9, 1.0);
-                this.modusService.create(this.modus).subscribe((respond: Modus) =>
-                    console.log(respond), () => this.onSaveError());
-            }
-        }, (respond: ResponseWrapper) => this.onError(respond.json), () => this.saveTeil(this.moduse));*/
     }
 
     /**
@@ -507,7 +469,7 @@ export class PeriodStartComponent implements OnInit {
                                 && (teil.periode === (parseInt(bestellungen[i].getAttribute('orderperiod'), 10))));
                         }
                         if (moduse !== undefined) {
-                            this.modus = moduse.find((modus) => (modus.id === parseInt(bestellungen[i].getAttribute('mode'), 10)));
+                            this.modus = moduse.find((modus) => (modus.nummer === parseInt(bestellungen[i].getAttribute('mode'), 10)));
                         }
                     if (this.bestellung !== undefined) {
                         this.bestellung.lieferzeit = parseInt(bestellungen[i].getAttribute('time'), 10);
@@ -554,7 +516,7 @@ export class PeriodStartComponent implements OnInit {
                                 this.teil = kaufteile.find((teil) => (teil.nummer === parseInt(futurebestellungen[i].getAttribute('article'), 10))
                                     && (teil.periode === (parseInt(futurebestellungen[i].getAttribute('orderperiod'), 10))));
                             } else if (moduse !== undefined) {
-                                this.modus = moduse.find((modus) => (modus.id === parseInt(futurebestellungen[i].getAttribute('mode'), 10)));
+                                this.modus = moduse.find((modus) => (modus.nummer === parseInt(futurebestellungen[i].getAttribute('mode'), 10)));
                             }
                             if (this.bestellung !== undefined) {
                                 this.bestellung.lieferzeit = parseInt(futurebestellungen[i].getAttribute('time'), 10);
@@ -639,13 +601,14 @@ export class PeriodStartComponent implements OnInit {
                 for ( i = 0; i < arbeitsplaetze2.length; i++) {
                     this.arbeitsplatz = this.arbeitsplaetze.find((arbeitsplatz) => (arbeitsplatz.nummer ===
                         (parseInt(arbeitsplaetze2[i].getAttribute('id'), 10))) && arbeitsplatz.periode ===
-                        this.periode);
+                        parseInt(arbeitsplaetze2[i].getAttribute('period'), 10));
                     if (this.arbeitsplatz !== undefined) {
                         this.arbeitsplatz.restzeitbedarf = parseInt(arbeitsplaetze2[i].getAttribute('timeneed'), 10);
                         this.arbeitsplatzService.update(this.arbeitsplatz).subscribe((respond: Arbeitsplatz) =>
                             console.log(respond), () => this.onSaveError());
                     } else {
-                        this.arbeitsplatz = new Arbeitsplatz(undefined, this.periode, parseInt(arbeitsplaetze2[i].getAttribute('id'), 10),
+                        this.arbeitsplatz = new Arbeitsplatz(undefined, parseInt(arbeitsplaetze2[i].getAttribute('period'), 10),
+                            parseInt(arbeitsplaetze2[i].getAttribute('id'), 10),
                             parseInt(arbeitsplaetze2[i].getAttribute('timeneed'), 10), undefined, undefined,
                             undefined, undefined, undefined, undefined, undefined,
                             undefined);
@@ -724,6 +687,9 @@ export class PeriodStartComponent implements OnInit {
             .subscribe((res: ResponseWrapper) => {
                 this.fertigungsauftraege = res.json;
                 const fertigungsauftraege = this.xml.getElementsByTagName('completedorders')[0].getElementsByTagName('order');
+                const inBearbeitung = this.xml.getElementsByTagName('ordersinwork')[0].getElementsByTagName('workplace');
+                const workplace = this.xml.getElementsByTagName('waitinglistworkstations')[0].getElementsByTagName('workplace');
+                const missingpart = this.xml.getElementsByTagName('waitingliststock')[0].getElementsByTagName('missingpart');
                 let i;
                 for (i = 0; i < fertigungsauftraege.length; i++) {
                     this.fertigungsauftrag = this.fertigungsauftraege.find((fertigungsauftrag) => (fertigungsauftrag.nummer ===
@@ -743,6 +709,39 @@ export class PeriodStartComponent implements OnInit {
                         if (this.teil !== undefined) {
                             this.fertigungsauftrag.herstellteil = this.teil;
                         }
+                        let j;
+                        for (j = 0; j < inBearbeitung.length; j++) {
+                            if (this.fertigungsauftrag.nummer === parseInt(inBearbeitung[j].getAttribute('order'), 10)
+                                && this.fertigungsauftrag.periode === parseInt(inBearbeitung[j].getAttribute('period'), 10)) {
+                                this.fertigungsauftrag.inBearbeitung_menge = parseInt(inBearbeitung[j].getAttribute('amount'), 10);
+                            }
+                        }
+                        let k;
+                        const wartelistesamefertigungsauftrag = [];
+                        for (k = 0; k < workplace.length; k++) {
+                            const waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
+                            let l;
+                            for (l = 0; l < waitinglistworkstation.length; l++) {
+                                if (this.fertigungsauftrag.nummer === parseInt(waitinglistworkstation[l].getAttribute('order'), 10)
+                                    && this.fertigungsauftrag.periode === parseInt(waitinglistworkstation[l].getAttribute('period'), 10)) {
+                                    this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
+                                    wartelistesamefertigungsauftrag.push(parseInt(waitinglistworkstation[l].getAttribute('amount'), 10))
+                                }
+                            }
+                        }
+                        let m;
+                        for (m = 0; m < missingpart.length; m++) {
+                            const waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
+                            let n;
+                            for (n = 0; n < waitinglistmaterial.length; n++) {
+                                if (this.fertigungsauftrag.nummer === parseInt(waitinglistmaterial[n].getAttribute('order'), 10)
+                                    && this.fertigungsauftrag.periode === parseInt(waitinglistmaterial[n].getAttribute('period'), 10)) {
+                                    this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
+                                    wartelistesamefertigungsauftrag.push(parseInt(waitinglistmaterial[n].getAttribute('amount'), 10))
+                                }
+                            }
+                        }
+                        this.fertigungsauftrag.warteliste_menge = wartelistesamefertigungsauftrag.reduce((a, b) => a + b, 0);
                         this.fertigungsauftragService.update(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
                             console.log(respond), () => this.onSaveError());
                     } else {
@@ -750,7 +749,41 @@ export class PeriodStartComponent implements OnInit {
                             this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(fertigungsauftraege[i].getAttribute('period'), 10),
                                 parseInt(fertigungsauftraege[i].getAttribute('id'), 10), parseInt(fertigungsauftraege[i].getAttribute('quantity'), 10),
                                 parseFloat(fertigungsauftraege[i].getAttribute('cost')), parseFloat(fertigungsauftraege[i].getAttribute('averageunitcosts')),
-                                Auftragstatus.BEENDET, undefined, undefined, undefined, undefined, undefined, this.teil);
+                                Auftragstatus.BEENDET, undefined, undefined, undefined, undefined, undefined,
+                                undefined, undefined, this.teil);
+                            let j;
+                            for (j = 0; j < inBearbeitung.length; j++) {
+                                if (this.fertigungsauftrag.nummer === parseInt(inBearbeitung[j].getAttribute('order'), 10)
+                                    && this.fertigungsauftrag.periode === parseInt(inBearbeitung[j].getAttribute('period'), 10)) {
+                                    this.fertigungsauftrag.inBearbeitung_menge = parseInt(inBearbeitung[j].getAttribute('amount'), 10);
+                                }
+                            }
+                            let k;
+                            const wartelistesamefertigungsauftrag = [];
+                            for (k = 0; k < workplace.length; k++) {
+                                const waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
+                                let l;
+                                for (l = 0; l < waitinglistworkstation.length; l++) {
+                                    if (this.fertigungsauftrag.nummer === parseInt(waitinglistworkstation[l].getAttribute('order'), 10)
+                                        && this.fertigungsauftrag.periode === parseInt(waitinglistworkstation[l].getAttribute('period'), 10)) {
+                                        this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
+                                        wartelistesamefertigungsauftrag.push(parseInt(waitinglistworkstation[l].getAttribute('amount'), 10))
+                                    }
+                                }
+                            }
+                            let m;
+                            for (m = 0; m < missingpart.length; m++) {
+                                const waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
+                                let n;
+                                for (n = 0; n < waitinglistmaterial.length; n++) {
+                                    if (this.fertigungsauftrag.nummer === parseInt(waitinglistmaterial[n].getAttribute('order'), 10)
+                                        && this.fertigungsauftrag.periode === parseInt(waitinglistmaterial[n].getAttribute('period'), 10)) {
+                                        this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
+                                        wartelistesamefertigungsauftrag.push(parseInt(waitinglistmaterial[n].getAttribute('amount'), 10))
+                                    }
+                                }
+                            }
+                            this.fertigungsauftrag.warteliste_menge = wartelistesamefertigungsauftrag.reduce((a, b) => a + b, 0);
                         } else {
                             this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(fertigungsauftraege[i].getAttribute('period'), 10),
                                 parseInt(fertigungsauftraege[i].getAttribute('id'), 10),
@@ -758,7 +791,40 @@ export class PeriodStartComponent implements OnInit {
                                 parseFloat(fertigungsauftraege[i].getAttribute('cost')),
                                 parseFloat(fertigungsauftraege[i].getAttribute('averageunitcosts')), Auftragstatus.ANGEFANGEN,
                                 undefined, undefined, undefined,
-                                undefined, undefined, this.teil);
+                                undefined, undefined, undefined, undefined, this.teil);
+                            let j;
+                            for (j = 0; j < inBearbeitung.length; j++) {
+                                if (this.fertigungsauftrag.nummer === parseInt(inBearbeitung[j].getAttribute('order'), 10)
+                                    && this.fertigungsauftrag.periode === parseInt(inBearbeitung[j].getAttribute('period'), 10)) {
+                                    this.fertigungsauftrag.inBearbeitung_menge = parseInt(inBearbeitung[j].getAttribute('amount'), 10);
+                                }
+                            }
+                            let k;
+                            const wartelistesamefertigungsauftrag = [];
+                            for (k = 0; k < workplace.length; k++) {
+                                const waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
+                                let l;
+                                for (l = 0; l < waitinglistworkstation.length; l++) {
+                                    if (this.fertigungsauftrag.nummer === parseInt(waitinglistworkstation[l].getAttribute('order'), 10)
+                                        && this.fertigungsauftrag.periode === parseInt(waitinglistworkstation[l].getAttribute('period'), 10)) {
+                                        this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
+                                        wartelistesamefertigungsauftrag.push(parseInt(waitinglistworkstation[l].getAttribute('amount'), 10))
+                                    }
+                                }
+                            }
+                            let m;
+                            for (m = 0; m < missingpart.length; m++) {
+                                const waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
+                                let n;
+                                for (n = 0; n < waitinglistmaterial.length; n++) {
+                                    if (this.fertigungsauftrag.nummer === parseInt(waitinglistmaterial[n].getAttribute('order'), 10)
+                                        && this.fertigungsauftrag.periode === parseInt(waitinglistmaterial[n].getAttribute('period'), 10)) {
+                                        this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
+                                        wartelistesamefertigungsauftrag.push(parseInt(waitinglistmaterial[n].getAttribute('amount'), 10))
+                                    }
+                                }
+                            }
+                            this.fertigungsauftrag.warteliste_menge = wartelistesamefertigungsauftrag.reduce((a, b) => a + b, 0);
                         }
                         this.fertigungsauftragService.create(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
                             console.log(respond), () => this.onSaveError());
@@ -774,6 +840,9 @@ export class PeriodStartComponent implements OnInit {
                         this.fertigungsauftraege = res.json;
                         let i;
                         const fertigungsauftraege2 = this.xml.getElementsByTagName('cycletimes')[0].getElementsByTagName('order');
+                        const inBearbeitung = this.xml.getElementsByTagName('ordersinwork')[0].getElementsByTagName('workplace');
+                        const workplace = this.xml.getElementsByTagName('waitinglistworkstations')[0].getElementsByTagName('workplace');
+                        const missingpart = this.xml.getElementsByTagName('waitingliststock')[0].getElementsByTagName('missingpart');
                         for (i = 0; i < fertigungsauftraege2.length; i++) {
                             this.fertigungsauftrag = this.fertigungsauftraege.find((fertigungsauftrag) => (fertigungsauftrag.nummer ===
                                 (parseInt(fertigungsauftraege2[i].getAttribute('id'), 10))) && fertigungsauftrag.periode ===
@@ -788,6 +857,39 @@ export class PeriodStartComponent implements OnInit {
                                 this.fertigungsauftrag.beendet = fertigungsauftraege2[i].getAttribute('finishtime');
                                 this.fertigungsauftrag.dlzminimal = parseInt(fertigungsauftraege2[i].getAttribute('cycletimemin'), 10);
                                 this.fertigungsauftrag.dlzFaktor = parseFloat(fertigungsauftraege2[i].getAttribute('cycletimefactor'));
+                                let j;
+                                for (j = 0; j < inBearbeitung.length; j++) {
+                                    if (this.fertigungsauftrag.nummer === parseInt(inBearbeitung[j].getAttribute('order'), 10)
+                                        && this.fertigungsauftrag.periode === parseInt(inBearbeitung[j].getAttribute('period'), 10)) {
+                                        this.fertigungsauftrag.inBearbeitung_menge = parseInt(inBearbeitung[j].getAttribute('amount'), 10);
+                                    }
+                                }
+                                let k;
+                                const wartelistesamefertigungsauftrag = [];
+                                for (k = 0; k < workplace.length; k++) {
+                                    const waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
+                                    let l;
+                                    for (l = 0; l < waitinglistworkstation.length; l++) {
+                                        if (this.fertigungsauftrag.nummer === parseInt(waitinglistworkstation[l].getAttribute('order'), 10)
+                                            && this.fertigungsauftrag.periode === parseInt(waitinglistworkstation[l].getAttribute('period'), 10)) {
+                                            this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
+                                            wartelistesamefertigungsauftrag.push(parseInt(waitinglistworkstation[l].getAttribute('amount'), 10))
+                                        }
+                                    }
+                                }
+                                let m;
+                                for (m = 0; m < missingpart.length; m++) {
+                                    const waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
+                                    let n;
+                                    for (n = 0; n < waitinglistmaterial.length; n++) {
+                                        if (this.fertigungsauftrag.nummer === parseInt(waitinglistmaterial[n].getAttribute('order'), 10)
+                                            && this.fertigungsauftrag.periode === parseInt(waitinglistmaterial[n].getAttribute('period'), 10)) {
+                                            this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
+                                            wartelistesamefertigungsauftrag.push(parseInt(waitinglistmaterial[n].getAttribute('amount'), 10))
+                                        }
+                                    }
+                                }
+                                this.fertigungsauftrag.warteliste_menge = wartelistesamefertigungsauftrag.reduce((a, b) => a + b, 0);
                                 this.fertigungsauftragService.update(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
                                     console.log(respond), () => this.onSaveError());
                             } else {
@@ -798,12 +900,75 @@ export class PeriodStartComponent implements OnInit {
                                         parseInt(fertigungsauftraege2[i].getAttribute('cycletimemin'), 10),
                                         parseFloat(fertigungsauftraege2[i].getAttribute('cycletimefactor')),
                                         parseInt(fertigungsauftraege2[i].getAttribute('id'), 10));
+                                    let j;
+                                    for (j = 0; j < inBearbeitung.length; j++) {
+                                        if (this.fertigungsauftrag.nummer === parseInt(inBearbeitung[j].getAttribute('order'), 10)
+                                            && this.fertigungsauftrag.periode === parseInt(inBearbeitung[j].getAttribute('period'), 10)) {
+                                            this.fertigungsauftrag.inBearbeitung_menge = parseInt(inBearbeitung[j].getAttribute('amount'), 10);
+                                        }
+                                    }
+                                    let k;
+                                    const wartelistesamefertigungsauftrag = [];
+                                    for (k = 0; k < workplace.length; k++) {
+                                        const waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
+                                        let l;
+                                        for (l = 0; l < waitinglistworkstation.length; l++) {
+                                            if (this.fertigungsauftrag.nummer === parseInt(waitinglistworkstation[l].getAttribute('order'), 10)
+                                                && this.fertigungsauftrag.periode === parseInt(waitinglistworkstation[l].getAttribute('period'), 10)) {
+                                                this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
+                                                wartelistesamefertigungsauftrag.push(parseInt(waitinglistworkstation[l].getAttribute('amount'), 10))
+                                            }
+                                        }
+                                    }
+                                    let m;
+                                    for (m = 0; m < missingpart.length; m++) {
+                                        const waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
+                                        let n;
+                                        for (n = 0; n < waitinglistmaterial.length; n++) {
+                                            if (this.fertigungsauftrag.nummer === parseInt(waitinglistmaterial[n].getAttribute('order'), 10)
+                                                && this.fertigungsauftrag.periode === parseInt(waitinglistmaterial[n].getAttribute('period'), 10)) {
+                                                this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
+                                                wartelistesamefertigungsauftrag.push(parseInt(waitinglistmaterial[n].getAttribute('amount'), 10))
+                                            }
+                                        }
+                                    }
+                                    this.fertigungsauftrag.warteliste_menge = wartelistesamefertigungsauftrag.reduce((a, b) => a + b, 0);
                                 } else {
                                     this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(fertigungsauftraege2[i].getAttribute('period'), 10),
                                         parseInt(fertigungsauftraege2[i].getAttribute('id'), 10), undefined, undefined, undefined,
                                         Auftragstatus.ANGEFANGEN, fertigungsauftraege2[i].getAttribute('starttime'), fertigungsauftraege2[i].getAttribute('finishtime'),
                                         parseInt(fertigungsauftraege2[i].getAttribute('cycletimemin'), 10),
                                         parseFloat(fertigungsauftraege2[i].getAttribute('cycletimefactor')), undefined, undefined);
+                                    let j;
+                                    for (j = 0; j < inBearbeitung.length; j++) {
+                                        if (this.fertigungsauftrag.nummer === parseInt(inBearbeitung[j].getAttribute('order'), 10)) {
+                                            this.fertigungsauftrag.inBearbeitung_menge = parseInt(inBearbeitung[j].getAttribute('amount'), 10);
+                                        }
+                                    }
+                                    let k;
+                                    const wartelistesamefertigungsauftrag = [];
+                                    for (k = 0; k < workplace.length; k++) {
+                                        const waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
+                                        let l;
+                                        for (l = 0; l < waitinglistworkstation.length; l++) {
+                                            if (this.fertigungsauftrag.nummer === parseInt(waitinglistworkstation[l].getAttribute('order'), 10)) {
+                                                this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
+                                                wartelistesamefertigungsauftrag.push(parseInt(waitinglistworkstation[l].getAttribute('amount'), 10))
+                                            }
+                                        }
+                                    }
+                                    let m;
+                                    for (m = 0; m < missingpart.length; m++) {
+                                        const waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
+                                        let n;
+                                        for (n = 0; n < waitinglistmaterial.length; n++) {
+                                            if (this.fertigungsauftrag.nummer === parseInt(waitinglistmaterial[n].getAttribute('order'), 10)) {
+                                                this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
+                                                wartelistesamefertigungsauftrag.push(parseInt(waitinglistmaterial[n].getAttribute('amount'), 10))
+                                            }
+                                        }
+                                    }
+                                    this.fertigungsauftrag.warteliste_menge = wartelistesamefertigungsauftrag.reduce((a, b) => a + b, 0);
                                 }
                                 this.fertigungsauftragService.create(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
                                     console.log(respond), () => this.onSaveError());

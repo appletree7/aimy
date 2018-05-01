@@ -20,6 +20,8 @@ export class Fertigungsauftrag implements BaseEntity {
         public dlzminimal?: number,
         public dlzFaktor?: number,
         public bearbeitungszeitmin?: number,
+        public warteliste_menge?: number,
+        public inBearbeitung_menge?: number,
         public herstellteil?: BaseEntity,
     ) {
     }

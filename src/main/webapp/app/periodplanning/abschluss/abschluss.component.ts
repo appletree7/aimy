@@ -71,7 +71,7 @@ export class AbschlussComponent implements OnInit, OnDestroy {
                                     this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
                                         parseFloat(teil.gesamtproduktionsmenge), undefined, undefined,
                                         undefined, undefined, undefined, undefined, undefined,
-                                        undefined, teil);
+                                        undefined, undefined, undefined, teil);
                                     this.fertigungsauftraege.push(this.fertigungsauftrag);
                                 }
                             }
@@ -331,7 +331,7 @@ export class AbschlussComponent implements OnInit, OnDestroy {
                               this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
                                   parseInt(auftragsmenge.toFixed(2), 10), undefined, undefined,
                                   undefined, undefined, undefined, undefined,
-                                  undefined, undefined, teil);
+                                  undefined, undefined, undefined, undefined, teil);
                               this.fertigungsauftraege.push(this.fertigungsauftrag);
                               this.fertigungsauftraege.push(this.fertigungsauftrag);
                           } else if (teil.nummer === 10 || teil.nummer === 11 || teil.nummer === 12
@@ -341,7 +341,7 @@ export class AbschlussComponent implements OnInit, OnDestroy {
                               this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
                                   parseInt(auftragsmenge.toFixed(2), 10), undefined, undefined,
                                   undefined, undefined, undefined, undefined,
-                                  undefined, undefined, teil);
+                                  undefined, undefined, undefined, undefined, teil);
                               this.fertigungsauftraege.push(this.fertigungsauftrag);
                               this.fertigungsauftraege.push(this.fertigungsauftrag);
                               this.fertigungsauftraege.push(this.fertigungsauftrag);
@@ -349,7 +349,7 @@ export class AbschlussComponent implements OnInit, OnDestroy {
                               this.fertigungsauftrag = new Fertigungsauftrag(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), i,
                                   teil.gesamtproduktionsmenge, undefined, undefined,
                                   undefined, undefined, undefined, undefined,
-                                  undefined, undefined, teil);
+                                  undefined, undefined, undefined, undefined, teil);
                               this.fertigungsauftraege.push(this.fertigungsauftrag);
                           }
                       }

@@ -331,7 +331,9 @@ export class CapacityPlanningComponent implements OnInit {
                 }
             }
 
-        }, (res: ResponseWrapper) => this.onError(res.json));
+        }, (res: ResponseWrapper) => this.onError(res.json), () => {
+            this.berechneRuestzeitneu();
+        });
     }
 
     async berechneRuestzeitneu() {
@@ -373,9 +375,16 @@ export class CapacityPlanningComponent implements OnInit {
                 }));
             }
 
+            console.log(this.ruestvorgaenge_teil_array_neu);
+
+            const ruestvorgaegene_gesamt_array = [];
+            let ruestvorgaegene_gesamt = 0;
+
             for (let i = 0; i < this.capacity_array.length; i++) {
 
                 const ruestzeit_arbeitsplatz = [];
+                const ruestvorgaegene_arbeitsplatz_array = [];
+                let ruestvorgaegene_arbeitsplatz = 0;
 
                 for (let j = 0; j < this.ruestvorgaenge_teil_array_neu.length; j++) {
 
@@ -384,20 +393,22 @@ export class CapacityPlanningComponent implements OnInit {
                         if (this.ruestvorgaenge_teil_array_neu[j].nummer === 49 || this.ruestvorgaenge_teil_array_neu[j].nummer === 54
                             || this.ruestvorgaenge_teil_array_neu[j].nummer === 29) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
-
                     }
 
                     if (this.capacity_array[i].arbeitsplatznummer === 2) {
 
                         if (this.ruestvorgaenge_teil_array_neu[j].nummer === 50 || this.ruestvorgaenge_teil_array_neu[j].nummer === 55) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 30);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         if (this.ruestvorgaenge_teil_array_neu[j].nummer === 30) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -407,8 +418,9 @@ export class CapacityPlanningComponent implements OnInit {
                     if (this.capacity_array[i].arbeitsplatznummer === 3) {
 
                         if (this.ruestvorgaenge_teil_array_neu[j].nummer === 31 || this.ruestvorgaenge_teil_array_neu[j].nummer === 56
-                            || this.ruestvorgaenge_teil_array_neu[j].numer === 51) {
+                            || this.ruestvorgaenge_teil_array_neu[j].nummer === 51) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -419,10 +431,12 @@ export class CapacityPlanningComponent implements OnInit {
 
                         if (this.ruestvorgaenge_teil_array_neu[j].nummer === 1 || this.ruestvorgaenge_teil_array_neu[j].nummer === 3) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 30);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         if (this.ruestvorgaenge_teil_array_neu[j].nummer === 2) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -434,6 +448,7 @@ export class CapacityPlanningComponent implements OnInit {
                         if (this.ruestvorgaenge_teil_array_neu[j].nummer === 18 || this.ruestvorgaenge_teil_array_neu[j].nummer === 19
                             || this.ruestvorgaenge_teil_array_neu[j].nummer === 20 || this.ruestvorgaenge_teil_array_neu[j].nummer === 16) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 15);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -448,12 +463,13 @@ export class CapacityPlanningComponent implements OnInit {
                             || this.ruestvorgaenge_teil_array_neu[j].nummer === 18 || this.ruestvorgaenge_teil_array_neu[j].nummer === 19
                             || this.ruestvorgaenge_teil_array_neu[j].nummer === 20) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         if (this.ruestvorgaenge_teil_array_neu[j].nummer === 26) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 30);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
-
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
 
                     }
@@ -464,14 +480,17 @@ export class CapacityPlanningComponent implements OnInit {
                             this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
                             || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 15);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         if (this.ruestvorgaenge_teil_array_neu[j].nummer === 18 || this.ruestvorgaenge_teil_array_neu[j].nummer === 20) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         if (this.ruestvorgaenge_teil_array_neu[j].nummer === 19) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 25);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -485,10 +504,12 @@ export class CapacityPlanningComponent implements OnInit {
                             || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15
                             || this.ruestvorgaenge_teil_array_neu[j].nummer === 18 || this.ruestvorgaenge_teil_array_neu[j].nummer === 20) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 15);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         if (this.ruestvorgaenge_teil_array_neu[j].nummer === 19) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -501,6 +522,7 @@ export class CapacityPlanningComponent implements OnInit {
                             || this.ruestvorgaenge_teil_array_neu[j].nummer === 6 || this.ruestvorgaenge_teil_array_neu[j].nummer === 7
                             || this.ruestvorgaenge_teil_array_neu[j].nummer === 8 || this.ruestvorgaenge_teil_array_neu[j].nummer === 9) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -511,11 +533,13 @@ export class CapacityPlanningComponent implements OnInit {
 
                         if (this.ruestvorgaenge_teil_array_neu[j].nummer === 4 || this.ruestvorgaenge_teil_array_neu[j].nummer === 5) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 10);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         if (this.ruestvorgaenge_teil_array_neu[j].nummer === 6 || this.ruestvorgaenge_teil_array_neu[j].nummer === 7
                             || this.ruestvorgaenge_teil_array_neu[j].nummer === 8 || this.ruestvorgaenge_teil_array_neu[j].nummer === 9) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 20);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -528,6 +552,7 @@ export class CapacityPlanningComponent implements OnInit {
                             || this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
                             || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15) {
                             ruestzeit_arbeitsplatz.push(0);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -540,6 +565,7 @@ export class CapacityPlanningComponent implements OnInit {
                             || this.ruestvorgaenge_teil_array_neu[j].nummer === 12 || this.ruestvorgaenge_teil_array_neu[j].nummer === 13
                             || this.ruestvorgaenge_teil_array_neu[j].nummer === 14 || this.ruestvorgaenge_teil_array_neu[j].nummer === 15) {
                             ruestzeit_arbeitsplatz.push(0);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -550,6 +576,7 @@ export class CapacityPlanningComponent implements OnInit {
 
                         if (this.ruestvorgaenge_teil_array_neu[j].nummer === 16) {
                             ruestzeit_arbeitsplatz.push(0);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -560,6 +587,7 @@ export class CapacityPlanningComponent implements OnInit {
 
                         if (this.ruestvorgaenge_teil_array_neu[j].nummer === 17 || this.ruestvorgaenge_teil_array_neu[j].nummer === 26) {
                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge * 15);
+                            ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_neu[j].ruestvorgaenge );
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -567,7 +595,15 @@ export class CapacityPlanningComponent implements OnInit {
                     }
 
                 }
+
+                ruestvorgaegene_arbeitsplatz = ruestvorgaegene_arbeitsplatz_array.reduce((a, b) => a + b, 0);
+                console.log('Arbeitsplatz ' + this.capacity_array[i].arbeitsplatznummer + ' Rüstvorgänge neu: ' + ruestvorgaegene_arbeitsplatz);
+                ruestvorgaegene_gesamt_array.push(ruestvorgaegene_arbeitsplatz);
             }
+
+            ruestvorgaegene_gesamt = ruestvorgaegene_gesamt_array.reduce((a, b) => a + b, 0);
+
+            console.log('Rüstvorgänge Periode gesamt neu: ' + ruestvorgaegene_gesamt);
 
         }, (res: ResponseWrapper) => this.onError(res.json));
 
@@ -578,7 +614,7 @@ export class CapacityPlanningComponent implements OnInit {
         let criteria = [
             {key: 'teiltyp.in', value: 'PRODUKT'},
             {key: 'teiltyp.in', value: 'ERZEUGNIS'},
-            {key: 'periode.lessOrEqualThan', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
+            {key: 'periode.lessThan', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
         ];
 
         this.teilService.query({
@@ -605,7 +641,9 @@ export class CapacityPlanningComponent implements OnInit {
                         + this.arbeitsplatz.restzeitbedarf;
                 }
             }
-        }, (res: ResponseWrapper) => this.onError(res.json));
+        }, (res: ResponseWrapper) => this.onError(res.json), () => {
+            this.berechneRuestzeitalt();
+        });
 
         }
 
@@ -618,9 +656,10 @@ export class CapacityPlanningComponent implements OnInit {
 
    async berechneRuestzeitalt() {
 
+       // Angefangene Aufträge auch
         const criteria = [
-            {key: 'auftragsstatus.equals', value: 'ANGEFANGEN'},
-            {key: 'periode.lessOrEqualThan', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
+            {key: 'auftragsstatus.equals', value: 'WARTEND'},
+            {key: 'periode.lessThan', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
         ];
 
         this.fertigungsauftragService.query({
@@ -628,8 +667,6 @@ export class CapacityPlanningComponent implements OnInit {
             criteria
         }).subscribe((res: ResponseWrapper) => {
             this.fertigungsauftraege_alt = res.json;
-
-            setTimeout(() => {
 
                 // Sind die Rüstvorgänge richtig berechnet muss noch teile gruppieren
                 for (let i = 0; i < this.fertigungsauftraege_alt.length; i++) {
@@ -653,9 +690,16 @@ export class CapacityPlanningComponent implements OnInit {
                     }));
                 }
 
+                console.log(this.ruestvorgaenge_teil_array_alt);
+
+                const ruestvorgaegene_gesamt_array = [];
+                let ruestvorgaegene_gesamt = 0;
+
                 for (let i = 0; i < this.capacity_array.length; i++) {
 
                     const rüstzeit_arbeitsplatz = [];
+                    const ruestvorgaegene_arbeitsplatz_array = [];
+                    let ruestvorgaegene_arbeitsplatz = 0;
 
                     for (let j = 0; j < this.ruestvorgaenge_teil_array_alt.length; j++) {
 
@@ -664,6 +708,7 @@ export class CapacityPlanningComponent implements OnInit {
                             if (this.ruestvorgaenge_teil_array_alt[j].nummer === 49 || this.ruestvorgaenge_teil_array_alt[j].nummer === 54
                                 || this.ruestvorgaenge_teil_array_alt[j].nummer === 29) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -674,10 +719,12 @@ export class CapacityPlanningComponent implements OnInit {
 
                             if (this.ruestvorgaenge_teil_array_alt[j].nummer === 50 || this.ruestvorgaenge_teil_array_alt[j].nummer === 55) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 30);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             if (this.ruestvorgaenge_teil_array_alt[j].nummer === 30) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -687,8 +734,9 @@ export class CapacityPlanningComponent implements OnInit {
                         if (this.capacity_array[i].arbeitsplatznummer === 3) {
 
                             if (this.ruestvorgaenge_teil_array_alt[j].nummer === 31 || this.ruestvorgaenge_teil_array_alt[j].nummer === 56
-                                || this.ruestvorgaenge_teil_array_alt[j].numer === 51) {
+                                || this.ruestvorgaenge_teil_array_alt[j].nummer === 51) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -699,10 +747,12 @@ export class CapacityPlanningComponent implements OnInit {
 
                             if (this.ruestvorgaenge_teil_array_alt[j].nummer === 1 || this.ruestvorgaenge_teil_array_alt[j].nummer === 3) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 30);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             if (this.ruestvorgaenge_teil_array_alt[j].nummer === 2) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -714,6 +764,7 @@ export class CapacityPlanningComponent implements OnInit {
                             if (this.ruestvorgaenge_teil_array_alt[j].nummer === 18 || this.ruestvorgaenge_teil_array_alt[j].nummer === 19
                                 || this.ruestvorgaenge_teil_array_alt[j].nummer === 20 || this.ruestvorgaenge_teil_array_alt[j].nummer === 16) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 15);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -728,10 +779,12 @@ export class CapacityPlanningComponent implements OnInit {
                                 || this.ruestvorgaenge_teil_array_alt[j].nummer === 18 || this.ruestvorgaenge_teil_array_alt[j].nummer === 19
                                 || this.ruestvorgaenge_teil_array_alt[j].nummer === 20) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             if (this.ruestvorgaenge_teil_array_alt[j].nummer === 26) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 30);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -744,14 +797,17 @@ export class CapacityPlanningComponent implements OnInit {
                                 this.ruestvorgaenge_teil_array_alt[j].nummer === 12 || this.ruestvorgaenge_teil_array_alt[j].nummer === 13
                                 || this.ruestvorgaenge_teil_array_alt[j].nummer === 14 || this.ruestvorgaenge_teil_array_alt[j].nummer === 15) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 15);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             if (this.ruestvorgaenge_teil_array_alt[j].nummer === 18 || this.ruestvorgaenge_teil_array_alt[j].nummer === 20) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             if (this.ruestvorgaenge_teil_array_alt[j].nummer === 19) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 25);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -765,10 +821,12 @@ export class CapacityPlanningComponent implements OnInit {
                                 || this.ruestvorgaenge_teil_array_alt[j].nummer === 14 || this.ruestvorgaenge_teil_array_alt[j].nummer === 15
                                 || this.ruestvorgaenge_teil_array_alt[j].nummer === 18 || this.ruestvorgaenge_teil_array_alt[j].nummer === 20) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 15);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             if (this.ruestvorgaenge_teil_array_alt[j].nummer === 19) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -781,6 +839,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 || this.ruestvorgaenge_teil_array_alt[j].nummer === 6 || this.ruestvorgaenge_teil_array_alt[j].nummer === 7
                                 || this.ruestvorgaenge_teil_array_alt[j].nummer === 8 || this.ruestvorgaenge_teil_array_alt[j].nummer === 9) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -791,11 +850,13 @@ export class CapacityPlanningComponent implements OnInit {
 
                             if (this.ruestvorgaenge_teil_array_alt[j].nummer === 4 || this.ruestvorgaenge_teil_array_alt[j].nummer === 5) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 10);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             if (this.ruestvorgaenge_teil_array_alt[j].nummer === 6 || this.ruestvorgaenge_teil_array_alt[j].nummer === 7
                                 || this.ruestvorgaenge_teil_array_alt[j].nummer === 8 || this.ruestvorgaenge_teil_array_alt[j].nummer === 9) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 20);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -808,6 +869,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 || this.ruestvorgaenge_teil_array_alt[j].nummer === 12 || this.ruestvorgaenge_teil_array_alt[j].nummer === 13
                                 || this.ruestvorgaenge_teil_array_alt[j].nummer === 14 || this.ruestvorgaenge_teil_array_alt[j].nummer === 15) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 0);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -820,6 +882,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 || this.ruestvorgaenge_teil_array_alt[j].nummer === 12 || this.ruestvorgaenge_teil_array_alt[j].nummer === 13
                                 || this.ruestvorgaenge_teil_array_alt[j].nummer === 14 || this.ruestvorgaenge_teil_array_alt[j].nummer === 15) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 0);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -830,6 +893,7 @@ export class CapacityPlanningComponent implements OnInit {
 
                             if (this.ruestvorgaenge_teil_array_alt[j].nummer === 16) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 0);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -840,6 +904,7 @@ export class CapacityPlanningComponent implements OnInit {
 
                             if (this.ruestvorgaenge_teil_array_alt[j].nummer === 17 || this.ruestvorgaenge_teil_array_alt[j].nummer === 26) {
                                 rüstzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge * 15);
+                                ruestvorgaegene_arbeitsplatz_array.push(this.ruestvorgaenge_teil_array_alt[j].ruestvorgaenge );
                             }
 
                             this.capacity_array[i].ruestzeit_alt = rüstzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -848,9 +913,15 @@ export class CapacityPlanningComponent implements OnInit {
 
                     }
 
+                    ruestvorgaegene_arbeitsplatz = ruestvorgaegene_arbeitsplatz_array.reduce((a, b) => a + b, 0);
+                    ruestvorgaegene_gesamt_array.push(ruestvorgaegene_arbeitsplatz);
+                    console.log('Arbeitsplatz ' + this.capacity_array[i].arbeitsplatznummer + ' Rüstvorgänge alt: ' + ruestvorgaegene_arbeitsplatz);
+
                 }
 
-            }, 300);
+                ruestvorgaegene_gesamt = ruestvorgaegene_gesamt_array.reduce((a, b) => a + b, 0);
+
+                console.log('Rüstvorgänge Periode gesamt alt: ' + ruestvorgaegene_gesamt);
 
         }, (res: ResponseWrapper) => this.onError(res.json));
 
@@ -860,11 +931,7 @@ export class CapacityPlanningComponent implements OnInit {
 
         this.berechneKapzitaetsbedarfneu();
 
-        this.berechneRuestzeitneu();
-
         this.berechneKapzitaetsbedarfalt();
-
-        this.berechneRuestzeitalt();
 
     }
 
@@ -872,7 +939,7 @@ export class CapacityPlanningComponent implements OnInit {
 
        this.berechneRuestzeitenundKapazitaeten();
 
-       /* await this.berechneRuestzeitenundKapazitaeten().then( () => {
+       /*await this.berechneRuestzeitenundKapazitaeten().then( () => {
            for (let i = 0; i < this.capacity_array.length; i++) {
                this.capacity_array[i].gesamter_kapazitaetsbedarf = this.capacity_array[i].kapazitaetsbedarf_neu
                    + this.capacity_array[i].ruestzeit_neu + this.capacity_array[i].kapazitaetsbedarf_alt + this.capacity_array[i].ruestzeit_alt;
@@ -924,7 +991,7 @@ export class CapacityPlanningComponent implements OnInit {
             }
 
             }
-        }, 500);
+       }, 500);
 
     }
 

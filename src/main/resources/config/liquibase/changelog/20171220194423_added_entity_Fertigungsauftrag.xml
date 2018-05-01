@@ -66,6 +66,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="warteliste_menge" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="in_bearbeitung_menge" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="herstellteil_id" type="bigint">
                 <constraints nullable="true" />
             </column>

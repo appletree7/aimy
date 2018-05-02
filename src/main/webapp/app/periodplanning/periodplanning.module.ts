@@ -10,6 +10,7 @@ import { CapacityPlanningComponent } from './capacity_planning/capacity_planning
 import { PeriodStartComponent } from './period_start/period_start.component';
 import { DirektverkaufUndNormalverkaufComponent } from './direktverkauf_und_normalverkauf/direktverkauf_und_normalverkauf.component';
 import {AbschlussComponent} from './abschluss/abschluss.component';
+import { ReihenfolgeUndLosgroeßensplittingComponent } from './reihenfolge_und_losgroeßensplitting/reihenfolge_und_losgroeßensplitting.component';
 
 /*
 import {
@@ -31,7 +32,8 @@ import {
         CapacityPlanningComponent,
         PeriodStartComponent,
         DirektverkaufUndNormalverkaufComponent,
-        AbschlussComponent
+        AbschlussComponent,
+        ReihenfolgeUndLosgroeßensplittingComponent
         // KaufteileService
     ],
     entryComponents: [
@@ -41,7 +43,8 @@ import {
         CapacityPlanningComponent,
         PeriodStartComponent,
         DirektverkaufUndNormalverkaufComponent,
-        AbschlussComponent
+        AbschlussComponent,
+        ReihenfolgeUndLosgroeßensplittingComponent
     ],
     providers: [
         // unterstützende Services auflisten.

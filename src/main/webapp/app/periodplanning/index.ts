@@ -1,7 +1,6 @@
 export * from './periodplanning.route';
 export * from './periodplanning.module';
 export * from './purchased_part/purchased_part.component';
-//export * from './purchased part/purchased_part.service';
 export * from './purchased_part/purchased_part.route';
 export * from './in-house_production/in-house_production.component';
 export * from './in-house_production/in-house_production.route';
@@ -13,3 +12,8 @@ export * from './direktverkauf_und_normalverkauf/direktverkauf_und_normalverkauf
 export * from './direktverkauf_und_normalverkauf/direktverkauf_und_normalverkauf.route';
 export * from './abschluss/abschluss.component';
 export * from './abschluss/abschluss.route';
+export * from './reihenfolge_und_losgroeßensplitting/reihenfolge_und_losgroeßensplitting.component';
+export * from './reihenfolge_und_losgroeßensplitting/reihenfolge_und_losgroeßensplitting.route';
+
+
+

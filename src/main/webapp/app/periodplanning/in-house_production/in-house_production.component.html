@@ -23,24 +23,17 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let element of inhouse_anzeige_array">
+                <tr *ngFor="let element of inhouse_anzeige_array; let i=index">
                 <td class="text-center">{{element.nummer}}</td>
                 <td class="text-center">{{element.vertriebswunsch}}</td>
                     <td class="text-center">{{element.direktverkaufsmenge}}</td>
                     <td class="text-center">{{element.warteliste_subkomponente}}</td>
-                   <!-- <td>
-                        <div class="form-group">
-                            <input type="number" class="form-control" name="vertriebswunsch" id="field_vertriebswunsch"
-                                   [(ngModel)]="element.sicherheitsbestand" required min="0" />
-                        </div>
-                    </td>-->
                     <td>
                         <div class="form-group">
-                            <input type="number" class="form-control" name="sicherheitsbestand" id="sicherheitsbestand"
+                            <input type="number" class="form-control" name="sicherheitsbestand{{i}}" id="sicherheitsbestand{{i}}"
                                    [(ngModel)]="element.sicherheitsbestand" required min="0" />
                         </div>
                     </td>
-                  <!--  <td class="text-center">{{element.sicherheitsbestand}}</td>-->
                 <td class="text-center">{{element.bestand_vorperiode}}</td>
                 <td class="text-center">{{element.auftraege_in_warteliste}}</td>
                 <td class="text-center">{{element.auftraege_in_bearbeitung}}</td>

@@ -5,6 +5,7 @@ import { capacity_planningRoute } from './capacity_planning/capacity_planning.ro
 import { period_startRoute } from './period_start/period_start.route';
 import { direktverkauf_und_normalverkaufRoute } from './direktverkauf_und_normalverkauf/direktverkauf_und_normalverkauf.route';
 import {abschlussRoute} from './abschluss/abschluss.route';
+import {reihenfolge_und_losgroeßensplittingRoute} from './reihenfolge_und_losgroeßensplitting/reihenfolge_und_losgroeßensplitting.route';
 
 const PERIODPLANNING_ROUTES = [
     purchased_partRoute,
@@ -12,20 +13,10 @@ const PERIODPLANNING_ROUTES = [
     capacity_planningRoute,
     period_startRoute,
     direktverkauf_und_normalverkaufRoute,
-    abschlussRoute
+    abschlussRoute,
+    reihenfolge_und_losgroeßensplittingRoute
 ];
 
- /* export const kaufteildispositionState: Routes = [{
-    path: '',
-    data: {},
-    children: KAUFTEILEDISPOSITION_ROUTES
- }];
- */
-/* export const kaufteildispositionState: Routes = [
-  { path: '', data: {}},
-  { path: 'kaufteile', component: KaufteileComponent }
-];
-*/
 export const periodplanningState: Routes = [{
     path: '',
     children: PERIODPLANNING_ROUTES

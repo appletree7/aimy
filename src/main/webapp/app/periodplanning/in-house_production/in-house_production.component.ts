@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
@@ -16,13 +16,6 @@ import { Principal, ResponseWrapper } from '../../shared';
      // styles: []
 })
 export class InHouseProductionComponent implements OnInit {
-
-    // Variablen, die ich benötige hier definieren:
-    // Anmerkungen: nach DB update (Bei Entität Fertigungsaufträge - Herstellid wird auf die selbstgenerierteId referenziert.
-    // Besser wäre die Nummer anzugeben)
-                 // Bei Subkomponente sollte eine Liste angegeben werden (hier auch wieder auf ID referenziert,
-    // aber das hab ich schon im Programm umgesetzt das ist nicht so schlimm)
-
     isSaving: boolean;
     teils: Teil[];
     teile: Teil[];
@@ -1137,7 +1130,8 @@ export class InHouseProductionComponent implements OnInit {
                         this.teil = new Teil(undefined, this.inhouse_anzeige_array[i].teiltyp, parseInt(localStorage.getItem('aktuelleperiode'), 10),
                             this.inhouse_anzeige_array[i].nummer, undefined, undefined, undefined, undefined,
                             undefined, this.inhouse_anzeige_array[i].sicherheitsbestand, this.inhouse_anzeige_array[i].vertriebswunsch,
-                            this.inhouse_anzeige_array[i].produktionsauftraege, undefined, undefined,
+                            undefined, undefined, undefined,
+                            this.inhouse_anzeige_array[i].produktionsauftraege, undefined, undefined, undefined, undefined,
                             undefined, undefined);
                         this.teilService.create(this.teil).subscribe((respond: Teil) =>
                             console.log(respond), () => this.onSaveError());

@@ -64,14 +64,14 @@
                 <tbody>
                 <tr *ngFor="let bestellung of bestellungen ;trackBy: trackId">
                     <td>{{bestellung.nummer}}</td>
-                    <td>
-                        <div *ngIf="bestellung.kaufteil">
+                    <td *ngIf="bestellung.kaufteil">
+                        <div>
                             <a [routerLink]="['../teil', bestellung.kaufteil?.id ]" >{{bestellung.kaufteil?.nummer}}</a>
                         </div>
                     </td>
                     <td>{{bestellung.kaufmenge}}</td>
-                    <td>
-                        <div *ngIf="bestellung.modus">
+                    <td *ngIf="bestellung.modus">
+                        <div>
                             <a [routerLink]="['../modus', bestellung.modus?.id ]" >{{bestellung.modus?.nummer}}</a>
                         </div>
                     </td>

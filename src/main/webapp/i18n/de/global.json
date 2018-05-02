@@ -41,6 +41,7 @@
             "periodplanning": {
                 "main": "Periodenplanung",
                 "in-house_production": "Eigenfertigung",
+                "reihenfolge_und_losgroeßensplitting": "Reihenfolge und Losgrößensplitting",
                 "purchased_part": "Kaufteiledisposition",
                 "capacity_planning": "Kapazitätsplannung",
                 "period_start": "Periode starten",

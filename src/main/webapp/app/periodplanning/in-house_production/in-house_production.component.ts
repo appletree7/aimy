@@ -651,7 +651,7 @@ export class InHouseProductionComponent implements OnInit {
             this.teile = res.json;
                 for (let i = 0; i < this.inhouse_anzeige_array.length; i++) {
                         this.teil = this.teile.find((teil) => (teil.nummer === this.inhouse_anzeige_array[i].nummer));
-                        if (this.teil.istmenge !== undefined) {
+                        if (this.teil.istmenge !== undefined && this.teil.istmenge !== null) {
                             this.inhouse_anzeige_array[i].bestand_vorperiode = this.teil.istmenge;
                         } else {
                             this.inhouse_anzeige_array[i].bestand_vorperiode = 0;

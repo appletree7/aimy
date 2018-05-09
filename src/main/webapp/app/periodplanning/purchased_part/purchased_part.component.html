@@ -3,6 +3,29 @@
     <h2>
         <span jhiTranslate="purchased_part.title">Kaufteildisposition</span>
     </h2>
+    <h3>
+        <span>Kennzahlen</span>
+    </h3>
+    <div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <label class="label label-info">Lagerkosten in: </label>
+                {{lagerkosten| currency: "EUR": 2}}
+            </li>
+            <li class="list-group-item">
+                <label class="label label-info">Bestellkosten: </label>
+                {{bestellkosten| currency: "EUR": 2}}
+            </li>
+            <li class="list-group-item">
+                <label class="label label-info">Materialkosten: </label>
+                {{materialkosten| currency: "EUR": 2}}
+            </li>
+            <li class="list-group-item">
+                <label class="label label-info">Beschaffungskosten: </label>
+                {{beschaffungskosten| currency: "EUR": 2}}
+            </li>
+        </ul>
+    </div>
     <jhi-alert></jhi-alert>
     <div class="row">
     </div>

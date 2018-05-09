@@ -4,6 +4,33 @@
     <h2>
         <span jhiTranslate="capacity_planning.title">Kapazitätsplanung</span>
     </h2>
+    <h3>
+        <span>Kennzahlen</span>
+    </h3>
+    <div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <label class="label label-info">Leerzeit: </label>
+                {{leerzeit}} min
+            </li>
+            <li class="list-group-item">
+                <label class="label label-info">Maschinenkosten: </label>
+                {{maschinenkosten| currency: "EUR": 2}}
+            </li>
+            <li class="list-group-item">
+                <label class="label label-info">Maschinenstillstandkosten: </label>
+                {{maschinenstillstandkosten| currency: "EUR": 2}}
+            </li>
+            <li class="list-group-item">
+                <label class="label label-info">Lohnkosten: </label>
+                {{lohnkosten| currency: "EUR": 2}}
+            </li>
+            <li class="list-group-item">
+                <label class="label label-info">Lohnleerkosten: </label>
+                {{lohnleerkosten| currency: "EUR": 2}}
+            </li>
+        </ul>
+    </div>
     <jhi-alert></jhi-alert>
     <div class="row">
     </div>
@@ -19,7 +46,8 @@
                         <th class="text-center" jhiTranslate="capacity_planning.table.set-up_time">Rüstzeit (n)</th>
                         <th class="text-center" jhiTranslate="capacity_planning.table.reqiurement_of_time">Gesamter Zeitbedarf (n+1)</th>
                         <th class="text-center" jhiTranslate="capacity_planning.table.shifts">Schichten</th>
-                        <th class="text-center" jhiTranslate="capacity_planning.table.overtime">"Überstunden"</th>
+                        <th class="text-center" jhiTranslate="capacity_planning.table.overtime">Überstunden</th>
+                    <th class="text-center">Kapazitätsauslastung</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,6 +70,7 @@
                                            [(ngModel)]="capacity.ueberstunden" required min="0" max="240"/>
                                 </div>
                             </td>
+                            <td class="text-center">{{capacity.kapazitaetsauslastung}}</td>
                         <!--<td class="text-center">{{capacity.schichten}}</td>
                         <td class="text-center">{{capacity.ueberstunden}}</td>-->
             </tbody>

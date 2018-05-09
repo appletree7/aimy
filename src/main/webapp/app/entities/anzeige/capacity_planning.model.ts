@@ -12,6 +12,7 @@ export class Capacity implements BaseEntity {
         public gesamter_kapazitaetsbedarf?: number,
         public schichten?: number,
         public ueberstunden?: number,
+        public kapazitaetsauslastung?: number,
         public periode?: number
     ) {}
 }

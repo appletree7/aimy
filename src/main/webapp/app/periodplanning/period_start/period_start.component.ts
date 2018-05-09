@@ -121,7 +121,7 @@ export class PeriodStartComponent implements OnInit {
         }
         if (this.xml !== undefined) {
             this.periode = parseInt(this.xml.getElementsByTagName('results')[0].getAttribute('period'), 10);
-            this.saveTeil(this.moduse);
+            this.saveTeil();
             this.saveArbeitsplatz();
             this.saveKennzahl();
 
@@ -132,7 +132,7 @@ export class PeriodStartComponent implements OnInit {
     /**
      * Speichert die Subkomponenten zu einem Teil
      */
-    saveTeilSubkomponente(modi: Array<Modus>) {
+    saveTeilSubkomponente() {
 
         this.teilService.query({
             size: 1000000
@@ -218,7 +218,7 @@ export class PeriodStartComponent implements OnInit {
                 }
             }, (respond: ResponseWrapper) => this.onError(respond.json),
                 () => {
-                    this.saveBestellung(modi, this.teils);
+                    this.saveBestellung(this.moduse, this.teils);
                     this.saveFertigungsauftrag(this.teils);
                 });
     }
@@ -226,7 +226,7 @@ export class PeriodStartComponent implements OnInit {
     /**
      * Speichert die Teile der aktuelle Periode
      */
-    saveTeil(modi: Array<Modus>) {
+    saveTeil() {
 
         const criteria = [
             {key: 'periode.equals', value: this.periode}
@@ -415,7 +415,7 @@ export class PeriodStartComponent implements OnInit {
                     }
                 }, (respond: ResponseWrapper) => this.onError(respond.json),
                     () => {
-                    this.saveTeilSubkomponente(modi);
+                    this.saveTeilSubkomponente();
                 });
         }
 
@@ -481,7 +481,8 @@ export class PeriodStartComponent implements OnInit {
                         this.bestellung.bestellstatus = Bestellstatus.GELIEFERT;
                         if (this.teil !== undefined) {
                             this.bestellung.kaufteil = this.teil;
-                         } else if (this.modus !== undefined) {
+                         }
+                         if (this.modus !== undefined) {
                         this.bestellung.modus = this.modus;
                         }
                         this.bestellungService.update(this.bestellung).subscribe((respond: Bestellung) =>
@@ -515,7 +516,8 @@ export class PeriodStartComponent implements OnInit {
                             if (kaufteile !== undefined) {
                                 this.teil = kaufteile.find((teil) => (teil.nummer === parseInt(futurebestellungen[i].getAttribute('article'), 10))
                                     && (teil.periode === (parseInt(futurebestellungen[i].getAttribute('orderperiod'), 10))));
-                            } else if (moduse !== undefined) {
+                             }
+                             if (moduse !== undefined) {
                                 this.modus = moduse.find((modus) => (modus.nummer === parseInt(futurebestellungen[i].getAttribute('mode'), 10)));
                             }
                             if (this.bestellung !== undefined) {
@@ -524,7 +526,8 @@ export class PeriodStartComponent implements OnInit {
                                 this.bestellung.bestellstatus = Bestellstatus.UNTERWEGS;
                                 if (this.teil !== undefined) {
                                     this.bestellung.kaufteil = this.teil;
-                                } else if (this.modus !== undefined) {
+                                }
+                                if (this.modus !== undefined) {
                                     this.bestellung.modus = this.modus;
                                 }
                                 this.bestellungService.update(this.bestellung).subscribe((respond: Bestellung) =>
@@ -713,6 +716,7 @@ export class PeriodStartComponent implements OnInit {
                         for (j = 0; j < inBearbeitung.length; j++) {
                             if (this.fertigungsauftrag.nummer === parseInt(inBearbeitung[j].getAttribute('order'), 10)
                                 && this.fertigungsauftrag.periode === parseInt(inBearbeitung[j].getAttribute('period'), 10)) {
+                                this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
                                 this.fertigungsauftrag.inBearbeitung_menge = parseInt(inBearbeitung[j].getAttribute('amount'), 10);
                             }
                         }
@@ -755,6 +759,7 @@ export class PeriodStartComponent implements OnInit {
                             for (j = 0; j < inBearbeitung.length; j++) {
                                 if (this.fertigungsauftrag.nummer === parseInt(inBearbeitung[j].getAttribute('order'), 10)
                                     && this.fertigungsauftrag.periode === parseInt(inBearbeitung[j].getAttribute('period'), 10)) {
+                                    this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
                                     this.fertigungsauftrag.inBearbeitung_menge = parseInt(inBearbeitung[j].getAttribute('amount'), 10);
                                 }
                             }
@@ -796,6 +801,7 @@ export class PeriodStartComponent implements OnInit {
                             for (j = 0; j < inBearbeitung.length; j++) {
                                 if (this.fertigungsauftrag.nummer === parseInt(inBearbeitung[j].getAttribute('order'), 10)
                                     && this.fertigungsauftrag.periode === parseInt(inBearbeitung[j].getAttribute('period'), 10)) {
+                                    this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
                                     this.fertigungsauftrag.inBearbeitung_menge = parseInt(inBearbeitung[j].getAttribute('amount'), 10);
                                 }
                             }
@@ -861,6 +867,7 @@ export class PeriodStartComponent implements OnInit {
                                 for (j = 0; j < inBearbeitung.length; j++) {
                                     if (this.fertigungsauftrag.nummer === parseInt(inBearbeitung[j].getAttribute('order'), 10)
                                         && this.fertigungsauftrag.periode === parseInt(inBearbeitung[j].getAttribute('period'), 10)) {
+                                        this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
                                         this.fertigungsauftrag.inBearbeitung_menge = parseInt(inBearbeitung[j].getAttribute('amount'), 10);
                                     }
                                 }
@@ -904,6 +911,7 @@ export class PeriodStartComponent implements OnInit {
                                     for (j = 0; j < inBearbeitung.length; j++) {
                                         if (this.fertigungsauftrag.nummer === parseInt(inBearbeitung[j].getAttribute('order'), 10)
                                             && this.fertigungsauftrag.periode === parseInt(inBearbeitung[j].getAttribute('period'), 10)) {
+                                            this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
                                             this.fertigungsauftrag.inBearbeitung_menge = parseInt(inBearbeitung[j].getAttribute('amount'), 10);
                                         }
                                     }
@@ -942,6 +950,7 @@ export class PeriodStartComponent implements OnInit {
                                     let j;
                                     for (j = 0; j < inBearbeitung.length; j++) {
                                         if (this.fertigungsauftrag.nummer === parseInt(inBearbeitung[j].getAttribute('order'), 10)) {
+                                            this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
                                             this.fertigungsauftrag.inBearbeitung_menge = parseInt(inBearbeitung[j].getAttribute('amount'), 10);
                                         }
                                     }

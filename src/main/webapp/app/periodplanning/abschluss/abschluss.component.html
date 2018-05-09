@@ -3,6 +3,45 @@
         <span jhiTranslate="abschluss.title">Abschluss</span>
     </h2>
     <jhi-alert></jhi-alert>
+    <h3>
+        <span>Kennzahlen Periode {{periode}}</span>
+    </h3>
+    <div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <label class="label label-info">Lohnkosten: </label>
+                {{lohnkosten| currency: "EUR": 2}}
+            </li>
+            <li class="list-group-item">
+                <label class="label label-info">Maschinenkosten: </label>
+                {{maschinenkosten| currency: "EUR": 2}}
+            </li>
+            <li class="list-group-item">
+                <label class="label label-info">Lagerkosten in: </label>
+                {{lagerkosten| currency: "EUR": 2}}
+            </li>
+            <li class="list-group-item">
+                <label class="label label-info">Beschaffungskosten: </label>
+                {{beschaffungskosten| currency: "EUR": 2}}
+            </li>
+            <li class="list-group-item">
+                <label class="label label-info">Gesamtkosten: </label>
+                {{gesamtkosten| currency: "EUR": 2}}
+            </li>
+            <li class="list-group-item">
+                <label class="label label-info">Gesamtertrag: </label>
+                {{gesamtertrag| currency: "EUR": 2}}
+            </li>
+            <li class="list-group-item">
+                <label class="label label-info">Gesamtgewinn: </label>
+                {{gesamtgewinn | currency: "EUR": 2}}
+            </li>
+            <li class="list-group-item">
+                <label class="label label-info">Gewinn pro Stück: </label>
+                {{gewinnproStueck| currency: "EUR": 2}}
+            </li>
+        </ul>
+    </div>
     <div>
         <p class="lead" jhiTranslate="abschluss.normalverkauf">Normalverkauf</p>
     </div>

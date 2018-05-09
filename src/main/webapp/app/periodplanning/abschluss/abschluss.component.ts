@@ -29,7 +29,15 @@ export class AbschlussComponent implements OnInit, OnDestroy {
     fertigungsauftraege = [];
     bestellungen = [];
     arbeitsplaetze = [];
-
+    periode = parseInt(localStorage.getItem('aktuelleperiode'), 10);
+    lohnkosten = parseFloat(localStorage.getItem('lohnkosten'));
+    maschinenkosten = parseFloat(localStorage.getItem('maschinenkosten'));
+    lagerkosten = parseFloat(localStorage.getItem('lagerkosten'));
+    beschaffungskosten = parseFloat(localStorage.getItem('beschaffungskosten'));
+    gesamtkosten = this.lohnkosten + this.maschinenkosten + this.lagerkosten + this.beschaffungskosten;
+    gesamtertrag: number;
+    gesamtgewinn: number;
+    gewinnproStueck: number;
   constructor(
       private jhiAlertService: JhiAlertService,
       private eventManager: JhiEventManager,
@@ -96,6 +104,14 @@ export class AbschlussComponent implements OnInit, OnDestroy {
       })
           .subscribe((res: ResponseWrapper) => {
               this.teils = res.json;
+              const vertriebswunsch_array = [];
+              for (const teil of this.teils) {
+                  vertriebswunsch_array.push(teil.vertriebswunsch);
+              }
+              const gesamtverkaufsmenge =  vertriebswunsch_array.reduce((a, b) => a + b, 0);
+              this.gesamtertrag =  gesamtverkaufsmenge * 200;
+              this.gesamtgewinn = this.gesamtertrag - this.gesamtkosten;
+              this.gewinnproStueck = this.gesamtgewinn / gesamtverkaufsmenge;
           }, (res: ResponseWrapper) => this.onError(res.json));
       criteria = [
           {key: 'teiltyp.in', value: 'PRODUKT'},

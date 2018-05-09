@@ -58,14 +58,21 @@ export class PurchasedPartComponent implements OnInit {
     gesamtes_array = [];
     empfohlene_neue_Bestellungen_array = [];
 
+    einstandspreis = [];
     alte_bestellungen = [];
     alte_bestellungen_kaufteil_array = [];
+    diskontpreis
     bestellungen = [];
     bestellungen_DB = [];
     bestellung: Bestellung;
     isSaving: boolean;
     kaufteil: Teil;
     teiltyp: Teiltyp.KAUFTEIL;
+    lagerkosten: number;
+    bestellkosten: number;
+    materialkosten: number;
+    beschaffungskosten: number;
+    diskontmenge_teil_array = [];
 
     constructor(
         private eventManager: JhiEventManager,
@@ -95,6 +102,14 @@ export class PurchasedPartComponent implements OnInit {
             [1, 1, 1], [1, 1, 1], [2, 2, 2], [2, 0, 0], [72, 0, 0], [0, 2, 0], [0, 72, 0], [2, 2, 2]];
         this.bestellkosten_array = [50.00, 50.00, 50.00, 100.00, 50.00, 75.00, 50.00, 50.00, 75.00, 50.00, 75.00, 100.00, 50.00, 50.00,
             75.00, 50.00, 50.00, 50.00, 75.00, 50.00, 50.00, 50.00, 50.00, 75.00, 50.00, 50.00, 50.00, 50.00, 50.00];
+
+        for (let i = 0; i < this.kaufteile_array.length; i++) {
+            this.diskontmenge_teil_array.push(new Object({
+                nummer: this.kaufteile_array[i],
+                kaufpreis0: this.preis__kaufteile_periode0[i],
+                diskontmenge: this.diskontmenge_array[i],
+            }))
+        }
 
         this.modusService.query({
             size: 1000000,
@@ -547,7 +562,7 @@ export class PurchasedPartComponent implements OnInit {
                                     / (this.preis__kaufteile_periode0[i] * this.lagerkostensatz))));
                                 keysneueBestellungen.push(i);
 
-                                this.modus = this.modi.find((modus) => modus.nummer === 4 && this.lagerwert_gesamt > 250000.00);
+                                this.modus = this.modi.find((modus) => modus.nummer === 4);
                                 this.teil = this.kaufteile.find((teil) => (teil.nummer === this.kaufteile[i].nummer)
                                     && (teil.periode === (parseInt(localStorage.getItem('aktuelleperiode'), 10))));
                                 this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10), undefined,
@@ -619,7 +634,81 @@ export class PurchasedPartComponent implements OnInit {
                             this.bestellungen.push(bestellung);
                         }
                     }
+                    const bestellkosten_array = [];
+                    const materialkosten_array = [];
+                    for (let i = 0; i < this.bestellungen.length; i++) {
+                        this.teil = this.kaufteile.find((teil) => teil.id === this.bestellungen[i].kaufteil.id);
+                        this.modus = this.modi.find((modus) => modus.id === this.bestellungen[i].modus.id);
+                        if (this.modus.nummer === 5) {
+                            if (this.teil.nummer === 21 || this.teil.nummer === 22 || this.teil.nummer === 22 ||
+                                this.teil.nummer === 25 || this.teil.nummer === 28 || this.teil.nummer === 32
+                                || this.teil.nummer === 34 || this.teil.nummer === 37 || this.teil.nummer === 38
+                                || this.teil.nummer === 40 || this.teil.nummer === 41 || this.teil.nummer === 42
+                                || this.teil.nummer === 44 || this.teil.nummer === 45 || this.teil.nummer === 46
+                                || this.teil.nummer === 47 || this.teil.nummer === 52 || this.teil.nummer === 53
+                                || this.teil.nummer === 57 || this.teil.nummer === 58 || this.teil.nummer === 59) {
+                                const bestellkosten = 50;
+                                bestellkosten_array.push(bestellkosten);
+                            } else if (this.teil.nummer === 27 || this.teil.nummer === 33 || this.teil.nummer === 35 ||
+                                this.teil.nummer === 39 || this.teil.nummer === 43 || this.teil.nummer === 48) {
+                                const bestellkosten = 75;
+                                bestellkosten_array.push(bestellkosten);
+                            } else if (this.teil.nummer === 24 || this.teil.nummer === 36) {
+                                const bestellkosten = 100;
+                                bestellkosten_array.push(bestellkosten);
+                            }
+                        } else if (this.modus.nummer === 4) {
+                            if (this.teil.nummer === 21 || this.teil.nummer === 22 || this.teil.nummer === 22 ||
+                                this.teil.nummer === 25 || this.teil.nummer === 28 || this.teil.nummer === 32
+                                || this.teil.nummer === 34 || this.teil.nummer === 37 || this.teil.nummer === 38
+                                || this.teil.nummer === 40 || this.teil.nummer === 41 || this.teil.nummer === 42
+                                || this.teil.nummer === 44 || this.teil.nummer === 45 || this.teil.nummer === 46
+                                || this.teil.nummer === 47 || this.teil.nummer === 52 || this.teil.nummer === 53
+                                || this.teil.nummer === 57 || this.teil.nummer === 58 || this.teil.nummer === 59) {
+                                const bestellkosten = 500;
+                                bestellkosten_array.push(bestellkosten);
+                            } else if (this.teil.nummer === 27 || this.teil.nummer === 33 || this.teil.nummer === 35 ||
+                                this.teil.nummer === 39 || this.teil.nummer === 43 || this.teil.nummer === 48) {
+                                const bestellkosten = 750;
+                                bestellkosten_array.push(bestellkosten);
+                            } else if (this.teil.nummer === 24 || this.teil.nummer === 36) {
+                                const bestellkosten = 1000;
+                                bestellkosten_array.push(bestellkosten);
+                            }
+                        }
+                        const teil1 = this.diskontmenge_teil_array.find((teil3) => teil3.nummer === this.teil.nummer);
+                        if (this.kaufteile_vorperiode.length !== 0) {
+                            if (this.bestellungen[i].kaufmenge >= teil1.diskontmenge) {
+                                const altesteil = this.kaufteile_vorperiode.find((teil2) => teil2.nummer === this.teil.nummer);
+                                const einstandspreis = altesteil.lagerpreis * 0.90;
+                                const materialkosten = einstandspreis * this.bestellungen[i].kaufmenge;
+                                materialkosten_array.push(materialkosten);
+                            } else {
+                                const altesteil = this.kaufteile_vorperiode.find((teil) => teil.nummer === this.teil.nummer);
+                                const materialkosten = altesteil.lagerpreis * this.bestellungen[i].kaufmenge;
+                                materialkosten_array.push(materialkosten);
+                            }
+                        } else {
+                            if (this.bestellungen[i].kaufmenge >= teil1.diskontmenge) {
+                                const einstandspreis = teil1.kaufpreis0 * 0.90;
+                                const materialkosten = einstandspreis * this.bestellungen[i].kaufmenge;
+                                materialkosten_array.push(materialkosten);
+                            } else {
+                                const materialkosten = teil1.kaufpreis0 * this.bestellungen[i].kaufmenge;
+                                materialkosten_array.push(materialkosten);
+                            }
+                        }
+                    }
 
+                    console.log('Bestellkosten Bestellungen: ' + bestellkosten_array);
+                    console.log('Materialkosten Bestellungen: ' + materialkosten_array);
+                    this.bestellkosten = bestellkosten_array.reduce((a, b) => a + b, 0);
+                    this.materialkosten = materialkosten_array.reduce((a, b) => a + b, 0);
+                    console.log('Bestellkosten Bestellungen gesamt: ' + this.bestellkosten);
+                    console.log('Materialkosten Bestellungen gesamt: ' + this.materialkosten);
+                    this.beschaffungskosten = this.bestellkosten + this.materialkosten;
+                    console.log('Beschaffungskosten gesamt: ' + this.beschaffungskosten);
+                    localStorage.setItem('beschaffungskosten', this.beschaffungskosten.toString());
                 }, (res2: ResponseWrapper) => this.onError(res2.json));
 
             });
@@ -643,8 +732,9 @@ export class PurchasedPartComponent implements OnInit {
                 }
                 if (this.lagerwert_gesamt > 250000) {
                     const differenz = this.lagerwert_gesamt - 250000;
-                    const lagerkosten_periode = (250000 * 0.006) + 5000 + (differenz * 0.006);
-                    this.lagerkostensatz = (lagerkosten_periode / this.lagerwert_gesamt) * 100;
+                    this.lagerkosten = (250000 * 0.006) + 5000 + (differenz * 0.006);
+                    localStorage.setItem('lagerkosten', this.lagerkosten.toString());
+                    this.lagerkostensatz = (this.lagerkosten / this.lagerwert_gesamt) * 100;
                     console.log('Lagerkostensatz_Periode: ' + this.lagerkostensatz);
                 } else {
                     this.lagerkostensatz = 0.6;
@@ -654,8 +744,9 @@ export class PurchasedPartComponent implements OnInit {
                 this.lagerwert_gesamt = 291355.00;
                 if (this.lagerwert_gesamt > 250000) {
                     const differenz = this.lagerwert_gesamt - 250000;
-                    const lagerkosten_periode = (250000 * 0.006) + 5000 + (differenz * 0.006);
-                    this.lagerkostensatz = (lagerkosten_periode / this.lagerwert_gesamt) * 100;
+                    this.lagerkosten = (250000 * 0.006) + 5000 + (differenz * 0.006);
+                    localStorage.setItem('lagerkosten', this.lagerkosten.toString());
+                    this.lagerkostensatz = (this.lagerkosten / this.lagerwert_gesamt) * 100;
                     console.log('Lagerkostensatz_Periode: ' + this.lagerkostensatz);
                 } else {
                     this.lagerkostensatz = 0.6;

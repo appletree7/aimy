@@ -36,6 +36,7 @@ export class CapacityPlanningComponent implements OnInit {
     maschinenstillstandkosten: number;
     lohnkosten: number;
     lohnleerkosten: number;
+    kapazitaetsauslastung_avg: number;
     capacity_array = [];
 
     constructor(
@@ -142,7 +143,7 @@ export class CapacityPlanningComponent implements OnInit {
 
     berechneKapzitaetsbedarfneu() {
 
-        const criteria = [
+        let criteria = [
             {key: 'teiltyp.in', value: 'PRODUKT'},
             {key: 'teiltyp.in', value: 'ERZEUGNIS'},
             {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
@@ -154,16 +155,31 @@ export class CapacityPlanningComponent implements OnInit {
         }).subscribe((res: ResponseWrapper) => {
             this.teils = res.json;
 
-            for (let i = 0; i < this.capacity_array.length; i++) {
+        }, (res: ResponseWrapper) => this.onError(res.json), () => {
+
+            criteria = [
+                {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
+            ];
+
+            this.fertigungsauftragService.query({
+                size: 1000000,
+                criteria
+            }).subscribe((res: ResponseWrapper) => {
+                this.fertigungsauftraege = res.json;
+                this.fertigungsauftraege.sort((a, b) => a.nummer - b.nummer);
+
+                for (let i = 0; i < this.capacity_array.length; i++) {
 
                 const kapazitaetsbedarf_arbeitsplatz = [];
 
-                for (let j = 0; j < this.teils.length; j++) {
+                for (let j = 0; j < this.fertigungsauftraege.length; j++) {
+
+                    this.teil = this.teils.find((teil) => (teil.id === this.fertigungsauftraege[j].herstellteil.id));
 
                     if (this.capacity_array[i].arbeitsplatznummer === 1) {
 
-                        if (this.teils[j].nummer === 49 || this.teils[j].nummer === 54 || this.teils[j].nummer === 29) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 6);
+                        if (this.teil.nummer === 49 || this.teil.nummer === 54 || this.teil.nummer === 29) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 6);
                         }
 
                         this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -172,8 +188,8 @@ export class CapacityPlanningComponent implements OnInit {
 
                     if (this.capacity_array[i].arbeitsplatznummer === 2) {
 
-                        if (this.teils[j].nummer === 50 || this.teils[j].nummer === 55 || this.teils[j].nummer === 30) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 5);
+                        if (this.teil.nummer === 50 || this.teil.nummer === 55 || this.teil.nummer === 30) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 5);
                         }
 
                         this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -182,12 +198,12 @@ export class CapacityPlanningComponent implements OnInit {
 
                     if (this.capacity_array[i].arbeitsplatznummer === 3) {
 
-                        if (this.teils[j].nummer === 31 || this.teils[j].nummer === 56) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 6);
+                        if (this.teil.nummer === 31 || this.teil.nummer === 56) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 6);
                         }
 
-                        if (this.teils[j].nummer === 51) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 5);
+                        if (this.teil.nummer === 51) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 5);
                         }
 
                         this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -196,12 +212,12 @@ export class CapacityPlanningComponent implements OnInit {
 
                     if (this.capacity_array[i].arbeitsplatznummer === 4) {
 
-                        if (this.teils[j].nummer === 2 || this.teils[j].nummer === 3) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 7);
+                        if (this.teil.nummer === 2 || this.teil.nummer === 3) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 7);
                         }
 
-                        if (this.teils[j].nummer === 1) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 6);
+                        if (this.teil.nummer === 1) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 6);
                         }
 
                         this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -210,12 +226,12 @@ export class CapacityPlanningComponent implements OnInit {
 
                     if (this.capacity_array[i].arbeitsplatznummer === 6) {
 
-                        if (this.teils[j].nummer === 18 || this.teils[j].nummer === 19 || this.teils[j].nummer === 20) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 3);
+                        if (this.teil.nummer === 18 || this.teil.nummer === 19 || this.teil.nummer === 20) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 3);
                         }
 
-                        if (this.teils[j].nummer === 16) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 2);
+                        if (this.teil.nummer === 16) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 2);
                         }
 
                         this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -224,11 +240,11 @@ export class CapacityPlanningComponent implements OnInit {
 
                     if (this.capacity_array[i].arbeitsplatznummer === 7) {
 
-                        if (this.teils[j].nummer === 10 || this.teils[j].nummer === 11 || this.teils[j].nummer === 12
-                            || this.teils[j].nummer === 13 || this.teils[j].nummer === 14 || this.teils[j].nummer === 15
-                            || this.teils[j].nummer === 18 || this.teils[j].nummer === 19 || this.teils[j].nummer === 20
-                            || this.teils[j].nummer === 26) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 2);
+                        if (this.teil.nummer === 10 || this.teil.nummer === 11 || this.teil.nummer === 12
+                            || this.teil.nummer === 13 || this.teil.nummer === 14 || this.teil.nummer === 15
+                            || this.teil.nummer === 18 || this.teil.nummer === 19 || this.teil.nummer === 20
+                            || this.teil.nummer === 26) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 2);
                         }
 
                         this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -237,17 +253,17 @@ export class CapacityPlanningComponent implements OnInit {
 
                     if (this.capacity_array[i].arbeitsplatznummer === 8) {
 
-                        if (this.teils[j].nummer === 10 || this.teils[j].nummer === 13) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge);
+                        if (this.teil.nummer === 10 || this.teil.nummer === 13) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge);
                         }
 
-                        if (this.teils[j].nummer === 11 || this.teils[j].nummer === 12
-                            || this.teils[j].nummer === 14 || this.teils[j].nummer === 15) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 2);
+                        if (this.teil.nummer === 11 || this.teil.nummer === 12
+                            || this.teil.nummer === 14 || this.teil.nummer === 15) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 2);
                         }
 
-                        if (this.teils[j].nummer === 18 || this.teils[j].nummer === 19 || this.teils[j].nummer === 20) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 3);
+                        if (this.teil.nummer === 18 || this.teil.nummer === 19 || this.teil.nummer === 20) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 3);
                         }
 
                         this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -256,13 +272,13 @@ export class CapacityPlanningComponent implements OnInit {
 
                     if (this.capacity_array[i].arbeitsplatznummer === 9) {
 
-                        if (this.teils[j].nummer === 10 || this.teils[j].nummer === 11 || this.teils[j].nummer === 12 ||
-                            this.teils[j].nummer === 13 || this.teils[j].nummer === 14 || this.teils[j].nummer === 15) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 3);
+                        if (this.teil.nummer === 10 || this.teil.nummer === 11 || this.teil.nummer === 12 ||
+                            this.teil.nummer === 13 || this.teil.nummer === 14 || this.teil.nummer === 15) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 3);
                         }
 
-                        if (this.teils[j].nummer === 18 || this.teils[j].nummer === 19 || this.teils[j].nummer === 20) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 2);
+                        if (this.teil.nummer === 18 || this.teil.nummer === 19 || this.teil.nummer === 20) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 2);
                         }
 
                         this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -271,9 +287,9 @@ export class CapacityPlanningComponent implements OnInit {
 
                     if (this.capacity_array[i].arbeitsplatznummer === 10) {
 
-                        if (this.teils[j].nummer === 4 || this.teils[j].nummer === 5 || this.teils[j].nummer === 6
-                            || this.teils[j].nummer === 7 || this.teils[j].nummer === 8 || this.teils[j].nummer === 9) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 4);
+                        if (this.teil.nummer === 4 || this.teil.nummer === 5 || this.teil.nummer === 6
+                            || this.teil.nummer === 7 || this.teil.nummer === 8 || this.teil.nummer === 9) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 4);
                         }
 
                         this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -282,9 +298,9 @@ export class CapacityPlanningComponent implements OnInit {
 
                     if (this.capacity_array[i].arbeitsplatznummer === 11) {
 
-                        if (this.teils[j].nummer === 4 || this.teils[j].nummer === 5 || this.teils[j].nummer === 6
-                            || this.teils[j].nummer === 7 || this.teils[j].nummer === 8 || this.teils[j].nummer === 9) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 3);
+                        if (this.teil.nummer === 4 || this.teil.nummer === 5 || this.teil.nummer === 6
+                            || this.teil.nummer === 7 || this.teil.nummer === 8 || this.teil.nummer === 9) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 3);
                         }
 
                         this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -293,9 +309,9 @@ export class CapacityPlanningComponent implements OnInit {
 
                     if (this.capacity_array[i].arbeitsplatznummer === 12) {
 
-                        if (this.teils[j].nummer === 10 || this.teils[j].nummer === 11 || this.teils[j].nummer === 12
-                            || this.teils[j].nummer === 13 || this.teils[j].nummer === 14 || this.teils[j].nummer === 15) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 3);
+                        if (this.teil.nummer === 10 || this.teil.nummer === 11 || this.teil.nummer === 12
+                            || this.teil.nummer === 13 || this.teil.nummer === 14 || this.teil.nummer === 15) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 3);
                         }
 
                         this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -304,9 +320,9 @@ export class CapacityPlanningComponent implements OnInit {
 
                     if (this.capacity_array[i].arbeitsplatznummer === 13) {
 
-                        if (this.teils[j].nummer === 10 || this.teils[j].nummer === 11 || this.teils[j].nummer === 12
-                            || this.teils[j].nummer === 13 || this.teils[j].nummer === 14 || this.teils[j].nummer === 15) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 2);
+                        if (this.teil.nummer === 10 || this.teil.nummer === 11 || this.teil.nummer === 12
+                            || this.teil.nummer === 13 || this.teil.nummer === 14 || this.teil.nummer === 15) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 2);
                         }
 
                         this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -315,8 +331,8 @@ export class CapacityPlanningComponent implements OnInit {
 
                     if (this.capacity_array[i].arbeitsplatznummer === 14) {
 
-                        if (this.teils[j].nummer === 16) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 3);
+                        if (this.teil.nummer === 16) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 3);
                         }
 
                         this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -325,8 +341,8 @@ export class CapacityPlanningComponent implements OnInit {
 
                     if (this.capacity_array[i].arbeitsplatznummer === 15) {
 
-                        if (this.teils[j].nummer === 17 || this.teils[j].nummer === 26) {
-                            kapazitaetsbedarf_arbeitsplatz.push(this.teils[j].gesamtproduktionsmenge * 3);
+                        if (this.teil.nummer === 17 || this.teil.nummer === 26) {
+                            kapazitaetsbedarf_arbeitsplatz.push(this.fertigungsauftraege[j].auftragsmenge * 3);
                         }
 
                         this.capacity_array[i].kapazitaetsbedarf_neu = kapazitaetsbedarf_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -336,10 +352,13 @@ export class CapacityPlanningComponent implements OnInit {
                 }
             }
 
-        }, (res: ResponseWrapper) => this.onError(res.json), () => {
-            this.berechneKapzitaetsbedarfalt();
-            this.berechneRuestzeitneu();
-        });
+                }, (res: ResponseWrapper) => this.onError(res.json), () => {
+                    this.berechneKapzitaetsbedarfalt();
+                    this.berechneRuestzeitneu();
+                });
+
+            });
+
     }
 
     berechneRuestzeitneu() {
@@ -2249,7 +2268,10 @@ export class CapacityPlanningComponent implements OnInit {
 
         console.log('Kapazitaetsangebot Arbeitsplätze:' + kapazitaetsangebot_arbeitsplatz);
         console.log('Kapazitaetsauslastung Arbeitsplätze:' + this.kapazitaetsauslastung_arbeitsplatz);
-
+        const kapazitaetsauslastung_sum = this.kapazitaetsauslastung_arbeitsplatz.reduce((a, b) => a + b, 0);
+        // this.kapazitaetsauslastung_avg = ((kapazitaetsauslastung_sum / this.kapazitaetsangebot_array.length) * 100);
+        this.kapazitaetsauslastung_avg = parseFloat(((kapazitaetsauslastung_sum / this.kapazitaetsangebot_array.length) * 100).toFixed(2));
+        console.log('Kapazitaetsauslastung avg: ' + this.kapazitaetsauslastung_avg);
         this.berechneMaschinenkostenundLohnkosten();
 
     }

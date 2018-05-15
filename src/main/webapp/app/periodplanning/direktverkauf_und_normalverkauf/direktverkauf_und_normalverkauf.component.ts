@@ -16,7 +16,7 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit, OnDestroy
     isSaving: boolean;
     teil: Teil;
     teils: Teil[];
-    // teile: Teil[];
+    teileDB: Teil[];
     currentAccount: any;
     eventSubscriber: Subscription;
     links: any;
@@ -39,9 +39,8 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit, OnDestroy
             size: 60,
             criteria
             }
-        )
-            .subscribe((res: ResponseWrapper) => this.onSuccessTeil(res.json, res.headers)
-          , (res: ResponseWrapper) => this.onError(res.json));
+        ).subscribe((res: ResponseWrapper) => this.onSuccessTeil(res.json, res.headers),
+            (res: ResponseWrapper) => this.onError(res.json));
     }
 
     ngOnInit() {
@@ -74,21 +73,25 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit, OnDestroy
             {key: 'teiltyp.equals', value: 'PRODUKT'},
             {key: 'periode.equals', value: localStorage.getItem('aktuelleperiode')}
         ];
-        this.teilService.query(
-            {
+        this.teilService.query({
                 size: 60,
                 criteria
-            }
-        )
-            .subscribe((res: ResponseWrapper) => {
-                // this.teils = res.json;
+        }).subscribe((res: ResponseWrapper) => {
+                this.teileDB = res.json;
                 for (const teil1 of this.teils) {
-                    this.teil = this.teils.find((teil) => teil.nummer === teil1.nummer && teil.periode === parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                    this.teil = this.teileDB.find((teil2) => (teil2.nummer === teil1.nummer) && teil2.periode === parseInt(localStorage.getItem('aktuelleperiode'), 10));
                     if (this.teil !== undefined) {
+                        this.teil.vertriebswunsch = teil1.vertriebswunsch;
+                        this.teil.vertriebswunsch_naechste = teil1.vertriebswunsch_naechste;
+                        this.teil.vertriebswunsch_uebernaechste = teil1.vertriebswunsch_uebernaechste;
+                        this.teil.vertriebswunsch_ueberuebernaechste = teil1.vertriebswunsch_ueberuebernaechste;
+                        this.teil.direktverkaufspreis = teil1.direktverkaufspreis;
+                        this.teil.direktverkaufmenge = teil1.direktverkaufmenge;
+                        this.teil.strafe = teil1.strafe;
                         this.teilService.update(this.teil).subscribe((respond: Teil) =>
                             console.log(respond), () => this.onSaveError());
                     } else {
-                        this.teilService.create(this.teil).subscribe((respond: Teil) =>
+                        this.teilService.create(teil1).subscribe((respond: Teil) =>
                             console.log(respond), () => this.onSaveError());
                     }
                 }
@@ -119,6 +122,7 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit, OnDestroy
                 undefined, undefined, undefined, undefined, undefined, undefined, undefined);
             this.teils.push(this.teil);
         }
+        this.teils.sort((a, b) => a.nummer - b.nummer);
     }
 
     private onSaveError() {

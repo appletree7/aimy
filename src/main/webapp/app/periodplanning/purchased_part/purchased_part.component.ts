@@ -20,6 +20,7 @@ import * as d3 from 'd3';
 export class PurchasedPartComponent implements OnInit {
 
     teil: Teil;
+    teile: Teil[];
     alle_teile: Teil[];
     kaufteile: Teil[];
     kaufteile_mehere_Perioden: Teil[];
@@ -58,10 +59,9 @@ export class PurchasedPartComponent implements OnInit {
     gesamtes_array = [];
     empfohlene_neue_Bestellungen_array = [];
 
-    einstandspreis = [];
     alte_bestellungen = [];
     alte_bestellungen_kaufteil_array = [];
-    diskontpreis
+    alle_bestellungen = [];
     bestellungen = [];
     bestellungen_DB = [];
     bestellung: Bestellung;
@@ -71,8 +71,9 @@ export class PurchasedPartComponent implements OnInit {
     lagerkosten: number;
     bestellkosten: number;
     materialkosten: number;
-    beschaffungskosten: number;
     diskontmenge_teil_array = [];
+    bedarfKaufteil = [];
+    materialkosten_array = [];
 
     constructor(
         private eventManager: JhiEventManager,
@@ -107,6 +108,7 @@ export class PurchasedPartComponent implements OnInit {
             this.diskontmenge_teil_array.push(new Object({
                 nummer: this.kaufteile_array[i],
                 kaufpreis0: this.preis__kaufteile_periode0[i],
+                lagerbestand0: this.lagerbestand__kaufteile_periode0[i],
                 diskontmenge: this.diskontmenge_array[i],
             }))
         }
@@ -117,7 +119,7 @@ export class PurchasedPartComponent implements OnInit {
             this.modi = res.json;
         }, (res: ResponseWrapper) => this.onError(res.json));
 
-       const criteria = [
+       let criteria = [
             {key: 'teiltyp.in', value: 'KAUFTEIL'},
             {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
         ];
@@ -142,6 +144,19 @@ export class PurchasedPartComponent implements OnInit {
             }
             this.kaufteile.sort((a, b) => a.nummer - b.nummer)
         }, (res3: ResponseWrapper) => this.onError(res3.json));
+
+        criteria = [
+            {key: 'teiltyp.in', value: 'PRODUKT'},
+            {key: 'teiltyp.in', value: 'ERZEUGNIS'},
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
+        ];
+
+        this.teilService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((res3: ResponseWrapper) => {
+            this.teile = res3.json;
+        }, (res3: ResponseWrapper) => this.onError(res3.json))
 
         this.berechnedurchscnittlichenVerbrauch();
 
@@ -175,8 +190,6 @@ export class PurchasedPartComponent implements OnInit {
 
                 if (this.kaufteile_vorperiode.length !== 0) {
 
-                    const bedarfKaufteil = [];
-
                     for (let i = 0; i < this.kaufteile_vorperiode.length; i++) {
 
                         this.gesamtes_array.push(new PurchasedPart(undefined, this.kaufteile_vorperiode[i].nummer, undefined,
@@ -189,7 +202,7 @@ export class PurchasedPartComponent implements OnInit {
                         this.gesamtes_array[i].hoechstbestand = this.hoechstbestand[i];
 
                         if (this.kaufteile_vorperiode[i].teiltyp.toString() === 'KAUFTEIL') {
-                            bedarfKaufteil.push(new Object(
+                            this.bedarfKaufteil.push(new Object(
                                 {
                                     nummer: this.kaufteile_vorperiode[i].nummer,
                                     bedarf: 0,
@@ -200,34 +213,34 @@ export class PurchasedPartComponent implements OnInit {
                         }
 
                         for (let j = 0; j < this.teils.length; j++) {
-                            bedarfKaufteil[i].bedarf = this.verwendung_array[i][0] * this.teils[0].gesamtproduktionsmenge
+                            this.bedarfKaufteil[i].bedarf = this.verwendung_array[i][0] * this.teils[0].gesamtproduktionsmenge
                                 + this.verwendung_array[i][1] * this.teils[1].gesamtproduktionsmenge + this.verwendung_array[i][2] * this.teils[2].gesamtproduktionsmenge;
-                            bedarfKaufteil[i].bedarf_naechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_naechste
+                            this.bedarfKaufteil[i].bedarf_naechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_naechste
                                 + this.verwendung_array[i][1] * this.teils[1].vertriebswunsch_naechste + this.verwendung_array[i][2] * this.teils[2].vertriebswunsch_naechste;
-                            bedarfKaufteil[i].bedarf_uebernaechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_uebernaechste
+                            this.bedarfKaufteil[i].bedarf_uebernaechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_uebernaechste
                                 + this.verwendung_array[i][1] * this.teils[1].vertriebswunsch_uebernaechste +
                                 this.verwendung_array[i][2] * this.teils[2].vertriebswunsch_uebernaechste;
-                            bedarfKaufteil[i].bedarf_ueberuebernaechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_ueberuebernaechste
+                            this.bedarfKaufteil[i].bedarf_ueberuebernaechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_ueberuebernaechste
                                 + this.verwendung_array[i][1] * this.teils[1].vertriebswunsch_ueberuebernaechste
                                 + this.verwendung_array[i][2] * this.teils[2].vertriebswunsch_ueberuebernaechste;
                         }
 
                         if (this.lieferdauer_max_array[i] <= 1) {
                             this.bedarfdurchschnittKaufteil.push(new Object(
-                                {nummer: this.kaufteile_vorperiode[i].nummer, bedarfavg: bedarfKaufteil[i].bedarf}))
+                                {nummer: this.kaufteile_vorperiode[i].nummer, bedarfavg: this.bedarfKaufteil[i].bedarf}))
                         } else if (this.lieferdauer_max_array[i] > 1 && this.lieferdauer_max_array[i] <= 2) {
-                            const durschnittbedarf = Math.round((bedarfKaufteil[i].bedarf + bedarfKaufteil[i].bedarf_naechste) / 2);
+                            const durschnittbedarf = Math.round((this.bedarfKaufteil[i].bedarf + this.bedarfKaufteil[i].bedarf_naechste) / 2);
                             this.bedarfdurchschnittKaufteil.push(new Object(
                                 {nummer: this.kaufteile_vorperiode[i].nummer, bedarfavg: durschnittbedarf}))
                         } else if (this.lieferdauer_max_array[i] > 2 && this.lieferdauer_max_array[i] <= 3) {
-                            const durschnittbedarf = Math.round((bedarfKaufteil[i].bedarf + bedarfKaufteil[i].bedarf_naechste
-                                + bedarfKaufteil[i].bedarf_uebernaechste) / 3);
+                            const durschnittbedarf = Math.round((this.bedarfKaufteil[i].bedarf + this.bedarfKaufteil[i].bedarf_naechste
+                                + this.bedarfKaufteil[i].bedarf_uebernaechste) / 3);
                             this.bedarfdurchschnittKaufteil.push(new Object(
                                 {nummer: this.kaufteile_vorperiode[i].nummer, bedarfavg: durschnittbedarf}))
                         } else if (this.lieferdauer_max_array[i] > 3) {
-                            const durschnittbedarf = Math.round((bedarfKaufteil[i].bedarf
-                                + bedarfKaufteil[i].bedarf_naechste + bedarfKaufteil[i].bedarf_uebernaechste
-                                + bedarfKaufteil[i].bedarf_ueberuebernaechste) / 4);
+                            const durschnittbedarf = Math.round((this.bedarfKaufteil[i].bedarf
+                                + this.bedarfKaufteil[i].bedarf_naechste + this.bedarfKaufteil[i].bedarf_uebernaechste
+                                + this.bedarfKaufteil[i].bedarf_ueberuebernaechste) / 4);
                             this.bedarfdurchschnittKaufteil.push(new Object(
                                 {nummer: this.kaufteile_vorperiode[i].nummer, bedarfavg: durschnittbedarf}))
                         }
@@ -242,8 +255,6 @@ export class PurchasedPartComponent implements OnInit {
 
                 } else {
 
-                    const bedarfKaufteil = [];
-
                     for (let i = 0; i < this.kaufteile_array.length; i++) {
 
                         this.gesamtes_array.push(new PurchasedPart(undefined, this.kaufteile_array[i], undefined,
@@ -253,7 +264,7 @@ export class PurchasedPartComponent implements OnInit {
 
                         this.gesamtes_array[i].bestand = this.lagerbestand__kaufteile_periode0[i];
 
-                        bedarfKaufteil.push(new Object(
+                        this.bedarfKaufteil.push(new Object(
                                 {
                                     nummer: this.kaufteile_array[i],
                                     bedarf: 0,
@@ -263,34 +274,34 @@ export class PurchasedPartComponent implements OnInit {
                                 }));
 
                         for (let j = 0; j < this.teils.length; j++) {
-                            bedarfKaufteil[i].bedarf = this.verwendung_array[i][0] * this.teils[0].gesamtproduktionsmenge
+                            this.bedarfKaufteil[i].bedarf = this.verwendung_array[i][0] * this.teils[0].gesamtproduktionsmenge
                                 + this.verwendung_array[i][1] * this.teils[1].gesamtproduktionsmenge + this.verwendung_array[i][2] * this.teils[2].gesamtproduktionsmenge;
-                            bedarfKaufteil[i].bedarf_naechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_naechste
+                            this.bedarfKaufteil[i].bedarf_naechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_naechste
                                 + this.verwendung_array[i][1] * this.teils[1].vertriebswunsch_naechste + this.verwendung_array[i][2] * this.teils[2].vertriebswunsch_naechste;
-                            bedarfKaufteil[i].bedarf_uebernaechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_uebernaechste
+                            this.bedarfKaufteil[i].bedarf_uebernaechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_uebernaechste
                                 + this.verwendung_array[i][1] * this.teils[1].vertriebswunsch_uebernaechste +
                                 this.verwendung_array[i][2] * this.teils[2].vertriebswunsch_uebernaechste;
-                            bedarfKaufteil[i].bedarf_ueberuebernaechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_ueberuebernaechste
+                            this.bedarfKaufteil[i].bedarf_ueberuebernaechste = this.verwendung_array[i][0] * this.teils[0].vertriebswunsch_ueberuebernaechste
                                 + this.verwendung_array[i][1] * this.teils[1].vertriebswunsch_ueberuebernaechste
                                 + this.verwendung_array[i][2] * this.teils[2].vertriebswunsch_ueberuebernaechste;
                         }
 
                         if (this.lieferdauer_max_array[i] <= 1) {
                             this.bedarfdurchschnittKaufteil.push(new Object(
-                                {nummer: this.kaufteile_array[i], bedarfavg: bedarfKaufteil[i].bedarf}))
+                                {nummer: this.kaufteile_array[i], bedarfavg: this.bedarfKaufteil[i].bedarf}))
                         } else if (this.lieferdauer_max_array[i] > 1 && this.lieferdauer_max_array[i] <= 2) {
-                            const durschnittbedarf = Math.round((bedarfKaufteil[i].bedarf + bedarfKaufteil[i].bedarf_naechste) / 2);
+                            const durschnittbedarf = Math.round((this.bedarfKaufteil[i].bedarf + this.bedarfKaufteil[i].bedarf_naechste) / 2);
                             this.bedarfdurchschnittKaufteil.push(new Object(
                                 {nummer: this.kaufteile_array[i], bedarfavg: durschnittbedarf}))
                         } else if (this.lieferdauer_max_array[i] > 2 && this.lieferdauer_max_array[i] <= 3) {
-                            const durschnittbedarf = Math.round((bedarfKaufteil[i].bedarf + bedarfKaufteil[i].bedarf_naechste
-                                + bedarfKaufteil[i].bedarf_uebernaechste) / 3);
+                            const durschnittbedarf = Math.round((this.bedarfKaufteil[i].bedarf + this.bedarfKaufteil[i].bedarf_naechste
+                                + this.bedarfKaufteil[i].bedarf_uebernaechste) / 3);
                             this.bedarfdurchschnittKaufteil.push(new Object(
                                 {nummer: this.kaufteile_array[i], bedarfavg: durschnittbedarf}))
                         } else if (this.lieferdauer_max_array[i] > 3) {
-                            const durschnittbedarf = Math.round((bedarfKaufteil[i].bedarf
-                                + bedarfKaufteil[i].bedarf_naechste + bedarfKaufteil[i].bedarf_uebernaechste
-                                + bedarfKaufteil[i].bedarf_ueberuebernaechste) / 4);
+                            const durschnittbedarf = Math.round((this.bedarfKaufteil[i].bedarf
+                                + this.bedarfKaufteil[i].bedarf_naechste + this.bedarfKaufteil[i].bedarf_uebernaechste
+                                + this.bedarfKaufteil[i].bedarf_ueberuebernaechste) / 4);
                             this.bedarfdurchschnittKaufteil.push(new Object(
                                 {nummer: this.kaufteile_array[i], bedarfavg: durschnittbedarf}))
                         }
@@ -409,6 +420,7 @@ export class PurchasedPartComponent implements OnInit {
 
             criteria = [
                 {key: 'teiltyp.in', value: 'KAUFTEIL'},
+                {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)},
                 {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 1},
                 {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 2},
                 {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 3},
@@ -465,9 +477,10 @@ export class PurchasedPartComponent implements OnInit {
                         // const kaufteil_Bestellungalt = this.alte_bestellungen_kaufteil_array((kaufteil) => kaufteil.nummer === this.kaufteile_vorperiode[i]);
                         if (this.kaufteile_vorperiode[i].istmenge + this.alte_bestellungen_kaufteil_array[i].kaufmenge <
                             this.bestellpunkt_array[i]) { // + alte Bestellungen!!!
+                            // Kein Lagerpreisvorperiode,. Kaufpreis ist lagerpeis periode0
                             if (this.modusnummerkaufteil[i] === 5 && this.lagerwert_gesamt <= 250000.00) {
                                 this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * this.bestellkosten_array[i])
-                                    / (this.kaufteile_vorperiode[i].lagerpreis * this.lagerkostensatz))));
+                                    / (this.preis__kaufteile_periode0[i] * this.lagerkostensatz))));
                                 keysneueBestellungen.push(i);
 
                                 this.modus = this.modi.find((modus) => modus.nummer === 5);
@@ -479,7 +492,7 @@ export class PurchasedPartComponent implements OnInit {
                                 this.empfohlene_neue_Bestellungen_array.push(this.bestellung);
                             } else if (this.modusnummerkaufteil[i] === 5 && this.lagerwert_gesamt > 250000.00) {
                                 this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * this.bestellkosten_array[i])
-                                    / (this.kaufteile_vorperiode[i].lagerpreis * this.lagerkostensatz))));
+                                    / (this.preis__kaufteile_periode0[i] * this.lagerkostensatz))));
                                 keysneueBestellungen.push(i);
 
                                 this.modus = this.modi.find((modus) => modus.nummer === 5);
@@ -491,7 +504,7 @@ export class PurchasedPartComponent implements OnInit {
                                 this.empfohlene_neue_Bestellungen_array.push(this.bestellung);
                             } else if (this.modusnummerkaufteil[i] === 4 && this.lagerwert_gesamt <= 250000.00) {
                                 this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * (this.bestellkosten_array[i] * 10))
-                                    / (this.kaufteile_vorperiode[i].lagerpreis * this.lagerkostensatz))));
+                                    / (this.preis__kaufteile_periode0[i] * this.lagerkostensatz))));
                                 keysneueBestellungen.push(i);
 
                                 this.modus = this.modi.find((modus) => modus.nummer === 4);
@@ -503,7 +516,7 @@ export class PurchasedPartComponent implements OnInit {
                                 this.empfohlene_neue_Bestellungen_array.push(this.bestellung);
                             } else if (this.modusnummerkaufteil[i] === 4 && this.lagerwert_gesamt > 250000.00) {
                                 this.optBestellmenge.push(Math.round(Math.sqrt((200 * this.bedarfdurchschnittKaufteil[i].bedarfavg * (this.bestellkosten_array[i] * 10))
-                                    / (this.kaufteile_vorperiode[i].lagerpreis * this.lagerkostensatz))));
+                                    / (this.preis__kaufteile_periode0[i] * this.lagerkostensatz))));
                                 keysneueBestellungen.push(i);
 
                                 this.modus = this.modi.find((modus) => modus.nummer === 4);
@@ -634,11 +647,11 @@ export class PurchasedPartComponent implements OnInit {
                             this.bestellungen.push(bestellung);
                         }
                     }
+                    this.alle_bestellungen = this.alte_bestellungen.concat(this.bestellungen);
                     const bestellkosten_array = [];
-                    const materialkosten_array = [];
-                    for (let i = 0; i < this.bestellungen.length; i++) {
-                        this.teil = this.kaufteile.find((teil) => teil.id === this.bestellungen[i].kaufteil.id);
-                        this.modus = this.modi.find((modus) => modus.id === this.bestellungen[i].modus.id);
+                    for (let i = 0; i < this.alle_bestellungen.length; i++) {
+                        this.teil = this.kaufteile_mehere_Perioden.find((teil) => teil.id === this.alle_bestellungen[i].kaufteil.id);
+                        this.modus = this.modi.find((modus) => modus.id === this.alle_bestellungen[i].modus.id);
                         if (this.modus.nummer === 5) {
                             if (this.teil.nummer === 21 || this.teil.nummer === 22 || this.teil.nummer === 22 ||
                                 this.teil.nummer === 25 || this.teil.nummer === 28 || this.teil.nummer === 32
@@ -648,13 +661,18 @@ export class PurchasedPartComponent implements OnInit {
                                 || this.teil.nummer === 47 || this.teil.nummer === 52 || this.teil.nummer === 53
                                 || this.teil.nummer === 57 || this.teil.nummer === 58 || this.teil.nummer === 59) {
                                 const bestellkosten = 50;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
                                 bestellkosten_array.push(bestellkosten);
                             } else if (this.teil.nummer === 27 || this.teil.nummer === 33 || this.teil.nummer === 35 ||
                                 this.teil.nummer === 39 || this.teil.nummer === 43 || this.teil.nummer === 48) {
                                 const bestellkosten = 75;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
                                 bestellkosten_array.push(bestellkosten);
                             } else if (this.teil.nummer === 24 || this.teil.nummer === 36) {
                                 const bestellkosten = 100;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
                                 bestellkosten_array.push(bestellkosten);
                             }
                         } else if (this.modus.nummer === 4) {
@@ -666,49 +684,144 @@ export class PurchasedPartComponent implements OnInit {
                                 || this.teil.nummer === 47 || this.teil.nummer === 52 || this.teil.nummer === 53
                                 || this.teil.nummer === 57 || this.teil.nummer === 58 || this.teil.nummer === 59) {
                                 const bestellkosten = 500;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
                                 bestellkosten_array.push(bestellkosten);
                             } else if (this.teil.nummer === 27 || this.teil.nummer === 33 || this.teil.nummer === 35 ||
                                 this.teil.nummer === 39 || this.teil.nummer === 43 || this.teil.nummer === 48) {
                                 const bestellkosten = 750;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
                                 bestellkosten_array.push(bestellkosten);
                             } else if (this.teil.nummer === 24 || this.teil.nummer === 36) {
                                 const bestellkosten = 1000;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
                                 bestellkosten_array.push(bestellkosten);
                             }
+
                         }
-                        const teil1 = this.diskontmenge_teil_array.find((teil3) => teil3.nummer === this.teil.nummer);
+
+                        // Verbrauch von Herstellteilen und rictige for schleife für bedarf
+                    }
+
+                    let Bestellungen_Kosten_array = [];
+
+                    for (let i = 0; i < this.alle_bestellungen.length; i++) {
+                         this.teil = this.kaufteile_mehere_Perioden.find((teil) => teil.id === this.alle_bestellungen[i].kaufteil.id);
+                    const teil1 = this.diskontmenge_teil_array.find((teil3) => teil3.nummer === this.teil.nummer);
+                        // const altesteil = this.kaufteile_vorperiode.find((teil2) => teil2.nummer === this.teil.nummer);
                         if (this.kaufteile_vorperiode.length !== 0) {
-                            if (this.bestellungen[i].kaufmenge >= teil1.diskontmenge) {
-                                const altesteil = this.kaufteile_vorperiode.find((teil2) => teil2.nummer === this.teil.nummer);
-                                const einstandspreis = altesteil.lagerpreis * 0.90;
-                                const materialkosten = einstandspreis * this.bestellungen[i].kaufmenge;
-                                materialkosten_array.push(materialkosten);
+                            let einstandspreis = 0;
+                            if (this.alle_bestellungen[i].kaufmenge >= teil1.diskontmenge) {
+                                // lagerwert0 gleic Kaufpeis
+                                einstandspreis = teil1.kaufpreis0 * 0.90;
+
                             } else {
-                                const altesteil = this.kaufteile_vorperiode.find((teil) => teil.nummer === this.teil.nummer);
-                                const materialkosten = altesteil.lagerpreis * this.bestellungen[i].kaufmenge;
-                                materialkosten_array.push(materialkosten);
+                                einstandspreis = teil1.kaufpreis0;
                             }
+                            Bestellungen_Kosten_array.push(new Object({
+                                    teilenummer: this.teil.nummer,
+                                    zwischensumme: this.alle_bestellungen[i].kaufmenge * einstandspreis,
+                                    bestellkosten: this.alle_bestellungen[i].bestellkosten,
+                                    bestellmenge: this.alle_bestellungen[i].kaufmenge
+                                })
+                            );
                         } else {
-                            if (this.bestellungen[i].kaufmenge >= teil1.diskontmenge) {
-                                const einstandspreis = teil1.kaufpreis0 * 0.90;
-                                const materialkosten = einstandspreis * this.bestellungen[i].kaufmenge;
-                                materialkosten_array.push(materialkosten);
+                            let einstandspreis = 0;
+                            if (this.alle_bestellungen[i].kaufmenge >= teil1.diskontmenge) {
+                                einstandspreis = teil1.kaufpreis0 * 0.90;
                             } else {
-                                const materialkosten = teil1.kaufpreis0 * this.bestellungen[i].kaufmenge;
-                                materialkosten_array.push(materialkosten);
+                                einstandspreis = teil1.kaufpreis0;
                             }
+                            Bestellungen_Kosten_array.push(new Object({
+                                    teilenummer: teil1.nummer,
+                                    zwischensumme: this.alle_bestellungen[i].kaufmenge * einstandspreis,
+                                    bestellkosten: this.alle_bestellungen[i].bestellkosten,
+                                    bestellmenge: this.alle_bestellungen[i].kaufmenge
+                                })
+                            );
                         }
                     }
 
-                    console.log('Bestellkosten Bestellungen: ' + bestellkosten_array);
-                    console.log('Materialkosten Bestellungen: ' + materialkosten_array);
+                    const Bestellungen_Kosten_group = d3.nest()
+                        .key((d) => d.teilenummer)
+                        .rollup(function(v) { return {
+                            zwischensumme: d3.sum(v, function(d) { return d.zwischensumme; }),
+                            bestellkostensum: d3.sum(v, function(d) { return d.bestellkosten; }),
+                            bestellmengesum: d3.sum(v, function(d) { return d.bestellmenge; })
+                        }; })
+                        .entries(Bestellungen_Kosten_array);
+
+                    Bestellungen_Kosten_array = [];
+
+                    for (let i = 0; i < Bestellungen_Kosten_group.length; i++) {
+                        Bestellungen_Kosten_array.push(new Object({
+                                teilenummer: parseInt(Bestellungen_Kosten_group[i].key, 10),
+                                zwischensumme: Bestellungen_Kosten_group[i].value.zwischensumme,
+                                bestellkosten: Bestellungen_Kosten_group[i].value.bestellkostensum,
+                                bestellmenge: Bestellungen_Kosten_group[i].value.bestellmengesum
+                            })
+                        );
+                    }
+
+                    Bestellungen_Kosten_array.sort((a, b) => a.teilenummer - b.teilenummer);
+
+                    for (let i = 0; i < this.kaufteile_array.length; i++) {
+                        if (this.kaufteile_vorperiode.length !== 0) {
+                            this.teil = this.kaufteile.find((teil) => teil.nummer === this.kaufteile_array[i]);
+                            this.teil.lagerpreis = this.kaufteile_vorperiode[i].lagerpreis;
+                        } else {
+                            this.teil = this.kaufteile.find((teil) => teil.nummer === this.kaufteile_array[i]);
+                            this.teil.lagerpreis = this.preis__kaufteile_periode0[i];
+                        }
+                    }
+
+                    for (let i = 0; i < Bestellungen_Kosten_array.length; i++) {
+                        this.teil = this.kaufteile.find((teil) => (teil.nummer === Bestellungen_Kosten_array[i].teilenummer));
+                        const teil1 = this.diskontmenge_teil_array.find((teil3) => teil3.nummer === Bestellungen_Kosten_array[i].teilenummer);
+                        const altesteil = this.kaufteile_vorperiode.find((teil2) => teil2.nummer === Bestellungen_Kosten_array[i].teilenummer);
+                        if (this.kaufteile_vorperiode.length !== 0) {
+                            let neuer_Teilewert = ((teil1.kaufpreis0 * altesteil.istmenge) +
+                                + (Bestellungen_Kosten_array[i].zwischensumme) + Bestellungen_Kosten_array[i].bestellkosten)
+                                / (altesteil.istmenge + Bestellungen_Kosten_array[i].bestellmenge);
+                            neuer_Teilewert = parseFloat(neuer_Teilewert.toFixed(2));
+                            this.teil.lagerpreis = neuer_Teilewert;
+                        } else {
+                            let neuer_Teilewert = ((teil1.kaufpreis0 * teil1.lagerbestand0) +
+                                + (Bestellungen_Kosten_array[i].zwischensumme) + Bestellungen_Kosten_array[i].bestellkosten)
+                                / (teil1.lagerbestand0 + Bestellungen_Kosten_array[i].bestellmenge);
+                            neuer_Teilewert = parseFloat(neuer_Teilewert.toFixed(2));
+                            this.teil.lagerpreis = neuer_Teilewert;
+                        }
+                    }
+
+                    for (let i = 0; i < this.kaufteile_array.length; i++) {
+                        console.log(this.kaufteile[i].lagerpreis);
+                        const materialkosten = this.kaufteile[i].lagerpreis * this.bedarfKaufteil[i].bedarf;
+                        this.materialkosten_array.push(materialkosten);
+                    }
+
+                        for (let i = 0; i < this.teile.length; i++) {
+                            console.log(this.teile[i].lagerpreis);
+                            let verbrauchHerstellteil = this.teile[i].sicherheitsbestand - this.teile[i].istmenge;
+                            if (verbrauchHerstellteil < 0) {
+                                verbrauchHerstellteil = 0;
+                            }
+                            const materialkosten = this.teile[i].lagerpreis * verbrauchHerstellteil;
+                            this.materialkosten_array.push(materialkosten);
+                        }
+
+                    console.log('Bestellkosten Bestellungen:');
+                    console.log(bestellkosten_array);
+                    console.log('Materialkosten alle Teile: ' + this.materialkosten_array);
+                    this.materialkosten = this.materialkosten_array.reduce((a, b) => a + b, 0);
+
                     this.bestellkosten = bestellkosten_array.reduce((a, b) => a + b, 0);
-                    this.materialkosten = materialkosten_array.reduce((a, b) => a + b, 0);
                     console.log('Bestellkosten Bestellungen gesamt: ' + this.bestellkosten);
-                    console.log('Materialkosten Bestellungen gesamt: ' + this.materialkosten);
-                    this.beschaffungskosten = this.bestellkosten + this.materialkosten;
-                    console.log('Beschaffungskosten gesamt: ' + this.beschaffungskosten);
-                    localStorage.setItem('beschaffungskosten', this.beschaffungskosten.toString());
+                    localStorage.setItem('Bestellkosten', this.bestellkosten.toString());
+                    console.log('Materialkosten alle Teile gesamt: ' + this.materialkosten);
+                    localStorage.setItem('Materialkosten', this.materialkosten.toString());
                 }, (res2: ResponseWrapper) => this.onError(res2.json));
 
             });
@@ -754,11 +867,6 @@ export class PurchasedPartComponent implements OnInit {
                 }
             }
         }, (res: ResponseWrapper) => this.onError(res.json));
-    }
-
-    changeListener($event): void {
-        $event = this.isSaving = true;
-        this.save();
     }
 
     private onError(error) {

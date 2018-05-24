@@ -7,8 +7,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 import com.ibsys2.aimy.domain.enumeration.Teiltyp;
@@ -105,13 +103,6 @@ public class Teil implements Serializable {
     @Min(value = 0)
     @Column(name = "in_bearbeitung_menge")
     private Integer inBearbeitung_menge;
-
-    @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "teil_subkomponente",
-               joinColumns = @JoinColumn(name="teils_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="subkomponentes_id", referencedColumnName="id"))
-    private Set<Teil> subkomponentes = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -367,29 +358,6 @@ public class Teil implements Serializable {
 
     public void setInBearbeitung_menge(Integer inBearbeitung_menge) {
         this.inBearbeitung_menge = inBearbeitung_menge;
-    }
-
-    public Set<Teil> getSubkomponentes() {
-        return subkomponentes;
-    }
-
-    public Teil subkomponentes(Set<Teil> teils) {
-        this.subkomponentes = teils;
-        return this;
-    }
-
-    public Teil addSubkomponente(Teil teil) {
-        this.subkomponentes.add(teil);
-        return this;
-    }
-
-    public Teil removeSubkomponente(Teil teil) {
-        this.subkomponentes.remove(teil);
-        return this;
-    }
-
-    public void setSubkomponentes(Set<Teil> teils) {
-        this.subkomponentes = teils;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

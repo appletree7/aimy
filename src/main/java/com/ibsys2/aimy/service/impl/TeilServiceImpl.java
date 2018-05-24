@@ -61,7 +61,7 @@ public class TeilServiceImpl implements TeilService{
     @Transactional(readOnly = true)
     public Teil findOne(Long id) {
         log.debug("Request to get Teil : {}", id);
-        return teilRepository.findOneWithEagerRelationships(id);
+        return teilRepository.findOne(id);
     }
 
     /**

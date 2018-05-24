@@ -2231,6 +2231,8 @@ export class CapacityPlanningComponent implements OnInit {
     berechneKapazitaetsauslastung() {
 
         const kapazitaetsangebot_arbeitsplatz = [];
+        this.kapazitaetsangebot_array = [];
+        this.kapazitaetsauslastung_arbeitsplatz = [];
 
         for (let i = 0; i < this.capacity_array.length; i++) {
 

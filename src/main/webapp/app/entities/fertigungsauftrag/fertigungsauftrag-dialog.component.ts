@@ -34,8 +34,18 @@ export class FertigungsauftragDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.teilService.query()
-            .subscribe((res: ResponseWrapper) => { this.teils = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        const criteria = [
+            {key: 'teiltyp.in', value: 'PRODUKT'},
+            {key: 'teiltyp.in', value: 'ERZEUGNIS'}
+            // {key: 'periode.equals', value: localStorage.getItem('aktuelleperiode')}
+        ];
+        this.teilService.query({
+            size: 1000000,
+            criteria
+        })
+            .subscribe((res: ResponseWrapper) => {
+                this.teils = res.json;
+            }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {

@@ -193,7 +193,7 @@
             <label class="form-control-label" jhiTranslate="aimyApp.fertigungsauftrag.herstellteil" for="field_herstellteil">Herstellteil</label>
             <select class="form-control" id="field_herstellteil" name="herstellteil" [(ngModel)]="fertigungsauftrag.herstellteil" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="teilOption.id === fertigungsauftrag.herstellteil?.id ? fertigungsauftrag.herstellteil : teilOption" *ngFor="let teilOption of teils; trackBy: trackTeilById">{{teilOption.nummer}}</option>
+                <option *ngFor="let teilOption of teils; trackBy: trackTeilById" [ngValue]="teilOption.id === fertigungsauftrag.herstellteil?.id ? fertigungsauftrag.herstellteil : teilOption">Periode: {{teilOption.periode}}, Teilenummer: {{teilOption.nummer}}</option>
             </select>
         </div>
     </div>

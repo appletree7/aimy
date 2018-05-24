@@ -15,6 +15,7 @@
                 "arbeitsplatz": "lugar de trabajo",
                 "kennzahlen": "número indicador",
                 "fertigungsauftrag": "Fertigungsauftrag",
+                "teil": "Teil",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

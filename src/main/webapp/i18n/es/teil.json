@@ -2,34 +2,38 @@
     "aimyApp": {
         "teil" : {
             "home": {
-                "title": "componentes",
-                "createLabel": "Crear nuevo componente",
-                "createOrEditLabel": "Crear o editar componente"
+                "title": "Teils",
+                "createLabel": "Crear nuevo Teil",
+                "createOrEditLabel": "Crear o editar Teil"
             },
-            "created": "Un nuevo componente ha sido creado con el identificador {{ param }}",
-            "updated": "Un componente ha sido actualizado con el identificador {{ param }}",
-            "deleted": "Un componente ha sido eliminado con el identificador {{ param }}",
+            "created": "Un nuevo Teil ha sido creado con el identificador {{ param }}",
+            "updated": "Un Teil ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Teil ha sido eliminado con el identificador {{ param }}",
             "delete": {
-                "question": "¿Seguro que quiere eliminar componente {{ id }}?"
+                "question": "¿Seguro que quiere eliminar Teil {{ id }}?"
             },
             "detail": {
-                "title": "componente"
+                "title": "Teil"
             },
-            "teiltyp": "tipo de componente",
-            "periode": "período",
-            "nummer": "número",
-            "istmenge": "cantidad actual",
-            "startmenge": "importe inicial",
-            "prozentsatz": "porcentaje",
-            "lagerpreis": "existencia Precio",
-            "lagerwert": "valor de inventario",
-            "sicherheitsbestand": "stock de seguridad",
-            "vertriebswunsch": "solicitud de ventas",
-            "gesamtproduktionsmenge": "Capacidad de producción",
-            "direktverkaufmenge": "El volumen de ventas directas",
-            "direktverkaufspreis": "Precio de venta directa",
-            "strafe": "multa",
-            "subkomponente": "subcomponente"
+            "teiltyp": "Teiltyp",
+            "periode": "Periode",
+            "nummer": "Nummer",
+            "istmenge": "Istmenge",
+            "startmenge": "Startmenge",
+            "prozentsatz": "Prozentsatz",
+            "lagerpreis": "Lagerpreis",
+            "lagerwert": "Lagerwert",
+            "sicherheitsbestand": "Sicherheitsbestand",
+            "vertriebswunsch": "Vertriebswunsch",
+            "vertriebswunsch_naechste": "Vertriebswunsch Naechste",
+            "vertriebswunsch_uebernaechste": "Vertriebswunsch Uebernaechste",
+            "vertriebswunsch_ueberuebernaechste": "Vertriebswunsch Ueberuebernaechste",
+            "gesamtproduktionsmenge": "Gesamtproduktionsmenge",
+            "direktverkaufmenge": "Direktverkaufmenge",
+            "direktverkaufspreis": "Direktverkaufspreis",
+            "strafe": "Strafe",
+            "warteliste_menge": "Warteliste Menge",
+            "inBearbeitung_menge": "In Bearbeitung Menge"
         }
     }
 }

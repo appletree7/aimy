@@ -15,32 +15,35 @@ import {Principal, ResponseWrapper} from '../../shared';
 export class DirektverkaufUndNormalverkaufComponent implements OnInit, OnDestroy {
     isSaving: boolean;
     teil: Teil;
-    teils: Teil[];
+    teils = [];
     teileDB: Teil[];
     currentAccount: any;
     eventSubscriber: Subscription;
     links: any;
     totalItems: any;
     queryCount: any;
+    $scope: any;
 
   constructor( private teilService: TeilService,
                private parseLinks: JhiParseLinks,
                private activatedRoute: ActivatedRoute,
                private jhiAlertService: JhiAlertService,
                private eventManager: JhiEventManager,
-               private principal: Principal) {}
+               private principal: Principal) {
+  }
 
     loadTeile() {
         const criteria = [
             {key: 'teiltyp.equals', value: 'PRODUKT'},
-            {key: 'periode.equals', value: localStorage.getItem('aktuelleperiode')}
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
         ];
         this.teilService.query({
             size: 60,
             criteria
             }
-        ).subscribe((res: ResponseWrapper) => this.onSuccessTeil(res.json, res.headers),
-            (res: ResponseWrapper) => this.onError(res.json));
+        ).subscribe((res: ResponseWrapper) => {
+            this.onSuccessTeil(res.json, res.headers)
+        }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     ngOnInit() {
@@ -103,7 +106,7 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit, OnDestroy
         this.jhiAlertService.error(error.message, null, null);
     }
 
-    private onSuccessTeil(data, headers) {
+   private onSuccessTeil(data, headers) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = headers.get('X-Total-Count');
         this.queryCount = this.totalItems;
@@ -111,15 +114,15 @@ export class DirektverkaufUndNormalverkaufComponent implements OnInit, OnDestroy
         if (this.teils === undefined || this.teils.length === 0) {
             this.teil = new Teil(undefined, Teiltyp.PRODUKT, parseInt(localStorage.getItem('aktuelleperiode'), 10), 1, undefined, undefined, undefined,
                 undefined, undefined, undefined, undefined, undefined, undefined, undefined,
-                undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+                undefined, undefined, undefined, undefined, undefined, undefined);
             this.teils.push(this.teil);
             this.teil = new Teil(undefined, Teiltyp.PRODUKT, parseInt(localStorage.getItem('aktuelleperiode'), 10), 2, undefined, undefined, undefined,
                 undefined, undefined, undefined, undefined, undefined, undefined, undefined,
-                undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+                undefined, undefined, undefined, undefined, undefined, undefined);
             this.teils.push(this.teil);
             this.teil = new Teil(undefined, Teiltyp.PRODUKT, parseInt(localStorage.getItem('aktuelleperiode'), 10), 3, undefined, undefined, undefined,
                 undefined, undefined, undefined, undefined, undefined, undefined, undefined,
-                undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+                undefined, undefined, undefined, undefined, undefined, undefined);
             this.teils.push(this.teil);
         }
         this.teils.sort((a, b) => a.nummer - b.nummer);

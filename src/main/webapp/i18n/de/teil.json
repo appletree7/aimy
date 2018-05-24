@@ -2,7 +2,7 @@
     "aimyApp": {
         "teil" : {
             "home": {
-                "title": "Teile",
+                "title": "Teils",
                 "createLabel": "Teil erstellen",
                 "createOrEditLabel": "Teil erstellen oder bearbeiten"
             },
@@ -25,11 +25,15 @@
             "lagerwert": "Lagerwert",
             "sicherheitsbestand": "Sicherheitsbestand",
             "vertriebswunsch": "Vertriebswunsch",
+            "vertriebswunsch_naechste": "Vertriebswunsch Naechste",
+            "vertriebswunsch_uebernaechste": "Vertriebswunsch Uebernaechste",
+            "vertriebswunsch_ueberuebernaechste": "Vertriebswunsch Ueberuebernaechste",
             "gesamtproduktionsmenge": "Gesamtproduktionsmenge",
-            "direktverkaufmenge": "Direktverkaufsmenge",
+            "direktverkaufmenge": "Direktverkaufmenge",
             "direktverkaufspreis": "Direktverkaufspreis",
             "strafe": "Strafe",
-            "subkomponente": "Subkomponente"
+            "warteliste_menge": "Warteliste Menge",
+            "inBearbeitung_menge": "In Bearbeitung Menge"
         }
     }
 }

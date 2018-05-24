@@ -2,34 +2,38 @@
     "aimyApp": {
         "teil" : {
             "home": {
-                "title": "bileşenler",
-                "createLabel": "Yeni bir tane oluştur bileşen",
-                "createOrEditLabel": "Oluştur veya düzenle bileşen"
+                "title": "Teils",
+                "createLabel": "Create a new Teil",
+                "createOrEditLabel": "Create or edit a Teil"
             },
-            "created": "Yeni bileşen tanımlayıcı ile oluşturulur {{ param }}",
-            "updated": "bir bileşen tanımlayıcı ile güncellendi {{ param }}",
-            "deleted": "A bileşenl tanımlayıcı ile silinir {{ param }}",
+            "created": "A new Teil is created with identifier {{ param }}",
+            "updated": "A Teil is updated with identifier {{ param }}",
+            "deleted": "A Teil is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Silmek istediğine emin misin bileşen {{ id }}?"
+                "question": "Are you sure you want to delete Teil {{ id }}?"
             },
             "detail": {
-                "title": "bileşen"
+                "title": "Teil"
             },
-            "teiltyp": "bileşen türü",
-            "periode": "dönem",
-            "nummer": "sayı",
-            "istmenge": "gerçek miktar",
-            "startmenge": "başlangıç tutarı",
-            "prozentsatz": "yüzde",
-            "lagerpreis": "stok Fiyat",
-            "lagerwert": "envanter değeri",
-            "sicherheitsbestand": "emniyet stoku",
-            "vertriebswunsch": "satış talebi",
-            "gesamtproduktionsmenge": "Üretim çıkışı",
-            "direktverkaufmenge": "Doğrudan satış hacmi",
-            "direktverkaufspreis": "Doğrudan satış fiyatı",
-            "strafe": "ceza",
-            "subkomponente": "alt bileşen"
+            "teiltyp": "Teiltyp",
+            "periode": "Periode",
+            "nummer": "Nummer",
+            "istmenge": "Istmenge",
+            "startmenge": "Startmenge",
+            "prozentsatz": "Prozentsatz",
+            "lagerpreis": "Lagerpreis",
+            "lagerwert": "Lagerwert",
+            "sicherheitsbestand": "Sicherheitsbestand",
+            "vertriebswunsch": "Vertriebswunsch",
+            "vertriebswunsch_naechste": "Vertriebswunsch Naechste",
+            "vertriebswunsch_uebernaechste": "Vertriebswunsch Uebernaechste",
+            "vertriebswunsch_ueberuebernaechste": "Vertriebswunsch Ueberuebernaechste",
+            "gesamtproduktionsmenge": "Gesamtproduktionsmenge",
+            "direktverkaufmenge": "Direktverkaufmenge",
+            "direktverkaufspreis": "Direktverkaufspreis",
+            "strafe": "Strafe",
+            "warteliste_menge": "Warteliste Menge",
+            "inBearbeitung_menge": "In Bearbeitung Menge"
         }
     }
 }

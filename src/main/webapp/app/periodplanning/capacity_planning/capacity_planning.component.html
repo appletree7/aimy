@@ -61,8 +61,14 @@
                         <td class="text-center">{{capacity.ruestzeit_alt}}</td>
                         <td class="text-center">{{capacity.kapazitaetsbedarf_neu}}</td>
                         <td class="text-center">{{capacity.ruestzeit_neu}}</td>
-                        <td class="text-center">{{capacity.gesamter_kapazitaetsbedarf}}</td>
+                           <!-- <td class="text-center">{{capacity.gesamter_kapazitaetsbedarf}}</td>-->
                             <td>
+                            <div class="form-group">
+                                <input type="number" class="form-control" name="kapazitaetsbedarf{{i}}" id="kapazitaetsbedarf{{i}}"
+                                       [(ngModel)]="capacity.gesamter_kapazitaetsbedarf" required/>
+                            </div>
+                            </td>
+                            <!--<td>
                                 <div class="form-group">
                                     <input type="number" class="form-control" name="schichten{{i}}" id="schichten{{i}}"
                                            [(ngModel)]="capacity.schichten" required min="1" max="3"/>
@@ -73,10 +79,10 @@
                                     <input type="number" class="form-control" name="ueberstunden{{i}}" id="ueberstunden{{i}}"
                                            [(ngModel)]="capacity.ueberstunden" required min="0" max="240"/>
                                 </div>
-                            </td>
+                            </td>-->
+                        <td class="text-center">{{capacity.schichten}}</td>
+                        <td class="text-center">{{capacity.ueberstunden}}</td>
                             <td class="text-center">{{capacity.kapazitaetsauslastung}}</td>
-                        <!--<td class="text-center">{{capacity.schichten}}</td>
-                        <td class="text-center">{{capacity.ueberstunden}}</td>-->
             </tbody>
         </table>
     </div>
@@ -87,6 +93,9 @@
             class="btn btn-info">
         <span class="fa fa-arrow-left"></span><span jhiTranslate="entity.action.back"> Back</span>
     </button>
+        <button type="button" class="btn btn-primary" (click)="berechneSichtundUeberstunden()">
+            <span>Berechnen</span>
+        </button>
         <button type="submit" [disabled]="saveForm.form.invalid || isSaving" class="btn btn-primary">
             <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
         </button>

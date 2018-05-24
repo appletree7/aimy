@@ -15,6 +15,7 @@
                 "arbeitsplatz": "workplace",
                 "kennzahlen": "key figure",
                 "fertigungsauftrag": "Fertigungsauftrag",
+                "teil": "Teil",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

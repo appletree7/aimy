@@ -73,8 +73,6 @@ public class TeilCriteria implements Serializable {
 
     private IntegerFilter inBearbeitung_menge;
 
-    private LongFilter subkomponenteId;
-
     public TeilCriteria() {
     }
 
@@ -238,14 +236,6 @@ public class TeilCriteria implements Serializable {
         this.inBearbeitung_menge = inBearbeitung_menge;
     }
 
-    public LongFilter getSubkomponenteId() {
-        return subkomponenteId;
-    }
-
-    public void setSubkomponenteId(LongFilter subkomponenteId) {
-        this.subkomponenteId = subkomponenteId;
-    }
-
     @Override
     public String toString() {
         return "TeilCriteria{" +
@@ -269,7 +259,6 @@ public class TeilCriteria implements Serializable {
                 (strafe != null ? "strafe=" + strafe + ", " : "") +
                 (warteliste_menge != null ? "warteliste_menge=" + warteliste_menge + ", " : "") +
                 (inBearbeitung_menge != null ? "inBearbeitung_menge=" + inBearbeitung_menge + ", " : "") +
-                (subkomponenteId != null ? "subkomponenteId=" + subkomponenteId + ", " : "") +
             "}";
     }
 

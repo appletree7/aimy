@@ -13,6 +13,7 @@ import {Fertigungsauftrag} from '../../entities/fertigungsauftrag';
 import {Auftragstatus, FertigungsauftragService} from '../../entities/fertigungsauftrag';
 import {Modus, ModusService} from '../../entities/modus';
 import {Kennzahlen, KennzahlenService} from '../../entities/kennzahlen';
+import * as d3 from 'd3';
 
 @Component({
     selector: 'jhi-period-start',
@@ -38,6 +39,8 @@ export class PeriodStartComponent implements OnInit {
     eventSubscriber: Subscription;
     aktuelleperiode: number;
     periode: number;
+    wartelistesamefertigungsauftrag = [];
+
     // maxRequestsize = Number.MAX_SAFE_INTEGER;
 
     constructor(
@@ -128,101 +131,6 @@ export class PeriodStartComponent implements OnInit {
             this.isSaving = true;
         }
     }
-
-    /**
-     * Speichert die Subkomponenten zu einem Teil
-     */
-    saveTeilSubkomponente() {
-
-        this.teilService.query({
-            size: 1000000
-        })
-            .subscribe((res: ResponseWrapper) => {
-                this.teils = res.json;
-                let teilSubkomponenten = [];
-                for (const teil of this.teils) {
-                    if (teil.nummer === 1) {
-                        teilSubkomponenten = this.teils.filter((teil1) => ((teil1.nummer === 51)
-                            || (teil1.nummer === 26)) && (teil1.periode === this.periode));
-                        teil.subkomponentes = teilSubkomponenten;
-                        this.teilService.update(teil).subscribe((respond: Teil) =>
-                            console.log(respond), () => this.onSaveError());
-                    } else if (teil.nummer === 2) {
-                        teilSubkomponenten = this.teils.filter((teil1) => ((teil1.nummer === 56)
-                            || (teil1.nummer === 26)) && (teil1.periode === this.periode));
-                        teil.subkomponentes = teilSubkomponenten;
-                        this.teilService.update(teil).subscribe((respond: Teil) =>
-                            console.log(respond), () => this.onSaveError());
-                    } else if (teil.nummer === 3) {
-                        teilSubkomponenten = this.teils.filter((teil1) => ((teil1.nummer === 31)
-                            || (teil1.nummer === 26))
-                            && (teil1.periode === this.periode));
-                        teil.subkomponentes = teilSubkomponenten;
-                        this.teilService.update(teil).subscribe((respond: Teil) =>
-                            console.log(respond), () => this.onSaveError());
-                    } else if (teil.nummer === 51) {
-                        teilSubkomponenten = this.teils.filter((teil1) => ((teil1.nummer === 16) ||
-                            (teil1.nummer === 17) || (teil1.nummer === 50)) && (teil1.periode === this.periode));
-                        teil.subkomponentes = teilSubkomponenten;
-                        this.teilService.update(teil).subscribe((respond: Teil) =>
-                            console.log(respond), () => this.onSaveError());
-                    } else if (teil.nummer === 56) {
-                        teilSubkomponenten = this.teils.filter((teil1) => ((teil1.nummer === 16) ||
-                            (teil1.nummer === 17) || (teil1.nummer === 55)) && (teil1.periode === this.periode));
-                        teil.subkomponentes = teilSubkomponenten;
-                        this.teilService.update(teil).subscribe((respond: Teil) =>
-                            console.log(respond), () => this.onSaveError());
-                    } else if (teil.nummer === 31) {
-                        teilSubkomponenten = this.teils.filter((teil1) => ((teil1.nummer === 16) ||
-                            (teil1.nummer === 17) || (teil1.nummer === 30)) && (teil1.periode === this.periode));
-                        teil.subkomponentes = teilSubkomponenten;
-                        this.teilService.update(teil).subscribe((respond: Teil) =>
-                            console.log(respond), () => this.onSaveError());
-                    } else if (teil.nummer === 50) {
-                        teilSubkomponenten = this.teils.filter((teil1) =>  ((teil1.nummer === 4) ||
-                            (teil1.nummer === 10) || (teil1.nummer === 49)) && (teil1.periode === this.periode));
-                        teil.subkomponentes = teilSubkomponenten;
-                        this.teilService.update(teil).subscribe((respond: Teil) =>
-                            console.log(respond), () => this.onSaveError());
-                    } else if (teil.nummer === 55) {
-                        teilSubkomponenten = this.teils.filter((teil1) =>  ((teil1.nummer === 5) ||
-                            (teil1.nummer === 11) || (teil1.nummer === 54)) && (teil1.periode === this.periode));
-                        teil.subkomponentes = teilSubkomponenten;
-                        this.teilService.update(teil).subscribe((respond: Teil) =>
-                            console.log(respond), () => this.onSaveError());
-                    } else if (teil.nummer === 30) {
-                        teilSubkomponenten = this.teils.filter((teil1) =>  ((teil1.nummer === 6) ||
-                            (teil1.nummer === 12) || (teil1.nummer === 29)) && (teil1.periode === this.periode));
-                        teil.subkomponentes = teilSubkomponenten;
-                        this.teilService.update(teil).subscribe((respond: Teil) =>
-                            console.log(respond), () => this.onSaveError());
-                    } else if (teil.nummer === 49) {
-                        teilSubkomponenten = this.teils.filter((teil1) =>  ((teil1.nummer === 7) ||
-                            (teil1.nummer === 13) || (teil1.nummer === 18)) && (teil1.periode === this.periode));
-                        teil.subkomponentes = teilSubkomponenten;
-                        this.teilService.update(teil).subscribe((respond: Teil) =>
-                            console.log(respond), () => this.onSaveError());
-                    } else if (teil.nummer === 54) {
-                        teilSubkomponenten = this.teils.filter((teil1) =>  ((teil1.nummer === 8) ||
-                            (teil1.nummer === 14) || (teil1.nummer === 19)) && (teil1.periode === this.periode));
-                        teil.subkomponentes = teilSubkomponenten;
-                        this.teilService.update(teil).subscribe((respond: Teil) =>
-                            console.log(respond), () => this.onSaveError());
-                    } else if (teil.nummer === 29) {
-                        teilSubkomponenten = this.teils.filter((teil1) =>  ((teil1.nummer === 9) ||
-                            (teil1.nummer === 15) || (teil1.nummer === 20)) && (teil1.periode === this.periode));
-                        teil.subkomponentes = teilSubkomponenten;
-                        this.teilService.update(teil).subscribe((respond: Teil) =>
-                            console.log(respond), () => this.onSaveError());
-                    }
-                }
-            }, (respond: ResponseWrapper) => this.onError(respond.json),
-                () => {
-                    this.saveBestellung(this.moduse, this.teils);
-                    this.saveFertigungsauftrag(this.teils);
-                });
-    }
-
     /**
      * Speichert die Teile der aktuelle Periode
      */
@@ -301,7 +209,7 @@ export class PeriodStartComponent implements OnInit {
                                         parseFloat(teile[i].getAttribute('stockvalue')), undefined, undefined,
                                         undefined, undefined,
                                         undefined, undefined, undefined,
-                                        undefined, undefined, undefined, undefined, undefined);
+                                        undefined, undefined, undefined, undefined);
                                 let j;
                                 for (j = 0; j < inBearbeitung.length; j++) {
                                     if (this.teil.nummer === parseInt(inBearbeitung[j].getAttribute('item'), 10)) {
@@ -344,7 +252,7 @@ export class PeriodStartComponent implements OnInit {
                                         parseFloat(teile[i].getAttribute('pct')), parseFloat(teile[i].getAttribute('price')),
                                         parseFloat(teile[i].getAttribute('stockvalue')), undefined, undefined,
                                         undefined, undefined, undefined,
-                                        undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+                                        undefined, undefined, undefined, undefined, undefined, undefined);
                                 let j;
                                 for (j = 0; j < inBearbeitung.length; j++) {
                                     if (this.teil.nummer === parseInt(inBearbeitung[j].getAttribute('item'), 10)) {
@@ -379,7 +287,7 @@ export class PeriodStartComponent implements OnInit {
                                         parseFloat(teile[i].getAttribute('pct')), parseFloat(teile[i].getAttribute('price')),
                                         parseFloat(teile[i].getAttribute('stockvalue')), undefined, undefined,
                                         undefined, undefined, undefined,
-                                        undefined,  undefined, undefined, undefined, undefined, undefined, undefined);
+                                        undefined,  undefined, undefined, undefined, undefined, undefined);
                                 let j;
                                 for (j = 0; j < inBearbeitung.length; j++) {
                                     if (this.teil.nummer === parseInt(inBearbeitung[j].getAttribute('item'), 10)) {
@@ -413,9 +321,9 @@ export class PeriodStartComponent implements OnInit {
                                 console.log(respond), () => this.onSaveError());
                         }
                     }
-                }, (respond: ResponseWrapper) => this.onError(respond.json),
-                    () => {
-                    this.saveTeilSubkomponente();
+                }, (respond: ResponseWrapper) => this.onError(respond.json), () => {
+                    this.saveBestellung(this.moduse, this.teils);
+                    this.saveFertigungsauftrag(this.teils);
                 });
         }
 
@@ -690,9 +598,6 @@ export class PeriodStartComponent implements OnInit {
             .subscribe((res: ResponseWrapper) => {
                 this.fertigungsauftraege = res.json;
                 const fertigungsauftraege = this.xml.getElementsByTagName('completedorders')[0].getElementsByTagName('order');
-                const inBearbeitung = this.xml.getElementsByTagName('ordersinwork')[0].getElementsByTagName('workplace');
-                const workplace = this.xml.getElementsByTagName('waitinglistworkstations')[0].getElementsByTagName('workplace');
-                const missingpart = this.xml.getElementsByTagName('waitingliststock')[0].getElementsByTagName('missingpart');
                 for (let i = 0; i < fertigungsauftraege.length; i++) {
                     this.fertigungsauftrag = this.fertigungsauftraege.find((fertigungsauftrag) => (fertigungsauftrag.nummer ===
                         (parseInt(fertigungsauftraege[i].getAttribute('id'), 10))) && fertigungsauftrag.periode ===
@@ -734,6 +639,15 @@ export class PeriodStartComponent implements OnInit {
                     }
                 }
 
+            }, (res: ResponseWrapper) => this.onError(res.json), () => {
+
+                this.fertigungsauftragService.query({
+                    size: 1000000,
+                    criteria
+                }).subscribe((res2: ResponseWrapper) => {
+                        this.fertigungsauftraege = res2.json;
+                const inBearbeitung = this.xml.getElementsByTagName('ordersinwork')[0].getElementsByTagName('workplace');
+
                 for (let j = 0; j < inBearbeitung.length; j++) {
                     this.fertigungsauftrag = this.fertigungsauftraege.find((fertigungsauftrag) => (fertigungsauftrag.nummer ===
                         (parseInt(inBearbeitung[j].getAttribute('order'), 10))) && fertigungsauftrag.periode ===
@@ -757,69 +671,122 @@ export class PeriodStartComponent implements OnInit {
                         this.fertigungsauftragService.create(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
                             console.log(respond), () => this.onSaveError());
                     }
-                  }
-                const wartelistesamefertigungsauftrag = [];
-                for (let k = 0; k < workplace.length; k++) {
-                    const waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
-                    for (let l = 0; l < waitinglistworkstation.length; l++) {
-                            this.fertigungsauftrag = this.fertigungsauftraege.find((fertigungsauftrag) => (fertigungsauftrag.nummer ===
-                                (parseInt(waitinglistworkstation[l].getAttribute('order'), 10))) && fertigungsauftrag.periode ===
-                                parseInt(waitinglistworkstation[l].getAttribute('period'), 10));
-                            this.teil = teile.find((teil) => (teil.nummer === parseInt(waitinglistworkstation[l].getAttribute('item'), 10))
-                                && (teil.periode === parseInt(waitinglistworkstation[l].getAttribute('period'), 10)));
-                            if (this.fertigungsauftrag !== undefined) {
-                                this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
-                                wartelistesamefertigungsauftrag.push(parseInt(waitinglistworkstation[l].getAttribute('amount'), 10))
-                                if (this.teil !== undefined) {
-                                    this.fertigungsauftrag.herstellteil = this.teil;
-                                }
-                                this.fertigungsauftragService.update(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
-                                    console.log(respond), () => this.onSaveError());
-                            } else {
-                                this.fertigungsauftrag = new Fertigungsauftrag(undefined,
-                                    parseInt(waitinglistworkstation[l].getAttribute('period'), 10),
-                                    parseInt(waitinglistworkstation[l].getAttribute('order'), 10), undefined,
-                                    undefined, undefined, Auftragstatus.WARTEND,
-                                    undefined, undefined, undefined, undefined, undefined,
-                                    undefined, parseInt(waitinglistworkstation[l].getAttribute('amount'), 10), this.teil);
-                                this.fertigungsauftragService.create(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
-                                    console.log(respond), () => this.onSaveError());
-                            }
-                    }
                 }
-                for (let m = 0; m < missingpart.length; m++) {
-                    const waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
-                    for (let n = 0; n < waitinglistmaterial.length; n++) {
-                            this.fertigungsauftrag = this.fertigungsauftraege.find((fertigungsauftrag) => (fertigungsauftrag.nummer ===
-                                (parseInt(waitinglistmaterial[n].getAttribute('order'), 10))) && fertigungsauftrag.periode ===
-                                parseInt(waitinglistmaterial[n].getAttribute('period'), 10));
-                            this.teil = teile.find((teil) => (teil.nummer === parseInt(waitinglistmaterial[n].getAttribute('item'), 10))
-                                && (teil.periode === parseInt(waitinglistmaterial[n].getAttribute('period'), 10)));
-                            if (this.fertigungsauftrag !== undefined) {
-                                this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
-                                wartelistesamefertigungsauftrag.push(parseInt(waitinglistmaterial[n].getAttribute('amount'), 10));
-                                this.fertigungsauftrag.warteliste_menge = wartelistesamefertigungsauftrag.reduce((a, b) => a + b, 0);
-                                if (this.teil !== undefined) {
-                                    this.fertigungsauftrag.herstellteil = this.teil;
-                                }
-                                this.fertigungsauftragService.update(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
-                                    console.log(respond), () => this.onSaveError());
-                            } else {
-                                this.fertigungsauftrag = new Fertigungsauftrag(undefined,
-                                    parseInt(waitinglistmaterial[n].getAttribute('period'), 10),
-                                    parseInt(waitinglistmaterial[n].getAttribute('order'), 10), undefined,
-                                     undefined, undefined, Auftragstatus.WARTEND,
-                                    undefined, undefined, undefined, undefined, undefined,
-                                    undefined, parseInt(waitinglistmaterial[n].getAttribute('amount'), 10), this.teil);
-                                this.fertigungsauftrag.warteliste_menge = wartelistesamefertigungsauftrag.reduce((a, b) => a + b, 0);
-                                this.fertigungsauftragService.create(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
-                                    console.log(respond), () => this.onSaveError());
-                            }
-                    }
-                }
-            }, (res: ResponseWrapper) => this.onError(res.json), () => {
 
-                this.fertigungsauftragService.query({
+                    }, (res2: ResponseWrapper) => this.onError(res2.json), () => {
+                    this.fertigungsauftragService.query({
+                        size: 1000000,
+                        criteria
+                    }).subscribe((res3: ResponseWrapper) => {
+                        this.fertigungsauftraege = res3.json;
+                            const workplace = this.xml.getElementsByTagName('waitinglistworkstations')[0].getElementsByTagName('workplace');
+                        this.wartelistesamefertigungsauftrag = [];
+                            for (let k = 0; k < workplace.length; k++) {
+                                // const wartelistesamefertigungsauftrag = [];
+                                const waitinglistworkstation = workplace[k].getElementsByTagName('waitinglist');
+                                for (let l = 0; l < waitinglistworkstation.length; l++) {
+                                    this.fertigungsauftrag = this.fertigungsauftraege.find((fertigungsauftrag) => (fertigungsauftrag.nummer ===
+                                        (parseInt(waitinglistworkstation[l].getAttribute('order'), 10))) && fertigungsauftrag.periode ===
+                                        parseInt(waitinglistworkstation[l].getAttribute('period'), 10));
+                                    this.teil = teile.find((teil) => (teil.nummer === parseInt(waitinglistworkstation[l].getAttribute('item'), 10))
+                                        && (teil.periode === parseInt(waitinglistworkstation[l].getAttribute('period'), 10)));
+                                    if (this.fertigungsauftrag !== undefined) {
+                                        this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
+                                        this.wartelistesamefertigungsauftrag.push(new Object({
+                                            nummer: this.fertigungsauftrag.nummer, periode: this.fertigungsauftrag.periode,
+                                            wartelistenmenge: parseInt(waitinglistworkstation[l].getAttribute('amount'), 10)
+                                        }));
+                                        if (this.teil !== undefined) {
+                                            this.fertigungsauftrag.herstellteil = this.teil;
+                                        }
+                                        // this.fertigungsauftrag.warteliste_menge = this.wartelistesamefertigungsauftrag.reduce((a, b) => a + b, 0);
+                                        this.fertigungsauftragService.update(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
+                                            console.log(respond), () => this.onSaveError());
+                                    } else {
+                                        this.fertigungsauftrag = new Fertigungsauftrag(undefined,
+                                            parseInt(waitinglistworkstation[l].getAttribute('period'), 10),
+                                            parseInt(waitinglistworkstation[l].getAttribute('order'), 10), undefined,
+                                            undefined, undefined, Auftragstatus.WARTEND,
+                                            undefined, undefined, undefined, undefined, undefined,
+                                            // this.wartelistesamefertigungsauftrag.reduce((a, b) => a + b, 0),
+                                             undefined, undefined, this.teil);
+                                        this.fertigungsauftragService.create(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
+                                            console.log(respond), () => this.onSaveError());
+                                    }
+                                }
+                            }
+
+                    }, (res3: ResponseWrapper) => this.onError(res3.json), () => {
+
+                        this.fertigungsauftragService.query({
+                            size: 1000000,
+                            criteria
+                        }).subscribe((res4: ResponseWrapper) => {
+                            this.fertigungsauftraege = res4.json;
+                            const missingpart = this.xml.getElementsByTagName('waitingliststock')[0].getElementsByTagName('missingpart');
+                            for (let m = 0; m < missingpart.length; m++) {
+                                // const wartelistesamefertigungsauftrag = [];
+                                const waitinglistmaterial = missingpart[m].getElementsByTagName('waitinglist');
+                                for (let n = 0; n < waitinglistmaterial.length; n++) {
+                                    this.fertigungsauftrag = this.fertigungsauftraege.find((fertigungsauftrag) => (fertigungsauftrag.nummer ===
+                                        (parseInt(waitinglistmaterial[n].getAttribute('order'), 10))) && fertigungsauftrag.periode ===
+                                        parseInt(waitinglistmaterial[n].getAttribute('period'), 10));
+                                    this.teil = teile.find((teil) => (teil.nummer === parseInt(waitinglistmaterial[n].getAttribute('item'), 10))
+                                        && (teil.periode === parseInt(waitinglistmaterial[n].getAttribute('period'), 10)));
+                                    if (this.fertigungsauftrag !== undefined) {
+                                        this.fertigungsauftrag.auftragsstatus = Auftragstatus.WARTEND;
+                                        this.wartelistesamefertigungsauftrag.push(new Object({
+                                            nummer: this.fertigungsauftrag.nummer, periode: this.fertigungsauftrag.periode,
+                                            wartelistenmenge: parseInt(waitinglistmaterial[n].getAttribute('amount'), 10)
+                                        }));
+                                        // this.fertigungsauftrag.warteliste_menge = this.wartelistesamefertigungsauftrag.reduce((a, b) => a + b, 0);
+                                        if (this.teil !== undefined) {
+                                            this.fertigungsauftrag.herstellteil = this.teil;
+                                        }
+                                        this.fertigungsauftragService.update(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
+                                            console.log(respond), () => this.onSaveError());
+                                    } else {
+                                        this.fertigungsauftrag = new Fertigungsauftrag(undefined,
+                                            parseInt(waitinglistmaterial[n].getAttribute('period'), 10),
+                                            parseInt(waitinglistmaterial[n].getAttribute('order'), 10), undefined,
+                                            undefined, undefined, Auftragstatus.WARTEND,
+                                            undefined, undefined, undefined, undefined, undefined,
+                                            undefined, undefined, this.teil);
+                                        this.fertigungsauftragService.create(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
+                                            console.log(respond), () => this.onSaveError());
+                                    }
+                                }
+                            }
+
+                            const wartelistenmengesum = d3.nest()
+                                .key((d) => d.nummer)
+                                .rollup(function(v) { return {
+                                    sum: d3.sum(v, function(d) { return d.wartelistenmenge; }),
+                                    periode: d3.mean(v, function(d) { return (d.periode); })
+                                }; })
+                                .entries(this.wartelistesamefertigungsauftrag);
+
+                            this.wartelistesamefertigungsauftrag = [];
+
+                            for (const element of wartelistenmengesum) {
+                                this.wartelistesamefertigungsauftrag.push(new Object({
+                                    nummer: parseInt(element.key, 10), periode: element.value.periode, wartelistenmenge: element.value.sum
+                                }));
+                            }
+                            for (let i = 0; i < this.wartelistesamefertigungsauftrag.length; i++) {
+                                this.fertigungsauftrag = this.fertigungsauftraege.find((fertigungsauftrag) => (fertigungsauftrag.nummer ===
+                                    this.wartelistesamefertigungsauftrag[i].nummer) && fertigungsauftrag.periode ===
+                                    this.wartelistesamefertigungsauftrag[i].periode);
+                                this.fertigungsauftrag.warteliste_menge = this.wartelistesamefertigungsauftrag[i].wartelistenmenge;
+                                this.fertigungsauftragService.update(this.fertigungsauftrag).subscribe((respond: Fertigungsauftrag) =>
+                                    console.log(respond), () => this.onSaveError());
+                            }
+
+                    }, (res4: ResponseWrapper) => this.onError(res4.json));
+                        });
+                });
+
+              this.fertigungsauftragService.query({
                     size: 1000000,
                     criteria
                 })

@@ -651,25 +651,19 @@ export class InHouseProductionComponent implements OnInit {
             this.teile = res.json;
                 for (let i = 0; i < this.inhouse_anzeige_array.length; i++) {
                         this.teil = this.teile.find((teil) => (teil.nummer === this.inhouse_anzeige_array[i].nummer));
-                        if (this.teil.istmenge !== undefined && this.teil.istmenge !== null) {
+                        if (this.teil !== undefined && this.teil.istmenge !== undefined  && this.teil.istmenge !== null) {
                             this.inhouse_anzeige_array[i].bestand_vorperiode = this.teil.istmenge;
-                        } else {
-                            this.inhouse_anzeige_array[i].bestand_vorperiode = 0;
                         }
                         if (this.inhouse_anzeige_array[i].warteliste_subkomponente !== undefined
                             && this.inhouse_anzeige_array[i].warteliste_subkomponente !== null) {
                         } else {
                             this.inhouse_anzeige_array[i].warteliste_subkomponente = 0;
                         }
-                        if (this.teil.warteliste_menge !== undefined && this.teil.warteliste_menge !== null) {
+                        if (this.teil !== undefined && this.teil.warteliste_menge !== undefined && this.teil.warteliste_menge !== null) {
                             this.inhouse_anzeige_array[i].auftraege_in_warteliste = this.teil.warteliste_menge;
-                        } else {
-                            this.inhouse_anzeige_array[i].auftraege_in_warteliste = 0;
                         }
-                        if (this.teil.inBearbeitung_menge !== undefined && this.teil.inBearbeitung_menge !== null) {
+                        if (this.teil !== undefined && this.teil.inBearbeitung_menge !== undefined && this.teil.inBearbeitung_menge !== null) {
                             this.inhouse_anzeige_array[i].auftraege_in_bearbeitung = this.teil.inBearbeitung_menge;
-                        } else {
-                            this.inhouse_anzeige_array[i].auftraege_in_bearbeitung = 0;
                         }
 
                     this.inhouse_anzeige_array[i].produktionsauftraege = this.inhouse_anzeige_array[i].vertriebswunsch +
@@ -1132,7 +1126,7 @@ export class InHouseProductionComponent implements OnInit {
                             undefined, this.inhouse_anzeige_array[i].sicherheitsbestand, this.inhouse_anzeige_array[i].vertriebswunsch,
                             undefined, undefined, undefined,
                             this.inhouse_anzeige_array[i].produktionsauftraege, undefined, undefined, undefined, undefined,
-                            undefined, undefined);
+                            undefined);
                         this.teilService.create(this.teil).subscribe((respond: Teil) =>
                             console.log(respond), () => this.onSaveError());
                     }

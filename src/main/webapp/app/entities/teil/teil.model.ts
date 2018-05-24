@@ -28,7 +28,6 @@ export class Teil implements BaseEntity {
         public strafe?: number,
         public warteliste_menge?: number,
         public inBearbeitung_menge?: number,
-        public subkomponentes?: BaseEntity[],
     ) {
     }
 }

@@ -101,17 +101,6 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         
-        <createTable tableName="teil_subkomponente">
-            <column name="subkomponentes_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="teils_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addPrimaryKey columnNames="teils_id, subkomponentes_id" tableName="teil_subkomponente"/>
-        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

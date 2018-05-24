@@ -13,6 +13,9 @@
             </span>
             </button>
         </h3>
+        <h4>
+            <span>Runden Sie bitte die Auftragsmengen auf 10, aufgrund der Losgrößen.</span>
+        </h4>
     </div>
     <div class="table-responsive" *ngIf="fertigungsauftraege">
         <table class="table table-striped">
@@ -21,19 +24,18 @@
                 <th><span jhiTranslate="aimyApp.fertigungsauftrag.nummer">Nummer</span></th>
                 <th><span jhiTranslate="aimyApp.fertigungsauftrag.herstellteil">Herstellteil</span></th>
                 <th><span jhiTranslate="aimyApp.fertigungsauftrag.auftragsmenge">Auftragsmenge</span></th>
-                <th><span jhiTranslate="aimyApp.fertigungsauftrag.bearbeitungszeitmin">Bearbeitungszeitmin</span></span></th>
+                <th><span jhiTranslate="aimyApp.fertigungsauftrag.bearbeitungszeitmin">Bearbeitungszeitmin</span></th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let fertigungsauftrag of fertigungsauftraege|orderBy:'nummer';trackBy: trackId; let i=index">
+            <tr *ngFor="let fertigungsauftrag of fertigungsauftraege|orderBy:'nummer';trackBy: trackId">
                 <td>
                     <div class="form-group">
-                        <input type="number" class="form-control" name="nummer{{i}}" id="nummer{{i}}"
+                        <input type="number" class="form-control" name="nummer" id="nummer"
                                [(ngModel)]="fertigungsauftrag.nummer" required min="1" />
                     </div>
                 </td>
-                <!--<td>{{fertigungsauftrag.nummer}}</td>-->
                 <td>
                     <div *ngIf="fertigungsauftrag.herstellteil">
                         <a [routerLink]="['../teil', fertigungsauftrag.herstellteil?.id ]" >{{fertigungsauftrag.herstellteil?.nummer}}</a>
@@ -41,27 +43,13 @@
                 </td>
                 <td>
                     <div class="form-group">
-                        <input type="number" class="form-control" name="auftragsmenge{{i}}" id="auftragsmenge{{i}}"
-                               [(ngModel)]="fertigungsauftrag.auftragsmenge" required min="=" />
+                        <input type="number" class="form-control" name="auftragsmenge" id="auftragsmenge"
+                               [(ngModel)]="fertigungsauftrag.auftragsmenge" required min="0" />
                     </div>
                 </td>
-               <!-- <td>{{fertigungsauftrag.auftragsmenge}}</td>-->
                 <td>{{fertigungsauftrag.bearbeitungszeitmin}}</td>
-                <td class="text-right" *ngIf="fertigungsauftrag.id">
+                <td class="text-center" *ngIf="fertigungsauftrag.id">
                     <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../fertigungsauftrag', fertigungsauftrag.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'fertigungsauftrag/'+ fertigungsauftrag.id + '/edit'} }]"
-                                replaceUrl="true"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'fertigungsauftrag/'+ fertigungsauftrag.id + '/delete'} }]"
                                 replaceUrl="true"
@@ -76,19 +64,35 @@
         </table>
     </div>
     <div class="btn-group" role="group">
-        <button type="button" class="btn btn-primary" (click)="split()">
-            Splitting
-        </button>
-        <button type="button" class="btn btn-primary" (click)="sort()">
-            Sortieren
-        </button>
-    </div>
-    <div class="btn-group" role="group">
         <button type="button"
                 (click)="previousState()"
                 class="btn btn-info">
             <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
         </button>
     </div>
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-primary" (click)="berechneBearbeitungszeitmin()">
+            Berechne Bearbeitungszeit minimal
+        </button>
+    </div>
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-primary" [disabled]="isSplitted" (click)="split()">
+            Splitting
+        </button>
+    </div>
+    <div class="btn-group" role="group">
+        <label>
+            <select>
+                <option [ngValue]="null"></option>
+                <option (click)="sortKOZ()">
+                        Sortieren nach KOZ
+                </option>
+                <option (click)="sortLOZ()">
+                        Sortieren nach LOZ
+                </option>
+            </select>
+        </label>
+    </div>
+
 </div>
 

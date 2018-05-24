@@ -3,6 +3,9 @@
     <h2>
         <span jhiTranslate="in-house_production.title">Eigenfertigung</span>
     </h2>
+    <h3>
+        <span>Planen Sie für die Teile 16, 17 und 26 die dreifache Menge ein!</span>
+    </h3>
     <jhi-alert></jhi-alert>
     <div class="row">
     </div>
@@ -23,14 +26,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let element of inhouse_anzeige_array; let i=index">
+                <tr *ngFor="let element of inhouse_anzeige_array">
                 <td class="text-center">{{element.nummer}}</td>
                 <td class="text-center">{{element.vertriebswunsch}}</td>
                     <td class="text-center">{{element.direktverkaufsmenge}}</td>
                     <td class="text-center">{{element.warteliste_subkomponente}}</td>
                     <td>
                         <div class="form-group">
-                            <input type="number" class="form-control" name="sicherheitsbestand{{i}}" id="sicherheitsbestand{{i}}"
+                            <input type="number" class="form-control" name="sicherheitsbestand{{element.nummer}}" id="sicherheitsbestand{{element.nummer}}"
                                    [(ngModel)]="element.sicherheitsbestand" required min="0" />
                         </div>
                     </td>

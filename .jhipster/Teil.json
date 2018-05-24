@@ -1,14 +1,6 @@
 {
     "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "subkomponente",
-            "otherEntityName": "teil",
-            "otherEntityField": "nummer",
-			"ownerSide": true
-        }
-    ],
+    "relationships": [],
     "fields": [
         {
             "fieldName": "teiltyp",

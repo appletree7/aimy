@@ -136,7 +136,7 @@ export class PurchasedPartComponent implements OnInit {
                         undefined, undefined, undefined, undefined,
                         undefined, undefined, undefined,
                         undefined, undefined, undefined,
-                        undefined, undefined, undefined);
+                        undefined, undefined);
                     this.teilService.create(this.teil).subscribe((respond: Teil) =>
                         console.log(respond), () => this.onSaveError());
                 }
@@ -261,6 +261,8 @@ export class PurchasedPartComponent implements OnInit {
                             undefined, undefined, undefined, undefined, undefined));
 
                         this.gesamtes_array[i].diskontmenge = this.diskontmenge_array[i];
+
+                        this.gesamtes_array[i].hoechstbestand = this.hoechstbestand[i];
 
                         this.gesamtes_array[i].bestand = this.lagerbestand__kaufteile_periode0[i];
 
@@ -804,10 +806,10 @@ export class PurchasedPartComponent implements OnInit {
 
                         for (let i = 0; i < this.teile.length; i++) {
                             console.log(this.teile[i].lagerpreis);
-                            let verbrauchHerstellteil = this.teile[i].sicherheitsbestand - this.teile[i].istmenge;
-                            if (verbrauchHerstellteil < 0) {
+                            const verbrauchHerstellteil = this.teile[i].istmenge - this.teile[i].sicherheitsbestand;
+                            /*if (verbrauchHerstellteil < 0) {
                                 verbrauchHerstellteil = 0;
-                            }
+                            }*/
                             const materialkosten = this.teile[i].lagerpreis * verbrauchHerstellteil;
                             this.materialkosten_array.push(materialkosten);
                         }
@@ -851,6 +853,8 @@ export class PurchasedPartComponent implements OnInit {
                     console.log('Lagerkostensatz_Periode: ' + this.lagerkostensatz);
                 } else {
                     this.lagerkostensatz = 0.6;
+                    this.lagerkosten = (this.lagerwert_gesamt * 0.006);
+                    localStorage.setItem('lagerkosten', this.lagerkosten.toString());
                     console.log('Lagerkostensatz_Periode: ' + this.lagerkostensatz);
                 }
             } else {

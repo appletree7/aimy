@@ -3,7 +3,6 @@ package com.ibsys2.aimy.web.rest;
 import com.ibsys2.aimy.AimyApp;
 
 import com.ibsys2.aimy.domain.Teil;
-import com.ibsys2.aimy.domain.Teil;
 import com.ibsys2.aimy.repository.TeilRepository;
 import com.ibsys2.aimy.service.TeilService;
 import com.ibsys2.aimy.web.rest.errors.ExceptionTranslator;
@@ -1415,25 +1414,6 @@ public class TeilResourceIntTest {
 
         // Get all the teilList where inBearbeitung_menge less than or equals to UPDATED_IN_BEARBEITUNG_MENGE
         defaultTeilShouldBeFound("inBearbeitung_menge.lessThan=" + UPDATED_IN_BEARBEITUNG_MENGE);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllTeilsBySubkomponenteIsEqualToSomething() throws Exception {
-        // Initialize the database
-        Teil subkomponente = TeilResourceIntTest.createEntity(em);
-        em.persist(subkomponente);
-        em.flush();
-        teil.addSubkomponente(subkomponente);
-        teilRepository.saveAndFlush(teil);
-        Long subkomponenteId = subkomponente.getId();
-
-        // Get all the teilList where subkomponente equals to subkomponenteId
-        defaultTeilShouldBeFound("subkomponenteId.equals=" + subkomponenteId);
-
-        // Get all the teilList where subkomponente equals to subkomponenteId + 1
-        defaultTeilShouldNotBeFound("subkomponenteId.equals=" + (subkomponenteId + 1));
     }
 
     /**

@@ -130,9 +130,6 @@ public class TeilQueryService extends QueryService<Teil> {
             if (criteria.getInBearbeitung_menge() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getInBearbeitung_menge(), Teil_.inBearbeitung_menge));
             }
-            if (criteria.getSubkomponenteId() != null) {
-                specification = specification.and(buildReferringEntitySpecification(criteria.getSubkomponenteId(), Teil_.subkomponentes, Teil_.id));
-            }
         }
         return specification;
     }

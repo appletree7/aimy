@@ -80,12 +80,6 @@
         <dd>
             <span>{{teil.inBearbeitung_menge}}</span>
         </dd>
-        <dt><span jhiTranslate="aimyApp.teil.subkomponente">Subkomponente</span></dt>
-        <dd>
-            <span *ngFor="let subkomponente of teil.subkomponentes; let last = last">
-                <a [routerLink]="['/teil', subkomponente?.id ]">{{subkomponente.nummer}}</a>{{last ? '' : ', '}}
-            </span>
-        </dd>
     </dl>
 
     <button type="submit"

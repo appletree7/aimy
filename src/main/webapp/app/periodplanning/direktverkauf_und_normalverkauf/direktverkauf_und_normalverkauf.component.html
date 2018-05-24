@@ -18,37 +18,36 @@
                 <th><span>Vertriebswunsch+1</span></th>
                 <th><span>Vertriebswunsch+2</span></th>
                 <th><span>Vertriebswunsch+3</span></th>
-                <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let teil of teils ;trackBy: trackId; let i=index">
+            <tr *ngFor="let teil of teils;trackBy: trackId">
                 <td jhiTranslate="{{'aimyApp.Teiltyp.' + teil.teiltyp}}">{{teil.teiltyp}}</td>
                 <td>{{teil.nummer}}</td>
                 <td>
-                <div class="form-group">
-                    <input type="number" class="form-control" name="vertriebswunsch{{i}}}" id="field_vertriebswunsch{{i}}}"
-                           [(ngModel)]="teil.vertriebswunsch" required min="0" />
-                </div>
-                </td>
-                <td>
                     <div class="form-group">
-                        <input type="number" class="form-control" name="vertriebswunsch_naechste{{i}}}" id="vertriebswunsch_naechste{{i}}}"
-                               [(ngModel)]="teil.vertriebswunsch_naechste" required min="0" />
+                        <input type="number" class="form-control" name="vertriebswunsch{{teil.nummer}}" id="vertriebswunsch{{teil.nummer}}"
+                               [(ngModel)]="teil.vertriebswunsch" required min="0"/>
                     </div>
                 </td>
                 <td>
                     <div class="form-group">
-                        <input type="number" class="form-control" name="vertriebswunsch_uebernaechste{{i}}}" id="vertriebswunsch_uebernaechste{{i}}}"
+                        <input type="number" class="form-control" name="vertriebswunsch_naechste{{teil.nummer}}" id="vertriebswunsch_naechste{{teil.nummer}}"
+                               [(ngModel)]="teil.vertriebswunsch_naechste" required min="0"/>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input type="number" class="form-control" name="vertriebswunsch_uebernaechste{{teil.nummer}}" id="vertriebswunsch_uebernaechste{{teil.nummer}}"
                                [(ngModel)]="teil.vertriebswunsch_uebernaechste" required min="0" />
                     </div>
                 </td>
-                <td>
+               <td>
                     <div class="form-group">
-                        <input type="number" class="form-control" name="vertriebswunsch{{i}}}" id="vertriebswunsch_ueberuebernaechste{{i}}}"
+                        <input type="number" class="form-control" name="vertriebswunsch_ueberuebernaechste{{teil.nummer}}" id="vertriebswunsch_ueberuebernaechste{{teil.nummer}}"
                                [(ngModel)]="teil.vertriebswunsch_ueberuebernaechste" required min="0" />
                     </div>
-            </td>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -66,28 +65,27 @@
                 <th><span jhiTranslate="aimyApp.teil.direktverkaufmenge">Direktverkaufsmenge</span></th>
                 <th><span jhiTranslate="aimyApp.teil.direktverkaufspreis">Direktverkaufspreis</span></th>
                 <th><span jhiTranslate="aimyApp.teil.strafe">Strafe</span></th>
-                <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let teil of teils ;trackBy: trackId; let i=index">
+            <tr *ngFor="let teil of teils;trackBy: trackId">
                 <td jhiTranslate="{{'aimyApp.Teiltyp.' + teil.teiltyp}}">{{teil.teiltyp}}</td>
                 <td>{{teil.nummer}}</td>
-                <td>
+               <td>
                     <div class="form-group">
-                        <input type="number" class="form-control" name="direktverkaufmenge{{i}}}" id="field_direktverkaufmenge{{i}}}"
+                        <input type="number" class="form-control" name="direktverkaufmenge{{teil.nummer}}" id="direktverkaufmenge{{teil.nummer}}"
                                [(ngModel)]="teil.direktverkaufmenge" min="0"/>
                     </div>
                 </td>
                 <td>
                     <div class="form-group">
-                        <input type="number" class="form-control" name="direktverkaufspreis{{i}}}" id="field_direktverkaufspreis{{i}}}"
+                        <input type="number" class="form-control" name="direktverkaufspreis{{teil.nummer}}" id="direktverkaufspreis{{teil.nummer}}"
                                [(ngModel)]="teil.direktverkaufspreis" min="0"/>
                     </div>
                 </td>
                 <td>
                     <div class="form-group">
-                        <input type="number" class="form-control" name="strafe{{i}}}" id="field_strafe{{i}}}"
+                        <input type="number" class="form-control" name="strafe{{teil.nummer}}" id="strafe{{teil.nummer}}"
                                [(ngModel)]="teil.strafe" min="0"/>
                     </div>
                 </td>

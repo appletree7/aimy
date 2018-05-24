@@ -38,9 +38,17 @@ export class BestellungDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.modusService.query()
+        this.modusService.query({
+            size: 1000000
+        })
             .subscribe((res: ResponseWrapper) => { this.moduses = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
-        this.teilService.query()
+        const criteria = [
+            {key: 'teiltyp.in', value: 'KAUFTEIL'}
+        ];
+        this.teilService.query({
+            size: 1000000,
+            criteria
+        })
             .subscribe((res: ResponseWrapper) => { this.teils = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 

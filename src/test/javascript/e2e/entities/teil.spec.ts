@@ -72,7 +72,6 @@ describe('Teil e2e test', () => {
         expect(teilDialogPage.getWarteliste_mengeInput()).toMatch('5');
         teilDialogPage.setInBearbeitung_mengeInput('5');
         expect(teilDialogPage.getInBearbeitung_mengeInput()).toMatch('5');
-        // teilDialogPage.subkomponenteSelectLastOption();
         teilDialogPage.save();
         expect(teilDialogPage.getSaveButton().isPresent()).toBeFalsy();
     }); 
@@ -118,7 +117,6 @@ export class TeilDialogPage {
     strafeInput = element(by.css('input#field_strafe'));
     warteliste_mengeInput = element(by.css('input#field_warteliste_menge'));
     inBearbeitung_mengeInput = element(by.css('input#field_inBearbeitung_menge'));
-    subkomponenteSelect = element(by.css('select#field_subkomponente'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -277,22 +275,6 @@ export class TeilDialogPage {
 
     getInBearbeitung_mengeInput = function () {
         return this.inBearbeitung_mengeInput.getAttribute('value');
-    }
-
-    subkomponenteSelectLastOption = function () {
-        this.subkomponenteSelect.all(by.tagName('option')).last().click();
-    }
-
-    subkomponenteSelectOption = function (option) {
-        this.subkomponenteSelect.sendKeys(option);
-    }
-
-    getSubkomponenteSelect = function () {
-        return this.subkomponenteSelect;
-    }
-
-    getSubkomponenteSelectedOption = function () {
-        return this.subkomponenteSelect.element(by.css('option:checked')).getText();
     }
 
     save() {

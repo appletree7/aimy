@@ -299,12 +299,6 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label jhiTranslate="aimyApp.teil.subkomponente" for="field_subkomponente">Subkomponente</label>
-            <select class="form-control" id="field_subkomponente" multiple name="subkomponente" [(ngModel)]="teil.subkomponentes">
-                <option [ngValue]="getSelected(teil.subkomponentes, teilOption)" *ngFor="let teilOption of teils; trackBy: trackTeilById">{{teilOption.nummer}}</option>
-            </select>
-        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

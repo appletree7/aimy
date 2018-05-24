@@ -35,7 +35,7 @@ export class AbschlussComponent implements OnInit, OnDestroy {
     lagerkosten = parseFloat(localStorage.getItem('lagerkosten'));
     bestellkosten = parseFloat(localStorage.getItem('Bestellkosten'));
     materialkosten = parseFloat(localStorage.getItem('Materialkosten'));
-    gesamtkosten = this.lohnkosten + this.maschinenkosten + this.lagerkosten + this.bestellkosten + this.materialkosten;
+    gesamtkosten: number;
     kosten_pro_Stueck: number;
     gesamtertrag: number;
     gesamtgewinn: number;
@@ -107,9 +107,13 @@ export class AbschlussComponent implements OnInit, OnDestroy {
           .subscribe((res: ResponseWrapper) => {
               this.teils = res.json;
               const vertriebswunsch_array = [];
+              const strafe_array = [];
               for (const teil of this.teils) {
                   vertriebswunsch_array.push(teil.vertriebswunsch);
+                  strafe_array.push(teil.strafe);
               }
+              const gesamtstrafe = strafe_array.reduce((a, b) => a + b, 0);
+              this.gesamtkosten = this.lohnkosten + this.maschinenkosten + this.lagerkosten + this.bestellkosten + this.materialkosten + gesamtstrafe;
               const gesamtverkaufsmenge =  vertriebswunsch_array.reduce((a, b) => a + b, 0);
               this.kosten_pro_Stueck = this.gesamtkosten / gesamtverkaufsmenge;
               this.gesamtertrag =  gesamtverkaufsmenge * 200;

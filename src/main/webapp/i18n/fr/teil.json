@@ -2,34 +2,38 @@
     "aimyApp": {
         "teil" : {
             "home": {
-                "title": "composants",
-                "createLabel": "Créer un nouveau composant",
-                "createOrEditLabel": "Créer ou éditer un composant"
+                "title": "Teils",
+                "createLabel": "Créer un nouveau Teil",
+                "createOrEditLabel": "Créer ou éditer un Teil"
             },
-            "created": "Un nouveau composant a été créé avec l'identifiant {{ param }}",
-            "updated": "Le composant avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le composant avec l'identifiant {{ param }} a été supprimé",
+            "created": "Un nouveau Teil a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Teil avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Teil avec l'identifiant {{ param }} a été supprimé",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le composant {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer le Teil {{ id }} ?"
             },
             "detail": {
-                "title": "composant"
+                "title": "Teil"
             },
-            "teiltyp": "Type de composant",
-            "periode": "période",
-            "nummer": "nombre",
-            "istmenge": "quantité réelle",
-            "startmenge": "montant de départ",
-            "prozentsatz": "pourcentage",
-            "lagerpreis": "Stock Prix",
-            "lagerwert": "valeur d'inventaire",
-            "sicherheitsbestand": "stock de sécurité",
-            "vertriebswunsch": "demande de vente",
-            "gesamtproduktionsmenge": "Sortie de production",
-            "direktverkaufmenge": "Le volume des ventes directes",
-            "direktverkaufspreis": "Prix de la vente directe",
-            "strafe": "punition",
-            "subkomponente": "sous-composant"
+            "teiltyp": "Teiltyp",
+            "periode": "Periode",
+            "nummer": "Nummer",
+            "istmenge": "Istmenge",
+            "startmenge": "Startmenge",
+            "prozentsatz": "Prozentsatz",
+            "lagerpreis": "Lagerpreis",
+            "lagerwert": "Lagerwert",
+            "sicherheitsbestand": "Sicherheitsbestand",
+            "vertriebswunsch": "Vertriebswunsch",
+            "vertriebswunsch_naechste": "Vertriebswunsch Naechste",
+            "vertriebswunsch_uebernaechste": "Vertriebswunsch Uebernaechste",
+            "vertriebswunsch_ueberuebernaechste": "Vertriebswunsch Ueberuebernaechste",
+            "gesamtproduktionsmenge": "Gesamtproduktionsmenge",
+            "direktverkaufmenge": "Direktverkaufmenge",
+            "direktverkaufspreis": "Direktverkaufspreis",
+            "strafe": "Strafe",
+            "warteliste_menge": "Warteliste Menge",
+            "inBearbeitung_menge": "In Bearbeitung Menge"
         }
     }
 }

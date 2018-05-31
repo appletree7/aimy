@@ -9,17 +9,16 @@ import {Fertigungsauftrag, FertigungsauftragService} from '../../entities/fertig
 
 @Component({
     selector: 'jhi-reihenfolge-und-losgroesssensplitting',
-    templateUrl: './reihenfolge_und_losgroeßensplitting.component.html',
+    templateUrl: './reihenfolge_und_losgroesssensplitting.component.html',
     styles: []
 })
-export class ReihenfolgeUndLosgroeßensplittingComponent implements OnInit, OnDestroy {
+export class ReihenfolgeUndLosgroesssensplittingComponent implements OnInit, OnDestroy {
     currentAccount: any;
     eventSubscriber: Subscription;
     teil: Teil;
     teils = [];
     fertigungsauftrag: Fertigungsauftrag;
     fertigungsauftraege = [];
-    fertigungsauftraege2 = [];
     isSplitted: boolean;
 
     constructor(

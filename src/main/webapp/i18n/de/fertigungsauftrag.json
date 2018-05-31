@@ -2,7 +2,7 @@
     "aimyApp": {
         "fertigungsauftrag" : {
             "home": {
-                "title": "Fertigungsauftrags",
+                "title": "Fertigungsaufträge",
                 "createLabel": "Fertigungsauftrag erstellen",
                 "createOrEditLabel": "Fertigungsauftrag erstellen oder bearbeiten"
             },
@@ -19,13 +19,13 @@
             "nummer": "Nummer",
             "auftragsmenge": "Auftragsmenge",
             "kosten": "Kosten",
-            "durchschnittlichestueckkosten": "Durchschnittlichestueckkosten",
+            "durchschnittlichestueckkosten": "Durchschnittliche Stückkosten",
             "auftragsstatus": "Auftragsstatus",
             "begonnen": "Begonnen",
             "beendet": "Beendet",
             "dlzminimal": "Dlzminimal",
             "dlzFaktor": "Dlz Faktor",
-            "bearbeitungszeitmin": "Bearbeitungszeitmin",
+            "bearbeitungszeitmin": "Bearbeitungszeit minimal",
             "warteliste_menge": "Warteliste Menge",
             "inBearbeitung_menge": "In Bearbeitung Menge",
             "herstellteil": "Herstellteil"

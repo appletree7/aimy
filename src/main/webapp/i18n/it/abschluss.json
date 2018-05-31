@@ -5,6 +5,12 @@
         "direktverkauf": "vendita diretta",
         "bestellung": "ordini",
         "auftrag": "ordini di produzione",
-        "kappa": "piano di capacità"
+        "kappa": "piano di capacità",
+        "periode": "Periodo delle cifre chiave ",
+        "gesamtkosten": "Costo totale: ",
+        "kostenstuck": "Costo per pezzo: ",
+        "gesamtertrag": "endimento totale: ",
+        "gesamtgewinn": "Margine lordo: ",
+        "gewinnstuck": "Profitto per pezzo: "
     }
 }

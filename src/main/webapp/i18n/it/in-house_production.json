@@ -5,6 +5,8 @@
             "number": "numero",
             "sales_request": "richiesta di vendita",
             "safety_stock": "scorta di sicurezza",
+            "direktverkaufsmenge": "Volume di vendite dirette",
+            "warteliste_subkomponente": "Lista d'attesa sottocomponente",
             "last_period_stock": "inventario precedente periodo",
             "waiting_orders": "Ordini in lista d'attesa",
 	    "orders_in_progress": "Ordini in corso",

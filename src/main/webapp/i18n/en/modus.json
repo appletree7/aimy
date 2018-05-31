@@ -15,6 +15,7 @@
             "detail": {
                 "title": "mode"
             },
+            "nummer": "number",
             "name": "name",
             "bearbeitungsfaktor": "processing factor",
             "bearbeitungsabweichung": "processing deviation",

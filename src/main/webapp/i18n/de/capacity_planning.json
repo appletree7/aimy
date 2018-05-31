@@ -1,6 +1,7 @@
 {
     "capacity_planning": {
         "title": "Kapazitätsplanung",
+        "info": "Kalkulieren Sie zusätzliche Kapazität für zukünftige Warteschlangen!",
         "table": {
             "number": "Nummer",
             "capacity_last_period": "Kapazität Vorperiode (n-1)",
@@ -8,8 +9,15 @@
             "capacity": "Kapazität (n)",
             "set-up_time": "Rüstzeit (n)",
             "reqiurement_of_time": "Gesamter Zeitbedarf (n+1)",
-            "shifts": "Schichten", 
-            "overtime": "Überstunden"
+            "shifts": "Schichten",
+            "overtime": "Überstunden",
+            "kapazitatsauslastung": "Kapazitätsauslastung",
+            "leerzeit": "Leerzeit: ",
+            "maschinenkosten": "Maschinenkosten: ",
+            "maschinenstillstandkosten": "Maschinenstillstandskosten: ",
+            "lohnkosten": "Lohnkosten: ",
+            "lohnleerkosten": "Lohnleerkosten: "
+
         }
     }
 }

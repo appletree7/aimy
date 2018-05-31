@@ -12,7 +12,6 @@
     <include file="config/liquibase/changelog/20171220194424_added_entity_Arbeitsplatz.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171220194425_added_entity_Kennzahlen.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <include file="config/liquibase/changelog/20171220194421_added_entity_constraints_Teil.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171220194422_added_entity_constraints_Bestellung.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171220194423_added_entity_constraints_Fertigungsauftrag.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->

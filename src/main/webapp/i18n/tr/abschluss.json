@@ -5,6 +5,12 @@
         "direktverkauf": "doğrudan satış",
         "bestellung": "emir",
         "auftrag": "üretim siparişleri",
-        "kappa": "kapasite planı"
+        "kappa": "kapasite planı",
+        "periode": "Anahtar rakamlar periyodu ",
+        "gesamtkosten": "Toplam maliyet: ",
+        "kostenstuck": "Parça başına maliyet: ",
+        "gesamtertrag": "Toplam geri dönüş: ",
+        "gesamtgewinn": "Brüt Marj: ",
+        "gewinnstuck": "Parça başına kar: "
     }
 }

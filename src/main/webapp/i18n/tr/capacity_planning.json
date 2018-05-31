@@ -1,6 +1,7 @@
 {
     "capacity_planning": {
         "title": "Kapasite planlaması",
+        "info": "Gelecekteki kuyruklar için ek kapasite hesaplayın!",
         "table": {
             "number": "Numara",
             "capacity_last_period": "Önceki dönemin Kapasitesi",
@@ -9,7 +10,13 @@
             "set-up_time": "Kurulum süresi(n)",
             "reqiurement_of_time": "Gerekli olan toplan süre(n+1)",
             "shifts": "Mesailer",
-            "overtime": "fazla Mesai"
+            "overtime": "fazla Mesai",
+            "kapazitatsauslastung": "kapasite kullanım",
+            "leerzeit": "Boşta kalma süresi: ",
+            "maschinenkosten": "Makine maliyetleri: ",
+            "maschinenstillstandkosten": "Makine kesinti maliyetleri: ",
+            "lohnkosten": "İşçi maliyetleri: ",
+            "lohnleerkosten": "Boşta Ücret maliyetleri: "
         }
     }
 }

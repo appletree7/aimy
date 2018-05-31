@@ -14,8 +14,6 @@
                 "fertigungsauftrag": "orden de producción",
                 "arbeitsplatz": "lugar de trabajo",
                 "kennzahlen": "número indicador",
-                "fertigungsauftrag": "Fertigungsauftrag",
-                "teil": "Teil",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -43,6 +41,7 @@
             "periodplanning": {
                 "main": "la planificación periodo",
                 "in-house_production": "la producción de la casa",
+                "reihenfolge_und_losgroeßensplitting": "Orden y división del tamaño del lote",
                 "purchased_part": "Comprado disposición piezas",
                 "capacity_planning": "capacidad planificación",
                 "period_start": "Período de inicio",
@@ -116,7 +115,9 @@
             "open": "Open",
             "save": "Guardar",
             "view": "Vista",
-            "next": "más"
+            "next": "más",
+            "calculate": "calcular",
+            "recommend": "Recomendar orden"
         },
         "detail": {
             "field": "Campo",

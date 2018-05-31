@@ -1,0 +1,10 @@
+{
+        "reihenfolge_und_losgroeßensplitting": {
+            "title": "Sipariş ve parti büyüklüğü bölme",
+            "info": "Parti büyüklükleri nedeniyle sipariş miktarlarını 10'a kadar yuvarlayın.",
+            "berechne": "İşlem süresini en az hesapla",
+            "split": "bölme",
+            "sortKOZ": "KOZ'ye göre sırala",
+            "sortLOZ": "LOZ'ye göre sırala"
+        }
+}

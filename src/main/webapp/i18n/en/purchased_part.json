@@ -1,6 +1,7 @@
 {
     "purchased_part": {
         "title": "Disposition of purchased parts",
+        "info": "Calculate for additional material costs for the products!",
         "table": {
             "number": "Number",
             "inventory": "Inventory",
@@ -8,7 +9,15 @@
             "need": "need",
             "delivery": "delivery",
             "discount": "discount",
-            "type":"type"
+            "type":"type",
+            "lagerkosten": "Storage costs: ",
+            "bestellkosten": "Order costs: ",
+            "materialkosten": "Material costs: ",
+            "alte_Bestellung": "quantity of old order",
+            "hochstbestand": "maximum stock",
+            "lagerreichweite": "Inventory coverage",
+            "sicherheitsbestand": "security stock",
+            "bestellpunkt": "order point"
         }
     }
 }

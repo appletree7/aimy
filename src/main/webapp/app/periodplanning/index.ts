@@ -12,8 +12,8 @@ export * from './direktverkauf_und_normalverkauf/direktverkauf_und_normalverkauf
 export * from './direktverkauf_und_normalverkauf/direktverkauf_und_normalverkauf.route';
 export * from './abschluss/abschluss.component';
 export * from './abschluss/abschluss.route';
-export * from './reihenfolge_und_losgroeßensplitting/reihenfolge_und_losgroeßensplitting.component';
-export * from './reihenfolge_und_losgroeßensplitting/reihenfolge_und_losgroeßensplitting.route';
+export * from './reihenfolge_und_losgroesssensplitting/reihenfolge_und_losgroesssensplitting.component';
+export * from './reihenfolge_und_losgroesssensplitting/reihenfolge_und_losgroesssensplitting.route';
 
 
 

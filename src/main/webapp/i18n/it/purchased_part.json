@@ -1,6 +1,7 @@
 {
     "purchased_part": {
         "title": "Acquistato parti disposizione",
+        "info": "Calcola costi di materiale aggiuntivi per i prodotti!",
         "table": {
             "number": "numero",
             "inventory": "inventario",
@@ -8,7 +9,15 @@
             "need": "fabbisogno lordo",
             "delivery": "ordine",
             "discount": "importo dello sconto",
-            "type": "tipo"
+            "type": "tipo",
+            "lagerkosten": "Le spese di magazzinaggio: ",
+            "bestellkosten": "Costi degli ordini: ",
+            "materialkosten": "I costi dei materiali: ",
+            "alte_Bestellung": "Lotto del vecchio ordine",
+            "hochstbestand": "massima magazzino",
+            "lagerreichweite": "copertura inventario",
+            "sicherheitsbestand": "scorta di sicurezza",
+            "bestellpunkt": "punto d'ordine"
         }
     }
 }

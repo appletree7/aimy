@@ -2,33 +2,33 @@
     "aimyApp": {
         "fertigungsauftrag" : {
             "home": {
-                "title": "Fertigungsauftrags",
-                "createLabel": "Crear nuevo Fertigungsauftrag",
-                "createOrEditLabel": "Crear o editar Fertigungsauftrag"
+                "title": "Los contratos de construcción",
+                "createLabel": "Crear nuevo orden de producción",
+                "createOrEditLabel": "Crear o editar orden de producción"
             },
-            "created": "Un nuevo Fertigungsauftrag ha sido creado con el identificador {{ param }}",
-            "updated": "Un Fertigungsauftrag ha sido actualizado con el identificador {{ param }}",
-            "deleted": "Un Fertigungsauftrag ha sido eliminado con el identificador {{ param }}",
+            "created": "Un nuevo orden de producción ha sido creado con el identificador {{ param }}",
+            "updated": "Un orden de producción ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un orden de producción ha sido eliminado con el identificador {{ param }}",
             "delete": {
-                "question": "¿Seguro que quiere eliminar Fertigungsauftrag {{ id }}?"
+                "question": "¿Seguro que quiere eliminar orden de producción {{ id }}?"
             },
             "detail": {
-                "title": "Fertigungsauftrag"
+                "title": "orden de producción"
             },
-            "periode": "Periode",
-            "nummer": "Nummer",
-            "auftragsmenge": "Auftragsmenge",
-            "kosten": "Kosten",
-            "durchschnittlichestueckkosten": "Durchschnittlichestueckkosten",
-            "auftragsstatus": "Auftragsstatus",
-            "begonnen": "Begonnen",
-            "beendet": "Beendet",
-            "dlzminimal": "Dlzminimal",
-            "dlzFaktor": "Dlz Faktor",
-            "bearbeitungszeitmin": "Bearbeitungszeitmin",
-            "warteliste_menge": "Warteliste Menge",
-            "inBearbeitung_menge": "In Bearbeitung Menge",
-            "herstellteil": "Herstellteil"
+            "periode": "período",
+            "nummer": "número",
+            "auftragsmenge": "Cantidad de pedido",
+            "kosten": "costes",
+            "durchschnittlichestueckkosten": "Costos unitarios promedio",
+            "auftragsstatus": "Estado del pedido",
+            "begonnen": "comenzado",
+            "beendet": "terminado",
+            "dlzminimal": "Tiempo de ciclo mínimo",
+            "dlzFaktor": "Tiempo de ciclo factor",
+            "bearbeitungszeitmin": "Tiempo de procesamiento min",
+            "warteliste_menge": "Lista de espera cantidad",
+            "inBearbeitung_menge": "En cantidad de proceso",
+            "herstellteil": "Parte de fabricación"
         }
     }
 }

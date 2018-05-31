@@ -5,6 +5,12 @@
         "direktverkauf": "Direct sales",
         "bestellung": "orders",
         "auftrag": "production orders",
-        "kappa": "capacity plan"
+        "kappa": "capacity plan",
+        "periode": "Key figures period ",
+        "gesamtkosten": "Total cost: ",
+        "kostenstuck": "Cost per piece: ",
+        "gesamtertrag": "Total return: ",
+        "gesamtgewinn": "Gross Margin: ",
+        "gewinnstuck": "Profit per piece: "
     }
 }

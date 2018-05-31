@@ -5,6 +5,8 @@
             "number": "Numara",
             "sales_request": "Satış talebi",
             "safety_stock": "Emniyet stoku",
+            "direktverkaufsmenge": "Doğrudan satış hacmi",
+            "warteliste_subkomponente": "Bekleyen liste alt bileşeni",
             "last_period_stock": "Önceki dönemin Stoku",
             "waiting_orders": "Bekleme listesindeki siparişler",
 	    "orders_in_progress": "işlemede olan siparişler",

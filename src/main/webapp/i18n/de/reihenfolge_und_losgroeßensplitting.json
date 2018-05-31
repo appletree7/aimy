@@ -1,5 +1,10 @@
 {
         "reihenfolge_und_losgroeßensplitting": {
-            "title": "Reihenfolge und Losgrößensplitting"
+            "title": "Reihenfolge und Losgrößensplitting",
+            "info": "Runden Sie bitte die Auftragsmengen auf 10, aufgrund der Losgrößen.",
+            "berechne": "Berechne Bearbeitungszeit minimal",
+            "split": "Splitting",
+            "sortKOZ": "Sortieren nach KOZ",
+            "sortLOZ": "Sortieren nach LOZ"
         }
 }

@@ -2,38 +2,38 @@
     "aimyApp": {
         "teil" : {
             "home": {
-                "title": "Teils",
-                "createLabel": "Create a new Teil",
-                "createOrEditLabel": "Create or edit a Teil"
+                "title": "bileşenler",
+                "createLabel": "Yeni bir tane oluştur bileşen",
+                "createOrEditLabel": "Oluştur veya düzenle bileşen"
             },
-            "created": "A new Teil is created with identifier {{ param }}",
-            "updated": "A Teil is updated with identifier {{ param }}",
-            "deleted": "A Teil is deleted with identifier {{ param }}",
+            "created": "Yeni bileşen tanımlayıcı ile oluşturulur {{ param }}",
+            "updated": "bir bileşen tanımlayıcı ile güncellendi {{ param }}",
+            "deleted": "A bileşenl tanımlayıcı ile silinir {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Teil {{ id }}?"
+                "question": "Silmek istediğine emin misin bileşen {{ id }}?"
             },
             "detail": {
-                "title": "Teil"
+                "title": "bileşen"
             },
-            "teiltyp": "Teiltyp",
-            "periode": "Periode",
-            "nummer": "Nummer",
-            "istmenge": "Istmenge",
-            "startmenge": "Startmenge",
-            "prozentsatz": "Prozentsatz",
-            "lagerpreis": "Lagerpreis",
-            "lagerwert": "Lagerwert",
-            "sicherheitsbestand": "Sicherheitsbestand",
-            "vertriebswunsch": "Vertriebswunsch",
-            "vertriebswunsch_naechste": "Vertriebswunsch Naechste",
-            "vertriebswunsch_uebernaechste": "Vertriebswunsch Uebernaechste",
-            "vertriebswunsch_ueberuebernaechste": "Vertriebswunsch Ueberuebernaechste",
-            "gesamtproduktionsmenge": "Gesamtproduktionsmenge",
-            "direktverkaufmenge": "Direktverkaufmenge",
-            "direktverkaufspreis": "Direktverkaufspreis",
-            "strafe": "Strafe",
-            "warteliste_menge": "Warteliste Menge",
-            "inBearbeitung_menge": "In Bearbeitung Menge"
+            "teiltyp": "bileşen türü",
+            "periode": "dönem",
+            "nummer": "sayı",
+            "istmenge": "gerçek miktar",
+            "startmenge": "başlangıç tutarı",
+            "prozentsatz": "yüzde",
+            "lagerpreis": "stok Fiyat",
+            "lagerwert": "envanter değeri",
+            "sicherheitsbestand": "emniyet stoku",
+            "vertriebswunsch": "satış talebi",
+            "vertriebswunsch_naechste": "satış talebi (n+1)",
+            "vertriebswunsch_uebernaechste": "satış talebi (n+2)",
+            "vertriebswunsch_ueberuebernaechste": "satış talebi (n+3)",
+            "gesamtproduktionsmenge": "Üretim çıkışı",
+            "direktverkaufmenge": "Doğrudan satış hacmi",
+            "direktverkaufspreis": "Doğrudan satış fiyatı",
+            "strafe": "ceza",
+            "warteliste_menge": "Bekleme listesi miktarı",
+            "inBearbeitung_menge": "Işlem miktarında"
         }
     }
 }

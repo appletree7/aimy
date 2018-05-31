@@ -1,0 +1,10 @@
+{
+        "reihenfolge_und_losgroeßensplitting": {
+            "title": "Orden y división del tamaño del lote",
+            "info": "Por favor, redondee las cantidades de la orden a 10, debido a los tamaños de los lotes.",
+            "berechne": "Calcular el tiempo de procesamiento mínimo",
+            "split": "Enloquecedor",
+            "sortKOZ": "Ordenar por KOZ",
+            "sortLOZ": "Ordenar por KOZ"
+        }
+}

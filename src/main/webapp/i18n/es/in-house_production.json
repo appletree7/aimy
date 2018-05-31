@@ -5,9 +5,11 @@
             "number": "número",
             "sales_request": "solicitud de ventas",
             "safety_stock": "stock de seguridad",
+            "direktverkaufsmenge": "El volumen de ventas directas",
+            "warteliste_subkomponente": "Subcomponente de la lista de espera",
             "last_period_stock": "Stock período anterior",
             "waiting_orders": "Lista de espera de puesto de trabajo",
-	    "orders_in_progress": "Cargos en elaboración",
+	          "orders_in_progress": "Cargos en elaboración",
             "production_orders": "órdenes de producción(n+1)"
         }
     }

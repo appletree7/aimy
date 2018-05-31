@@ -15,6 +15,7 @@
             "detail": {
                 "title": "modo"
             },
+            "nummer": "número",
             "name": "nombre",
             "bearbeitungsfaktor": "factor de elaboración",
             "bearbeitungsabweichung": "tolerancia de mecanizado",

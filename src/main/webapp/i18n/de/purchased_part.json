@@ -1,14 +1,22 @@
 {
     "purchased_part": {
         "title": "Kaufteiledisposition",
+        "info": "Kalkulieren Sie für zusätzlich Materialkosten für die Erzeugnisse!",
         "table": {
             "number": "Nummer",
             "inventory": "Bestand",
             "ld": "Lieferdauer",
-            "need": "Bruttobedarf",
+            "need": "durchschnittlicher Bedarf",
             "delivery": "Bestellung",
             "discount": "Diskontmenge",
-            "type":"Art"
+            "lagerkosten": "Lagerkosten: ",
+            "bestellkosten": "Bestellkosten: ",
+            "materialkosten": "Materialkosten: ",
+            "alte_Bestellung": "Menge alte Bestellung",
+            "hochstbestand": "Höchstbestand",
+            "lagerreichweite": "Lagerreichweite",
+            "sicherheitsbestand": "Sicherheitsbestand",
+            "bestellpunkt": "Bestellpunkt"
         }
     }
 }

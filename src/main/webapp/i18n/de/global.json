@@ -114,7 +114,9 @@
             "open": "Open",
             "save": "Speichern",
             "view": "Details",
-            "next": "Weiter"
+            "next": "Weiter",
+            "calculate": "Berechnen",
+            "recommend": "Bestellungen empfehlen"
         },
         "detail": {
             "field": "Feld",

@@ -14,8 +14,6 @@
                 "fertigungsauftrag": "ordre de production",
                 "arbeitsplatz": "lieu de travail",
                 "kennzahlen": "mesurer",
-                "fertigungsauftrag": "Fertigungsauftrag",
-                "teil": "Teil",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -44,6 +42,7 @@
                 "main": "la planification de la période",
                 "in-house_production": "production interne",
                 "purchased_part": "disposition de la partie achat",
+                "reihenfolge_und_losgroeßensplitting": "Ordre et taille des lots",
                 "capacity_planning": "planification des capacités",
                 "period_start": "Période de démarrage",
                 "direktverkauf_und_normalverkauf": "Vente directe et vente normale",
@@ -116,7 +115,9 @@
             "open": "Ouvrir",
             "save": "Sauvegarder",
             "view": "Voir",
-            "next": "plus"
+            "next": "plus",
+            "calculate": "calculer",
+            "recommend": "ordre recommandées"
         },
         "detail": {
             "field": "Champs",

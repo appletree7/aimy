@@ -4,20 +4,23 @@
         <span jhiTranslate="purchased_part.title">Kaufteildisposition</span>
     </h2>
     <h3>
-        <span>Kennzahlen</span>
+        <span jhiTranslate="purchased_part.info">Kalkulieren Sie für zusätzlich Materialkosten für die Erzeugnisse!</span>
+    </h3>
+    <h3>
+        <span jhiTranslate="aimyApp.kennzahlen.home.title">Kennzahlen</span>
     </h3>
     <div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
-                <label class="label label-info">Lagerkosten in: </label>
+                <label class="label label-info" jhiTranslate="purchased_part.table.lagerkosten">Lagerkosten: </label>
                 {{lagerkosten| currency: "EUR": 2}}
             </li>
             <li class="list-group-item">
-                <label class="label label-info">Bestellkosten: </label>
+                <label class="label label-info" jhiTranslate="purchased_part.table.bestellkosten">Bestellkosten: </label>
                 {{bestellkosten| currency: "EUR": 2}}
             </li>
             <li class="list-group-item">
-                <label class="label label-info">Materialkosten: </label>
+                <label class="label label-info" jhiTranslate="purchased_part.table.materialkosten">Materialkosten: </label>
                 {{materialkosten| currency: "EUR": 2}}
             </li>
         </ul>
@@ -32,13 +35,13 @@
                 <tr>
                         <th class="text-center" jhiTranslate="purchased_part.table.number">Nummer</th>
                         <th class="text-center" jhiTranslate="purchased_part.table.inventory">Bestand</th>
-                    <th class="text-center">Menge alte Bestellung</th>
-                    <th class="text-center">Höchstbestand</th>
+                    <th class="text-center" jhiTranslate="purchased_part.table.alte_Bestellung">Menge alte Bestellung</th>
+                    <th class="text-center" jhiTranslate="purchased_part.table.hochstbestand">Höchstbestand</th>
                         <th class="text-center" jhiTranslate="purchased_part.table.discount">Discount</th>
                         <th class="text-center" jhiTranslate="purchased_part.table.need">Durchschnittbedarf</th>
-                    <th class="text-center">Lagerreichweite</th>
-                    <th class="text-center">Sicherheitsbestand</th>
-                    <th class="text-center">Bestellpunkt</th>
+                    <th class="text-center" jhiTranslate="purchased_part.table.lagerreichweite">Lagerreichweite</th>
+                    <th class="text-center" jhiTranslate="purchased_part.table.sicherheitsbestand">Sicherheitsbestand</th>
+                    <th class="text-center" jhiTranslate="purchased_part.table.bestellpunkt">Bestellpunkt</th>
                 </tr>
             </thead>
             <tbody>
@@ -125,17 +128,9 @@
     </div>
 
     <div class="btn-group" role="group">
-    <button type="button"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span><span jhiTranslate="entity.action.back"> Back</span>
-    </button>
-    <!--
-    <button type="button" class="btn btn-primary" [routerLink]="['/capacity_planning']"
-                replaceUrl="true">
-        <span jhiTranslate="entity.action.next"> Weiter</span>
-    </button>
-    -->
+        <button type="button" [disabled]="isRecommended" class="btn btn-primary" (click)="schlageBestellungenvor()">
+            <span jhiTranslate="entity.action.recommend">Recommend</span>
+        </button>
 
     <button type="submit" [disabled]="saveForm.form.invalid || isSaving" class="btn btn-primary">
      <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>

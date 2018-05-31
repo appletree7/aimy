@@ -14,8 +14,6 @@
                 "fertigungsauftrag": "ordine di produzione",
                 "arbeitsplatz": "sul posto di lavoro",
                 "kennzahlen": "misurare",
-                "fertigungsauftrag": "Fertigungsauftrag",
-                "teil": "Teil",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -44,6 +42,7 @@
                 "main": "pianificazione periodo",
                 "in-house_production": "la produzione di casa",
                 "purchased_part": "Acquistato parti disposizione",
+                "reihenfolge_und_losgroeßensplitting": "Divisione dell'ordine e del lotto",
                 "capacity_planning": "Capacità pianificazione",
                 "period_start": "Inizio periodo",
                 "direktverkauf_und_normalverkauf": "Vendita diretta e vendita normale",
@@ -116,7 +115,9 @@
             "open": "Open",
             "save": "Salva",
             "view": "Visualizza",
-            "next": "più"
+            "next": "più",
+            "calculate": "calcolare",
+            "recommend": "Raccomandare ordini"
         },
         "detail": {
             "field": "Campo",

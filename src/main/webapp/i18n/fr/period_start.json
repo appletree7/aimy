@@ -2,6 +2,7 @@
     "period_start": {
         "title": "période de démarrage",
         "newperiod": "Sélectionnez la période à planifier:",
-        "file": "Sélectionnez le fichier pour obtenir les données d'entrée du fichier:"
+        "file": "Sélectionnez le fichier pour obtenir les données d'entrée du fichier:",
+        "info": "Importez le fichier de la dernière période pour déterminer correctement les listes d'attente."
     }
 }

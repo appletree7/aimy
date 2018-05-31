@@ -5,32 +5,34 @@
         <span jhiTranslate="capacity_planning.title">Kapazitätsplanung</span>
     </h2>
     <h3>
-        <span>Kennzahlen</span>
+        <span jhiTranslate="capacity_planning.info">Kalkulieren Sie zusätzliche Kapazität für zukünftige Warteschlangen!</span>
+    </h3>
+    <h3>
+        <span jhiTranslate="aimyApp.kennzahlen.home.title">Kennzahlen</span>
     </h3>
     <div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
-                <label class="label label-info">Kapazitätsauslastung</label>
-                {{kapazitaetsauslastung_avg}} %
+                <label class="label label-info" jhiTranslate="capacity_planning.table.kapazitatsauslastung">Kapazitätsauslastung</label>: {{kapazitaetsauslastung_avg}} %
             </li>
             <li class="list-group-item">
-                <label class="label label-info">Leerzeit: </label>
+                <label class="label label-info" jhiTranslate="capacity_planning.table.leerzeit">Leerzeit: </label>
                 {{leerzeit}} min
             </li>
             <li class="list-group-item">
-                <label class="label label-info">Maschinenkosten: </label>
+                <label class="label label-info" jhiTranslate="capacity_planning.table.maschinenkosten">Maschinenkosten: </label>
                 {{maschinenkosten| currency: "EUR": 2}}
             </li>
             <li class="list-group-item">
-                <label class="label label-info">Maschinenstillstandkosten: </label>
+                <label class="label label-info" jhiTranslate="capacity_planning.table.maschinenstillstandkosten">Maschinenstillstandkosten: </label>
                 {{maschinenstillstandkosten| currency: "EUR": 2}}
             </li>
             <li class="list-group-item">
-                <label class="label label-info">Lohnkosten: </label>
+                <label class="label label-info" jhiTranslate="capacity_planning.table.lohnkosten">Lohnkosten: </label>
                 {{lohnkosten| currency: "EUR": 2}}
             </li>
             <li class="list-group-item">
-                <label class="label label-info">Lohnleerkosten: </label>
+                <label class="label label-info" jhiTranslate="capacity_planning.table.lohnleerkosten">Lohnleerkosten: </label>
                 {{lohnleerkosten| currency: "EUR": 2}}
             </li>
         </ul>
@@ -51,7 +53,7 @@
                         <th class="text-center" jhiTranslate="capacity_planning.table.reqiurement_of_time">Gesamter Zeitbedarf (n+1)</th>
                         <th class="text-center" jhiTranslate="capacity_planning.table.shifts">Schichten</th>
                         <th class="text-center" jhiTranslate="capacity_planning.table.overtime">Überstunden</th>
-                    <th class="text-center">Kapazitätsauslastung</th>
+                    <th class="text-center" jhiTranslate="capacity_planning.table.kapazitatsauslastung">Kapazitätsauslastung</th>
                 </tr>
             </thead>
             <tbody>
@@ -88,21 +90,12 @@
     </div>
 
     <div class="btn-group" role="group">
-    <button type="button"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span><span jhiTranslate="entity.action.back"> Back</span>
-    </button>
         <button type="button" class="btn btn-primary" (click)="berechneSichtundUeberstunden()">
-            <span>Berechnen</span>
+            <span jhiTranslate="entity.action.calculate">Berechnen</span>
         </button>
         <button type="submit" [disabled]="saveForm.form.invalid || isSaving" class="btn btn-primary">
             <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
         </button>
-    <button type="button" class="btn btn-primary" [routerLink]="['/abschluss']"
-                replaceUrl="true">
-        <span jhiTranslate="entity.action.next"> Weiter</span>
-    </button>
     </div>
 
 </div>

@@ -1,6 +1,7 @@
 {
     "purchased_part": {
         "title": "Comprado disposición piezas",
+        "info": "¡Calcule los costos de materiales adicionales para los productos!",
         "table": {
             "number": "número",
             "inventory": "valores",
@@ -8,7 +9,15 @@
             "need": "requerimiento bruto",
             "delivery": "orden",
             "discount": "importe de descuento",
-            "type": "especie"
+            "type": "especie",
+            "lagerkosten": "Los costos de almacenamiento: ",
+            "bestellkosten": "Costes de la orden: ",
+            "materialkosten": "Los costos de material: ",
+            "alte_Bestellung": "Mucho de la vieja orden",
+            "hochstbestand": "stock máximo",
+            "lagerreichweite": "La cobertura de inventario",
+            "sicherheitsbestand": "stock de seguridad",
+            "bestellpunkt": "punto de pedido"
         }
     }
 }

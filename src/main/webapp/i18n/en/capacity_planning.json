@@ -1,6 +1,7 @@
 {
     "capacity_planning": {
         "title": "Capacity planning",
+        "info": "Calculate additional capacity for future queues!",
         "table": {
             "number": "number",
             "capacity_last_period": "capacity last period (n-1)",
@@ -8,8 +9,14 @@
             "capacity": "capacity (n)",
             "set-up_time": "set-up time (n)",
             "reqiurement_of_time": "reqiurement of time (n+1)",
-            "shifts": "shifts", 
-            "overtime": "overtime"
+            "shifts": "shifts",
+            "overtime": "overtime",
+            "kapazitatsauslastung": "capacity utilization",
+            "leerzeit": "Idle time: ",
+            "maschinenkosten": "Machine costs: ",
+            "maschinenstillstandkosten": "Machine downtime costs: ",
+            "lohnkosten": "Labor costs: ",
+            "lohnleerkosten": "Wage costs of idle: "
         }
     }
 }

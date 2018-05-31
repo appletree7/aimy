@@ -108,17 +108,23 @@ export class AbschlussComponent implements OnInit, OnDestroy {
               this.teils = res.json;
               const vertriebswunsch_array = [];
               const strafe_array = [];
+              const direktverkauf_array = [];
+              const direktverkaufsmenge_array = [];
               for (const teil of this.teils) {
                   vertriebswunsch_array.push(teil.vertriebswunsch);
                   strafe_array.push(teil.strafe);
+                  direktverkauf_array.push(teil.direktverkaufmenge * teil.direktverkaufspreis);
+                  direktverkaufsmenge_array.push(teil.direktverkaufmenge);
               }
               const gesamtstrafe = strafe_array.reduce((a, b) => a + b, 0);
+              const gesamtdirektverkaufsgewinn =  direktverkauf_array.reduce((a, b) => a + b, 0);
+              const gesamtdirektverkaufsmenge =  direktverkaufsmenge_array.reduce((a, b) => a + b, 0);
               this.gesamtkosten = this.lohnkosten + this.maschinenkosten + this.lagerkosten + this.bestellkosten + this.materialkosten + gesamtstrafe;
               const gesamtverkaufsmenge =  vertriebswunsch_array.reduce((a, b) => a + b, 0);
-              this.kosten_pro_Stueck = this.gesamtkosten / gesamtverkaufsmenge;
-              this.gesamtertrag =  gesamtverkaufsmenge * 200;
+              this.kosten_pro_Stueck = this.gesamtkosten / (gesamtverkaufsmenge + gesamtdirektverkaufsmenge);
+              this.gesamtertrag =  gesamtverkaufsmenge * 200 + gesamtdirektverkaufsgewinn;
               this.gesamtgewinn = this.gesamtertrag - this.gesamtkosten;
-              this.gewinnproStueck = this.gesamtgewinn / gesamtverkaufsmenge;
+              this.gewinnproStueck = this.gesamtgewinn / (gesamtverkaufsmenge + gesamtdirektverkaufsmenge);
           }, (res: ResponseWrapper) => this.onError(res.json));
       criteria = [
           {key: 'teiltyp.in', value: 'PRODUKT'},

@@ -5,6 +5,12 @@
         "direktverkauf": "vente directe",
         "bestellung": "ordres",
         "auftrag": "commandes de production",
-        "kappa": "lan de capacité"
+        "kappa": "lan de capacité",
+        "periode": "Période des chiffres clés ",
+        "gesamtkosten": "Coût total: ",
+        "kostenstuck": "Kosten pro Stück: ",
+        "gesamtertrag": "Rendement total: ",
+        "gesamtgewinn": "Marge brute: ",
+        "gewinnstuck": "Bénéfice par pièce: "
     }
 }

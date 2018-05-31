@@ -15,6 +15,7 @@
             "detail": {
                 "title": "mode"
             },
+            "nummer": "nombre",
             "name": "nom",
             "bearbeitungsfaktor": "facteur de transformation",
             "bearbeitungsabweichung": "allocation d'usinage",

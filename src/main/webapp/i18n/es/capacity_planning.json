@@ -1,6 +1,7 @@
 {
     "capacity_planning": {
         "title": "capacidad planificación",
+        "info": "Calcule la capacidad adicional para futuras colas",
         "table": {
             "number": "número",
             "capacity_last_period": "Capacidad período anterior (n-1)",
@@ -8,8 +9,14 @@
             "capacity": "capacidad (n)",
             "set-up_time": "tiempo de preparación (n)",
             "reqiurement_of_time": "Tiempo total requerido (n+1)",
-            "shifts": "capa", 
-            "overtime": "horas extraordinarias"
+            "shifts": "capa",
+            "overtime": "horas extraordinarias",
+            "kapazitatsauslastung": "utilización de la capacidad",
+            "leerzeit": "El tiempo de inactividad: ",
+            "maschinenkosten": "Costes de la máquina: ",
+            "maschinenstillstandkosten": "Los costos de tiempo de inactividad de la máquina: ",
+            "lohnkosten": "Los costos laborales: ",
+            "lohnleerkosten": "Los costes salariales de inactividad: "
         }
     }
 }

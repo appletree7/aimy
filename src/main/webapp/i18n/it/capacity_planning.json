@@ -1,6 +1,7 @@
 {
     "capacity_planning": {
         "title": "capacità pianificazione",
+        "info": "Calcola capacità aggiuntiva per code future!",
         "table": {
             "number": "numero",
             "capacity_last_period": "capacità precedente periodo (n-1)",
@@ -8,8 +9,14 @@
             "capacity": "capacità (n)",
             "set-up_time": "tempo di setup (n)",
             "reqiurement_of_time": "Tempo totale richiesto (n+1)",
-            "shifts": "strato", 
-            "overtime": "straordinario"
+            "shifts": "strato",
+            "overtime": "straordinario",
+            "kapazitatsauslastung": "utilizzo della capacità produttiva",
+            "leerzeit": "Tempo di inattività: ",
+            "maschinenkosten": "I costi della macchina: ",
+            "maschinenstillstandkosten": "Costi di inattività della macchina: ",
+            "lohnkosten": "Il costo del lavoro: ",
+            "lohnleerkosten": "Costi salariali di inattività: "
         }
     }
 }

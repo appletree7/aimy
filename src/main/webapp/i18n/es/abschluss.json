@@ -5,6 +5,12 @@
         "direktverkauf": "ventas directas",
         "bestellung": "pedidos",
         "auftrag": "órdenes de producción",
-        "kappa": "plan de capacidad"
+        "kappa": "plan de capacidad",
+        "periode": "Periodo de cifras clave ",
+        "gesamtkosten": "Costo total: ",
+        "kostenstuck": "Costo por pieza: ",
+        "gesamtertrag": "Rendimiento total: ",
+        "gesamtgewinn": "Margen bruto: ",
+        "gewinnstuck": "Beneficio por pieza: "
     }
 }

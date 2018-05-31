@@ -4,48 +4,49 @@
     </h2>
     <jhi-alert></jhi-alert>
     <h3>
-        <span>Kennzahlen Periode {{periode}}</span>
+        <span jhiTranslate="abschluss.periode">Kennzahlen Periode </span>
+        {{periode}}
     </h3>
     <div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
-                <label class="label label-info">Lohnkosten: </label>
+                <label class="label label-info" jhiTranslate="capacity_planning.table.lohnkosten">Lohnkosten: </label>
                 {{lohnkosten| currency: "EUR": 2}}
             </li>
             <li class="list-group-item">
-                <label class="label label-info">Maschinenkosten: </label>
+                <label class="label label-info" jhiTranslate="capacity_planning.table.maschinenkosten">Maschinenkosten: </label>
                 {{maschinenkosten| currency: "EUR": 2}}
             </li>
             <li class="list-group-item">
-                <label class="label label-info">Lagerkosten in: </label>
+                <label class="label label-info" jhiTranslate="purchased_part.table.lagerkosten">Lagerkosten: </label>
                 {{lagerkosten| currency: "EUR": 2}}
             </li>
             <li class="list-group-item">
-                <label class="label label-info">Bestellkosten: </label>
+                <label class="label label-info" jhiTranslate="purchased_part.table.bestellkosten">Bestellkosten: </label>
                 {{bestellkosten| currency: "EUR": 2}}
             </li>
             <li class="list-group-item">
-                <label class="label label-info">Materialkosten: </label>
+                <label class="label label-info" jhiTranslate="purchased_part.table.materialkosten">Materialkosten: </label>
                 {{materialkosten| currency: "EUR": 2}}
             </li>
             <li class="list-group-item">
-                <label class="label label-info">Gesamtkosten: </label>
+                <label class="label label-info" jhiTranslate="abschluss.gesamtkosten">Gesamtkosten: </label>
                 {{gesamtkosten| currency: "EUR": 2}}
             </li>
             <li class="list-group-item">
-                <label class="label label-info">Kosten pro Stück: </label>
+                <label class="label label-info" jhiTranslate="abschluss.kostenstuck">Kosten pro Stück: </label>
                 {{kosten_pro_Stueck| currency: "EUR": 2}}
             </li>
             <li class="list-group-item">
-                <label class="label label-info">Gesamtertrag: </label>
+                <label class="label label-info" jhiTranslate="abschluss.gesamtertrag">Gesamtertrag: </label>
                 {{gesamtertrag| currency: "EUR": 2}}
             </li>
             <li class="list-group-item">
-                <label class="label label-info">Gesamtgewinn: </label>
+                <label class="label label-info" jhiTranslate="abschluss.gesamtgewinn">Gesamtgewinn: </label>
                 {{gesamtgewinn | currency: "EUR": 2}}
             </li>
             <li class="list-group-item">
-                <label class="label label-info">Gewinn pro Stück: </label>
+                <label class="label label-info" jhiTranslate="abschluss.gewinnstuck">Gewinn pro Stück: </label>
                 {{gewinnproStueck| currency: "EUR": 2}}
             </li>
         </ul>
@@ -263,11 +264,6 @@
         </table>
     </div>
 <div class="btn-group" role="group">
-    <button type="button"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
     <button type="button" class="btn btn-primary" (click)="export()">
         <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
     </button>

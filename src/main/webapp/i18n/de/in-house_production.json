@@ -5,6 +5,8 @@
             "number": "Nummer",
             "sales_request": "Vertriebswunsch",
             "safety_stock": "Sicherheitsbestand",
+            "direktverkaufsmenge": "Direktverkaufsmenge",
+            "warteliste_subkomponente": "Warteliste Subkomponente",
             "last_period_stock": "BestandVorperiode",
             "waiting_orders": "Aufträge in Warteliste",
 			"orders_in_progress": "Aufträge in Bearbeitung",

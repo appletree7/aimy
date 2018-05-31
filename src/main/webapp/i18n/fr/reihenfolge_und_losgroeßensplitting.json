@@ -1,0 +1,10 @@
+{
+        "reihenfolge_und_losgroeßensplitting": {
+            "title": "Ordre et taille des lots",
+            "info": "S'il vous plaît arrondir les quantités de commande à 10, en raison de la taille des lots.",
+            "berechne": "Calculer le temps de traitement minimal",
+            "split": "Scission",
+            "sortKOZ": "Trier par KOZ",
+            "sortLOZ": "Trier par LOZ"
+        }
+}

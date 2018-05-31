@@ -66,6 +66,7 @@ export class PurchasedPartComponent implements OnInit {
     bestellungen_DB = [];
     bestellung: Bestellung;
     isSaving: boolean;
+    isRecommended: boolean;
     kaufteil: Teil;
     teiltyp: Teiltyp.KAUFTEIL;
     lagerkosten: number;
@@ -159,7 +160,6 @@ export class PurchasedPartComponent implements OnInit {
         }, (res3: ResponseWrapper) => this.onError(res3.json))
 
         this.berechnedurchscnittlichenVerbrauch();
-
     }
 
     berechnedurchscnittlichenVerbrauch() {
@@ -405,7 +405,362 @@ export class PurchasedPartComponent implements OnInit {
     }
 
     loeseBestellungenaus() {
+        let criteria = [
+            {key: 'bestellstatus.in', value: 'UNTERWEGS'},
+            {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 1},
+            {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 2},
+            {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 3},
+            {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 4}
+        ];
 
+        this.bestellungService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((res: ResponseWrapper) => {
+            this.alte_bestellungen = res.json;
+
+            criteria = [
+                {key: 'teiltyp.in', value: 'KAUFTEIL'},
+                {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)},
+                {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 1},
+                {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 2},
+                {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 3},
+                {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 4}
+            ];
+
+            this.teilService.query({
+                size: 1000000,
+                criteria
+            }).subscribe((res2: ResponseWrapper) => {
+                this.kaufteile_mehere_Perioden = res2.json;
+
+                for (let i = 0; i < this.alte_bestellungen.length; i++) {
+                    this.teil = this.kaufteile_mehere_Perioden.find((teil) => teil.id === this.alte_bestellungen[i].kaufteil.id);
+                    this.alte_bestellungen_kaufteil_array.push(new Object({
+                        kaufteil: this.teil.nummer,
+                        kaufmenge: this.alte_bestellungen[i].kaufmenge,
+                    }));
+                }
+                const alteBestellunggroup = d3.nest()
+                    .key((d) => d.kaufteil)
+                    .rollup(function(v) {
+                        return d3.sum(v, function(d) {
+                            return d.kaufmenge;
+                        });
+                    })
+                    .entries(this.alte_bestellungen_kaufteil_array);
+
+                this.alte_bestellungen_kaufteil_array = [];
+
+                for (const kaufteilnummer of this.kaufteile_array) {
+                    this.alte_bestellungen_kaufteil_array.push(new Object({
+                        kaufteil: kaufteilnummer,
+                        kaufmenge: 0
+                    }));
+                }
+
+                for (let i = 0; i < this.kaufteile_array.length; i++) {
+                    const kaufteil = alteBestellunggroup.find((teil) => parseInt(teil.key, 10) === this.kaufteile_array[i]);
+                    if (kaufteil !== undefined) {
+                        this.alte_bestellungen_kaufteil_array[i].kaufmenge = kaufteil.value;
+                    }
+                }
+
+                this.alte_bestellungen_kaufteil_array.sort((a, b) => a.kaufteil - b.kaufteil);
+                for (let i = 0; i < this.gesamtes_array.length; i++) {
+                    this.gesamtes_array[i].menge_alteBestellung = this.alte_bestellungen_kaufteil_array[i].kaufmenge;
+                }
+                console.log('Kaufteilmengen von alten Bestellungen: ');
+                console.log(this.alte_bestellungen_kaufteil_array);
+
+            }, (res3: ResponseWrapper) => this.onError(res3.json), () => {
+
+                criteria = [
+                    {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
+                ];
+
+                this.bestellungService.query({
+                    size: 1000000,
+                    criteria
+                }).subscribe((res3: ResponseWrapper) => {
+                    this.bestellungen = res3.json;
+                    this.bestellungen.sort((a, b) => a.nummer - b.nummer);
+                    if (this.bestellungen.length === 0) {
+                        this.isRecommended = false;
+                    } else {
+                        this.isRecommended = true;
+                    }
+                    this.alle_bestellungen = this.alte_bestellungen.concat(this.bestellungen);
+                    const bestellkosten_array = [];
+                    for (let i = 0; i < this.alle_bestellungen.length; i++) {
+                        this.teil = this.kaufteile_mehere_Perioden.find((teil) => teil.id === this.alle_bestellungen[i].kaufteil.id);
+                        this.modus = this.modi.find((modus) => modus.id === this.alle_bestellungen[i].modus.id);
+                        if (this.modus.nummer === 5) {
+                            if (this.teil.nummer === 21 || this.teil.nummer === 22 || this.teil.nummer === 22 ||
+                                this.teil.nummer === 25 || this.teil.nummer === 28 || this.teil.nummer === 32
+                                || this.teil.nummer === 34 || this.teil.nummer === 37 || this.teil.nummer === 38
+                                || this.teil.nummer === 40 || this.teil.nummer === 41 || this.teil.nummer === 42
+                                || this.teil.nummer === 44 || this.teil.nummer === 45 || this.teil.nummer === 46
+                                || this.teil.nummer === 47 || this.teil.nummer === 52 || this.teil.nummer === 53
+                                || this.teil.nummer === 57 || this.teil.nummer === 58 || this.teil.nummer === 59) {
+                                const bestellkosten = 50;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
+                                bestellkosten_array.push(bestellkosten);
+                            } else if (this.teil.nummer === 27 || this.teil.nummer === 33 || this.teil.nummer === 35 ||
+                                this.teil.nummer === 39 || this.teil.nummer === 43 || this.teil.nummer === 48) {
+                                const bestellkosten = 75;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
+                                bestellkosten_array.push(bestellkosten);
+                            } else if (this.teil.nummer === 24 || this.teil.nummer === 36) {
+                                const bestellkosten = 100;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
+                                bestellkosten_array.push(bestellkosten);
+                            }
+                        } else if (this.modus.nummer === 4) {
+                            if (this.teil.nummer === 21 || this.teil.nummer === 22 || this.teil.nummer === 22 ||
+                                this.teil.nummer === 25 || this.teil.nummer === 28 || this.teil.nummer === 32
+                                || this.teil.nummer === 34 || this.teil.nummer === 37 || this.teil.nummer === 38
+                                || this.teil.nummer === 40 || this.teil.nummer === 41 || this.teil.nummer === 42
+                                || this.teil.nummer === 44 || this.teil.nummer === 45 || this.teil.nummer === 46
+                                || this.teil.nummer === 47 || this.teil.nummer === 52 || this.teil.nummer === 53
+                                || this.teil.nummer === 57 || this.teil.nummer === 58 || this.teil.nummer === 59) {
+                                const bestellkosten = 500;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
+                                bestellkosten_array.push(bestellkosten);
+                            } else if (this.teil.nummer === 27 || this.teil.nummer === 33 || this.teil.nummer === 35 ||
+                                this.teil.nummer === 39 || this.teil.nummer === 43 || this.teil.nummer === 48) {
+                                const bestellkosten = 750;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
+                                bestellkosten_array.push(bestellkosten);
+                            } else if (this.teil.nummer === 24 || this.teil.nummer === 36) {
+                                const bestellkosten = 1000;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
+                                this.alle_bestellungen[i].bestellkosten = bestellkosten;
+                                bestellkosten_array.push(bestellkosten);
+                            }
+
+                        }
+
+                        // Verbrauch von Herstellteilen und rictige for schleife für bedarf
+                    }
+
+                    let Bestellungen_Kosten_array = [];
+
+                    for (let i = 0; i < this.alle_bestellungen.length; i++) {
+                        this.teil = this.kaufteile_mehere_Perioden.find((teil) => teil.id === this.alle_bestellungen[i].kaufteil.id);
+                        const teil1 = this.diskontmenge_teil_array.find((teil3) => teil3.nummer === this.teil.nummer);
+                        // const altesteil = this.kaufteile_vorperiode.find((teil2) => teil2.nummer === this.teil.nummer);
+                        if (this.kaufteile_vorperiode.length !== 0) {
+                            let einstandspreis = 0;
+                            if (this.alle_bestellungen[i].kaufmenge >= teil1.diskontmenge) {
+                                // lagerwert0 gleic Kaufpeis
+                                einstandspreis = teil1.kaufpreis0 * 0.90;
+
+                            } else {
+                                einstandspreis = teil1.kaufpreis0;
+                            }
+                            Bestellungen_Kosten_array.push(new Object({
+                                    teilenummer: this.teil.nummer,
+                                    zwischensumme: this.alle_bestellungen[i].kaufmenge * einstandspreis,
+                                    bestellkosten: this.alle_bestellungen[i].bestellkosten,
+                                    bestellmenge: this.alle_bestellungen[i].kaufmenge
+                                })
+                            );
+                        } else {
+                            let einstandspreis = 0;
+                            if (this.alle_bestellungen[i].kaufmenge >= teil1.diskontmenge) {
+                                einstandspreis = teil1.kaufpreis0 * 0.90;
+                            } else {
+                                einstandspreis = teil1.kaufpreis0;
+                            }
+                            Bestellungen_Kosten_array.push(new Object({
+                                    teilenummer: teil1.nummer,
+                                    zwischensumme: this.alle_bestellungen[i].kaufmenge * einstandspreis,
+                                    bestellkosten: this.alle_bestellungen[i].bestellkosten,
+                                    bestellmenge: this.alle_bestellungen[i].kaufmenge
+                                })
+                            );
+                        }
+                    }
+
+                    const Bestellungen_Kosten_group = d3.nest()
+                        .key((d) => d.teilenummer)
+                        .rollup(function(v) {
+                            return {
+                                zwischensumme: d3.sum(v, function(d) {
+                                    return d.zwischensumme;
+                                }),
+                                bestellkostensum: d3.sum(v, function(d) {
+                                    return d.bestellkosten;
+                                }),
+                                bestellmengesum: d3.sum(v, function(d) {
+                                    return d.bestellmenge;
+                                })
+                            };
+                        })
+                        .entries(Bestellungen_Kosten_array);
+
+                    Bestellungen_Kosten_array = [];
+
+                    for (let i = 0; i < Bestellungen_Kosten_group.length; i++) {
+                        Bestellungen_Kosten_array.push(new Object({
+                                teilenummer: parseInt(Bestellungen_Kosten_group[i].key, 10),
+                                zwischensumme: Bestellungen_Kosten_group[i].value.zwischensumme,
+                                bestellkosten: Bestellungen_Kosten_group[i].value.bestellkostensum,
+                                bestellmenge: Bestellungen_Kosten_group[i].value.bestellmengesum
+                            })
+                        );
+                    }
+
+                    Bestellungen_Kosten_array.sort((a, b) => a.teilenummer - b.teilenummer);
+
+                    for (let i = 0; i < this.kaufteile_array.length; i++) {
+                        if (this.kaufteile_vorperiode.length !== 0) {
+                            this.teil = this.kaufteile.find((teil) => teil.nummer === this.kaufteile_array[i]);
+                            this.teil.lagerpreis = this.kaufteile_vorperiode[i].lagerpreis;
+                        } else {
+                            this.teil = this.kaufteile.find((teil) => teil.nummer === this.kaufteile_array[i]);
+                            this.teil.lagerpreis = this.preis__kaufteile_periode0[i];
+                        }
+                    }
+
+                    for (let i = 0; i < Bestellungen_Kosten_array.length; i++) {
+                        this.teil = this.kaufteile.find((teil) => (teil.nummer === Bestellungen_Kosten_array[i].teilenummer));
+                        const teil1 = this.diskontmenge_teil_array.find((teil3) => teil3.nummer === Bestellungen_Kosten_array[i].teilenummer);
+                        const altesteil = this.kaufteile_vorperiode.find((teil2) => teil2.nummer === Bestellungen_Kosten_array[i].teilenummer);
+                        if (this.kaufteile_vorperiode.length !== 0) {
+                            let neuer_Teilewert = ((teil1.kaufpreis0 * altesteil.istmenge) +
+                                +(Bestellungen_Kosten_array[i].zwischensumme) + Bestellungen_Kosten_array[i].bestellkosten)
+                                / (altesteil.istmenge + Bestellungen_Kosten_array[i].bestellmenge);
+                            neuer_Teilewert = parseFloat(neuer_Teilewert.toFixed(2));
+                            this.teil.lagerpreis = neuer_Teilewert;
+                        } else {
+                            let neuer_Teilewert = ((teil1.kaufpreis0 * teil1.lagerbestand0) +
+                                +(Bestellungen_Kosten_array[i].zwischensumme) + Bestellungen_Kosten_array[i].bestellkosten)
+                                / (teil1.lagerbestand0 + Bestellungen_Kosten_array[i].bestellmenge);
+                            neuer_Teilewert = parseFloat(neuer_Teilewert.toFixed(2));
+                            this.teil.lagerpreis = neuer_Teilewert;
+                        }
+                    }
+
+                    for (let i = 0; i < this.kaufteile_array.length; i++) {
+                        // console.log(this.kaufteile[i].lagerpreis);
+                        const materialkosten = this.kaufteile[i].lagerpreis * this.bedarfKaufteil[i].bedarf;
+                        this.materialkosten_array.push(materialkosten);
+                    }
+
+                    console.log('Bestellkosten Bestellungen:');
+                    console.log(bestellkosten_array);
+                    console.log('Materialkosten Kaufteile: ' + this.materialkosten_array);
+                    this.materialkosten = this.materialkosten_array.reduce((a, b) => a + b, 0);
+
+                    this.bestellkosten = bestellkosten_array.reduce((a, b) => a + b, 0);
+                    console.log('Bestellkosten Bestellungen gesamt: ' + this.bestellkosten);
+                    localStorage.setItem('Bestellkosten', this.bestellkosten.toString());
+                    console.log('Materialkosten Kaufteile gesamt: ' + this.materialkosten);
+                    localStorage.setItem('Materialkosten Kaufteile', this.materialkosten.toString());
+                }, (res3: ResponseWrapper) => this.onError(res3.json));
+
+            });
+            }, (res: ResponseWrapper) => this.onError(res.json));
+
+        criteria = [
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 1}
+        ];
+
+        this.teilService.query({
+            size: 1000000,
+            criteria
+        }).subscribe((res: ResponseWrapper) => {
+            this.alle_teile = res.json;
+            const lagerwert_array = [];
+            if (this.alle_teile.length !== 0) {
+                for (const teil of this.alle_teile) {
+                    lagerwert_array.push(teil.lagerwert);
+                    this.lagerwert_gesamt = lagerwert_array.reduce((a, b) => a + b, 0);
+                }
+                if (this.lagerwert_gesamt > 250000) {
+                    const differenz = this.lagerwert_gesamt - 250000;
+                    this.lagerkosten = (250000 * 0.006) + 5000 + (differenz * 0.006);
+                    localStorage.setItem('lagerkosten', this.lagerkosten.toString());
+                    this.lagerkostensatz = (this.lagerkosten / this.lagerwert_gesamt) * 100;
+                    console.log('Lagerkostensatz_Periode: ' + this.lagerkostensatz);
+                } else {
+                    this.lagerkostensatz = 0.6;
+                    this.lagerkosten = (this.lagerwert_gesamt * 0.006);
+                    localStorage.setItem('lagerkosten', this.lagerkosten.toString());
+                    console.log('Lagerkostensatz_Periode: ' + this.lagerkostensatz);
+                }
+            } else {
+                this.lagerwert_gesamt = 291355.00;
+                if (this.lagerwert_gesamt > 250000) {
+                    const differenz = this.lagerwert_gesamt - 250000;
+                    this.lagerkosten = (250000 * 0.006) + 5000 + (differenz * 0.006);
+                    localStorage.setItem('lagerkosten', this.lagerkosten.toString());
+                    this.lagerkostensatz = (this.lagerkosten / this.lagerwert_gesamt) * 100;
+                    console.log('Lagerkostensatz_Periode: ' + this.lagerkostensatz);
+                } else {
+                    this.lagerkostensatz = 0.6;
+                    console.log('Lagerkostensatz_Periode: ' + this.lagerkostensatz);
+                }
+            }
+        }, (res: ResponseWrapper) => this.onError(res.json));
+    }
+
+    private onError(error) {
+        this.jhiAlertService.error(error.message, null, null);
+    };
+
+    public save() {
+        this.saveBestellung();
+        this.isSaving = true;
+    };
+
+    public saveBestellung() {
+
+        const criteria = [
+            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
+        ];
+
+        this.bestellungService.query({
+            size: 1000000,
+            criteria
+        })
+            .subscribe((res: ResponseWrapper) => {
+                this.bestellungen_DB = res.json;
+                let i;
+                for (i = 0; i < this.bestellungen.length; i++) {
+                    this.bestellung = this.bestellungen_DB.find((bestellung) => (bestellung.nummer === this.bestellungen[i].nummer)
+                        && bestellung.periode === parseInt(localStorage.getItem('aktuelleperiode'), 10));
+                    if (this.bestellung !== undefined) {
+                        this.bestellung.kaufteil = this.bestellungen[i].kaufteil;
+                        this.bestellung.modus = this.bestellungen[i].modus;
+                        this.bestellung.kaufmenge = this.bestellungen[i].kaufmenge;
+                        this.bestellung.bestellstatus = this.bestellungen[i].bestellstatus;
+                        this.bestellungService.update(this.bestellung).subscribe((respond: Bestellung) =>
+                            console.log(respond), () => this.onSaveError());
+                    } else {
+                        this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10),
+                            this.bestellungen[i].nummer, undefined, this.bestellungen[i].kaufmenge,
+                            undefined, undefined, undefined, undefined, this.bestellungen[i].bestellstatus,
+                            this.bestellungen[i].modus, this.bestellungen[i].kaufteil);
+                        this.bestellungService.create(this.bestellung).subscribe((respond: Bestellung) =>
+                            console.log(respond), () => this.onSaveError());
+                    }
+                }
+            }, (respond: ResponseWrapper) => this.onError(respond.json));
+
+        this.isSaving = true;
+
+    }
+
+    schlageBestellungenvor() {
+
+        if (this.bestellungen.length === 0) {
         let criteria = [
             {key: 'bestellstatus.in', value: 'UNTERWEGS'},
             {key: 'periode.in', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 1},
@@ -641,8 +996,8 @@ export class PurchasedPartComponent implements OnInit {
                 this.bestellungService.query({
                     size: 1000000,
                     criteria
-                }).subscribe((res2: ResponseWrapper) => {
-                    this.bestellungen = res2.json;
+                }).subscribe((res3: ResponseWrapper) => {
+                    this.bestellungen = res3.json;
                     this.bestellungen.sort((a, b) => a.nummer - b.nummer);
                     if (this.bestellungen.length === 0) {
                         for (const bestellung of this.empfohlene_neue_Bestellungen_array) {
@@ -710,8 +1065,8 @@ export class PurchasedPartComponent implements OnInit {
                     let Bestellungen_Kosten_array = [];
 
                     for (let i = 0; i < this.alle_bestellungen.length; i++) {
-                         this.teil = this.kaufteile_mehere_Perioden.find((teil) => teil.id === this.alle_bestellungen[i].kaufteil.id);
-                    const teil1 = this.diskontmenge_teil_array.find((teil3) => teil3.nummer === this.teil.nummer);
+                        this.teil = this.kaufteile_mehere_Perioden.find((teil) => teil.id === this.alle_bestellungen[i].kaufteil.id);
+                        const teil1 = this.diskontmenge_teil_array.find((teil3) => teil3.nummer === this.teil.nummer);
                         // const altesteil = this.kaufteile_vorperiode.find((teil2) => teil2.nummer === this.teil.nummer);
                         if (this.kaufteile_vorperiode.length !== 0) {
                             let einstandspreis = 0;
@@ -798,37 +1153,29 @@ export class PurchasedPartComponent implements OnInit {
                         }
                     }
 
+                    this.materialkosten_array = [];
+
                     for (let i = 0; i < this.kaufteile_array.length; i++) {
-                        console.log(this.kaufteile[i].lagerpreis);
+                        // console.log(this.kaufteile[i].lagerpreis);
                         const materialkosten = this.kaufteile[i].lagerpreis * this.bedarfKaufteil[i].bedarf;
                         this.materialkosten_array.push(materialkosten);
                     }
 
-                        for (let i = 0; i < this.teile.length; i++) {
-                            console.log(this.teile[i].lagerpreis);
-                            const verbrauchHerstellteil = this.teile[i].istmenge - this.teile[i].sicherheitsbestand;
-                            /*if (verbrauchHerstellteil < 0) {
-                                verbrauchHerstellteil = 0;
-                            }*/
-                            const materialkosten = this.teile[i].lagerpreis * verbrauchHerstellteil;
-                            this.materialkosten_array.push(materialkosten);
-                        }
-
                     console.log('Bestellkosten Bestellungen:');
                     console.log(bestellkosten_array);
-                    console.log('Materialkosten alle Teile: ' + this.materialkosten_array);
+                    console.log('Materialkosten Kaufteile: ' + this.materialkosten_array);
                     this.materialkosten = this.materialkosten_array.reduce((a, b) => a + b, 0);
 
                     this.bestellkosten = bestellkosten_array.reduce((a, b) => a + b, 0);
                     console.log('Bestellkosten Bestellungen gesamt: ' + this.bestellkosten);
                     localStorage.setItem('Bestellkosten', this.bestellkosten.toString());
-                    console.log('Materialkosten alle Teile gesamt: ' + this.materialkosten);
-                    localStorage.setItem('Materialkosten', this.materialkosten.toString());
-                }, (res2: ResponseWrapper) => this.onError(res2.json));
+                    console.log('Materialkosten Kaufteile gesamt: ' + this.materialkosten);
+                    localStorage.setItem('Materialkosten Kaufteile', this.materialkosten.toString());
+                }, (res3: ResponseWrapper) => this.onError(res3.json));
 
             });
 
-        }, (res: ResponseWrapper) => this.onError(res.json), );
+        }, (res: ResponseWrapper) => this.onError(res.json) );
 
         criteria = [
             {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10) - 1}
@@ -870,54 +1217,11 @@ export class PurchasedPartComponent implements OnInit {
                     console.log('Lagerkostensatz_Periode: ' + this.lagerkostensatz);
                 }
             }
+            this.isRecommended = true;
         }, (res: ResponseWrapper) => this.onError(res.json));
-    }
-
-    private onError(error) {
-        this.jhiAlertService.error(error.message, null, null);
-    };
-
-    public save() {
-        this.saveBestellung();
-        this.isSaving = true;
-    };
-
-    public saveBestellung() {
-
-        const criteria = [
-            {key: 'periode.equals', value: parseInt(localStorage.getItem('aktuelleperiode'), 10)}
-        ];
-
-        this.bestellungService.query({
-            size: 1000000,
-            criteria
-        })
-            .subscribe((res: ResponseWrapper) => {
-                this.bestellungen_DB = res.json;
-                let i;
-                for (i = 0; i < this.bestellungen.length; i++) {
-                    this.bestellung = this.bestellungen_DB.find((bestellung) => (bestellung.nummer === this.bestellungen[i].nummer)
-                        && bestellung.periode === parseInt(localStorage.getItem('aktuelleperiode'), 10));
-                    if (this.bestellung !== undefined) {
-                        this.bestellung.kaufteil = this.bestellungen[i].kaufteil;
-                        this.bestellung.modus = this.bestellungen[i].modus;
-                        this.bestellung.kaufmenge = this.bestellungen[i].kaufmenge;
-                        this.bestellung.bestellstatus = this.bestellungen[i].bestellstatus;
-                        this.bestellungService.update(this.bestellung).subscribe((respond: Bestellung) =>
-                            console.log(respond), () => this.onSaveError());
-                    } else {
-                        this.bestellung = new Bestellung(undefined, parseInt(localStorage.getItem('aktuelleperiode'), 10),
-                            this.bestellungen[i].nummer, undefined, this.bestellungen[i].kaufmenge,
-                            undefined, undefined, undefined, undefined, this.bestellungen[i].bestellstatus,
-                            this.bestellungen[i].modus, this.bestellungen[i].kaufteil);
-                        this.bestellungService.create(this.bestellung).subscribe((respond: Bestellung) =>
-                            console.log(respond), () => this.onSaveError());
-                    }
-                }
-            }, (respond: ResponseWrapper) => this.onError(respond.json));
-
-        this.isSaving = true;
-
+        } else {
+            this.isRecommended = true;
+        }
     }
 
     private onSaveError() {

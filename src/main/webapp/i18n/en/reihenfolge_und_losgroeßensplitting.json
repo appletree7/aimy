@@ -1,0 +1,10 @@
+{
+        "reihenfolge_und_losgroeßensplitting": {
+            "title": "Order and lot size splitting",
+            "info": "Please round the order quantities to 10, due to lot sizes.",
+            "berechne": "Calculate processing time minimal",
+            "split": "Splitting",
+            "sortKOZ": "Sort by KOZ",
+            "sortLOZ": "Sort by LOZ"
+        }
+}

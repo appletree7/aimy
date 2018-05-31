@@ -5,6 +5,12 @@
         "direktverkauf": "Direktverkauf",
         "bestellung": "Bestellungen",
         "auftrag": "Produktionsaufträge",
-        "kappa": "Kapazitätsplan"
+        "kappa": "Kapazitätsplan",
+        "periode": "Kennzahlen Periode ",
+        "gesamtkosten": "Gesamtkosten: ",
+        "kostenstuck": "Kosten pro Stück: ",
+        "gesamtertrag": "Gesamtertrag: ",
+        "gesamtgewinn": "Gesamtgewinn: ",
+        "gewinnstuck": "Gewinn pro Stück: "
     }
 }

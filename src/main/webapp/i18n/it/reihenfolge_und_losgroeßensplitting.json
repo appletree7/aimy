@@ -1,0 +1,10 @@
+{
+        "reihenfolge_und_losgroeßensplitting": {
+            "title": "Divisione dell'ordine e del lotto",
+            "info": "Si prega di arrotondare le quantità dell'ordine a 10, a causa delle dimensioni del lotto.",
+            "berechne": "Calcola il tempo di elaborazione minimo",
+            "split": "Scissione",
+            "sortKOZ": "Ordina per KOZ",
+            "sortLOZ": "Ordina per LOZ"
+        }
+}

@@ -353,7 +353,6 @@ export class CapacityPlanningComponent implements OnInit {
             }
 
                 }, (res: ResponseWrapper) => this.onError(res.json), () => {
-                    this.berechneKapzitaetsbedarfalt();
                     this.berechneRuestzeitneu();
                 });
 
@@ -411,7 +410,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 20);
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 20);
 
                         }
 
@@ -446,7 +445,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 30);
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 30);
 
                         }
 
@@ -475,7 +474,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 20);
+                           ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 20);
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -509,7 +508,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 20);
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 20);
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -544,7 +543,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 30);
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 30);
 
                         }
 
@@ -574,7 +573,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 20);
+                           ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 20);
 
                         }
 
@@ -611,7 +610,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 15);
+                           ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 15);
 
                         }
 
@@ -649,7 +648,7 @@ export class CapacityPlanningComponent implements OnInit {
                                     }));
                                 }
 
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 20);
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 20);
                             }
                         }
 
@@ -678,7 +677,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 30);
+                           ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 30);
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -714,7 +713,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 15);
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 15);
                         }
 
                         if (this.teil.nummer === 18 || this.teil.nummer === 20) {
@@ -742,7 +741,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 20);
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 20);
                         }
 
                         if (this.teil.nummer === 19) {
@@ -770,7 +769,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 25);
+                             ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 25);
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -807,7 +806,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 15);
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 15);
                         }
 
                         if (this.teil.nummer === 19) {
@@ -835,7 +834,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 20);
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 20);
 
                         }
 
@@ -872,7 +871,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 20);
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 20);
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -906,7 +905,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 10);
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 10);
                         }
 
                         if (this.teil === 6 || this.teil.nummer === 7
@@ -935,7 +934,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 20);
+                            ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 20);
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -1075,7 +1074,7 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                           ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[i].ruestvorgaenge * 15);
+                           ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_neu[this.ruestvorgaenge_teil_array_neu.length - 1].ruestvorgaenge * 15);
                         }
 
                         this.capacity_array[i].ruestzeit_neu = ruestzeit_arbeitsplatz.reduce((a, b) => a + b, 0);
@@ -1109,7 +1108,9 @@ export class CapacityPlanningComponent implements OnInit {
             const ruestvorgaegene_gesamt = ruestvorgaengearbeitsplatz.reduce((a, b) => a + b, 0);
             console.log('Rüstvorgänge Periode gesamt neu: ' + ruestvorgaegene_gesamt);
 
-        }, (res: ResponseWrapper) => this.onError(res.json));
+        }, (res: ResponseWrapper) => this.onError(res.json), () => {
+            this.berechneGesamtKapazitaetsbedarf();
+        });
 
     }
 
@@ -1404,8 +1405,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 20);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 20);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -1442,8 +1443,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 30);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 30);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -1474,8 +1475,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 20);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 20);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -1512,8 +1513,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 20);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 20);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -1551,8 +1552,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 30);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 30);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -1584,8 +1585,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 20);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 20);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -1624,8 +1625,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 15);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 15);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -1665,8 +1666,8 @@ export class CapacityPlanningComponent implements OnInit {
                                     }));
                                 }
 
-                                if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                    ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 20);
+                                if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                    ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 20);
                                 } else {
                                     ruestzeit_arbeitsplatz.push(0);
                                 }
@@ -1698,8 +1699,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 30);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 30);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -1738,8 +1739,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 15);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 15);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -1770,8 +1771,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 20);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 20);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -1802,8 +1803,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 25);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 25);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -1843,8 +1844,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 15);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 15);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -1875,8 +1876,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 20);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 20);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -1915,8 +1916,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 20);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 20);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -1953,8 +1954,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 10);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 10);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -1987,8 +1988,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 20);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 20);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -2131,8 +2132,8 @@ export class CapacityPlanningComponent implements OnInit {
                                 }
                             }
 
-                            if (this.ruestvorgaenge_teil_array_alt[i] !== undefined) {
-                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[i].ruestvorgaenge * 15);
+                            if (this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1] !== undefined) {
+                                ruestzeit_arbeitsplatz.push(this.ruestvorgaenge_teil_array_alt[this.ruestvorgaenge_teil_array_alt.length - 1].ruestvorgaenge * 15);
                             } else {
                                 ruestzeit_arbeitsplatz.push(0);
                             }
@@ -2170,14 +2171,14 @@ export class CapacityPlanningComponent implements OnInit {
             console.log('Rüstvorgänge Periode gesamt alt: ' + ruestvorgaegene_gesamt);
 
         }, (res: ResponseWrapper) => this.onError(res.json), () => {
-            this.berechneGesamtKapazitaetsbedarf();
+                this.berechneKapzitaetsbedarfneu();
         });
 
     }
 
     async berechneRuestzeitenundKapazitaeten() {
 
-        this.berechneKapzitaetsbedarfneu();
+        this.berechneKapzitaetsbedarfalt();
     }
 
    berechneGesamtKapazitaetsbedarf() {

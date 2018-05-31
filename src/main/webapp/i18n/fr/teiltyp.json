@@ -2,9 +2,12 @@
     "aimyApp": {
         "Teiltyp" : {
             "null": "",
-            "PRODUKT": "PRODUKT",
-            "ERZEUGNIS": "ERZEUGNIS",
-            "KAUFTEIL": "KAUFTEIL"
+            "PRODUKT": "PRODUITS",
+            "ERZEUGNIS": "fabriqué",
+            "KAUFTEIL": "ACHAT PARTIE",
+            "0": "PRODUITS",
+            "1": "fabriqué",
+            "2": "ACHAT PARTIE"
         }
     }
 }

@@ -15,9 +15,9 @@
                 <th><span jhiTranslate="aimyApp.teil.teiltyp">Teiltyp</span></th>
                 <th><span jhiTranslate="aimyApp.teil.nummer">Nummer</span></th>
                 <th><span jhiTranslate="aimyApp.teil.vertriebswunsch">Vertriebswunsch</span></th>
-                <th><span>Vertriebswunsch+1</span></th>
-                <th><span>Vertriebswunsch+2</span></th>
-                <th><span>Vertriebswunsch+3</span></th>
+                <th><span jhiTranslate="aimyApp.teil.vertriebswunsch_naechste">Vertriebswunsch+1</span></th>
+                <th><span jhiTranslate="aimyApp.teil.vertriebswunsch_uebernaechste">Vertriebswunsch+2</span></th>
+                <th><span jhiTranslate="aimyApp.teil.vertriebswunsch_ueberuebernaechste">Vertriebswunsch+3</span></th>
             </tr>
             </thead>
             <tbody>
@@ -94,18 +94,9 @@
         </table>
     </div>
     <div>
-        <button type="submit"
-                (click)="previousState()"
-                class="btn btn-info">
-            <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-        </button>
         <button type="submit" [disabled]="saveForm.form.invalid || isSaving"
                 class="btn btn-primary">
             <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-        </button>
-        <button class="btn btn-primary" [routerLink]="['/in-house_production']"
-                replaceUrl="true">
-            <span jhiTranslate="entity.action.next"> Weiter</span>
         </button>
     </div>
 </form>

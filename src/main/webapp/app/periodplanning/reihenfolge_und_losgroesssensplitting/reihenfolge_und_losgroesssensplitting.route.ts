@@ -1,11 +1,11 @@
 import {Route} from '@angular/router';
 
 import {UserRouteAccessService} from '../../shared';
-import {ReihenfolgeUndLosgroeßensplittingComponent} from './reihenfolge_und_losgroeßensplitting.component';
+import {ReihenfolgeUndLosgroesssensplittingComponent} from './reihenfolge_und_losgroesssensplitting.component';
 
-export const reihenfolge_und_losgroeßensplittingRoute: Route = {
+export const reihenfolge_und_losgroesssensplittingRoute: Route = {
     path: 'reihenfolge_und_losgroeßensplitting',
-    component: ReihenfolgeUndLosgroeßensplittingComponent,
+    component: ReihenfolgeUndLosgroesssensplittingComponent,
     data: {
         authorities: ['ROLE_USER', 'ROLE_ADMIN'],
         pageTitle: 'global.menu.periodplanning.reihenfolge_und_losgroeßensplitting'

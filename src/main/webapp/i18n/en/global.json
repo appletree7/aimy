@@ -14,8 +14,6 @@
                 "fertigungsauftrag": "production order",
                 "arbeitsplatz": "workplace",
                 "kennzahlen": "key figure",
-                "fertigungsauftrag": "Fertigungsauftrag",
-                "teil": "Teil",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -43,6 +41,7 @@
             "periodplanning": {
                 "main": "Periodplanning",
                 "in-house_production": "In-house production",
+                "reihenfolge_und_losgroeßensplitting": "Order and lot size splitting",
                 "purchased_part": "Purchased part",
                 "capacity_planning": "Capacity Planning",
                 "period_start": "Start period",
@@ -115,7 +114,9 @@
             "open": "Open",
             "save": "Save",
             "view": "View",
-            "next": "Next"
+            "next": "Next",
+            "calculate": "calculate",
+            "recommend": "Recommend orders"
         },
         "detail": {
             "field": "Field",

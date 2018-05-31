@@ -1,6 +1,7 @@
 {
     "purchased_part": {
         "title": "disposition de la partie achat",
+        "info": "Calculer pour les coûts de matériel supplémentaires pour les produits!",
         "table": {
             "number": "numéro",
             "inventory": "inventaire",
@@ -8,7 +9,15 @@
             "need": "demande brute",
             "delivery": "ordonner",
             "discount": "quantité escomptée",
-            "type": "Sorte"
+            "type": "Sorte",
+            "lagerkosten": "Les coûts de stockage:",
+            "bestellkosten": "Frais de commande:",
+            "materialkosten": "Les coûts des matériaux: ",
+            "alte_Bestellung": "Lot de l'ancien ordre",
+            "hochstbestand": "stock maximum",
+            "lagerreichweite": "La couverture des stocks",
+            "sicherheitsbestand": "stock de sécurité",
+            "bestellpunkt": "point de commande"
         }
     }
 }

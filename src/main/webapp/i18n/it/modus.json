@@ -15,6 +15,7 @@
             "detail": {
                 "title": "modo"
             },
+            "nummer": "numero",
             "name": "nome",
             "bearbeitungsfaktor": "fattore di trasformazione",
             "bearbeitungsabweichung": "sovrametallo",

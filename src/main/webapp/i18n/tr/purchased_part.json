@@ -1,6 +1,7 @@
 {
     "purchased_part": {
         "title": "Satınalinan parca düzenlemesi",
+        "info": "Ürünler için ek malzeme maliyetleri için hesaplayın!",
         "table": {
             "number": "Numara",
             "inventory": "Stok",
@@ -8,7 +9,15 @@
             "need": "Brüt Gereksinimi",
             "delivery": "Sipariş",
             "discount": "Indirim Tutari",
-            "type": "Tür"
+            "type": "Tür",
+            "lagerkosten": "Depolama maliyetleri:",
+            "bestellkosten": "Sipariş maliyetleri: ",
+            "materialkosten": "Malzeme maliyetleri: ",
+            "alte_Bestellung": "Eski sipariş çok",
+            "hochstbestand": "maksimum stok",
+            "lagerreichweite": "Envanter kapsama",
+            "sicherheitsbestand": "emniyet stoku",
+            "bestellpunkt": "sipariş noktası"
         }
     }
 }

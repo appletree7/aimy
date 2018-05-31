@@ -1,6 +1,7 @@
 {
     "capacity_planning": {
         "title": "planification des capacités",
+        "info": "Calculer la capacité supplémentaire pour les futures files d'attente!",
         "table": {
             "number": "numéro",
             "capacity_last_period": "Capacité de la période précédente",
@@ -9,7 +10,13 @@
             "set-up_time": "temps de réglage(n)",
             "reqiurement_of_time": "Temps total requis(n+1)",
             "shifts": "couches",
-            "overtime": "heures supplémentaires"
+            "overtime": "heures supplémentaires",
+            "kapazitatsauslastung": "utilisation des capacités",
+            "leerzeit": "Temps d'inactivité: ",
+            "maschinenkosten": "Coûts de la machine: ",
+            "maschinenstillstandkosten": "Les coûts d'immobilisation de la machine: ",
+            "lohnkosten": "Les coûts du travail: ",
+            "lohnleerkosten": "Les coûts salariaux du ralenti: "
         }
     }
 }

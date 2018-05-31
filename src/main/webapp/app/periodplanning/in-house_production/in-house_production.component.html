@@ -16,8 +16,8 @@
                 <tr>
                         <th class="text-center" jhiTranslate="in-house_production.table.number">Nummer</th>
                         <th class="text-center" jhiTranslate="in-house_production.table.sales_request">Vertriebswunsch</th>
-                        <th class="text-center">Direktverkaufsmenge</th>
-                        <th class="text-center">Warteliste Subkomponente</th>
+                        <th class="text-center" jhiTranslate="in-house_production.table.direktverkaufsmenge">Direktverkaufsmenge</th>
+                        <th class="text-center" jhiTranslate="in-house_production.table.warteliste_subkomponente">Warteliste Subkomponente</th>
                         <th class="text-center" jhiTranslate="in-house_production.table.safety_stock">Sicherheitsbestand</th>
                         <th class="text-center" jhiTranslate="in-house_production.table.last_period_stock">Bestand Vorperiode</th>
                         <th class="text-center" jhiTranslate="in-house_production.table.waiting_orders">Aufträge in Warteliste</th>
@@ -48,21 +48,12 @@
     </div>
 
     <div class="btn-group" role="group">
-    <button type="button"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span><span jhiTranslate="entity.action.back"> Back</span>
-    </button>
         <button type="button" class="btn btn-primary" (click)="berechneProduktionsauftraege()">
-          <span>Berechnen</span>
+          <span jhiTranslate="entity.action.calculate">Berechnen</span>
         </button>
         <button type="submit" [disabled]="saveForm.form.invalid || isSaving" class="btn btn-primary">
             <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
         </button>
-    <button type="button" class="btn btn-primary" [routerLink]="['/purchased_part']"
-                replaceUrl="true">
-        <span jhiTranslate="entity.action.next"> Weiter</span>
-    </button>
     </div>
 </div>
 </form>

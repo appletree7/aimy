@@ -1,7 +1,48 @@
 # aimy
-This application was generated using JHipster 4.10.2, you can find documentation and help at [http://www.jhipster.tech/documentation-archive/v4.10.2](http://www.jhipster.tech/documentation-archive/v4.10.2).
+
+aimy is a small production planning program as partical part of the lecture “Integrierte Betriebliche Systeme” at the Hochschule Karlsruhe (University of Applied Sciences). 
+
+## About the app
+
+
+### Used Programming languages
+
+ - Java (Spring)
+ - TypeScript
+ - HTML
+ - CSS
+
+### Features
+
+ - Rest-Interface
+ - Quantity planning
+ - Parts lists disaggregation for selfmade products and 
+partial use for the purchased parts
+ - Capacity planning
+ - Lot size splitting
+ - Sequence planning
+ - Supports 6 languages
+ - Article maintenance
+ - Change the safety stock
+ - Possibility of specifying the sales request
+ - View the product details
+ - Create new users
+ - Assignment of rights to existing users
+ - Role assignment to users
+ - View processing times (control of users)
+ - Data import and export
+ - Rest- Interface
+ - Progressive webapp
+ - https encrypted
+
+
 
 ## Development
+
+This application was generated using JHipster 4.10.2, , you can find documentation and help at [http://www.jhipster.tech/documentation-archive/v4.10.2](http://www.jhipster.tech/documentation-archive/v4.10.2).
+
+JHipster is a development platform to quickly generate, develop, & deploy modern web applications & microservice architectures. 
+You can generate different kind apps with different frontend like Vue, Angular or React and  different backend like Spring, kafka and so on.
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
 
